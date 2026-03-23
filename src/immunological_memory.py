@@ -214,12 +214,15 @@ for i, (_, arow) in enumerate(adf.iterrows()):
     if rec_days_list:
         avg_rec = round(np.mean(rec_days_list), 1)
         top_resp = max(set(resp_type_list), key=resp_type_list.count)
-        mfr = str(arow.get("manufacturer", ""))[:40]
-        print(f"  Anomaly {i+1}: {mfr}")
-        print(f"    Score: {arow.get('anomaly_score','')}  |  "
-              f"Expected recovery: {avg_rec} days  |  "
-              f"Recommended response: {top_resp}")
-        print(f"    Closest match distance: {nbr_dists[0]:.4f}")
+        if i < 5:
+            mfr = str(arow.get("manufacturer", ""))[:40]
+            print(f"  Anomaly {i+1}: {mfr}")
+            print(f"    Score: {arow.get('anomaly_score','')}  |  "
+                  f"Expected recovery: {avg_rec} days  |  "
+                  f"Recommended response: {top_resp}")
+            print(f"    Closest match distance: {nbr_dists[0]:.4f}")
+        elif i == 5:
+            print(f"  ... ({len(adf) - 5} more anomalies processed, see CSV for full results)")
 
 retrieval_df = pd.DataFrame(retrieval_rows)
 os.makedirs(os.path.dirname(RETRIEVAL_OUT), exist_ok=True)

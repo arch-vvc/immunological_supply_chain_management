@@ -19,14 +19,23 @@ import random
 ROOT   = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTPUT = os.path.join(ROOT, "data", "raw", "arcos_sampled_50k.csv")
 
-SEED        = 42
-N_ROWS      = 50_000
+SEED     = 18
+N_ROWS   = 50_000
+
+# ── SCENARIO ────────────────────────────────────────────────
+# "concentrated" : few distributors dominate, heavy bottlenecks,
+#                  multiple manufacturer surges → higher anomaly count
+# "distributed"  : traffic spread evenly, mild volume spikes,
+#                  single small surge → lower anomaly count
+# Change this alongside SEED to get structurally different runs.
+SCENARIO = "distributed"   # "concentrated" | "distributed"
 
 random.seed(SEED)
 np.random.seed(SEED)
 
 print("=" * 55)
 print("  SYNTHETIC ARCOS DATASET GENERATOR")
+print(f"  Scenario : {SCENARIO.upper()}   Seed : {SEED}")
 print("=" * 55)
 
 # ── Real-world entity names ─────────────────────────────────
@@ -101,12 +110,54 @@ start_date = pd.Timestamp("2006-01-01")
 end_date   = pd.Timestamp("2014-12-31")
 date_range = (end_date - start_date).days
 
+# ── Scenario parameters ──────────────────────────────────────
+
+if SCENARIO == "concentrated":
+    # Heavy bottlenecks: few distributors dominate, large spikes, multiple surges
+    SPIKE_MULT_LO   = 20
+    SPIKE_MULT_HI   = 80
+    SPIKE_CLIP_LO   = 80_000
+    SPIKE_CLIP_HI   = 8_000_000
+    ANOMALY_FRAC    = 0.05         # 5% volume-spike rows
+    CONCENTRATION_N = 500          # flood rows for a single pharmacy
+    CONC_QTY_LO     = 60_000
+    CONC_QTY_HI     = 200_000
+    # Three manufacturer surges
+    SURGES = [
+        dict(mfr="PURDUE PHARMA LP",         n=300, qty_lo=100_000, qty_hi=600_000,
+             start="2012-06-01", end="2012-09-30"),
+        dict(mfr="MALLINCKRODT LLC",          n=200, qty_lo=80_000,  qty_hi=400_000,
+             start="2010-03-01", end="2010-07-31"),
+        dict(mfr="ACTAVIS PHARMA INC",        n=150, qty_lo=60_000,  qty_hi=300_000,
+             start="2013-01-01", end="2013-05-31"),
+    ]
+    # Skew 70% of distributor traffic to top 3
+    dist_weights = np.ones(len(DISTRIBUTORS))
+    for top_d in ["MCKESSON CORPORATION", "CARDINAL HEALTH INC", "AMERISOURCEBERGEN DRUG CORP"]:
+        dist_weights[DISTRIBUTORS.index(top_d)] = 12
+    dist_probs = dist_weights / dist_weights.sum()
+else:  # "distributed"
+    # Even traffic, mild spikes, single small surge
+    SPIKE_MULT_LO   = 5
+    SPIKE_MULT_HI   = 15
+    SPIKE_CLIP_LO   = 20_000
+    SPIKE_CLIP_HI   = 1_000_000
+    ANOMALY_FRAC    = 0.015        # 1.5% volume-spike rows
+    CONCENTRATION_N = 80           # light concentration
+    CONC_QTY_LO     = 15_000
+    CONC_QTY_HI     = 50_000
+    SURGES = [
+        dict(mfr="JANSSEN PHARMACEUTICALS INC", n=60, qty_lo=20_000, qty_hi=100_000,
+             start="2011-04-01", end="2011-06-30"),
+    ]
+    dist_probs = None              # uniform distributor selection
+
 # ── Build base transactions ──────────────────────────────────
 
 print(f"Generating {N_ROWS:,} transactions...")
 
 mfr_idx   = np.random.choice(len(MANUFACTURERS),  N_ROWS)
-dist_idx  = np.random.choice(len(DISTRIBUTORS),   N_ROWS)
+dist_idx  = np.random.choice(len(DISTRIBUTORS),   N_ROWS, p=dist_probs)
 state_idx = np.random.choice(len(state_list),      N_ROWS, p=state_probs)
 
 states    = [state_list[i] for i in state_idx]
@@ -120,37 +171,39 @@ quantities = np.clip(quantities, 10, 100_000)
 day_offsets = np.random.beta(a=3, b=2, size=N_ROWS) * date_range
 dates = [start_date + pd.Timedelta(days=int(d)) for d in day_offsets]
 
-# ── Inject anomalies (~3% of rows) ──────────────────────────
+# ── Inject anomalies ─────────────────────────────────────────
 
-n_anomalies = int(N_ROWS * 0.03)
+n_anomalies = int(N_ROWS * ANOMALY_FRAC)
 anomaly_idx = np.random.choice(N_ROWS, n_anomalies, replace=False)
 
-# Volume spike anomalies — quantities 10-50x normal
-quantities[anomaly_idx] = (quantities[anomaly_idx] * np.random.uniform(10, 50, n_anomalies)).astype(int)
-quantities[anomaly_idx] = np.clip(quantities[anomaly_idx], 50_000, 5_000_000)
+# Volume spike anomalies — scenario-specific multiplier
+quantities[anomaly_idx] = (quantities[anomaly_idx] *
+    np.random.uniform(SPIKE_MULT_LO, SPIKE_MULT_HI, n_anomalies)).astype(int)
+quantities[anomaly_idx] = np.clip(quantities[anomaly_idx], SPIKE_CLIP_LO, SPIKE_CLIP_HI)
 
 # Concentration anomaly — one distributor floods a single pharmacy in WV
-concentration_n  = 300
-concentration_dist = "MIAMI-LUKEN INC"
+concentration_n     = CONCENTRATION_N
+concentration_dist  = "MIAMI-LUKEN INC"
 concentration_pharm = "TUG VALLEY PHARMACY #1 (WV)"
 conc_idx = np.random.choice(N_ROWS, concentration_n, replace=False)
 for i in conc_idx:
     dist_idx[i]  = DISTRIBUTORS.index(concentration_dist)
     states[i]    = "WV"
     retailers[i] = concentration_pharm
-    quantities[i] = int(np.random.uniform(40_000, 120_000))
+    quantities[i] = int(np.random.uniform(CONC_QTY_LO, CONC_QTY_HI))
 
-# Temporal surge — one manufacturer spikes in mid-2012
-surge_n   = 200
-surge_mfr = "PURDUE PHARMA LP"
-surge_start = pd.Timestamp("2012-06-01")
-surge_end   = pd.Timestamp("2012-09-30")
-surge_days  = (surge_end - surge_start).days
-surge_idx = np.random.choice(N_ROWS, surge_n, replace=False)
-for i in surge_idx:
-    mfr_idx[i]   = MANUFACTURERS.index(surge_mfr)
-    quantities[i] = int(np.random.uniform(80_000, 500_000))
-    dates[i]     = surge_start + pd.Timedelta(days=int(random.uniform(0, surge_days)))
+# Temporal surges — scenario-specific number and scale
+total_surge_n = 0
+for surge in SURGES:
+    s_start = pd.Timestamp(surge["start"])
+    s_end   = pd.Timestamp(surge["end"])
+    s_days  = (s_end - s_start).days
+    s_idx   = np.random.choice(N_ROWS, surge["n"], replace=False)
+    for i in s_idx:
+        mfr_idx[i]   = MANUFACTURERS.index(surge["mfr"])
+        quantities[i] = int(np.random.uniform(surge["qty_lo"], surge["qty_hi"]))
+        dates[i]     = s_start + pd.Timedelta(days=int(random.uniform(0, s_days)))
+    total_surge_n += surge["n"]
 
 # ── Assemble DataFrame ───────────────────────────────────────
 
@@ -183,8 +236,9 @@ df = df.sample(frac=1, random_state=SEED).reset_index(drop=True)
 os.makedirs(os.path.dirname(OUTPUT), exist_ok=True)
 df.to_csv(OUTPUT, index=False)
 
+total_injected = n_anomalies + concentration_n + total_surge_n
 print(f"Rows generated    : {len(df):,}")
-print(f"Anomalies injected: {n_anomalies + concentration_n + surge_n:,} (~{(n_anomalies+concentration_n+surge_n)/N_ROWS*100:.1f}%)")
+print(f"Anomalies injected: {total_injected:,} (~{total_injected/N_ROWS*100:.1f}%)")
 print(f"Date range        : {df['TRANSACTION_DATE'].iloc[0]}  →  synthetic 2006-2014")
 print(f"Manufacturers     : {df['Revised_Company_Name'].nunique()}")
 print(f"Distributors      : {df['REPORTER_NAME'].nunique()}")

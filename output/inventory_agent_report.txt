@@ -1,0 +1,29 @@
+STAGE 15 — INVENTORY AGENT REPORT
+=======================================================
+
+At-risk retailers analysed  : 15
+Transfer recommendations    : 45
+Avg transfer score (rank #1): 0.555
+Avg estimated delivery days : 2.4
+
+Scoring weights:
+  Spare capacity  : 40%
+  Safety (1-risk) : 35%
+  Fuel efficiency : 25%
+
+Top-1 transfer per at-risk retailer:
+  MEDICO PHARMACY #4239 (VT)             → CARDINAL HEALTH INC                    (score=0.533  ~2.7d)
+  WALGREENS #7869 (VT)                   → CARDINAL HEALTH INC                    (score=0.533  ~2.7d)
+  GOOD NEIGHBOR PHARMACY #2219 (NM)      → CARDINAL HEALTH INC                    (score=0.570  ~2.2d)
+  GOOD NEIGHBOR PHARMACY #7155 (GA)      → CARDINAL HEALTH INC                    (score=0.583  ~2.1d)
+  WALGREENS #4309 (VT)                   → CARDINAL HEALTH INC                    (score=0.533  ~2.7d)
+  HARRIS TEETER PHARMACY #2399 (ID)      → CARDINAL HEALTH INC                    (score=0.558  ~2.4d)
+  HEALTH MART PHARMACY #4784 (TX)        → DIRECT RX                              (score=0.595  ~2.0d)
+  HEALTH MART PHARMACY #5158 (AL)        → CARDINAL HEALTH INC                    (score=0.595  ~2.0d)
+  TUG VALLEY PHARMACY #1 (WV)            → CARDINAL HEALTH INC                    (score=0.608  ~1.8d)
+  SUNRISE PHARMACY #4396 (HI)            → DIRECT RX                              (score=0.382  ~4.5d)
+  PUBLIX PHARMACY #1993 (CO)             → DAKOTA DRUG INC                        (score=0.560  ~2.1d)
+  QUALITY CARE PHARMACY #5456 (WA)       → CARDINAL HEALTH INC                    (score=0.533  ~2.7d)
+  QUALITY CARE PHARMACY #9423 (NM)       → DIRECT RX                              (score=0.570  ~2.2d)
+  SUNRISE PHARMACY #3108 (NM)            → CARDINAL HEALTH INC                    (score=0.570  ~2.2d)
+  SUNRISE PHARMACY #4284 (TX)            → CARDINAL HEALTH INC                    (score=0.595  ~2.0d)
