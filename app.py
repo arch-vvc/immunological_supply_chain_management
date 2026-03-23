@@ -45,9 +45,13 @@ st.markdown("""
         border-radius: 8px;
         padding: 1rem 1.2rem;
         text-align: center;
+        min-height: 90px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
     .metric-card .label { color: #888; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
-    .metric-card .value { color: #e0e0ff; font-size: 1.6rem; font-weight: 700; margin-top: 0.2rem; }
+    .metric-card .value { color: #e0e0ff; font-size: 1.5rem; font-weight: 700; margin-top: 0.2rem; line-height: 1.2; }
     .metric-card .sub   { color: #666; font-size: 0.75rem; margin-top: 0.1rem; }
     h1 { color: #c8c8ff !important; }
     .stTabs [data-baseweb="tab"] { font-size: 0.85rem; }
@@ -106,6 +110,11 @@ def load_disruption_data():
     p = os.path.join(EXTRA, "disruption_processed.csv")
     return pd.read_csv(p) if os.path.exists(p) else pd.DataFrame()
 
+@st.cache_data
+def load_supplier_results():
+    p = os.path.join(OUT, "supplier_agent_results.csv")
+    return pd.read_csv(p) if os.path.exists(p) else pd.DataFrame()
+
 @st.cache_resource
 def load_graph():
     p = os.path.join(MODELS, "supplychain_graph.pkl")
@@ -142,7 +151,7 @@ def load_embeddings():
 # ── Feature names used by RF models ───────────────────────────────────────
 RF_FEATURES = [
     "disruption_type_enc", "industry_enc", "supplier_region_enc",
-    "supplier_size_enc",   "response_type_enc", "disruption_severity",
+    "supplier_size_enc",   "disruption_severity",
     "production_impact_pct", "has_backup_supplier",
 ]
 
@@ -159,7 +168,6 @@ tabs = st.tabs([
     "Risk Analysis",
     "Macro Stress & LSTM",
     "Recovery Predictor",
-    "SHAP Explainability",
     "Multi-Domain Risk",
 ])
 
@@ -191,28 +199,88 @@ with tabs[0]:
     with c4: metric_card("High-Risk Entities",  f"{n_high:,}"  if isinstance(n_high, int)  else n_high, "risk > 0.70")
     with c5: metric_card("Next-Week Forecast",  forecast_level, "macro stress level")
 
-    st.markdown("#### Pipeline Architecture")
-    stages = [
-        ("1",  "Preprocessing",              "Universal CSV ingestion + column mapping"),
-        ("2",  "Graph Construction",          "NetworkX DiGraph  |  manufacturer → distributor → retailer"),
-        ("3",  "Anomaly Detection",           "4-signal Z-score  |  dynamic thresholds from Stage 9"),
-        ("4",  "Risk Analysis",              "Betweenness + PageRank + in-degree centrality"),
-        ("5",  "Disruption Routing",         "Dijkstra-based recovery re-routing"),
-        ("6",  "Visualization",              "Static figure export  (fig1–fig4)"),
-        ("7",  "GNN Node Encoder",           "2-layer GCN autoencoder  |  16-dim embeddings"),
-        ("8",  "Recovery Predictor",         "Random Forest regressor + classifier"),
-        ("9",  "Macro Stress Scorer",        "5-signal freight indicator weighting"),
-        ("10", "LSTM Forecaster",            "Seq2seq LSTM  |  4-week stress forecast"),
-        ("11", "PPO Routing Agent",          "Proximal Policy Optimisation  |  risk-aware re-routing"),
+    # ── Global SHAP Explainability ─────────────────────────────────────────
+    st.markdown("#### What Drives Recovery Time? (Global Model Explainability)")
+    st.caption(
+        "SHAP (SHapley Additive exPlanations) shows which features the Random Forest model "
+        "relies on most when predicting how long a disruption takes to recover from. "
+        "Red = above median importance. Use the Recovery Predictor tab to see a breakdown for a specific scenario."
+    )
+
+    _ov_reg_path  = os.path.join(MODELS, "recovery_regressor.pkl")
+    _ov_data_path = os.path.join(EXTRA,  "disruption_processed.csv")
+    _OV_FEAT_NAMES = [
+        "Disruption Type", "Industry", "Supplier Region",
+        "Supplier Size", "Disruption Severity",
+        "Production Impact %", "Has Backup Supplier",
     ]
-    for num, name, desc in stages:
-        st.markdown(
-            f"<div style='padding:0.35rem 0; border-bottom:1px solid #1e1e3a'>"
-            f"<span style='color:#4fc3f7;font-weight:600;min-width:2rem;display:inline-block'>S{num}</span>"
-            f"<span style='color:#ddd;min-width:14rem;display:inline-block'>{name}</span>"
-            f"<span style='color:#777;font-size:0.82rem'>{desc}</span></div>",
-            unsafe_allow_html=True,
-        )
+    _OV_FEAT_COLS = [
+        "disruption_type_enc", "industry_enc", "supplier_region_enc",
+        "supplier_size_enc", "disruption_severity",
+        "production_impact_pct", "has_backup_supplier",
+    ]
+
+    if os.path.exists(_ov_reg_path):
+        try:
+            import joblib as _jl
+            _ov_model = _jl.load(_ov_reg_path)
+            _imps = _ov_model.feature_importances_
+            _fi_df = pd.DataFrame({
+                "Feature":    _OV_FEAT_NAMES,
+                "Importance": _imps,
+            }).sort_values("Importance", ascending=True)
+
+            _col1, _col2 = st.columns(2)
+
+            with _col1:
+                st.markdown("**Feature Importance** — which inputs the model uses most")
+                _fig_fi, _ax_fi = plt.subplots(figsize=(6, 3.5))
+                _fig_fi.patch.set_facecolor("#0f0f1a")
+                _ax_fi.set_facecolor("#0f0f1a")
+                _fi_colors = ["#e74c3c" if v > _fi_df["Importance"].median() else "#3498db"
+                              for v in _fi_df["Importance"]]
+                _ax_fi.barh(_fi_df["Feature"], _fi_df["Importance"], color=_fi_colors, edgecolor="none")
+                _ax_fi.set_xlabel("Importance", color="white")
+                _ax_fi.tick_params(colors="white")
+                _ax_fi.xaxis.label.set_color("white")
+                for sp in ["top", "right"]:
+                    _ax_fi.spines[sp].set_visible(False)
+                for sp in ["bottom", "left"]:
+                    _ax_fi.spines[sp].set_color("#4a4a6a")
+                plt.tight_layout()
+                st.pyplot(_fig_fi)
+                plt.close()
+
+            with _col2:
+                if os.path.exists(_ov_data_path):
+                    st.markdown("**Direction** — does each feature increase or decrease recovery time?")
+                    try:
+                        import shap as _shap_ov
+                        _ov_dis = pd.read_csv(_ov_data_path)
+                        _ov_dis["has_backup_supplier"] = (
+                            _ov_dis["has_backup_supplier"]
+                            .map({True: 1, False: 0, "True": 1, "False": 0})
+                            .fillna(0).astype(int)
+                        )
+                        _ov_dis = _ov_dis.dropna(subset=_OV_FEAT_COLS)
+                        _ov_sample = _ov_dis[_OV_FEAT_COLS].sample(min(200, len(_ov_dis)), random_state=42).values
+                        _ov_exp = _shap_ov.TreeExplainer(_ov_model)
+                        _ov_sv  = _ov_exp.shap_values(_ov_sample)
+                        _ov_signed = _ov_sv.mean(axis=0)
+                        _dir_df = pd.DataFrame({
+                            "Feature":         _OV_FEAT_NAMES,
+                            "Avg SHAP (days)": _ov_signed.round(1),
+                            "Direction":       ["↑ Longer recovery" if v > 0 else "↓ Faster recovery"
+                                               for v in _ov_signed],
+                        }).sort_values("Avg SHAP (days)", ascending=False)
+                        st.dataframe(_dir_df, use_container_width=True, hide_index=True, height=280)
+                        st.caption("Values in days. ↑ means this feature tends to increase recovery time on average.")
+                    except Exception:
+                        st.info("Install shap for the direction table: pip install shap")
+        except Exception as _ov_e:
+            st.info(f"Run Stage 8 to see model explainability. ({_ov_e})")
+    else:
+        st.info("Run Stage 8 first to see model explainability.")
 
 # ══════════════════════════════════════════════════════════════════════════
 # TAB 2 — SUPPLY CHAIN GRAPH
@@ -406,6 +474,48 @@ with tabs[3]:
             if os.path.exists(fig_path):
                 st.image(fig_path, use_column_width=True)
 
+        # ── PPO vs Dijkstra ───────────────────────────────────────────
+        st.markdown("#### PPO vs Dijkstra — Risk-Aware Routing (Stage 11)")
+        ppo_fig = os.path.join(FIGS, "fig9_ppo_training.png")
+        ppo_txt = os.path.join(OUT, "ppo_routing_results.txt")
+        col_ppo1, col_ppo2 = st.columns([1.4, 1])
+        with col_ppo1:
+            if os.path.exists(ppo_fig):
+                st.image(ppo_fig, use_column_width=True,
+                         caption="PPO agent cumulative reward over training episodes")
+            else:
+                st.info("Run Stage 11 (PPO Routing Agent) to generate the training figure.")
+        with col_ppo2:
+            if os.path.exists(ppo_txt):
+                try:
+                    with open(ppo_txt) as _f:
+                        st.code(_f.read(), language=None)
+                except Exception:
+                    st.info("Could not read PPO results file.")
+            else:
+                st.info("Run Stage 11 to generate PPO routing results.")
+
+        # ── Immunological Memory ──────────────────────────────────────
+        st.markdown("#### Immunological Memory — FAISS Retrieval (Stage 13)")
+        mem_csv = os.path.join(OUT, "memory_retrieval.csv")
+        mem_txt = os.path.join(OUT, "memory_report.txt")
+        if os.path.exists(mem_txt):
+            try:
+                with open(mem_txt) as _f:
+                    st.code(_f.read(), language=None)
+            except Exception:
+                pass
+        if os.path.exists(mem_csv):
+            try:
+                mem_df = pd.read_csv(mem_csv)
+                if not mem_df.empty:
+                    st.markdown("**Top retrieved matches (sample)**")
+                    st.dataframe(mem_df.head(10), use_container_width=True)
+            except Exception:
+                pass
+        if not os.path.exists(mem_txt) and not os.path.exists(mem_csv):
+            st.info("Run Stage 13 (Immunological Memory) to see FAISS retrieval results.")
+
 # ══════════════════════════════════════════════════════════════════════════
 # TAB 5 — MACRO STRESS & LSTM FORECAST
 # ══════════════════════════════════════════════════════════════════════════
@@ -523,12 +633,11 @@ with tabs[5]:
             ind_enc    = encode(dis_data["industry"],          sel_ind)
             reg_enc    = encode(dis_data["supplier_region"],   sel_region)
             size_enc   = encode(dis_data["supplier_size"],     sel_size)
-            resp_enc   = encode(dis_data["response_type"],     resp_types[0])
         else:
-            type_enc = ind_enc = reg_enc = size_enc = resp_enc = 0
+            type_enc = ind_enc = reg_enc = size_enc = 0
 
         feat_vec = np.array([[
-            type_enc, ind_enc, reg_enc, size_enc, resp_enc,
+            type_enc, ind_enc, reg_enc, size_enc,
             sel_sev, sel_impact, int(sel_backup),
         ]], dtype=float)
 
@@ -538,7 +647,7 @@ with tabs[5]:
 
             if not dis_data.empty:
                 resp_cats = sorted(dis_data["response_type"].dropna().unique())
-                strategy_idx = int(strategy)   # cast numpy int → Python int
+                strategy_idx = int(strategy)
                 strategy_label = (resp_cats[strategy_idx]
                                   if 0 <= strategy_idx < len(resp_cats)
                                   else str(strategy))
@@ -557,6 +666,156 @@ with tabs[5]:
                 f"Backup supplier: {'Yes' if sel_backup else 'No'}"
             )
 
+            # ── Actionable response steps ──────────────────────────────────
+            st.markdown("#### Recommended Action Plan")
+
+            STEP_PLANS = {
+                "Alternative Supplier": [
+                    "🔴 **Immediately** flag the disrupted supplier in the system and halt new orders",
+                    "🔍 **Within 24h** — identify backup suppliers using the Supplier Agent rankings below",
+                    "📞 **Within 48h** — contact top-ranked backup suppliers and confirm available capacity",
+                    "🔄 **Within 72h** — reroute all pending orders through the selected backup supplier",
+                    "📊 **Ongoing** — monitor delivery performance and anomaly scores on the new route",
+                    f"⏱️ **Full recovery expected in ~{days:.0f} days** once rerouting is confirmed",
+                ],
+                "Emergency Stockpile": [
+                    "🔴 **Immediately** activate emergency inventory reserves at regional distribution centres",
+                    "📦 **Within 24h** — audit current stock levels and calculate days of supply remaining",
+                    "🚚 **Within 48h** — expedite internal transfers from low-risk nodes to affected retailers",
+                    "📋 **Within 72h** — issue demand rationing guidelines to downstream retailers if stock is tight",
+                    "🔍 **Parallel** — begin sourcing from alternative suppliers as a medium-term fix",
+                    f"⏱️ **Full recovery expected in ~{days:.0f} days**",
+                ],
+                "Combined Strategy": [
+                    "🔴 **Immediately** split response across two tracks: stockpile activation AND supplier rerouting",
+                    "📦 **Track 1** — release emergency inventory to cover the next 14 days of demand",
+                    "🔍 **Track 2** — engage backup suppliers in parallel; do not wait for stockpile to deplete",
+                    "📞 **Within 48h** — confirm capacity with at least 2 backup suppliers (redundancy)",
+                    "📊 **Weekly** — review which track is performing better and scale accordingly",
+                    f"⏱️ **Full recovery expected in ~{days:.0f} days**",
+                ],
+                "Customer Delay": [
+                    "🔴 **Immediately** identify which downstream retailers will be affected and by how much",
+                    "📞 **Within 24h** — proactively notify affected customers of expected delay window",
+                    "📋 **Within 48h** — issue revised delivery estimates with a buffer built in",
+                    "🔍 **Parallel** — investigate root cause and whether any partial fulfilment is possible",
+                    "🔄 **Once supply resumes** — prioritise backlog clearance by order date",
+                    f"⏱️ **Full recovery expected in ~{days:.0f} days**",
+                ],
+            }
+
+            steps = STEP_PLANS.get(strategy_label, [
+                "🔴 Isolate and assess the disrupted node immediately",
+                "📞 Contact affected downstream partners within 24 hours",
+                "🔄 Activate contingency routing or inventory plans",
+                f"⏱️ Full recovery expected in ~{days:.0f} days",
+            ])
+
+            for step in steps:
+                st.markdown(f"- {step}")
+
+            # ── If strategy is Alternative Supplier, show actual backup options ──
+            if "alternative supplier" in strategy_label.lower() or "combined" in strategy_label.lower():
+                supplier_df = load_supplier_results()
+                if not supplier_df.empty:
+                    st.markdown("#### Available Backup Suppliers (from Supplier Agent)")
+                    st.caption("These are the top-ranked backup suppliers identified by the Supplier Agent for the most disrupted entities in the current pipeline run.")
+                    top_backups = (
+                        supplier_df[supplier_df["backup_rank"] == 1]
+                        [["disrupted_entity", "backup_entity", "backup_score", "composite_risk", "out_volume"]]
+                        .rename(columns={
+                            "disrupted_entity": "Disrupted Supplier",
+                            "backup_entity":    "Recommended Backup",
+                            "backup_score":     "Backup Score",
+                            "composite_risk":   "Backup Risk",
+                            "out_volume":       "Supply Volume",
+                        })
+                        .sort_values("Backup Score", ascending=False)
+                        .reset_index(drop=True)
+                    )
+                    top_backups["Backup Score"]  = top_backups["Backup Score"].round(3)
+                    top_backups["Backup Risk"]   = top_backups["Backup Risk"].round(3)
+                    top_backups["Supply Volume"] = top_backups["Supply Volume"].apply(lambda x: f"{int(x):,}")
+                    st.dataframe(top_backups, use_container_width=True, hide_index=True)
+
+            # ── Why did the model predict this? (per-prediction SHAP) ─────
+            st.markdown("#### Why did the model predict this?")
+            st.caption(
+                "Each bar shows how much a specific feature pushed the prediction "
+                "**above** (red) or **below** (blue) the average recovery time. Values are in days."
+            )
+            try:
+                import shap as _shap
+                _explainer   = _shap.TreeExplainer(regressor)
+                _raw = _explainer.shap_values(feat_vec)
+                # TreeExplainer returns list-of-arrays for some sklearn versions
+                _shap_vals = (_raw[0][0] if isinstance(_raw, list) else
+                              _raw[0] if _raw.ndim == 2 else _raw)
+                _ev = _explainer.expected_value
+                _base = float(_ev[0]) if hasattr(_ev, "__len__") else float(_ev)
+
+                PRED_FEATURE_NAMES = [
+                    "Disruption Type", "Industry", "Supplier Region",
+                    "Supplier Size", "Disruption Severity",
+                    "Production Impact %", "Has Backup Supplier",
+                ]
+                PRED_FEATURE_VALUES = [
+                    sel_type, sel_ind, sel_region,
+                    sel_size, f"Severity {sel_sev}",
+                    f"{sel_impact}%", "Yes" if sel_backup else "No",
+                ]
+
+                _shap_df = pd.DataFrame({
+                    "Feature":       [f"{n}  ({v})" for n, v in zip(PRED_FEATURE_NAMES, PRED_FEATURE_VALUES)],
+                    "SHAP (days)":   _shap_vals,
+                }).sort_values("SHAP (days)")
+
+                fig_w, ax_w = plt.subplots(figsize=(8, 4))
+                fig_w.patch.set_facecolor("#0f0f1a")
+                ax_w.set_facecolor("#0f0f1a")
+                colors_w = ["#e74c3c" if v > 0 else "#3498db" for v in _shap_df["SHAP (days)"]]
+                bars = ax_w.barh(_shap_df["Feature"], _shap_df["SHAP (days)"],
+                                 color=colors_w, edgecolor="none")
+                ax_w.axvline(0, color="white", linewidth=0.8, alpha=0.5)
+                ax_w.set_xlabel("Impact on predicted recovery days", color="white")
+                ax_w.set_title(
+                    f"Prediction breakdown  —  baseline avg: {_base:.0f} days  →  predicted: {days:.0f} days",
+                    color="white", fontsize=10,
+                )
+                ax_w.tick_params(colors="white")
+                ax_w.xaxis.label.set_color("white")
+                for spine in ["top", "right"]:
+                    ax_w.spines[spine].set_visible(False)
+                for spine in ["bottom", "left"]:
+                    ax_w.spines[spine].set_color("#4a4a6a")
+                for bar, val in zip(bars, _shap_df["SHAP (days)"]):
+                    label = f"+{val:.1f}d" if val > 0 else f"{val:.1f}d"
+                    x_pos = val + (0.3 if val > 0 else -0.3)
+                    ax_w.text(x_pos, bar.get_y() + bar.get_height() / 2,
+                              label, va="center",
+                              ha="left" if val > 0 else "right",
+                              color="white", fontsize=8)
+                plt.tight_layout()
+                st.pyplot(fig_w)
+                plt.close()
+
+                # Plain-English summary
+                top_pos = _shap_df[_shap_df["SHAP (days)"] > 0].sort_values("SHAP (days)", ascending=False)
+                top_neg = _shap_df[_shap_df["SHAP (days)"] < 0].sort_values("SHAP (days)")
+                summary_lines = [f"**Baseline average recovery: {_base:.0f} days**"]
+                if not top_pos.empty:
+                    for _, row in top_pos.iterrows():
+                        summary_lines.append(f"🔴 **{row['Feature']}** added **+{row['SHAP (days)']:.1f} days**")
+                if not top_neg.empty:
+                    for _, row in top_neg.iterrows():
+                        summary_lines.append(f"🔵 **{row['Feature']}** saved **{row['SHAP (days)']:.1f} days**")
+                summary_lines.append(f"**→ Final prediction: {days:.0f} days**")
+                for line in summary_lines:
+                    st.markdown(line)
+
+            except Exception as _e:
+                st.info(f"Install shap to see prediction breakdown: pip install shap  ({_e})")
+
         st.divider()
         st.markdown("#### Model Performance")
         metrics_path = os.path.join(OUT, "recovery_metrics.txt")
@@ -571,140 +830,61 @@ with tabs[5]:
         if os.path.exists(fig_path):
             st.image(fig_path, use_column_width=True)
 
-# ══════════════════════════════════════════════════════════════════════════
-# TAB 7 — SHAP EXPLAINABILITY
-# ══════════════════════════════════════════════════════════════════════════
+        # ── Inventory Agent ───────────────────────────────────────────
+        st.divider()
+        st.markdown("#### Inventory Agent — Stock Transfer Recommendations (Stage 15)")
+        st.caption(
+            "Identifies retailers with single-source dependency or abnormal order volume, "
+            "then recommends ranked stock transfer sources ranked by capacity, safety, and fuel cost."
+        )
+        inv_csv = os.path.join(OUT, "inventory_agent_results.csv")
+        inv_txt = os.path.join(OUT, "inventory_agent_report.txt")
 
-# Human-readable names for the 8 features the RF model was trained on
-# (matches FEATURE_COLS order in recovery_predictor.py)
-RECOVERY_FEATURE_NAMES = [
-    "Disruption Type",
-    "Industry",
-    "Supplier Region",
-    "Supplier Size",
-    "Response Type",
-    "Disruption Severity",
-    "Production Impact %",
-    "Has Backup Supplier",
-]
+        if os.path.exists(inv_txt):
+            try:
+                with open(inv_txt) as _f:
+                    st.code(_f.read(), language=None)
+            except Exception:
+                pass
 
+        if os.path.exists(inv_csv):
+            try:
+                inv_df = pd.read_csv(inv_csv)
+                if not inv_df.empty:
+                    # Show top-1 recommendations only in a clean table
+                    top1 = inv_df[inv_df["transfer_rank"] == 1][[
+                        "retailer", "retailer_state", "retailer_risk_score",
+                        "primary_distributor", "transfer_source",
+                        "transfer_score", "spare_capacity", "estimated_days"
+                    ]].copy()
+                    top1.columns = [
+                        "Retailer", "State", "Risk Score",
+                        "Primary Distributor", "Recommended Transfer Source",
+                        "Transfer Score", "Spare Capacity", "Est. Days"
+                    ]
+                    st.markdown("**Top-1 transfer recommendation per at-risk retailer**")
+                    st.dataframe(
+                        top1.style.background_gradient(subset=["Transfer Score"], cmap="Greens"),
+                        use_container_width=True
+                    )
+
+                    # Summary metrics
+                    c1, c2, c3 = st.columns(3)
+                    with c1:
+                        metric_card("At-Risk Retailers", str(len(top1)))
+                    with c2:
+                        metric_card("Avg Transfer Score", f"{top1['Transfer Score'].mean():.3f}")
+                    with c3:
+                        metric_card("Avg Est. Delivery", f"{top1['Est. Days'].mean():.1f} days")
+            except Exception as _e:
+                st.warning(f"Could not load inventory results: {_e}")
+        else:
+            st.info("Run Stage 15 (Inventory Agent) to see transfer recommendations.")
+
+# ══════════════════════════════════════════════════════════════════════════
+# TAB 7 — MULTI-DOMAIN RISK
+# ══════════════════════════════════════════════════════════════════════════
 with tabs[6]:
-    st.subheader("SHAP Explainability — Recovery Time Predictor")
-    st.caption(
-        "SHAP (SHapley Additive exPlanations) measures each feature's contribution to a prediction. "
-        "Positive values push recovery time higher; negative values push it lower."
-    )
-
-    reg_path  = "models/recovery_regressor.pkl"
-    data_path = "data/supplementary/disruption_processed.csv"
-
-    if not os.path.exists(reg_path):
-        st.info("Run Stage 8 first: python3 main.py --only 8")
-    else:
-        try:
-            import joblib, shap, matplotlib
-            matplotlib.use("Agg")
-            import matplotlib.pyplot as plt
-
-            reg_model = joblib.load(reg_path)
-
-            FEATURE_COLS = [
-                "disruption_type_enc", "industry_enc", "supplier_region_enc",
-                "supplier_size_enc", "response_type_enc", "disruption_severity",
-                "production_impact_pct", "has_backup_supplier",
-            ]
-
-            # ── SECTION 1: Global feature importance with real names ──────
-            st.markdown("#### Global Feature Importance")
-            st.caption("How much each feature contributes to recovery time predictions on average, ranked by importance.")
-
-            importances = reg_model.feature_importances_
-            fi_df = pd.DataFrame({
-                "Feature":    RECOVERY_FEATURE_NAMES,
-                "Importance": importances,
-            }).sort_values("Importance", ascending=True)
-
-            fig_fi, ax_fi = plt.subplots(figsize=(8, 4))
-            colors = ["#e74c3c" if v > fi_df["Importance"].median() else "#3498db"
-                      for v in fi_df["Importance"]]
-            ax_fi.barh(fi_df["Feature"], fi_df["Importance"], color=colors, edgecolor="none")
-            ax_fi.set_xlabel("Mean Decrease in Impurity (Feature Importance)")
-            ax_fi.set_title("Random Forest — Feature Importance for Recovery Days")
-            ax_fi.axvline(fi_df["Importance"].median(), color="white", linestyle="--",
-                          alpha=0.4, linewidth=1, label="Median")
-            ax_fi.legend(fontsize=8)
-            plt.tight_layout()
-            st.pyplot(fig_fi)
-            plt.close()
-
-            # ── SECTION 2: SHAP values on a sample ───────────────────────
-            if os.path.exists(data_path):
-                st.markdown("#### SHAP Values — Sample of 200 Disruptions")
-                st.caption(
-                    "Each bar shows the average absolute SHAP value for that feature — "
-                    "how much it shifts the predicted recovery days away from the baseline."
-                )
-
-                dis_df = pd.read_csv(data_path)
-                dis_df["has_backup_supplier"] = (
-                    dis_df["has_backup_supplier"]
-                    .map({True: 1, False: 0, "True": 1, "False": 0})
-                    .fillna(0).astype(int)
-                )
-                dis_df = dis_df.dropna(subset=FEATURE_COLS)
-                sample = dis_df[FEATURE_COLS].sample(
-                    min(200, len(dis_df)), random_state=42
-                ).values
-
-                with st.spinner("Computing SHAP values..."):
-                    explainer   = shap.TreeExplainer(reg_model)
-                    shap_values = explainer.shap_values(sample)   # shape (200, 8)
-
-                mean_abs_shap = np.abs(shap_values).mean(axis=0)
-                shap_df = pd.DataFrame({
-                    "Feature":         RECOVERY_FEATURE_NAMES,
-                    "Mean |SHAP|":     mean_abs_shap,
-                }).sort_values("Mean |SHAP|", ascending=True)
-
-                fig_shap, ax_shap = plt.subplots(figsize=(8, 4))
-                shap_colors = ["#e74c3c" if v > shap_df["Mean |SHAP|"].median() else "#f39c12"
-                               for v in shap_df["Mean |SHAP|"]]
-                ax_shap.barh(shap_df["Feature"], shap_df["Mean |SHAP|"],
-                             color=shap_colors, edgecolor="none")
-                ax_shap.set_xlabel("Mean |SHAP Value| — avg impact on recovery days (days)")
-                ax_shap.set_title("SHAP Feature Impact — Recovery Time Predictor")
-                plt.tight_layout()
-                st.pyplot(fig_shap)
-                plt.close()
-
-                # ── SECTION 3: SHAP direction table ──────────────────────
-                st.markdown("#### What Each Feature Means")
-                mean_shap_signed = shap_values.mean(axis=0)
-                direction_df = pd.DataFrame({
-                    "Feature":           RECOVERY_FEATURE_NAMES,
-                    "Avg SHAP (days)":   mean_shap_signed.round(2),
-                    "Direction":         ["↑ Increases recovery time" if v > 0
-                                         else "↓ Decreases recovery time"
-                                         for v in mean_shap_signed],
-                }).sort_values("Avg SHAP (days)", ascending=False)
-                st.dataframe(direction_df, use_container_width=True, hide_index=True)
-
-                st.caption(
-                    "Avg SHAP > 0 means the feature tends to push predicted recovery time up. "
-                    "Avg SHAP < 0 means it tends to push it down. "
-                    "Values are in days."
-                )
-            else:
-                st.info("disruption_processed.csv not found — showing feature importance only.")
-
-        except Exception as e:
-            st.error(f"SHAP computation error: {e}")
-            st.info("Ensure shap is installed: pip install shap")
-
-# ══════════════════════════════════════════════════════════════════════════
-# TAB 8 — MULTI-DOMAIN RISK
-# ══════════════════════════════════════════════════════════════════════════
-with tabs[7]:
     st.subheader("Multi-Domain Risk Modelling — Objective 4")
     st.caption(
         "Same XGBoost architecture trained across 5 industries — "

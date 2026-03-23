@@ -80,7 +80,6 @@ FEATURE_COLS = [
     "industry_enc",
     "supplier_region_enc",
     "supplier_size_enc",
-    "response_type_enc",
     "disruption_severity",
     "production_impact_pct",
 ]
@@ -90,7 +89,6 @@ FEATURE_LABELS = [
     "Industry",
     "Supplier Region",
     "Supplier Size",
-    "Response Type",
     "Severity",
     "Production Impact %",
 ]

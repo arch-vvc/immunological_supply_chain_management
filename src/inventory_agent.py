@@ -146,14 +146,16 @@ for _, rrow in at_risk.iterrows():
 
     # Find candidate transfer sources:
     # distributors NOT currently serving this retailer, not high-risk themselves
+    # Use relative threshold: top 50% safest distributors available
+    all_risks = [v.get("composite_risk", 1.0) for v in dist_lookup.values()]
+    risk_threshold = float(np.percentile(all_risks, 75)) if all_risks else 0.95
+
     candidates = []
     for dist, attrs in dist_lookup.items():
         if dist in current_dists:
             continue
-        if attrs.get("composite_risk", 1.0) > 0.7:
-            continue      # itself too risky to rely on
-        if attrs.get("out_volume", 0) < 1000:
-            continue      # too small
+        if attrs.get("composite_risk", 1.0) > risk_threshold:
+            continue      # exclude top 25% riskiest distributors
 
         capacity_n = float(attrs.get("capacity_norm", 0))
         safety_n   = float(attrs.get("safety_norm",   0))
