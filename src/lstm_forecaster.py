@@ -104,6 +104,15 @@ class StressLSTM(nn.Module):
         return self.linear(last)    # (batch, pred_steps)
 
 model     = StressLSTM(HIDDEN, LAYERS, PRED_STEPS)
+
+# ── Continual learning: load previous weights if they exist ───
+if os.path.exists(OUT_MDL):
+    try:
+        model.load_state_dict(torch.load(OUT_MDL, weights_only=True))
+        print("  [CONTINUAL] Loaded previous LSTM weights — fine-tuning on new data")
+    except Exception:
+        print("  [CONTINUAL] Previous weights incompatible — training from scratch")
+
 criterion = nn.MSELoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=LR)
 

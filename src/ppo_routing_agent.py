@@ -204,6 +204,17 @@ class Critic(nn.Module):
 
 actor  = Actor()
 critic = Critic()
+
+# ── Continual learning: load previous weights if they exist ───
+if os.path.exists(OUT_MDL):
+    try:
+        ckpt = torch.load(OUT_MDL, weights_only=True)
+        actor.load_state_dict(ckpt["actor"])
+        critic.load_state_dict(ckpt["critic"])
+        print("  [CONTINUAL] Loaded previous PPO weights — fine-tuning on new graph")
+    except Exception:
+        print("  [CONTINUAL] Previous weights incompatible — training from scratch")
+
 opt_a  = torch.optim.Adam(actor.parameters(),  lr=LR)
 opt_c  = torch.optim.Adam(critic.parameters(), lr=LR)
 

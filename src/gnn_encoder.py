@@ -164,6 +164,16 @@ EPOCHS = 300
 LR     = 0.01
 
 model     = GCNAutoencoder(in_dim=7, hidden_dim=32, embed_dim=16)
+
+# ── Continual learning: load previous weights if they exist ───
+GNN_CKPT = os.path.join(ROOT, "models", "gnn_autoencoder.pth")
+if os.path.exists(GNN_CKPT):
+    try:
+        model.load_state_dict(torch.load(GNN_CKPT, weights_only=True))
+        print("  [CONTINUAL] Loaded previous GNN weights — fine-tuning on new data")
+    except Exception:
+        print("  [CONTINUAL] Previous weights incompatible — training from scratch")
+
 optimizer = torch.optim.Adam(model.parameters(), lr=LR)
 criterion = nn.MSELoss()
 
@@ -177,6 +187,9 @@ for epoch in range(EPOCHS):
 
     if (epoch + 1) % 50 == 0:
         print(f"    Epoch {epoch+1:>3}/{EPOCHS}  loss={loss.item():.6f}")
+
+# ── Save weights for continual learning ───────────────────────
+torch.save(model.state_dict(), GNN_CKPT)
 
 # ── Extract embeddings & reconstruction error ─────────────────
 model.eval()
