@@ -1,20 +1,22 @@
 """
 Stream Simulator — Real-Time Supply Chain Sensor Feed
 ======================================================
-Reads from an existing processed dataset (clean_chain.csv) and emits
-rows one at a time to a shared queue file (data/stream/live_feed.csv),
-simulating sensor/IoT data arriving in real time.
+Generates fresh synthetic rows on the fly using the known node pool
+from the supply chain graph. Every run produces unique data — not a
+replay of the same CSV.
 
 Usage:
-    python3 src/stream_simulator.py                    # normal speed (2s interval)
-    python3 src/stream_simulator.py --interval 0.5     # faster
-    python3 src/stream_simulator.py --disruption 30    # inject disruption after 30s
-    python3 src/stream_simulator.py --loop             # loop back to start when done
+    python3 src/stream_simulator.py                    # 2s interval, no disruption
+    python3 src/stream_simulator.py --interval 1       # faster
+    python3 src/stream_simulator.py --disruption 30    # inject disruption at t=30s
+    python3 src/stream_simulator.py --multi            # inject multiple disruptions
 
-Disruption injection:
-    - After --disruption seconds, one row is spiked with:
-        quantity = 0, delay_flag = 1 (simulates shipment halt)
-    - This is what triggers the anomaly pipeline to fire
+How it works:
+    - Loads the supply chain graph to get real manufacturer/distributor/retailer names
+    - Generates random but realistic transactions: normal quantities follow a log-normal
+      distribution, timestamps increment in real time
+    - At --disruption seconds, fires a shipment halt (qty=0) on a random active route
+    - With --multi, fires a new disruption every 60s after the first
 """
 
 import argparse
@@ -23,132 +25,177 @@ import os
 import sys
 import time
 import random
-import shutil
-from datetime import datetime, timedelta
+import pickle
+import numpy as np
+from datetime import datetime
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-CLEAN_CSV   = ROOT / "data" / "processed" / "clean_chain.csv"
-STREAM_DIR  = ROOT / "data" / "stream"
-LIVE_FEED   = STREAM_DIR / "live_feed.csv"
+ROOT            = Path(__file__).resolve().parent.parent
+GRAPH_MODEL     = ROOT / "models" / "supplychain_graph.pkl"
+STREAM_DIR      = ROOT / "data" / "stream"
+LIVE_FEED       = STREAM_DIR / "live_feed.csv"
 DISRUPTION_FLAG = STREAM_DIR / "disruption_active.flag"
 
 STREAM_DIR.mkdir(parents=True, exist_ok=True)
 
-# ── Column definitions ────────────────────────────────────────────────────────
-REQUIRED_COLS = ["date", "manufacturer", "distributor", "retailer",
-                 "retailer_state", "quantity"]
+STATES = ["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA",
+          "HI","ID","IL","IN","IA","KS","KY","LA","ME","MD",
+          "MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ",
+          "NM","NY","NC","ND","OH","OK","OR","PA","RI","SC",
+          "SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"]
 
-def load_source_data():
-    if not CLEAN_CSV.exists():
-        print(f"[ERROR] {CLEAN_CSV} not found.")
-        print("  Run the pipeline first: python3 main.py --from 1")
+FIELDNAMES = ["date", "manufacturer", "distributor", "retailer",
+              "retailer_state", "quantity", "disruption_injected"]
+
+# ── Load graph node pools ─────────────────────────────────────────────────
+def load_node_pools():
+    if not GRAPH_MODEL.exists():
+        print(f"[ERROR] Graph model not found: {GRAPH_MODEL}")
+        print("  Run pipeline first: python3 main.py --from 1 --to 2")
         sys.exit(1)
 
-    rows = []
-    with open(CLEAN_CSV, newline="", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            rows.append(row)
+    with open(GRAPH_MODEL, "rb") as f:
+        G = pickle.load(f)
 
-    print(f"[SIM] Loaded {len(rows):,} rows from {CLEAN_CSV.name}")
-    return rows
+    manufacturers = [n for n, d in G.nodes(data=True) if d.get("type") == "manufacturer"]
+    distributors  = [n for n, d in G.nodes(data=True) if d.get("type") == "distributor"]
+    retailers     = [n for n, d in G.nodes(data=True) if d.get("type") == "retailer"]
 
-def inject_disruption(row: dict) -> dict:
-    """Spike a row to simulate a shipment disruption."""
-    spiked = row.copy()
-    spiked["quantity"] = "0"
-    spiked["disruption_injected"] = "1"
-    spiked["date"] = datetime.now().strftime("%Y-%m-%d")
-    return spiked
+    # Build adjacency for realistic routing
+    mfr_to_dist   = {}
+    dist_to_retail = {}
+    for mfr in manufacturers:
+        dists = [n for n in G.successors(mfr) if n in set(distributors)]
+        if dists:
+            mfr_to_dist[mfr] = dists
+    for dist in distributors:
+        rets = [n for n in G.successors(dist) if n in set(retailers)]
+        if rets:
+            dist_to_retail[dist] = rets
 
-def write_row(row: dict, header_written: bool, fieldnames: list):
+    print(f"[SIM] Graph loaded: {len(manufacturers)} mfrs, "
+          f"{len(distributors)} distributors, {len(retailers)} retailers")
+    return mfr_to_dist, dist_to_retail
+
+# ── Generate one realistic transaction ────────────────────────────────────
+def generate_row(mfr_to_dist: dict, dist_to_retail: dict,
+                 disruption: bool = False) -> dict:
+    mfr  = random.choice(list(mfr_to_dist.keys()))
+    dists = mfr_to_dist[mfr]
+    dist  = random.choice(dists)
+
+    if dist in dist_to_retail:
+        retailer = random.choice(dist_to_retail[dist])
+    else:
+        retailer = f"PHARMACY #{random.randint(1000,9999)} ({random.choice(STATES)})"
+
+    # Infer state from retailer name if possible, else random
+    state = "XX"
+    for s in STATES:
+        if f"({s})" in retailer:
+            state = s
+            break
+    if state == "XX":
+        state = random.choice(STATES)
+
+    if disruption:
+        qty = 0
+    else:
+        # Log-normal: realistic skewed quantity distribution
+        qty = int(np.random.lognormal(mean=5.5, sigma=1.2))
+        qty = max(1, min(qty, 50000))
+
+    return {
+        "date"               : datetime.now().strftime("%Y-%m-%d"),
+        "manufacturer"       : mfr,
+        "distributor"        : dist,
+        "retailer"           : retailer,
+        "retailer_state"     : state,
+        "quantity"           : qty,
+        "disruption_injected": 1 if disruption else 0,
+    }
+
+# ── Writer ────────────────────────────────────────────────────────────────
+def write_row(row: dict, header_written: bool):
     mode = "a" if header_written else "w"
     with open(LIVE_FEED, mode, newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer = csv.DictWriter(f, fieldnames=FIELDNAMES)
         if not header_written:
             writer.writeheader()
         writer.writerow(row)
 
-def run(interval: float, disruption_after: float, loop: bool):
-    rows = load_source_data()
+# ── Main ──────────────────────────────────────────────────────────────────
+def run(interval: float, disruption_after: float, multi: bool):
+    mfr_to_dist, dist_to_retail = load_node_pools()
 
-    # Get all columns (some may have extras from encoding/feature engineering)
-    fieldnames = list(rows[0].keys())
-    if "disruption_injected" not in fieldnames:
-        fieldnames.append("disruption_injected")
-
-    # Reset live feed
     if LIVE_FEED.exists():
         LIVE_FEED.unlink()
     if DISRUPTION_FLAG.exists():
         DISRUPTION_FLAG.unlink()
 
-    print(f"[SIM] Streaming to: {LIVE_FEED}")
-    print(f"[SIM] Interval: {interval}s per row")
+    print(f"[SIM] Streaming fresh synthetic data → {LIVE_FEED}")
+    print(f"[SIM] Interval : {interval}s per row")
     if disruption_after:
-        print(f"[SIM] Disruption will fire at t+{disruption_after}s")
+        print(f"[SIM] Disruption fires at t+{disruption_after}s"
+              + (" then every 60s" if multi else ""))
     print(f"[SIM] Press Ctrl+C to stop\n")
 
-    start_time      = time.time()
-    disruption_fired = False
-    header_written  = False
-    row_count       = 0
+    start_time        = time.time()
+    last_disruption   = -9999
+    disruption_count  = 0
+    header_written    = False
+    row_count         = 0
 
     while True:
-        if loop:
-            source = rows * 999  # effectively infinite
-        else:
-            source = rows
+        elapsed = time.time() - start_time
 
-        for row in source:
-            elapsed = time.time() - start_time
+        # Decide if this row should be a disruption
+        fire_disruption = False
+        if disruption_after:
+            if elapsed >= disruption_after:
+                if multi:
+                    if elapsed - last_disruption >= 60:
+                        fire_disruption = True
+                else:
+                    if disruption_count == 0:
+                        fire_disruption = True
 
-            # Inject disruption once
-            if disruption_after and not disruption_fired and elapsed >= disruption_after:
-                disrupted_row = inject_disruption(row)
-                disrupted_row["disruption_injected"] = "1"
-                write_row(disrupted_row, header_written, fieldnames)
-                header_written = True
-                row_count += 1
-                disruption_fired = True
-                # Write flag file so consumer knows
-                DISRUPTION_FLAG.write_text(
-                    f"Disruption injected at row {row_count}, t={elapsed:.1f}s\n"
-                    f"Node: {row.get('distributor','?')} → {row.get('retailer','?')}\n"
-                )
-                print(f"[SIM] ⚡ DISRUPTION INJECTED at t={elapsed:.1f}s — "
-                      f"{row.get('distributor','?')} → {row.get('retailer','?')}")
-            else:
-                normal_row = row.copy()
-                normal_row["disruption_injected"] = "0"
-                write_row(normal_row, header_written, fieldnames)
-                header_written = True
-                row_count += 1
+        row = generate_row(mfr_to_dist, dist_to_retail,
+                           disruption=fire_disruption)
+        write_row(row, header_written)
+        header_written = True
+        row_count += 1
 
-            if row_count % 10 == 0:
-                ts = datetime.now().strftime("%H:%M:%S")
-                print(f"[SIM] [{ts}] Emitted {row_count} rows | "
-                      f"Latest: {row.get('manufacturer','?')[:25]:25s} → "
-                      f"{row.get('retailer','?')[:20]:20s} | qty={row.get('quantity','?')}")
+        if fire_disruption:
+            disruption_count += 1
+            last_disruption = elapsed
+            DISRUPTION_FLAG.write_text(
+                f"Disruption #{disruption_count} at row {row_count}, t={elapsed:.1f}s\n"
+                f"Node: {row['distributor']} → {row['retailer']}\n"
+            )
+            print(f"[SIM] ⚡ DISRUPTION #{disruption_count} at t={elapsed:.1f}s — "
+                  f"{row['distributor']} → {row['retailer']}")
 
-            time.sleep(interval)
+        if row_count % 10 == 0:
+            ts = datetime.now().strftime("%H:%M:%S")
+            print(f"[SIM] [{ts}] Row {row_count:4d} | "
+                  f"{row['manufacturer'][:28]:28s} → "
+                  f"{row['retailer'][:22]:22s} | qty={row['quantity']}")
 
-        if not loop:
-            print(f"\n[SIM] Done. Emitted {row_count} rows total.")
-            break
+        time.sleep(interval)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Supply Chain Stream Simulator")
-    parser.add_argument("--interval",    type=float, default=2.0,
+    parser.add_argument("--interval",   type=float, default=2.0,
                         help="Seconds between rows (default: 2.0)")
-    parser.add_argument("--disruption",  type=float, default=None,
-                        help="Inject disruption after N seconds (default: disabled)")
-    parser.add_argument("--loop",        action="store_true",
-                        help="Loop back to start when source data is exhausted")
+    parser.add_argument("--disruption", type=float, default=None,
+                        help="Inject disruption after N seconds")
+    parser.add_argument("--multi",      action="store_true",
+                        help="Keep injecting a disruption every 60s after the first")
     args = parser.parse_args()
 
     try:
-        run(args.interval, args.disruption, args.loop)
+        run(args.interval, args.disruption, args.multi)
     except KeyboardInterrupt:
         print("\n[SIM] Stopped by user.")

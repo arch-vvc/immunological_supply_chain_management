@@ -169,6 +169,7 @@ tabs = st.tabs([
     "Macro Stress & LSTM",
     "Recovery Predictor",
     "Multi-Domain Risk",
+    "🧬 Immune Memory",
     "🔴 Live Stream",
 ])
 
@@ -924,9 +925,129 @@ with tabs[6]:
                 st.image(fig_path, use_column_width=True)
 
 # ══════════════════════════════════════════════════════════════════════════
-# TAB 8 — LIVE STREAM
+# TAB 8 — IMMUNOLOGICAL MEMORY (FAISS)
 # ══════════════════════════════════════════════════════════════════════════
 with tabs[7]:
+    st.subheader("Immunological Memory — FAISS Disruption Index")
+    st.caption(
+        "Models memory B-cells: stores 100K historical disruption signatures as "
+        "8-dimensional vectors in a FAISS index. When a new anomaly is detected, "
+        "the system retrieves the top-3 most similar past disruptions and surfaces "
+        "the response strategies that worked. This is adaptive immunity with recall."
+    )
+
+    MEM_REPORT   = os.path.join(OUT, "memory_report.txt")
+    MEM_RETRIEVAL = os.path.join(OUT, "memory_retrieval.csv")
+
+    if not os.path.exists(MEM_RETRIEVAL):
+        st.warning("Run Stage 13 first: python3 main.py --only 13")
+    else:
+        df_mem = pd.read_csv(MEM_RETRIEVAL)
+
+        # ── Top metrics ──────────────────────────────────────────────────
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("Memory Index Size",    "100,000 vectors")
+        c2.metric("Feature Dimensions",   "8")
+        c3.metric("Anomalies Queried",    f"{df_mem['anomaly_idx'].nunique():,}")
+        c4.metric("Retrievals per Query", "Top 3")
+
+        # ── Memory report ────────────────────────────────────────────────
+        if os.path.exists(MEM_REPORT):
+            with st.expander("Full Memory Report", expanded=False):
+                st.code(open(MEM_REPORT).read(), language=None)
+
+        st.divider()
+
+        # ── Top response types retrieved ─────────────────────────────────
+        st.markdown("#### Most Common Historical Response Strategies")
+        st.caption("When the system recalls a similar past disruption, what responses did it find?")
+        if "match_response_type" in df_mem.columns:
+            resp_counts = df_mem["match_response_type"].value_counts().reset_index()
+            resp_counts.columns = ["Response Strategy", "Count"]
+            fig_resp, ax_resp = plt.subplots(figsize=(8, 3.5))
+            fig_resp.patch.set_facecolor("#0f0f1a")
+            ax_resp.set_facecolor("#0f0f1a")
+            bars = ax_resp.barh(resp_counts["Response Strategy"],
+                                resp_counts["Count"],
+                                color="#00A896", edgecolor="none")
+            ax_resp.tick_params(colors="white")
+            ax_resp.set_xlabel("Retrieval Count", color="white")
+            for sp in ["top", "right"]:
+                ax_resp.spines[sp].set_visible(False)
+            for sp in ["bottom", "left"]:
+                ax_resp.spines[sp].set_color("#333355")
+            for bar in bars:
+                ax_resp.text(bar.get_width() + 1, bar.get_y() + bar.get_height()/2,
+                             f"{int(bar.get_width())}", va="center", color="white", fontsize=9)
+            plt.tight_layout()
+            st.pyplot(fig_resp)
+            plt.close()
+
+        # ── Top disruption types retrieved ───────────────────────────────
+        st.markdown("#### Most Common Disruption Types in Memory")
+        if "match_disruption_type" in df_mem.columns:
+            dtype_counts = df_mem["match_disruption_type"].value_counts().reset_index()
+            dtype_counts.columns = ["Disruption Type", "Count"]
+            col1, col2 = st.columns(2)
+            with col1:
+                st.dataframe(dtype_counts, use_container_width=True, hide_index=True)
+            with col2:
+                if "match_recovery_days" in df_mem.columns:
+                    avg_rec = (df_mem.groupby("match_disruption_type")["match_recovery_days"]
+                               .mean().reset_index()
+                               .rename(columns={"match_disruption_type": "Disruption Type",
+                                                "match_recovery_days": "Avg Recovery Days"}))
+                    avg_rec["Avg Recovery Days"] = avg_rec["Avg Recovery Days"].round(1)
+                    avg_rec = avg_rec.sort_values("Avg Recovery Days", ascending=False)
+                    st.markdown("**Average Recovery Days by Disruption Type**")
+                    st.dataframe(avg_rec, use_container_width=True, hide_index=True)
+
+        st.divider()
+
+        # ── Match distance distribution ──────────────────────────────────
+        st.markdown("#### Match Quality — How Close Are Retrieved Memories?")
+        st.caption(
+            "Lower L2 distance = more similar historical disruption. "
+            "Most matches cluster below 1.0, meaning the memory index is finding "
+            "genuinely relevant past events, not random noise."
+        )
+        if "match_distance" in df_mem.columns:
+            fig_dist, ax_dist = plt.subplots(figsize=(8, 3))
+            fig_dist.patch.set_facecolor("#0f0f1a")
+            ax_dist.set_facecolor("#0f0f1a")
+            ax_dist.hist(df_mem["match_distance"].dropna(), bins=40,
+                         color="#F4845F", edgecolor="none", alpha=0.85)
+            ax_dist.set_xlabel("L2 Match Distance (lower = more similar)", color="white")
+            ax_dist.set_ylabel("Frequency", color="white")
+            ax_dist.tick_params(colors="white")
+            for sp in ["top", "right"]:
+                ax_dist.spines[sp].set_visible(False)
+            for sp in ["bottom", "left"]:
+                ax_dist.spines[sp].set_color("#333355")
+            avg_dist = df_mem["match_distance"].mean()
+            ax_dist.axvline(avg_dist, color="#00A896", linestyle="--", linewidth=1.5,
+                            label=f"Avg = {avg_dist:.3f}")
+            ax_dist.legend(facecolor="#1a1a2e", labelcolor="white", fontsize=9)
+            plt.tight_layout()
+            st.pyplot(fig_dist)
+            plt.close()
+
+        st.divider()
+
+        # ── Sample retrieval table ───────────────────────────────────────
+        st.markdown("#### Sample Memory Retrievals")
+        st.caption("Each row is one historical disruption retrieved for a detected anomaly.")
+        cols_to_show = [c for c in [
+            "anomaly_idx", "manufacturer", "retailer", "anomaly_score",
+            "match_rank", "match_distance", "match_recovery_days",
+            "match_response_type", "match_disruption_type"
+        ] if c in df_mem.columns]
+        st.dataframe(df_mem[cols_to_show].head(30), use_container_width=True, hide_index=True)
+
+# ══════════════════════════════════════════════════════════════════════════
+# TAB 9 — LIVE STREAM
+# ══════════════════════════════════════════════════════════════════════════
+with tabs[8]:
     st.subheader("Live Stream Monitor — Real-Time Sensor Feed")
     st.caption(
         "Simulates real-time IoT/sensor data arriving row by row. "
@@ -973,7 +1094,8 @@ with tabs[7]:
             else:
                 cols_to_show = [c for c in [
                     "timestamp", "manufacturer", "distributor", "retailer",
-                    "quantity", "z_score", "disruption_injected", "routing_note", "alternate_route"
+                    "quantity", "z_score", "disruption_injected",
+                    "routing_method", "routing_note", "alternate_route"
                 ] if c in df_anomalies.columns]
                 st.dataframe(df_anomalies[cols_to_show].reset_index(drop=True),
                              use_container_width=True)
