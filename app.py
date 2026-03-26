@@ -6,7 +6,7 @@ PES University Capstone  PW26_RGP_01
 Run:  streamlit run app.py
 """
 
-import os, pickle, warnings
+import os, pickle, warnings, time
 warnings.filterwarnings("ignore")
 
 import numpy as np
@@ -169,6 +169,7 @@ tabs = st.tabs([
     "Macro Stress & LSTM",
     "Recovery Predictor",
     "Multi-Domain Risk",
+    "🔴 Live Stream",
 ])
 
 # ══════════════════════════════════════════════════════════════════════════
@@ -921,3 +922,87 @@ with tabs[6]:
 
             if os.path.exists(fig_path):
                 st.image(fig_path, use_column_width=True)
+
+# ══════════════════════════════════════════════════════════════════════════
+# TAB 8 — LIVE STREAM
+# ══════════════════════════════════════════════════════════════════════════
+with tabs[7]:
+    st.subheader("Live Stream Monitor — Real-Time Sensor Feed")
+    st.caption(
+        "Simulates real-time IoT/sensor data arriving row by row. "
+        "Run stream_simulator.py and stream_consumer.py in two terminals to activate."
+    )
+
+    LIVE_RESULTS_PATH    = "data/stream/live_results.csv"
+    DISRUPTION_FLAG_PATH = "data/stream/disruption_active.flag"
+
+    if not os.path.exists(LIVE_RESULTS_PATH):
+        st.info("Stream is not running yet. Start it with these two commands in separate terminals:")
+        st.code(
+            "# Terminal 1 — emit rows every 2s, inject disruption at t=30s\n"
+            "python3 src/stream_simulator.py --interval 2 --disruption 30 --loop\n\n"
+            "# Terminal 2 — consume and detect anomalies\n"
+            "python3 src/stream_consumer.py",
+            language="bash"
+        )
+    else:
+        st.caption("Auto-refreshes every 3 seconds. Keep this tab open during your demo.")
+
+        df_live = pd.read_csv(LIVE_RESULTS_PATH)
+
+        total_rows      = len(df_live)
+        anomaly_rows    = int(df_live["is_anomaly"].sum()) if "is_anomaly" in df_live.columns else 0
+        disruption_rows = int(df_live["disruption_injected"].sum()) if "disruption_injected" in df_live.columns else 0
+        rerouted_rows   = int((df_live["alternate_route"].astype(str).str.strip() != "").sum()) if "alternate_route" in df_live.columns else 0
+
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("Rows Processed",      total_rows)
+        c2.metric("Anomalies Detected",  anomaly_rows,    delta=f"{anomaly_rows} flagged")
+        c3.metric("Disruptions Injected", disruption_rows)
+        c4.metric("Routes Rerouted",     rerouted_rows)
+
+        if os.path.exists(DISRUPTION_FLAG_PATH):
+            flag_text = open(DISRUPTION_FLAG_PATH).read()
+            st.error(f"⚡ ACTIVE DISRUPTION DETECTED\n\n{flag_text}")
+
+        st.markdown("#### Recent Anomalies")
+        if "is_anomaly" in df_live.columns:
+            df_anomalies = df_live[df_live["is_anomaly"] == 1].tail(10)
+            if df_anomalies.empty:
+                st.success("No anomalies detected yet — supply chain is healthy.")
+            else:
+                cols_to_show = [c for c in [
+                    "timestamp", "manufacturer", "distributor", "retailer",
+                    "quantity", "z_score", "disruption_injected", "routing_note", "alternate_route"
+                ] if c in df_anomalies.columns]
+                st.dataframe(df_anomalies[cols_to_show].reset_index(drop=True),
+                             use_container_width=True)
+
+        st.markdown("#### All Transactions (last 50)")
+        cols_to_show = [c for c in [
+            "timestamp", "row_index", "manufacturer", "distributor",
+            "retailer", "quantity", "z_score", "is_anomaly"
+        ] if c in df_live.columns]
+        st.dataframe(df_live[cols_to_show].tail(50).reset_index(drop=True),
+                     use_container_width=True)
+
+        if "z_score" in df_live.columns and "row_index" in df_live.columns:
+            st.markdown("#### Z-Score Signal Over Time")
+            import plotly.graph_objects as go
+            fig_stream = go.Figure()
+            fig_stream.add_trace(go.Scatter(
+                x=df_live["row_index"], y=df_live["z_score"],
+                mode="lines", name="Z-Score",
+                line=dict(color="#00A896", width=1.5)
+            ))
+            fig_stream.add_hline(y=2.5, line_dash="dash", line_color="#F4845F",
+                                 annotation_text="Anomaly Threshold (Z=2.5)")
+            fig_stream.update_layout(
+                xaxis_title="Row Index", yaxis_title="Z-Score",
+                template="plotly_dark", height=300,
+                margin=dict(l=40, r=20, t=20, b=40)
+            )
+            st.plotly_chart(fig_stream, use_container_width=True)
+
+        time.sleep(3)
+        st.rerun()
