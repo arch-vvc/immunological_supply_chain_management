@@ -11,16 +11,14 @@ warnings.filterwarnings("ignore")
 
 import numpy as np
 import pandas as pd
-import networkx as nx
 import streamlit as st
 import plotly.graph_objects as go
 import plotly.express as px
-import torch
-import torch.nn as nn
-import shap
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+
+# torch, shap, networkx are imported lazily inside tabs — faster cold start
 
 # ── Page config ────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -288,6 +286,7 @@ with tabs[0]:
 # TAB 2 — SUPPLY CHAIN GRAPH
 # ══════════════════════════════════════════════════════════════════════════
 with tabs[1]:
+    import networkx as nx
     G    = load_graph()
     risk = load_risk()
 
