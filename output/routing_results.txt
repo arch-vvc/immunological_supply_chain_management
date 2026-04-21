@@ -1,14 +1,14 @@
 DISRUPTION & RECOVERY ROUTING REPORT
 =======================================================
-Disrupted node    : DAKOTA DRUG INC
-Source            : MALLINCKRODT LLC
-Target            : PUBLIX PHARMACY #6302 (NC)
+Disrupted node    : BURLINGTON DRUG COMPANY INC
+Source            : RHODES TECHNOLOGIES
+Target            : CVS PHARMACY #5473 (MI)
 Time window       : 7 days
 
-Baseline route    : MALLINCKRODT LLC → AMERISOURCEBERGEN DRUG CORP → PUBLIX PHARMACY #6302 (NC)
-Baseline days     : 4.0
+Baseline route    : RHODES TECHNOLOGIES → AMERISOURCEBERGEN DRUG CORP → CVS PHARMACY #5473 (MI)
+Baseline days     : 3.8
 
-Recovery (hops)   : MALLINCKRODT LLC → AMERISOURCEBERGEN DRUG CORP → PUBLIX PHARMACY #6302 (NC)
-Recovery (cost)   : MALLINCKRODT LLC → VALUEDRUGCO → PUBLIX PHARMACY #6302 (NC)
-Recovery days     : 4.0
+Recovery (hops)   : RHODES TECHNOLOGIES → AMERISOURCEBERGEN DRUG CORP → CVS PHARMACY #5473 (MI)
+Recovery (cost)   : RHODES TECHNOLOGIES → AMERISOURCEBERGEN DRUG CORP → CVS PHARMACY #5473 (MI)
+Recovery days     : 3.8
 Status            : SUCCESS ✅

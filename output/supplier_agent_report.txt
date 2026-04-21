@@ -3,7 +3,7 @@ STAGE 14 — SUPPLIER AGENT REPORT
 
 Disrupted entities analysed : 10
 Backup recommendations      : 30
-Avg backup score (rank #1)  : 0.960
+Avg backup score (rank #1)  : 0.759
 
 Scoring weights:
   Safety (1-composite_risk) : 50%
@@ -11,13 +11,13 @@ Scoring weights:
   Efficiency (vol/degree)   : 20%
 
 Top-1 backup per disrupted entity:
-  VINTAGE PHARMACEUTICALS LLC              → PURDUE PHARMA LP                         (score=1.000)
-  AMNEAL PHARMACEUTICALS LLC               → PURDUE PHARMA LP                         (score=1.000)
-  CADISTA PHARMACEUTICALS INC              → PURDUE PHARMA LP                         (score=1.000)
-  ACTAVIS PHARMA INC                       → PURDUE PHARMA LP                         (score=1.000)
-  HIKMA PHARMACEUTICALS                    → PURDUE PHARMA LP                         (score=1.000)
-  IMPAX LABORATORIES INC                   → PURDUE PHARMA LP                         (score=1.000)
-  JANSSEN PHARMACEUTICALS INC              → PURDUE PHARMA LP                         (score=1.000)
-  MIAMI-LUKEN INC                          → BELLCO DRUG CORP                         (score=0.596)
-  PURDUE PHARMA LP                         → SANDOZ INC                               (score=1.000)
-  QUALITEST PHARMACEUTICALS                → PURDUE PHARMA LP                         (score=1.000)
+  ABBOTT LABORATORIES                      → JANSSEN PHARMACEUTICALS INC              (score=1.000)
+  MYLAN PHARMACEUTICALS INC                → JANSSEN PHARMACEUTICALS INC              (score=1.000)
+  MIAMI-LUKEN INC                          → CARDINAL HEALTH INC                      (score=0.555)
+  MCKESSON CORPORATION                     → MIAMI-LUKEN INC                          (score=0.509)
+  KINRAY LLC                               → MIAMI-LUKEN INC                          (score=0.509)
+  HENRY SCHEIN INC                         → MIAMI-LUKEN INC                          (score=0.509)
+  DAKOTA DRUG INC                          → MIAMI-LUKEN INC                          (score=0.509)
+  ACTAVIS PHARMA INC                       → JANSSEN PHARMACEUTICALS INC              (score=1.000)
+  WATSON LABORATORIES INC                  → JANSSEN PHARMACEUTICALS INC              (score=1.000)
+  PAR PHARMACEUTICAL INC                   → JANSSEN PHARMACEUTICALS INC              (score=1.000)

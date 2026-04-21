@@ -6,20 +6,20 @@ Macro stress mult    : 1.2  (LOW — thresholds relaxed)
 Final Z thresholds   : vol=3.6  freq=3.0  surge=3.0
 
 Signal counts:
-  [1] Volume Anomaly       : 363
-  [2] Frequency Anomaly    : 635
-  [3] Temporal Surge       : 1431
-  [4] Concentration Risk   : 783
+  [1] Volume Anomaly       : 899
+  [2] Frequency Anomaly    : 470
+  [3] Temporal Surge       : 1092
+  [4] Concentration Risk   : 142
   [5] Isolation Forest     : 2500
 
-High-confidence anomalies (2+ signals) : 1133
-Suspect transactions    (1 signal)     : 2731
+High-confidence anomalies (2+ signals) : 1535
+Suspect transactions    (1 signal)     : 1780
 
 Evaluation  (pseudo-GT: zscore_count >= 3)
-  Ground-truth positives  : 189
+  Ground-truth positives  : 21
 
   Method                                Precision  Recall      F1
   ------------------------------------  ---------  ------  ------
-  Z-score only  (2+ signals)                0.371   1.000   0.542
-  Isolation Forest alone                    0.076   1.000   0.141
-  Ensemble (2+ incl. IF)                    0.167   1.000   0.286
+  Z-score only  (2+ signals)                0.091   1.000   0.166
+  Isolation Forest alone                    0.008   1.000   0.017
+  Ensemble (2+ incl. IF)                    0.014   1.000   0.027

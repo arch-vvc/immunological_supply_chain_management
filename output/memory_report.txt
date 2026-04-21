@@ -4,12 +4,12 @@ STAGE 13 — IMMUNOLOGICAL MEMORY REPORT
 Index size              : 100,000 historical disruptions
 Dimensions              : 8 features
 Index type              : FAISS IndexFlatL2 (exact search)
-Anomalies queried       : 1133
+Anomalies queried       : 1535
 Top-K retrieved per query: 3
 
 Aggregate retrieval results:
-  Avg match distance    : 0.6432
-  Avg recovery days     : 93.0
+  Avg match distance    : 0.4329
+  Avg recovery days     : 75.0
   Top response type     : Alternative Supplier
   Top disruption type   : Labor Strike
 
