@@ -119,6 +119,9 @@ class ImmuneResponseEngine:
     and final decision.
     """
 
+    # Blacklist TTL — disrupted nodes are excluded from rerouting for this many seconds
+    BLACKLIST_TTL = 300   # 5 minutes
+
     def __init__(self, verbose: bool = True):
         self.verbose   = verbose
         self.G         = None
@@ -132,6 +135,8 @@ class ImmuneResponseEngine:
         self.out_deg   = {}
         self.max_in    = 1
         self.max_out   = 1
+        # node → timestamp of when it was disrupted (for blacklisting)
+        self._disruption_blacklist: dict[str, float] = {}
         self._load_all()
 
     # ── Startup loaders ────────────────────────────────────────────────────
@@ -207,6 +212,37 @@ class ImmuneResponseEngine:
 
         self._log("[ENGINE] Ready.\n")
 
+    # ── Disruption Blacklist ───────────────────────────────────────────────
+
+    def _blacklist_node(self, node: str):
+        """Mark a node as recently disrupted — excluded from rerouting for BLACKLIST_TTL seconds."""
+        self._disruption_blacklist[node] = time.time()
+
+    def _is_blacklisted(self, node: str) -> bool:
+        """Return True if this node was disrupted recently and hasn't recovered yet."""
+        ts = self._disruption_blacklist.get(node)
+        if ts is None:
+            return False
+        if time.time() - ts > self.BLACKLIST_TTL:
+            del self._disruption_blacklist[node]   # expired — clean up
+            return False
+        return True
+
+    def _blacklisted_nodes(self) -> list:
+        """Return list of currently blacklisted nodes (for display in reasoning)."""
+        now = time.time()
+        active = []
+        expired = []
+        for node, ts in self._disruption_blacklist.items():
+            if now - ts <= self.BLACKLIST_TTL:
+                remaining = int(self.BLACKLIST_TTL - (now - ts))
+                active.append((node, remaining))
+            else:
+                expired.append(node)
+        for node in expired:
+            del self._disruption_blacklist[node]
+        return active
+
     # ── Core: respond to one anomaly event ────────────────────────────────
 
     def respond(self, event: dict) -> dict:
@@ -227,6 +263,11 @@ class ImmuneResponseEngine:
         thinking = []   # chain-of-thought steps
         actions  = []   # ranked candidate actions
 
+        # Blacklist the disrupted distributor immediately
+        if dist:
+            self._blacklist_node(dist)
+        active_blacklist = self._blacklisted_nodes()
+
         thinking.append({
             "step": 0,
             "phase": "DETECTION",
@@ -235,9 +276,18 @@ class ImmuneResponseEngine:
                 f"Shipment from [{mfr}] via [{dist}] to [{ret}] triggered an alert. "
                 f"Quantity={qty:.0f}, Z-score={z:.2f} (threshold=2.5). "
                 f"{'Disruption flag was explicitly set in the data.' if event.get('disruption_injected') else 'Statistical anomaly — quantity deviates significantly from rolling window.'} "
+                f"Node [{dist}] added to disruption blacklist for {self.BLACKLIST_TTL//60} minutes. "
+                f"Currently {len(active_blacklist)} node(s) blacklisted: "
+                f"{', '.join(f'{n} ({r}s remaining)' for n, r in active_blacklist) if active_blacklist else 'none'}. "
                 f"Initiating full immune response cascade."
             ),
-            "data": {"z_score": z, "quantity": qty, "disruption_flagged": bool(event.get("disruption_injected"))}
+            "data": {
+                "z_score": z,
+                "quantity": qty,
+                "disruption_flagged": bool(event.get("disruption_injected")),
+                "blacklisted_node": dist,
+                "active_blacklist": [n for n, _ in active_blacklist],
+            }
         })
 
         # ── STEP 1: Memory Recall ──────────────────────────────────────────
@@ -367,25 +417,30 @@ class ImmuneResponseEngine:
             return {}
 
         distributors = {n for n, d in self.G.nodes(data=True) if d.get("type") == "distributor"}
+        blacklisted  = [n for n in distributors if self._is_blacklisted(n)]
         candidates = [
             n for n in self.G.successors(mfr)
             if n in distributors and n != dist
+            and not self._is_blacklisted(n)
             and nx.has_path(self.G, n, ret)
         ]
 
         if not candidates:
             step["reasoning"] = (
                 f"No valid alternate distributors found from [{mfr}] to [{ret}] "
-                f"that bypass [{dist}]. The disrupted node may be the only intermediate path."
+                f"that bypass [{dist}]. "
+                f"{f'Note: {len(blacklisted)} node(s) currently blacklisted from recent disruptions: {blacklisted[:3]}.' if blacklisted else ''} "
+                f"The disrupted node may be the only intermediate path."
             )
-            step["data"] = {"candidates_evaluated": 0}
+            step["data"] = {"candidates_evaluated": 0, "blacklisted": blacklisted}
             thinking.append(step)
             return {}
 
         step["reasoning"] = (
             f"Original route: [{mfr}] → [{dist}] → [{ret}] is disrupted. "
             f"Scanning {len(candidates)} candidate alternate distributors connected to [{mfr}] "
-            f"that have a valid path to [{ret}]. "
+            f"that have a valid path to [{ret}]"
+            f"{f' ({len(blacklisted)} recently-disrupted node(s) excluded from candidates)' if blacklisted else ''}. "
         )
 
         route_str  = None
@@ -453,8 +508,10 @@ class ImmuneResponseEngine:
         if route_str is None:
             method = "Dijkstra"
             G_alt = self.G.copy()
-            if dist in G_alt:
-                G_alt.remove_node(dist)
+            # Remove disrupted node AND all currently blacklisted nodes
+            for bl_node in [dist] + [n for n in distributors if self._is_blacklisted(n)]:
+                if bl_node in G_alt:
+                    G_alt.remove_node(bl_node)
             try:
                 path = nx.shortest_path(G_alt, mfr, ret)
                 route_str = " → ".join(path)

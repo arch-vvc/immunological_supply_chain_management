@@ -53,6 +53,7 @@ ALL_STAGES = [
     (13, "Immunological Memory (FAISS)",              "src/immunological_memory.py"),
     (14, "Supplier Agent (Digital Antibody #2)",      "src/supplier_agent.py"),
     (15, "Inventory Agent (Digital Antibody #4)",     "src/inventory_agent.py"),
+    (16, "Immune Response Engine (Real-Time Test)",   "src/immune_response_engine.py"),
 ]
 
 # Default pipeline skips Stage 0 (optional sampling step)
