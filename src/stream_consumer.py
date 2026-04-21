@@ -1,12 +1,18 @@
 """
-Stream Consumer — Real-Time Anomaly Detection & PPO Routing
-============================================================
+Stream Consumer — Real-Time Anomaly Detection & Full Immune Response
+====================================================================
 Watches data/stream/live_feed.csv for new rows written by stream_simulator.py.
 For each new row:
   1. Z-score check on rolling window (innate immunity — fast, stateless)
-  2. If anomaly: PPO agent picks the safest alternate distributor (adaptive immunity)
-  3. Falls back to Dijkstra if PPO is unavailable
-  4. Writes live results to data/stream/live_results.csv
+  2. If anomaly: fires the full ImmuneResponseEngine cascade:
+       Step 1 — Memory Recall   (FAISS — what happened before?)
+       Step 2 — Alternate Route (PPO / Dijkstra — reroute A→C→B)
+       Step 3 — Backup Supplier (SupplierAgent — who can cover the load?)
+       Step 4 — Inventory Transfer (InventoryAgent — emergency stock shift)
+       Step 5 — Final Verdict   (ranked action plan with confidence scores)
+  3. Prints chain-of-thought reasoning to terminal
+  4. Writes decisions to data/stream/immune_decisions.jsonl
+  5. Writes live results to data/stream/live_results.csv
 
 Run in a separate terminal while the simulator is running:
     python3 src/stream_consumer.py
@@ -24,6 +30,14 @@ from collections import deque
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
+
+# ── Immune Response Engine ─────────────────────────────────────────────────
+try:
+    from immune_response_engine import ImmuneResponseEngine
+    _ENGINE_AVAILABLE = True
+except Exception as _e:
+    print(f"[WARN] ImmuneResponseEngine not available: {_e}")
+    _ENGINE_AVAILABLE = False
 
 LIVE_FEED       = ROOT / "data" / "stream" / "live_feed.csv"
 LIVE_RESULTS    = ROOT / "data" / "stream" / "live_results.csv"
@@ -84,7 +98,8 @@ def load_risk_maps():
     if RISK_CSV.exists():
         import pandas as pd
         df = pd.read_csv(RISK_CSV)
-        raw = dict(zip(df["entity"], df["risk_score"]))
+        risk_col = "composite_risk" if "composite_risk" in df.columns else "risk_score"
+        raw = dict(zip(df["entity"], df[risk_col]))
         rmax = max(raw.values()) if raw else 1.0
         risk_map = {k: v / rmax for k, v in raw.items()}
     if GNN_CSV.exists():
@@ -100,12 +115,16 @@ def load_ppo():
     if not TORCH_OK or not PPO_MODEL.exists():
         print("[CON] PPO model not found — using Dijkstra fallback")
         return None
-    actor = Actor()
-    ckpt  = torch.load(PPO_MODEL, weights_only=True)
-    actor.load_state_dict(ckpt["actor"])
-    actor.eval()
-    print("[CON] PPO actor loaded ✓")
-    return actor
+    try:
+        actor = Actor()
+        ckpt  = torch.load(PPO_MODEL, weights_only=True)
+        actor.load_state_dict(ckpt["actor"])
+        actor.eval()
+        print("[CON] PPO actor loaded ✓")
+        return actor
+    except Exception as e:
+        print(f"[CON] PPO load failed ({e}) — using Dijkstra fallback")
+        return None
 
 # ── Node feature vector (must match ppo_routing_agent.py) ─────────────────
 def node_feat(node, retailer, G, risk_map, gnn_map, in_deg, out_deg,
@@ -214,13 +233,23 @@ def run():
     global random
     import random
 
-    print("[CON] Stream consumer starting (PPO-powered)...")
+    print("[CON] Stream consumer starting (Full Immune Response)...")
     print(f"[CON] Watching : {LIVE_FEED}")
     print(f"[CON] Results  → {LIVE_RESULTS}\n")
 
-    G        = load_graph()
-    actor    = load_ppo() if G else None
-    risk_map, gnn_map = load_risk_maps()
+    # Load the full immune response engine (handles graph, PPO, FAISS, supplier, inventory)
+    engine = None
+    if _ENGINE_AVAILABLE:
+        try:
+            engine = ImmuneResponseEngine(verbose=False)
+            print("[CON] ImmuneResponseEngine loaded ✓ — full chain-of-thought responses enabled\n")
+        except Exception as _e:
+            print(f"[CON][WARN] Engine init failed: {_e} — falling back to legacy routing\n")
+
+    # Legacy fallback loaders (used only if engine is None)
+    G        = load_graph()   if engine is None else engine.G
+    actor    = load_ppo()     if engine is None and G else None
+    risk_map, gnn_map = load_risk_maps() if engine is None else ({}, {})
 
     if G:
         import networkx as nx
@@ -284,40 +313,63 @@ def run():
             if is_anomaly:
                 anomalies_found += 1
 
-                if G and manufacturer and retailer:
-                    # Try PPO first
-                    if actor is not None:
-                        route, candidates, note = ppo_reroute(
-                            actor, G, manufacturer, distributor, retailer,
-                            risk_map, gnn_map, in_deg, out_deg, max_in, max_out
-                        )
-                        if route:
-                            alternate_route = route
-                            routing_note    = note
-                            routing_method  = "PPO"
+                if engine is not None:
+                    # ── Full Immune Response (chain-of-thought) ────────────────
+                    event_dict = {
+                        "manufacturer":      manufacturer,
+                        "distributor":       distributor,
+                        "retailer":          retailer,
+                        "retailer_state":    state,
+                        "quantity":          qty,
+                        "z_score":           z_score,
+                        "disruption_injected": is_disruption,
+                    }
+                    try:
+                        decision = engine.respond(event_dict)
+                        engine.print_response(decision)
+                        verdict = decision.get("verdict", {})
+                        top_action = verdict.get("actions_ranked", [{}])[0]
+                        alternate_route = top_action.get("detail", "")
+                        routing_note    = top_action.get("label", "Immune response fired")
+                        routing_method  = "ImmuneEngine"
+                    except Exception as _eng_e:
+                        print(f"[CON][WARN] Engine response failed: {_eng_e} — using legacy routing")
+                        engine = None   # disable for subsequent rows, fall through below
+
+                if engine is None:
+                    # ── Legacy fallback: PPO / Dijkstra only ──────────────────
+                    if G and manufacturer and retailer:
+                        if actor is not None:
+                            route, candidates, note = ppo_reroute(
+                                actor, G, manufacturer, distributor, retailer,
+                                risk_map, gnn_map, in_deg, out_deg, max_in, max_out
+                            )
+                            if route:
+                                alternate_route = route
+                                routing_note    = note
+                                routing_method  = "PPO"
+                            else:
+                                route, note = dijkstra_reroute(G, manufacturer,
+                                                               distributor, retailer)
+                                alternate_route = route or ""
+                                routing_note    = f"[Dijkstra fallback] {note}"
+                                routing_method  = "Dijkstra"
                         else:
-                            # PPO failed — fall back to Dijkstra
                             route, note = dijkstra_reroute(G, manufacturer,
                                                            distributor, retailer)
                             alternate_route = route or ""
-                            routing_note    = f"[Dijkstra fallback] {note}"
+                            routing_note    = note
                             routing_method  = "Dijkstra"
                     else:
-                        route, note = dijkstra_reroute(G, manufacturer,
-                                                       distributor, retailer)
-                        alternate_route = route or ""
-                        routing_note    = note
-                        routing_method  = "Dijkstra"
-                else:
-                    routing_note   = "Graph unavailable"
-                    routing_method = "none"
+                        routing_note   = "Graph unavailable"
+                        routing_method = "none"
 
-                print(f"[CON] [{ts}] ⚡ ANOMALY #{anomalies_found} | Row {rows_seen}")
-                print(f"         Flow   : {manufacturer[:30]} → {distributor[:25]} → {retailer[:25]}")
-                print(f"         Qty    : {qty:.0f} | Z={z_score} | Method: {routing_method}")
-                if alternate_route:
-                    print(f"         Route  : {alternate_route[:90]}")
-                print()
+                    print(f"[CON] [{ts}] ⚡ ANOMALY #{anomalies_found} | Row {rows_seen}")
+                    print(f"         Flow   : {manufacturer[:30]} → {distributor[:25]} → {retailer[:25]}")
+                    print(f"         Qty    : {qty:.0f} | Z={z_score} | Method: {routing_method}")
+                    if alternate_route:
+                        print(f"         Route  : {alternate_route[:90]}")
+                    print()
             else:
                 if rows_seen % 20 == 0:
                     print(f"[CON] [{ts}] Row {rows_seen:4d} | Normal | "

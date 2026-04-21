@@ -6,7 +6,7 @@ PES University Capstone  PW26_RGP_01
 Run:  streamlit run app.py
 """
 
-import os, pickle, warnings, time
+import os, pickle, warnings, time, json
 warnings.filterwarnings("ignore")
 
 import numpy as np
@@ -118,32 +118,44 @@ def load_graph():
     p = os.path.join(MODELS, "supplychain_graph.pkl")
     if not os.path.exists(p):
         return None
-    with open(p, "rb") as f:
-        return pickle.load(f)
+    try:
+        with open(p, "rb") as f:
+            return pickle.load(f)
+    except Exception:
+        return None
 
 @st.cache_resource
 def load_rf_regressor():
     p = os.path.join(MODELS, "recovery_regressor.pkl")
     if not os.path.exists(p):
         return None
-    with open(p, "rb") as f:
-        return pickle.load(f)
+    try:
+        with open(p, "rb") as f:
+            return pickle.load(f)
+    except Exception:
+        return None
 
 @st.cache_resource
 def load_rf_classifier():
     p = os.path.join(MODELS, "recovery_classifier.pkl")
     if not os.path.exists(p):
         return None
-    with open(p, "rb") as f:
-        return pickle.load(f)
+    try:
+        with open(p, "rb") as f:
+            return pickle.load(f)
+    except Exception:
+        return None
 
 @st.cache_resource
 def load_embeddings():
     p = os.path.join(MODELS, "node_embeddings.pkl")
     if not os.path.exists(p):
         return None
-    with open(p, "rb") as f:
-        return pickle.load(f)
+    try:
+        with open(p, "rb") as f:
+            return pickle.load(f)
+    except Exception:
+        return None
 
 
 # ── Feature names used by RF models ───────────────────────────────────────
@@ -167,8 +179,9 @@ tabs = st.tabs([
     "Macro Stress & LSTM",
     "Recovery Predictor",
     "Multi-Domain Risk",
-    "🧬 Immune Memory",
-    "🔴 Live Stream",
+    "Immune Memory",
+    "Live Stream",
+    "Immune Response",
 ])
 
 # ══════════════════════════════════════════════════════════════════════════
@@ -1060,7 +1073,7 @@ with tabs[8]:
         st.info("Stream is not running yet. Start it with these two commands in separate terminals:")
         st.code(
             "# Terminal 1 — emit rows every 2s, inject disruption at t=30s\n"
-            "python3 src/stream_simulator.py --interval 2 --disruption 30 --loop\n\n"
+            "python3 src/stream_simulator.py --interval 2 --disruption 30 --multi\n\n"
             "# Terminal 2 — consume and detect anomalies\n"
             "python3 src/stream_consumer.py",
             language="bash"
@@ -1127,3 +1140,233 @@ with tabs[8]:
 
         time.sleep(3)
         st.rerun()
+
+# ══════════════════════════════════════════════════════════════════════════
+# TAB 10 — IMMUNE RESPONSE (Chain-of-Thought Real-Time Decisions)
+# ══════════════════════════════════════════════════════════════════════════
+with tabs[9]:
+    st.subheader("🦠 Immune Response Engine — Real-Time Chain-of-Thought Decisions")
+    st.caption(
+        "When a disruption is detected in the live stream, the Immune Response Engine fires "
+        "four parallel response systems: memory recall, alternate routing, backup supplier "
+        "activation, and inventory transfer. Each anomaly shows its full reasoning trace here."
+    )
+
+    IMMUNE_DECISIONS_PATH = "data/stream/immune_decisions.jsonl"
+
+    if not os.path.exists(IMMUNE_DECISIONS_PATH):
+        st.info(
+            "No immune response decisions yet. Start the stream and consumer to generate responses:"
+        )
+        st.code(
+            "# Terminal 1 — emit rows every 2s, inject disruption at t=30s, repeat every 60s\n"
+            "python3 src/stream_simulator.py --interval 2 --disruption 30 --multi\n\n"
+            "# Terminal 2 — consume with full immune response\n"
+            "python3 src/stream_consumer.py",
+            language="bash"
+        )
+        st.markdown("---")
+        st.markdown("**Or run a one-shot test of the engine directly:**")
+        st.code("python3 src/immune_response_engine.py", language="bash")
+    else:
+        # Load all decisions
+        decisions = []
+        with open(IMMUNE_DECISIONS_PATH, "r", encoding="utf-8") as _f:
+            for _line in _f:
+                _line = _line.strip()
+                if _line:
+                    try:
+                        decisions.append(json.loads(_line))
+                    except Exception:
+                        pass
+
+        if not decisions:
+            st.warning("Decision log exists but is empty. Run the stream consumer to populate it.")
+        else:
+            # Summary metrics
+            st.markdown(f"### {len(decisions)} anomaly event(s) processed")
+            severities = [d.get("verdict", {}).get("severity", "?") for d in decisions]
+            n_critical = severities.count("CRITICAL")
+            n_high     = severities.count("HIGH")
+            n_moderate = severities.count("MODERATE")
+            avg_signals= sum(d.get("verdict", {}).get("signals_activated", 0) for d in decisions) / len(decisions)
+
+            mc1, mc2, mc3, mc4 = st.columns(4)
+            mc1.metric("Total Events",      len(decisions))
+            mc2.metric("Critical",          n_critical,  delta=f"{n_critical} events" if n_critical else None, delta_color="inverse")
+            mc3.metric("High Severity",     n_high)
+            mc4.metric("Avg Signals Active", f"{avg_signals:.1f}/4")
+
+            st.markdown("---")
+
+            # Event selector
+            event_labels = [
+                f"Event {i+1} | {d.get('timestamp','')[:19]} | "
+                f"{d.get('verdict',{}).get('severity','?')} | "
+                f"{d.get('manufacturer','?')[:20]} → {d.get('retailer','?')[:20]}"
+                for i, d in enumerate(decisions)
+            ]
+            selected_idx = st.selectbox(
+                "Select an anomaly event to inspect:",
+                range(len(decisions)),
+                format_func=lambda i: event_labels[i],
+                index=len(decisions) - 1,   # default to latest
+            )
+            d = decisions[selected_idx]
+            verdict = d.get("verdict", {})
+
+            # Event header
+            sev_colour = {"CRITICAL": "🔴", "HIGH": "🟠", "MODERATE": "🟡"}.get(verdict.get("severity"), "⚪")
+            st.markdown(f"## {sev_colour} {verdict.get('severity','?')} severity disruption")
+            hc1, hc2, hc3 = st.columns(3)
+            hc1.markdown(f"**Manufacturer**\n\n{d.get('manufacturer','?')}")
+            hc2.markdown(f"**Disrupted via**\n\n{d.get('distributor','?')}")
+            hc3.markdown(f"**Retailer**\n\n{d.get('retailer','?')}")
+            hc4, hc5, hc6 = st.columns(3)
+            hc4.metric("Z-Score",      f"{d.get('z_score', 0):.2f}")
+            hc5.metric("Signals Active", f"{verdict.get('signals_activated',0)}/4")
+            hc6.metric("Est. Recovery", f"{verdict.get('recovery_estimate_days','?')} days")
+
+            st.markdown("---")
+
+            # Chain-of-thought steps
+            st.markdown("### 🧠 Chain-of-Thought Reasoning")
+            thinking = d.get("thinking", [])
+
+            PHASE_ICONS = {
+                "DETECTION":           "🔍",
+                "MEMORY RECALL":       "🧬",
+                "ALTERNATE ROUTE":     "🗺️",
+                "BACKUP SUPPLIER":     "🏭",
+                "INVENTORY TRANSFER":  "📦",
+                "FINAL VERDICT":       "✅",
+            }
+
+            for step in thinking:
+                phase  = step.get("phase", "")
+                title  = step.get("title", "")
+                reason = step.get("reasoning", "")
+                data   = step.get("data", {})
+                icon   = PHASE_ICONS.get(phase, "▪️")
+
+                with st.expander(f"{icon} Step {step.get('step','')} — {phase}: {title}", expanded=True):
+                    st.markdown(f"**Reasoning:**")
+                    st.info(reason)
+
+                    if data:
+                        # Render specific rich data per step type
+                        if phase == "MEMORY RECALL" and data.get("matches"):
+                            st.markdown("**Top memory matches:**")
+                            mem_rows = []
+                            for m in data["matches"]:
+                                mem_rows.append({
+                                    "Rank":            m.get("rank"),
+                                    "Distance":        m.get("distance"),
+                                    "Recovery (days)": m.get("recovery_days"),
+                                    "Response Type":   m.get("response_type"),
+                                    "Disruption Type": m.get("disruption_type"),
+                                })
+                            st.dataframe(pd.DataFrame(mem_rows), use_container_width=True)
+                            if data.get("avg_recovery_days"):
+                                st.success(f"📅 Estimated recovery: **{data['avg_recovery_days']} days** | "
+                                           f"Recommended: **{data.get('recommended_response','?')}**")
+
+                        elif phase == "ALTERNATE ROUTE":
+                            orig = data.get("original_route", "")
+                            alt  = data.get("alternate_route", "")
+                            if orig:
+                                st.markdown(f"**Original route:** `{orig}`")
+                            if alt:
+                                st.success(f"**Alternate route:** `{alt}`")
+                                st.markdown(f"Method: `{data.get('method','?')}` | "
+                                            f"Chosen node risk: `{data.get('chosen_risk','?')}`")
+                            if data.get("top_candidates"):
+                                st.markdown("**Top candidate distributors evaluated:**")
+                                st.dataframe(pd.DataFrame(data["top_candidates"]), use_container_width=True)
+
+                        elif phase == "BACKUP SUPPLIER" and data.get("top_backups"):
+                            st.markdown(f"**Affected retailers:** {data.get('affected_retailers','?')} | "
+                                        f"Alternatives found: {data.get('alternatives_found','?')}")
+                            st.markdown("**Top backup suppliers:**")
+                            sup_rows = []
+                            for b in data["top_backups"]:
+                                sup_rows.append({
+                                    "Supplier":       b.get("entity","?"),
+                                    "Type":           b.get("type","?"),
+                                    "Backup Score":   b.get("backup_score","?"),
+                                    "Risk":           b.get("composite_risk","?"),
+                                    "Volume":         b.get("out_volume","?"),
+                                    "Safety Score":   b.get("safety_score","?"),
+                                })
+                            st.dataframe(pd.DataFrame(sup_rows), use_container_width=True)
+
+                        elif phase == "INVENTORY TRANSFER" and data.get("top_transfers"):
+                            st.markdown(f"**Retailer state:** {data.get('retailer_state','?')} | "
+                                        f"Fuel multiplier: {data.get('fuel_multiplier','?')}x | "
+                                        f"Candidates: {data.get('candidates_found','?')}")
+                            st.markdown("**Top transfer candidates:**")
+                            inv_rows = []
+                            for t in data["top_transfers"]:
+                                inv_rows.append({
+                                    "Distributor":    t.get("distributor","?"),
+                                    "Transfer Score": t.get("transfer_score","?"),
+                                    "Risk":           t.get("composite_risk","?"),
+                                    "Spare Capacity": t.get("spare_capacity","?"),
+                                    "Fuel Cost":      t.get("fuel_cost","?"),
+                                    "Est. Days":      t.get("estimated_days","?"),
+                                })
+                            st.dataframe(pd.DataFrame(inv_rows), use_container_width=True)
+
+                        elif phase == "FINAL VERDICT":
+                            st.markdown(f"Severity: **{data.get('severity','?')}** | "
+                                        f"Signals activated: **{data.get('signals_activated','?')}/4** | "
+                                        f"Estimated recovery: **{data.get('recovery_estimate_days','?')} days**")
+
+            # Ranked action plan
+            st.markdown("---")
+            st.markdown("### 📋 Ranked Action Plan")
+            actions = d.get("actions", [])
+            if not actions:
+                st.warning("No actions generated.")
+            else:
+                for a in actions:
+                    conf = float(a.get("confidence", 0))
+                    colour = "#00A896" if conf >= 0.7 else "#F4845F" if conf >= 0.4 else "#888"
+                    priority_icon = {1: "🥇", 2: "🥈", 3: "🥉"}.get(a.get("priority"), "▪️")
+                    with st.container():
+                        ac1, ac2 = st.columns([3, 1])
+                        with ac1:
+                            st.markdown(
+                                f"{priority_icon} **{a.get('action','')}**  \n"
+                                f"→ {a.get('label','')}  \n"
+                                f"*{a.get('detail','')}*"
+                            )
+                        with ac2:
+                            st.metric("Confidence", f"{conf:.0%}")
+                            st.caption(f"ETA: {a.get('eta_days','?')} day(s) | {a.get('method','?')}")
+                        st.progress(conf)
+                        st.markdown("")
+
+            # All events summary table
+            st.markdown("---")
+            st.markdown("### 📊 All Response Events")
+            summary_rows = []
+            for i, dec in enumerate(decisions):
+                v = dec.get("verdict", {})
+                acts = v.get("actions_ranked", [])
+                summary_rows.append({
+                    "Event":       i + 1,
+                    "Timestamp":   dec.get("timestamp","")[:19],
+                    "Severity":    v.get("severity","?"),
+                    "Z-Score":     dec.get("z_score","?"),
+                    "Signals":     f"{v.get('signals_activated',0)}/4",
+                    "Top Action":  acts[0].get("action","?") if acts else "?",
+                    "Recovery (d)":v.get("recovery_estimate_days","?"),
+                    "Manufacturer":dec.get("manufacturer","?")[:25],
+                    "Retailer":    dec.get("retailer","?")[:25],
+                })
+            st.dataframe(pd.DataFrame(summary_rows), use_container_width=True)
+
+        st.markdown("---")
+        if st.button("🔄 Refresh decisions"):
+            st.rerun()
