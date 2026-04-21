@@ -1183,21 +1183,59 @@ with tabs[9]:
         if not decisions:
             st.warning("Decision log exists but is empty. Run the stream consumer to populate it.")
         else:
-            # Summary metrics
-            st.markdown(f"### {len(decisions)} anomaly event(s) processed")
-            severities = [d.get("verdict", {}).get("severity", "?") for d in decisions]
-            n_critical = severities.count("CRITICAL")
-            n_high     = severities.count("HIGH")
-            n_moderate = severities.count("MODERATE")
-            avg_signals= sum(d.get("verdict", {}).get("signals_activated", 0) for d in decisions) / len(decisions)
+            # Separate cytokine storm events from individual disruption events
+            storm_decisions  = [d for d in decisions if d.get("event_type") == "cytokine_storm"]
+            normal_decisions = [d for d in decisions if d.get("event_type") != "cytokine_storm"]
 
-            mc1, mc2, mc3, mc4 = st.columns(4)
-            mc1.metric("Total Events",      len(decisions))
-            mc2.metric("Critical",          n_critical,  delta=f"{n_critical} events" if n_critical else None, delta_color="inverse")
-            mc3.metric("High Severity",     n_high)
-            mc4.metric("Avg Signals Active", f"{avg_signals:.1f}/4")
+            # ── Cytokine storm banners ─────────────────────────────────────
+            if storm_decisions:
+                st.error(
+                    f"⚡ **{len(storm_decisions)} CYTOKINE STORM event(s) recorded** — "
+                    "simultaneous multi-node cascade(s) detected. See details below."
+                )
+                for sd in storm_decisions:
+                    ts_str  = sd.get("timestamp", "")[:19]
+                    step0   = (sd.get("thinking") or [{}])[0]
+                    detail  = step0.get("data", {})
+                    affected = detail.get("affected_distributors", [])
+                    repeats  = detail.get("repeat_hit_nodes", [])
+                    count    = detail.get("storm_event_count", "?")
+                    with st.expander(f"🔴 Cytokine Storm — {ts_str} | {count} simultaneous disruptions", expanded=False):
+                        st.markdown(f"**Reasoning:** {step0.get('reasoning','')}")
+                        sc1, sc2, sc3 = st.columns(3)
+                        sc1.metric("Disruptions in window", count)
+                        sc2.metric("Affected nodes",        len(affected))
+                        sc3.metric("Repeat-hit (overloaded)", len(repeats))
+                        if affected:
+                            st.markdown(f"**Affected distributors:** {', '.join(affected)}")
+                        if repeats:
+                            st.warning(f"Critical overload on: **{', '.join(repeats)}**")
+                        constituent = detail.get("constituent_events", [])
+                        if constituent:
+                            import pandas as _pd2
+                            st.dataframe(_pd2.DataFrame(constituent), use_container_width=True)
+                st.markdown("---")
 
-            st.markdown("---")
+            # ── Regular event metrics ──────────────────────────────────────
+            if not normal_decisions:
+                st.info("Only cytokine storm events recorded so far. Individual disruption events will appear here.")
+            else:
+                st.markdown(f"### {len(normal_decisions)} individual disruption event(s) processed")
+                severities  = [d.get("verdict", {}).get("severity", "?") for d in normal_decisions]
+                n_critical  = severities.count("CRITICAL")
+                n_high      = severities.count("HIGH")
+                n_moderate  = severities.count("MODERATE")
+                avg_signals = sum(d.get("verdict", {}).get("signals_activated", 0) for d in normal_decisions) / len(normal_decisions)
+
+                mc1, mc2, mc3, mc4, mc5 = st.columns(5)
+                mc1.metric("Total Events",       len(normal_decisions))
+                mc2.metric("Critical",           n_critical,  delta=f"{n_critical}" if n_critical else None, delta_color="inverse")
+                mc3.metric("High Severity",      n_high)
+                mc4.metric("Moderate",           n_moderate)
+                mc5.metric("Avg Signals Active", f"{avg_signals:.1f}/4")
+
+                st.markdown("---")
+                decisions = normal_decisions   # scope the rest of the tab to individual events
 
             # Event selector
             event_labels = [
@@ -1216,7 +1254,7 @@ with tabs[9]:
             verdict = d.get("verdict", {})
 
             # Event header
-            sev_colour = {"CRITICAL": "🔴", "HIGH": "🟠", "MODERATE": "🟡"}.get(verdict.get("severity"), "⚪")
+            sev_colour = {"CRITICAL": "🔴", "HIGH": "🟠", "MODERATE": "🟡", "CYTOKINE_STORM": "⚡"}.get(verdict.get("severity"), "⚪")
             st.markdown(f"## {sev_colour} {verdict.get('severity','?')} severity disruption")
             hc1, hc2, hc3 = st.columns(3)
             hc1.markdown(f"**Manufacturer**\n\n{d.get('manufacturer','?')}")
@@ -1240,6 +1278,7 @@ with tabs[9]:
                 "BACKUP SUPPLIER":     "🏭",
                 "INVENTORY TRANSFER":  "📦",
                 "FINAL VERDICT":       "✅",
+                "CYTOKINE STORM":      "⚡",
             }
 
             for step in thinking:
@@ -1278,8 +1317,17 @@ with tabs[9]:
                                 st.markdown(f"**Original route:** `{orig}`")
                             if alt:
                                 st.success(f"**Alternate route:** `{alt}`")
-                                st.markdown(f"Method: `{data.get('method','?')}` | "
-                                            f"Chosen node risk: `{data.get('chosen_risk','?')}`")
+                                decay = data.get("decay_factor", 1.0)
+                                decay_label = (
+                                    "🟢 Fresh (no recent overuse)"       if decay >= 0.9 else
+                                    "🟡 Moderate load (used recently)"   if decay >= 0.7 else
+                                    "🔴 High load — confidence reduced"
+                                )
+                                st.markdown(
+                                    f"Method: `{data.get('method','?')}` | "
+                                    f"Chosen node risk: `{data.get('chosen_risk','?')}` | "
+                                    f"Load decay: `{decay}` {decay_label}"
+                                )
                             if data.get("top_candidates"):
                                 st.markdown("**Top candidate distributors evaluated:**")
                                 st.dataframe(pd.DataFrame(data["top_candidates"]), use_container_width=True)

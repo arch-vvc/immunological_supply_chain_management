@@ -119,9 +119,6 @@ class ImmuneResponseEngine:
     and final decision.
     """
 
-    # Blacklist TTL — disrupted nodes are excluded from rerouting for this many seconds
-    BLACKLIST_TTL = 300   # 5 minutes
-
     def __init__(self, verbose: bool = True):
         self.verbose   = verbose
         self.G         = None
@@ -135,8 +132,8 @@ class ImmuneResponseEngine:
         self.out_deg   = {}
         self.max_in    = 1
         self.max_out   = 1
-        # node → timestamp of when it was disrupted (for blacklisting)
-        self._disruption_blacklist: dict[str, float] = {}
+        # Tracks when each reroute node was last chosen; used for confidence decay
+        self._reroute_usage: dict = {}   # node -> [unix_timestamp, ...]
         self._load_all()
 
     # ── Startup loaders ────────────────────────────────────────────────────
@@ -212,37 +209,6 @@ class ImmuneResponseEngine:
 
         self._log("[ENGINE] Ready.\n")
 
-    # ── Disruption Blacklist ───────────────────────────────────────────────
-
-    def _blacklist_node(self, node: str):
-        """Mark a node as recently disrupted — excluded from rerouting for BLACKLIST_TTL seconds."""
-        self._disruption_blacklist[node] = time.time()
-
-    def _is_blacklisted(self, node: str) -> bool:
-        """Return True if this node was disrupted recently and hasn't recovered yet."""
-        ts = self._disruption_blacklist.get(node)
-        if ts is None:
-            return False
-        if time.time() - ts > self.BLACKLIST_TTL:
-            del self._disruption_blacklist[node]   # expired — clean up
-            return False
-        return True
-
-    def _blacklisted_nodes(self) -> list:
-        """Return list of currently blacklisted nodes (for display in reasoning)."""
-        now = time.time()
-        active = []
-        expired = []
-        for node, ts in self._disruption_blacklist.items():
-            if now - ts <= self.BLACKLIST_TTL:
-                remaining = int(self.BLACKLIST_TTL - (now - ts))
-                active.append((node, remaining))
-            else:
-                expired.append(node)
-        for node in expired:
-            del self._disruption_blacklist[node]
-        return active
-
     # ── Core: respond to one anomaly event ────────────────────────────────
 
     def respond(self, event: dict) -> dict:
@@ -263,11 +229,6 @@ class ImmuneResponseEngine:
         thinking = []   # chain-of-thought steps
         actions  = []   # ranked candidate actions
 
-        # Blacklist the disrupted distributor immediately
-        if dist:
-            self._blacklist_node(dist)
-        active_blacklist = self._blacklisted_nodes()
-
         thinking.append({
             "step": 0,
             "phase": "DETECTION",
@@ -276,18 +237,9 @@ class ImmuneResponseEngine:
                 f"Shipment from [{mfr}] via [{dist}] to [{ret}] triggered an alert. "
                 f"Quantity={qty:.0f}, Z-score={z:.2f} (threshold=2.5). "
                 f"{'Disruption flag was explicitly set in the data.' if event.get('disruption_injected') else 'Statistical anomaly — quantity deviates significantly from rolling window.'} "
-                f"Node [{dist}] added to disruption blacklist for {self.BLACKLIST_TTL//60} minutes. "
-                f"Currently {len(active_blacklist)} node(s) blacklisted: "
-                f"{', '.join(f'{n} ({r}s remaining)' for n, r in active_blacklist) if active_blacklist else 'none'}. "
                 f"Initiating full immune response cascade."
             ),
-            "data": {
-                "z_score": z,
-                "quantity": qty,
-                "disruption_flagged": bool(event.get("disruption_injected")),
-                "blacklisted_node": dist,
-                "active_blacklist": [n for n, _ in active_blacklist],
-            }
+            "data": {"z_score": z, "quantity": qty, "disruption_flagged": bool(event.get("disruption_injected"))}
         })
 
         # ── STEP 1: Memory Recall ──────────────────────────────────────────
@@ -401,6 +353,78 @@ class ImmuneResponseEngine:
             thinking.append(step)
             return {}
 
+    # ── Confidence Decay ───────────────────────────────────────────────────
+
+    def _decay_factor(self, node: str, window_minutes: int = 30) -> float:
+        """
+        Returns a confidence multiplier in [0.5, 1.0] for a reroute node.
+        Drops by 0.15 for each time the node was chosen in the last window_minutes.
+        Prevents the system from blindly overloading the same alternate node.
+        """
+        now = time.time()
+        cutoff = now - window_minutes * 60
+        recent = [t for t in self._reroute_usage.get(node, []) if t >= cutoff]
+        self._reroute_usage[node] = recent   # prune stale entries in-place
+        return max(0.5, 1.0 - len(recent) * 0.15)
+
+    def _record_reroute_use(self, node: str):
+        self._reroute_usage.setdefault(node, []).append(time.time())
+
+    # ── Clonal Selection: write resolved outcome back into FAISS memory ────
+
+    def learn_from_outcome(self, event: dict, decision: dict) -> None:
+        """
+        Clonal selection feedback loop — after each live disruption is handled,
+        encode the outcome as an 8-dim vector and append it to the FAISS index.
+        The meta["outcomes"] DataFrame is extended in-memory and both the index
+        and the pkl are persisted atomically.  The system therefore learns from
+        every decision it makes, not just historical training data.
+        """
+        if not FAISS_OK or self.faiss_idx is None or self.faiss_meta is None:
+            return
+        try:
+            meta     = self.faiss_meta
+            scaler   = meta["scaler"]
+            outcomes = meta["outcomes"]
+
+            z             = float(event.get("z_score", 0))
+            verdict       = decision.get("verdict", {})
+            recovery_days = float(verdict.get("recovery_estimate_days") or 7.0)
+            top_action    = (verdict.get("actions_ranked") or [{}])[0]
+
+            severity    = min(z / 10.0 * 4 + 1, 5.0)
+            prod_impact = min(abs(z) / 10.0 * 100, 100.0)
+            has_backup  = 1.0 if verdict.get("actions_ranked") else 0.0
+            mean_enc    = 0.0   # categorical features unknown at live time; use neutral value
+
+            new_vec    = np.array([[severity, prod_impact, has_backup,
+                                    mean_enc, mean_enc, mean_enc, mean_enc, mean_enc]],
+                                  dtype=np.float32)
+            new_scaled = scaler.transform(new_vec).astype(np.float32)
+            self.faiss_idx.add(new_scaled)
+
+            new_row = pd.DataFrame([{
+                "full_recovery_days": recovery_days,
+                "response_type_enc":  0.0,
+                "response_type":      top_action.get("action", "REROUTE"),
+                "disruption_type":    "live_event",
+                "industry":           "live",
+            }])
+            meta["outcomes"] = pd.concat([outcomes, new_row], ignore_index=True)
+
+            # Atomic persist: write index then metadata
+            _faiss.write_index(self.faiss_idx, str(FAISS_INDEX))
+            with open(FAISS_META, "wb") as fh:
+                pickle.dump(meta, fh)
+
+            self._log(
+                f"[ENGINE] Clonal selection: outcome learned "
+                f"(recovery={recovery_days:.0f}d, action={top_action.get('action','?')}). "
+                f"Memory now {self.faiss_idx.ntotal:,} vectors."
+            )
+        except Exception as e:
+            self._log(f"[ENGINE][WARN] Clonal selection write failed: {e}")
+
     # ── Step 2: Alternate Route ────────────────────────────────────────────
 
     def _find_alternate_route(self, mfr, dist, ret, thinking) -> dict:
@@ -417,30 +441,25 @@ class ImmuneResponseEngine:
             return {}
 
         distributors = {n for n, d in self.G.nodes(data=True) if d.get("type") == "distributor"}
-        blacklisted  = [n for n in distributors if self._is_blacklisted(n)]
         candidates = [
             n for n in self.G.successors(mfr)
             if n in distributors and n != dist
-            and not self._is_blacklisted(n)
             and nx.has_path(self.G, n, ret)
         ]
 
         if not candidates:
             step["reasoning"] = (
                 f"No valid alternate distributors found from [{mfr}] to [{ret}] "
-                f"that bypass [{dist}]. "
-                f"{f'Note: {len(blacklisted)} node(s) currently blacklisted from recent disruptions: {blacklisted[:3]}.' if blacklisted else ''} "
-                f"The disrupted node may be the only intermediate path."
+                f"that bypass [{dist}]. The disrupted node may be the only intermediate path."
             )
-            step["data"] = {"candidates_evaluated": 0, "blacklisted": blacklisted}
+            step["data"] = {"candidates_evaluated": 0}
             thinking.append(step)
             return {}
 
         step["reasoning"] = (
             f"Original route: [{mfr}] → [{dist}] → [{ret}] is disrupted. "
             f"Scanning {len(candidates)} candidate alternate distributors connected to [{mfr}] "
-            f"that have a valid path to [{ret}]"
-            f"{f' ({len(blacklisted)} recently-disrupted node(s) excluded from candidates)' if blacklisted else ''}. "
+            f"that have a valid path to [{ret}]. "
         )
 
         route_str  = None
@@ -449,20 +468,23 @@ class ImmuneResponseEngine:
         risk_score = None
         scored_candidates = []
 
-        # Score all candidates for transparency
+        # Score all candidates; apply confidence decay for overloaded nodes
         for cand in candidates[:K]:
-            r = self.risk_map.get(cand, 0.5)
-            g = self.gnn_map.get(cand, 0.5)
+            r     = self.risk_map.get(cand, 0.5)
+            g     = self.gnn_map.get(cand, 0.5)
+            decay = self._decay_factor(cand)
             try:
                 path_len = nx.shortest_path_length(self.G, cand, ret)
             except Exception:
                 path_len = 999
+            raw_composite = (1 - r) * 0.5 + (1 - g) * 0.3 + max(0, 1 - path_len / 10) * 0.2
             scored_candidates.append({
-                "node":       cand,
-                "risk":       round(r, 3),
-                "gnn_score":  round(g, 3),
-                "path_hops":  path_len,
-                "composite":  round((1 - r) * 0.5 + (1 - g) * 0.3 + max(0, 1 - path_len / 10) * 0.2, 3),
+                "node":         cand,
+                "risk":         round(r, 3),
+                "gnn_score":    round(g, 3),
+                "path_hops":    path_len,
+                "decay_factor": round(decay, 3),
+                "composite":    round(raw_composite * decay, 3),
             })
 
         scored_candidates.sort(key=lambda x: x["composite"], reverse=True)
@@ -496,32 +518,37 @@ class ImmuneResponseEngine:
                 try:
                     path = nx.shortest_path(self.G, chosen, ret)
                     route_str = f"{mfr} → {chosen} → " + " → ".join(path[1:])
+                    decay_applied = self._decay_factor(chosen)
+                    self._record_reroute_use(chosen)
                     step["reasoning"] += (
                         f"PPO reinforcement learning agent selected [{chosen}] as the optimal reroute "
-                        f"(composite risk={risk_score:.3f}). "
+                        f"(composite risk={risk_score:.3f}, load decay={decay_applied:.2f}). "
                         f"Full path: {route_str}."
                     )
                 except Exception:
                     chosen = None
+                    decay_applied = 1.0
 
         # Dijkstra fallback
         if route_str is None:
             method = "Dijkstra"
             G_alt = self.G.copy()
-            # Remove disrupted node AND all currently blacklisted nodes
-            for bl_node in [dist] + [n for n in distributors if self._is_blacklisted(n)]:
-                if bl_node in G_alt:
-                    G_alt.remove_node(bl_node)
+            if dist in G_alt:
+                G_alt.remove_node(dist)
             try:
                 path = nx.shortest_path(G_alt, mfr, ret)
                 route_str = " → ".join(path)
                 chosen    = path[1] if len(path) > 1 else None
                 risk_score= self.risk_map.get(chosen, 0.5) if chosen else None
+                decay_applied = self._decay_factor(chosen) if chosen else 1.0
+                if chosen:
+                    self._record_reroute_use(chosen)
                 step["reasoning"] += (
                     f"Dijkstra fallback found shortest path bypassing [{dist}]: "
-                    f"{route_str} ({len(path)-1} hops)."
+                    f"{route_str} ({len(path)-1} hops, load decay={decay_applied:.2f})."
                 )
             except Exception as e:
+                decay_applied = 1.0
                 step["reasoning"] += f" Dijkstra also failed: {e}. No alternate route available."
 
         step["data"] = {
@@ -530,6 +557,7 @@ class ImmuneResponseEngine:
             "method":                method,
             "chosen_distributor":    chosen,
             "chosen_risk":           round(risk_score, 3) if risk_score is not None else None,
+            "decay_factor":          round(decay_applied, 3),
             "candidates_evaluated":  len(scored_candidates),
             "top_candidates":        scored_candidates[:3],
         }
@@ -751,10 +779,10 @@ class ImmuneResponseEngine:
 
         # Build ranked actions list
         if route.get("alternate_route"):
-            # Confidence = how much safer this route is vs worst possible (risk=1.0)
-            chosen_risk = route.get("chosen_risk") or 0.5
-            # Re-scale: risk 0.85-1.0 maps to confidence 0.60-0.85
-            route_confidence = round(max(0.55, 1.0 - chosen_risk * 0.3), 2)
+            chosen_risk   = route.get("chosen_risk") or 0.5
+            decay_factor  = route.get("decay_factor", 1.0)
+            # Base confidence from risk, then multiplied by load-decay
+            route_confidence = round(max(0.40, (1.0 - chosen_risk * 0.3) * decay_factor), 2)
             actions.append({
                 "priority":    1,
                 "action":      "REROUTE",
@@ -868,48 +896,46 @@ class ImmuneResponseEngine:
         v    = decision["verdict"]
 
         width = 72
-        print("\n" + "═" * width)
-        print(f"  🧬 IMMUNE RESPONSE  |  {decision['timestamp']}")
-        print("═" * width)
-        print(f"  Flow   : {mfr[:30]} → {dist[:25]} → {ret[:25]}")
+        print("\n" + "=" * width)
+        print(f"  IMMUNE RESPONSE  |  {decision['timestamp']}")
+        print("=" * width)
+        print(f"  Flow   : {mfr[:30]} -> {dist[:25]} -> {ret[:25]}")
         print(f"  Signal : Z-score={z:.2f}  |  Severity={v['severity']}")
         print(f"  Signals: {v['signals_activated']}/4 response systems activated")
-        print("─" * width)
+        print("-" * width)
 
         for step in decision["thinking"]:
             phase = step["phase"]
             title = step["title"]
             reason= step["reasoning"]
-            print(f"\n  ┌─ Step {step['step']}: {phase}")
-            print(f"  │  {title}")
-            # Wrap reasoning at ~65 chars
+            print(f"\n  [Step {step['step']}] {phase}")
+            print(f"  {title}")
             words = reason.split()
-            line  = "  │  "
+            line  = "  "
             for w in words:
-                if len(line) + len(w) + 1 > 70:
+                if len(line) + len(w) + 1 > 72:
                     print(line)
-                    line = "  │  " + w + " "
+                    line = "  " + w + " "
                 else:
                     line += w + " "
             if line.strip():
                 print(line)
 
-        print("\n" + "─" * width)
-        print("  📋 RANKED ACTION PLAN:")
+        print("\n" + "-" * width)
+        print("  RANKED ACTION PLAN:")
         for a in decision["actions"]:
-            bar = "█" * int(a["confidence"] * 10) + "░" * (10 - int(a["confidence"] * 10))
-        for a in decision["actions"]:
-            conf_bar = "█" * int(a["confidence"] * 10) + "░" * (10 - int(a["confidence"] * 10))
+            conf_pct = int(a["confidence"] * 10)
+            conf_bar = "#" * conf_pct + "-" * (10 - conf_pct)
             print(f"\n  [{a['priority']}] {a['action']}")
-            print(f"      → {a['label']}")
-            print(f"      Confidence: {conf_bar} {a['confidence']:.0%}  |  ETA: {a.get('eta_days','?')} day(s)")
+            print(f"      -> {a['label']}")
+            print(f"      Confidence: [{conf_bar}] {a['confidence']:.0%}  |  ETA: {a.get('eta_days','?')} day(s)")
             print(f"      {a['detail'][:70]}")
 
-        print("\n" + "─" * width)
+        print("\n" + "-" * width)
         rec = v.get("recovery_estimate_days")
-        print(f"  ✅ RECOMMENDATION: {v['recommended_action']}")
-        print(f"  ⏱  Estimated recovery: {rec if rec else '?'} day(s)")
-        print("═" * width + "\n")
+        print(f"  RECOMMENDATION: {v['recommended_action']}")
+        print(f"  Estimated recovery: {rec if rec else '?'} day(s)")
+        print("=" * width + "\n")
 
 
 # ══════════════════════════════════════════════════════════════════════════

@@ -21,6 +21,7 @@ Run in a separate terminal while the simulator is running:
 import os
 import sys
 import csv
+import json
 import time
 import pickle
 import numpy as np
@@ -41,6 +42,7 @@ except Exception as _e:
 
 LIVE_FEED       = ROOT / "data" / "stream" / "live_feed.csv"
 LIVE_RESULTS    = ROOT / "data" / "stream" / "live_results.csv"
+DECISIONS_OUT   = ROOT / "data" / "stream" / "immune_decisions.jsonl"
 DISRUPTION_FLAG = ROOT / "data" / "stream" / "disruption_active.flag"
 GRAPH_MODEL     = ROOT / "models" / "supplychain_graph.pkl"
 PPO_MODEL       = ROOT / "models" / "ppo_routing_agent.pth"
@@ -50,12 +52,16 @@ GNN_CSV         = ROOT / "output"  / "gnn_risk_scores.csv"
 STREAM_DIR = ROOT / "data" / "stream"
 STREAM_DIR.mkdir(parents=True, exist_ok=True)
 
-WINDOW_SIZE   = 50
-ZSCORE_THRESH = 2.5
-K             = 10
-F_DIM         = 5
-STATE_DIM     = K * F_DIM
-ACTION_DIM    = K
+WINDOW_SIZE        = 50
+ZSCORE_THRESH      = 2.5
+K                  = 10
+F_DIM              = 5
+STATE_DIM          = K * F_DIM
+ACTION_DIM         = K
+
+# Cytokine storm: cascade alert when N+ disruptions hit within TIME window
+CYTOKINE_THRESHOLD   = 3      # number of anomalies that triggers a storm
+CYTOKINE_WINDOW_SECS = 60     # rolling window in seconds
 
 # ── PPO actor (must match architecture in ppo_routing_agent.py) ───────────
 try:
@@ -227,6 +233,116 @@ def write_result(result: dict, header_written: bool):
             writer.writeheader()
         writer.writerow({k: result.get(k, "") for k in RESULT_FIELDS})
 
+# ── Cytokine Storm emitter ────────────────────────────────────────────────
+def emit_cytokine_storm(storm_events: list, decisions_path: Path):
+    """
+    When CYTOKINE_THRESHOLD+ anomalies occur within CYTOKINE_WINDOW_SECS,
+    emit a cascade alert into immune_decisions.jsonl.  The event is distinct
+    from individual anomaly responses — it signals systemic network stress
+    rather than a single disrupted route.
+    """
+    ts = datetime.now().isoformat()
+    affected_nodes = list({e["distributor"] for e in storm_events if e.get("distributor")})
+    affected_mfrs  = list({e["manufacturer"] for e in storm_events if e.get("manufacturer")})
+
+    # Find distributors hit more than once — these are the hotspots
+    dist_hits: dict = {}
+    for e in storm_events:
+        d = e.get("distributor", "")
+        if d:
+            dist_hits[d] = dist_hits.get(d, 0) + 1
+    repeat_nodes = [d for d, c in dist_hits.items() if c > 1]
+
+    thinking = [
+        {
+            "step": 0,
+            "phase": "CYTOKINE STORM",
+            "title": f"{len(storm_events)} simultaneous disruptions detected in {CYTOKINE_WINDOW_SECS}s window",
+            "reasoning": (
+                f"A cytokine storm has been detected: {len(storm_events)} independent anomalies "
+                f"fired within {CYTOKINE_WINDOW_SECS} seconds. "
+                f"Affected distributors: {', '.join(affected_nodes[:5]) or 'unknown'}. "
+                f"{'Repeat hits on: ' + ', '.join(repeat_nodes) + ' — these nodes are critically overloaded.' if repeat_nodes else 'No single node hit twice, but cascade propagation risk is high.'} "
+                f"Individual immune responses have been fired per event, but the systemic pattern "
+                f"requires elevated network-wide alert. Recommend pausing new orders on affected routes "
+                f"and activating macro-level contingency protocols."
+            ),
+            "data": {
+                "storm_event_count":  len(storm_events),
+                "window_seconds":     CYTOKINE_WINDOW_SECS,
+                "affected_distributors": affected_nodes,
+                "affected_manufacturers": affected_mfrs,
+                "repeat_hit_nodes":   repeat_nodes,
+                "constituent_events": [
+                    {
+                        "manufacturer": e.get("manufacturer", ""),
+                        "distributor":  e.get("distributor", ""),
+                        "retailer":     e.get("retailer", ""),
+                        "z_score":      e.get("z_score", 0),
+                        "timestamp":    e.get("timestamp", ""),
+                    }
+                    for e in storm_events
+                ],
+            }
+        }
+    ]
+
+    storm_record = {
+        "event_type":         "cytokine_storm",
+        "timestamp":          ts,
+        "manufacturer":       affected_mfrs[0] if affected_mfrs else "",
+        "distributor":        ", ".join(affected_nodes[:3]),
+        "retailer":           "MULTIPLE",
+        "retailer_state":     "",
+        "quantity":           0,
+        "z_score":            99.0,
+        "disruption_flagged": True,
+        "thinking":           thinking,
+        "actions": [
+            {
+                "priority":   1,
+                "action":     "NETWORK-WIDE ALERT",
+                "label":      f"Cascade detected: {len(storm_events)} simultaneous disruptions",
+                "detail":     f"Affected nodes: {', '.join(affected_nodes[:5])}. Activate contingency protocols.",
+                "confidence": 0.95,
+                "method":     "CytokineStormDetector",
+                "eta_days":   None,
+            }
+        ],
+        "verdict": {
+            "severity":               "CYTOKINE_STORM",
+            "signals_activated":      4,
+            "recommended_action":     "Activate network-wide contingency — do not reroute individually",
+            "recovery_estimate_days": None,
+            "actions_ranked": [
+                {
+                    "priority":   1,
+                    "action":     "NETWORK-WIDE ALERT",
+                    "label":      f"Cascade detected: {len(storm_events)} simultaneous disruptions",
+                    "detail":     f"Affected nodes: {', '.join(affected_nodes[:5])}",
+                    "confidence": 0.95,
+                    "method":     "CytokineStormDetector",
+                    "eta_days":   None,
+                }
+            ],
+        },
+    }
+
+    with open(decisions_path, "a", encoding="utf-8") as f:
+        f.write(json.dumps(storm_record, default=str) + "\n")
+
+    # Prominent terminal banner
+    width = 72
+    print("\n" + "!" * width)
+    print(f"  *** CYTOKINE STORM DETECTED ***  |  {ts[:19]}")
+    print(f"  {len(storm_events)} disruptions in {CYTOKINE_WINDOW_SECS}s window")
+    print(f"  Affected nodes: {', '.join(affected_nodes[:5])}")
+    if repeat_nodes:
+        print(f"  REPEAT HITS: {', '.join(repeat_nodes)} -- CRITICAL OVERLOAD")
+    print(f"  -> Network-wide contingency protocol recommended")
+    print("!" * width + "\n")
+
+
 # ── Main loop ─────────────────────────────────────────────────────────────
 def run():
     import random as _random
@@ -268,6 +384,9 @@ def run():
     rows_seen       = 0
     anomalies_found = 0
     header_written  = False
+    # Cytokine storm: sliding list of recent anomaly events with unix timestamps
+    storm_window: list = []   # each entry: dict with timestamp + event info
+    storms_fired  = 0
 
     print("[CON] Waiting for stream data...\n")
 
@@ -323,6 +442,7 @@ def run():
                         "quantity":          qty,
                         "z_score":           z_score,
                         "disruption_injected": is_disruption,
+                        "timestamp":         datetime.now().isoformat(),
                     }
                     try:
                         decision = engine.respond(event_dict)
@@ -332,6 +452,27 @@ def run():
                         alternate_route = top_action.get("detail", "")
                         routing_note    = top_action.get("label", "Immune response fired")
                         routing_method  = "ImmuneEngine"
+
+                        # ── Clonal selection: write outcome back into FAISS memory ──
+                        try:
+                            engine.learn_from_outcome(event_dict, decision)
+                        except Exception as _cl_e:
+                            print(f"[CON][WARN] Clonal selection skipped: {_cl_e}")
+
+                        # ── Cytokine storm detection ───────────────────────────────
+                        now_ts = time.time()
+                        storm_window.append({**event_dict, "_unix_ts": now_ts})
+                        # Prune events outside the rolling window
+                        storm_window[:] = [
+                            e for e in storm_window
+                            if now_ts - e["_unix_ts"] <= CYTOKINE_WINDOW_SECS
+                        ]
+                        if len(storm_window) >= CYTOKINE_THRESHOLD:
+                            storms_fired += 1
+                            emit_cytokine_storm(storm_window[:], DECISIONS_OUT)
+                            # Clear window after firing to avoid repeated alerts
+                            storm_window.clear()
+
                     except Exception as _eng_e:
                         print(f"[CON][WARN] Engine response failed: {_eng_e} — using legacy routing")
                         engine = None   # disable for subsequent rows, fall through below
@@ -364,8 +505,8 @@ def run():
                         routing_note   = "Graph unavailable"
                         routing_method = "none"
 
-                    print(f"[CON] [{ts}] ⚡ ANOMALY #{anomalies_found} | Row {rows_seen}")
-                    print(f"         Flow   : {manufacturer[:30]} → {distributor[:25]} → {retailer[:25]}")
+                    print(f"[CON] [{ts}] ANOMALY #{anomalies_found} | Row {rows_seen}")
+                    print(f"         Flow   : {manufacturer[:30]} -> {distributor[:25]} -> {retailer[:25]}")
                     print(f"         Qty    : {qty:.0f} | Z={z_score} | Method: {routing_method}")
                     if alternate_route:
                         print(f"         Route  : {alternate_route[:90]}")

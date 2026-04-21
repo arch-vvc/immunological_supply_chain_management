@@ -133,7 +133,7 @@ def run(interval: float, disruption_after: float, multi: bool):
     if DISRUPTION_FLAG.exists():
         DISRUPTION_FLAG.unlink()
 
-    print(f"[SIM] Streaming fresh synthetic data → {LIVE_FEED}")
+    print(f"[SIM] Streaming fresh synthetic data -> {LIVE_FEED}")
     print(f"[SIM] Interval : {interval}s per row")
     if disruption_after:
         print(f"[SIM] Disruption fires at t+{disruption_after}s"
@@ -171,15 +171,15 @@ def run(interval: float, disruption_after: float, multi: bool):
             last_disruption = elapsed
             DISRUPTION_FLAG.write_text(
                 f"Disruption #{disruption_count} at row {row_count}, t={elapsed:.1f}s\n"
-                f"Node: {row['distributor']} → {row['retailer']}\n"
+                f"Node: {row['distributor']} -> {row['retailer']}\n"
             )
-            print(f"[SIM] ⚡ DISRUPTION #{disruption_count} at t={elapsed:.1f}s — "
-                  f"{row['distributor']} → {row['retailer']}")
+            print(f"[SIM] DISRUPTION #{disruption_count} at t={elapsed:.1f}s -- "
+                  f"{row['distributor']} -> {row['retailer']}")
 
         if row_count % 10 == 0:
             ts = datetime.now().strftime("%H:%M:%S")
             print(f"[SIM] [{ts}] Row {row_count:4d} | "
-                  f"{row['manufacturer'][:28]:28s} → "
+                  f"{row['manufacturer'][:28]:28s} -> "
                   f"{row['retailer'][:22]:22s} | qty={row['quantity']}")
 
         time.sleep(interval)

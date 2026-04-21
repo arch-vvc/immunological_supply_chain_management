@@ -357,6 +357,15 @@ with tabs[2]:
         "When a live anomaly occurs, the engine queries this index for the 3 most similar "
         "past disruptions to inform the response strategy."
     )
+    st.info(
+        "**Innate vs Adaptive Memory** — The 100K baseline vectors are pre-seeded from "
+        "synthetic historical pharmaceutical supply chain patterns (innate memory, analogous to "
+        "the immune system's T-cell repertoire developed before first exposure). "
+        "Each resolved live event is encoded and appended via **clonal selection**, so the index "
+        "grows with real operational experience (adaptive memory). "
+        "The longer the system runs, the more weight shifts from innate to adaptive.",
+        icon="🧬"
+    )
 
     mem_df  = load_memory_retrieval()
     mem_rpt = load_memory_report()
@@ -462,183 +471,299 @@ with tabs[3]:
         if not decisions:
             st.warning("Decision log is empty. Run the stream consumer to populate it.")
         else:
-            # Summary metrics
-            severities = [d.get("verdict", {}).get("severity", "?") for d in decisions]
-            n_critical = severities.count("CRITICAL")
-            n_high     = severities.count("HIGH")
-            n_mod      = severities.count("MODERATE")
-            avg_sig    = sum(d.get("verdict", {}).get("signals_activated", 0) for d in decisions) / len(decisions)
-            avg_rec    = [d.get("verdict", {}).get("recovery_estimate_days") for d in decisions]
-            avg_rec    = round(sum(x for x in avg_rec if x is not None) / max(1, sum(1 for x in avg_rec if x is not None)), 1)
+            # Split storm events from normal disruption events
+            storm_events  = [d for d in decisions if d.get("event_type") == "cytokine_storm"]
+            normal_events = [d for d in decisions if d.get("event_type") != "cytokine_storm"]
 
-            c1, c2, c3, c4, c5 = st.columns(5)
-            with c1: metric_card("Total Events",        str(len(decisions)))
-            with c2: metric_card("🔴 Critical",          str(n_critical))
-            with c3: metric_card("🟠 High",              str(n_high))
-            with c4: metric_card("🟡 Moderate",          str(n_mod))
-            with c5: metric_card("Avg Signals Active",  f"{avg_sig:.1f}/4")
+            # Cytokine storm alerts
+            if storm_events:
+                st.error(f"CYTOKINE STORM — {len(storm_events)} cascade event(s) detected")
+                for sd in storm_events:
+                    step0  = (sd.get("thinking") or [{}])[0]
+                    detail = step0.get("data", {})
+                    count  = detail.get("storm_event_count", "?")
+                    nodes  = detail.get("affected_distributors", [])
+                    repeats= detail.get("repeat_hit_nodes", [])
+                    with st.expander(f"Cytokine Storm — {sd.get('timestamp','')[:19]}  |  {count} simultaneous disruptions", expanded=True):
+                        st.markdown(f'<div class="thinking-box">{step0.get("reasoning","")}</div>', unsafe_allow_html=True)
+                        sc1, sc2, sc3 = st.columns(3)
+                        sc1.metric("Disruptions in window", count)
+                        sc2.metric("Affected nodes", len(nodes))
+                        sc3.metric("Repeat-hit (overloaded)", len(repeats))
+                        if repeats:
+                            st.warning(f"Critical overload on: {', '.join(repeats)}")
+                        constituent = detail.get("constituent_events", [])
+                        if constituent:
+                            st.dataframe(pd.DataFrame(constituent), use_container_width=True, hide_index=True)
+                st.markdown("---")
 
-            st.markdown("---")
+            decisions = normal_events   # scope rest of tab to individual events
 
-            # Event selector
-            event_labels = [
-                f"#{i+1}  {d.get('timestamp','')[:19]}  │  "
-                f"{d.get('verdict',{}).get('severity','?')}  │  "
-                f"{d.get('manufacturer','?')[:18]} → {d.get('retailer','?')[:18]}"
-                for i, d in enumerate(decisions)
-            ]
-            sel = st.selectbox(
-                "Select anomaly event to inspect:",
-                range(len(decisions)),
-                format_func=lambda i: event_labels[i],
-                index=len(decisions) - 1,
-            )
-            d = decisions[sel]
-            v = d.get("verdict", {})
-
-            # Event header
-            sev_icon = {"CRITICAL": "🔴", "HIGH": "🟠", "MODERATE": "🟡"}.get(v.get("severity"), "⚪")
-            st.markdown(f"## {sev_icon} {v.get('severity','?')} Severity Event")
-
-            h1, h2, h3, h4, h5, h6 = st.columns(6)
-            h1.markdown(f"**Manufacturer**\n\n`{d.get('manufacturer','?')[:28]}`")
-            h2.markdown(f"**Disrupted via**\n\n`{d.get('distributor','?')[:28]}`")
-            h3.markdown(f"**Retailer**\n\n`{d.get('retailer','?')[:28]}`")
-            h4.metric("Z-Score",          f"{d.get('z_score',0):.2f}")
-            h5.metric("Signals Activated",f"{v.get('signals_activated',0)}/4")
-            h6.metric("Est. Recovery",    f"{v.get('recovery_estimate_days','?')} days")
-
-            st.markdown("---")
-
-            # Chain-of-thought
-            st.markdown("### 🧠 Chain-of-Thought Reasoning")
-
-            PHASE_ICONS = {
-                "DETECTION":          "🔍",
-                "MEMORY RECALL":      "🧬",
-                "ALTERNATE ROUTE":    "🗺️",
-                "BACKUP SUPPLIER":    "🏭",
-                "INVENTORY TRANSFER": "📦",
-                "FINAL VERDICT":      "✅",
-            }
-
-            for step in d.get("thinking", []):
-                phase  = step.get("phase", "")
-                icon   = PHASE_ICONS.get(phase, "▪️")
-                title  = step.get("title", "")
-                reason = step.get("reasoning", "")
-                data   = step.get("data", {})
-
-                with st.expander(f"{icon} Step {step.get('step','')} — {phase}: {title}", expanded=True):
-                    st.markdown(f'<div class="thinking-box">{reason}</div>', unsafe_allow_html=True)
-
-                    if data:
-                        if phase == "MEMORY RECALL" and data.get("matches"):
-                            st.markdown("**Closest historical matches:**")
-                            mem_rows = [{
-                                "Rank":         m.get("rank"),
-                                "Distance":     m.get("distance"),
-                                "Recovery (d)": m.get("recovery_days"),
-                                "Response":     m.get("response_type"),
-                                "Disruption":   m.get("disruption_type"),
-                            } for m in data["matches"]]
-                            st.dataframe(pd.DataFrame(mem_rows), use_container_width=True, hide_index=True)
-                            st.success(
-                                f"📅 Estimated recovery: **{data.get('avg_recovery_days')} days**  ·  "
-                                f"Recommended: **{data.get('recommended_response','?')}**"
-                            )
-
-                        elif phase == "ALTERNATE ROUTE":
-                            orig = data.get("original_route","")
-                            alt  = data.get("alternate_route","")
-                            c1, c2 = st.columns(2)
-                            with c1:
-                                st.markdown(f"**Original (disrupted):**")
-                                st.code(orig)
-                            with c2:
-                                st.markdown(f"**Alternate route ({data.get('method','?')}):**")
-                                st.code(alt if alt else "None found")
-                            if data.get("top_candidates"):
-                                st.markdown("**Candidates evaluated:**")
-                                st.dataframe(pd.DataFrame(data["top_candidates"]), use_container_width=True, hide_index=True)
-                            if data.get("blacklisted"):
-                                st.warning(f"🚫 Blacklisted nodes excluded: {', '.join(data['blacklisted'][:5])}")
-
-                        elif phase == "BACKUP SUPPLIER" and data.get("top_backups"):
-                            st.markdown(f"**{data.get('affected_retailers','?')} affected retailers · "
-                                        f"{data.get('alternatives_found','?')} alternatives scanned**")
-                            sup_rows = [{
-                                "Supplier":     b.get("entity","?"),
-                                "Type":         b.get("type","?"),
-                                "Backup Score": b.get("backup_score","?"),
-                                "Risk":         b.get("composite_risk","?"),
-                                "Volume":       b.get("out_volume","?"),
-                            } for b in data["top_backups"]]
-                            st.dataframe(pd.DataFrame(sup_rows), use_container_width=True, hide_index=True)
-
-                        elif phase == "INVENTORY TRANSFER" and data.get("top_transfers"):
-                            st.markdown(
-                                f"**State: {data.get('retailer_state','?')}  ·  "
-                                f"Fuel multiplier: {data.get('fuel_multiplier','?')}x  ·  "
-                                f"{data.get('candidates_found','?')} candidates found**"
-                            )
-                            inv_rows = [{
-                                "Distributor":    t.get("distributor","?"),
-                                "Transfer Score": t.get("transfer_score","?"),
-                                "Risk":           t.get("composite_risk","?"),
-                                "Spare Capacity": t.get("spare_capacity","?"),
-                                "Est. Days":      t.get("estimated_days","?"),
-                            } for t in data["top_transfers"]]
-                            st.dataframe(pd.DataFrame(inv_rows), use_container_width=True, hide_index=True)
-
-                        elif phase == "DETECTION" and data.get("active_blacklist"):
-                            st.warning(f"🚫 Nodes currently blacklisted (recently disrupted): "
-                                       f"{', '.join(data['active_blacklist'])}")
-
-            # Ranked action plan
-            st.markdown("---")
-            st.markdown("### 📋 Ranked Action Plan")
-            actions = d.get("actions", [])
-            if not actions:
-                st.warning("No actions generated.")
+            if not decisions:
+                st.info("Only cytokine storm events recorded so far.")
             else:
-                for a in actions:
-                    conf = float(a.get("confidence", 0))
-                    pri_icon = {1: "🥇", 2: "🥈", 3: "🥉"}.get(a.get("priority"), "▫️")
-                    col_act, col_conf = st.columns([4, 1])
-                    with col_act:
-                        st.markdown(
-                            f"{pri_icon} **{a.get('action','')}**  \n"
-                            f"→ {a.get('label','')}  \n"
-                            f"<small style='color:#6a8aaa'>{a.get('detail','')[:90]}</small>",
-                            unsafe_allow_html=True
+                # Summary metrics
+                severities = [d.get("verdict", {}).get("severity", "?") for d in decisions]
+                n_critical = severities.count("CRITICAL")
+                n_high     = severities.count("HIGH")
+                n_mod      = severities.count("MODERATE")
+                avg_sig    = sum(d.get("verdict", {}).get("signals_activated", 0) for d in decisions) / len(decisions)
+                avg_rec    = [d.get("verdict", {}).get("recovery_estimate_days") for d in decisions]
+                avg_rec    = round(sum(x for x in avg_rec if x is not None) / max(1, sum(1 for x in avg_rec if x is not None)), 1)
+
+                c1, c2, c3, c4, c5 = st.columns(5)
+                with c1: metric_card("Total Events",       str(len(decisions)))
+                with c2: metric_card("Critical",           str(n_critical))
+                with c3: metric_card("High",               str(n_high))
+                with c4: metric_card("Moderate",           str(n_mod))
+                with c5: metric_card("Avg Signals Active", f"{avg_sig:.1f}/4")
+
+                st.markdown("---")
+
+                # ── Recovery Timeline + State Heatmap ──────────────────────
+                chart_l, chart_r = st.columns([3, 2])
+
+                with chart_l:
+                    tl_rows = []
+                    for i, dec in enumerate(decisions):
+                        vv = dec.get("verdict", {})
+                        rec = vv.get("recovery_estimate_days")
+                        if rec is not None:
+                            tl_rows.append({
+                                "Event": i + 1,
+                                "Time": dec.get("timestamp", "")[:19],
+                                "Recovery Days": float(rec),
+                                "Severity": vv.get("severity", "?"),
+                                "Z-Score": float(dec.get("z_score", 0)),
+                                "Distributor": dec.get("distributor", "?")[:22],
+                            })
+                    if tl_rows:
+                        tl_df = pd.DataFrame(tl_rows)
+                        fig_tl = px.line(
+                            tl_df, x="Event", y="Recovery Days",
+                            color="Severity",
+                            color_discrete_map={
+                                "CRITICAL": "#ef5350",
+                                "HIGH":     "#ff9800",
+                                "MODERATE": "#ffeb3b",
+                            },
+                            markers=True, template="plotly_dark",
+                            title="Recovery Timeline — Estimated Days per Event",
+                            hover_data={"Time": True, "Z-Score": ":.2f", "Distributor": True},
                         )
-                    with col_conf:
-                        st.metric("Confidence", f"{conf:.0%}")
-                        st.caption(f"ETA: {a.get('eta_days','?')}d · {a.get('method','?')}")
-                    st.progress(conf)
-                    st.markdown("")
+                        fig_tl.update_layout(
+                            height=300,
+                            margin=dict(l=20, r=20, t=40, b=20),
+                            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+                        )
+                        st.plotly_chart(fig_tl, use_container_width=True)
+                    else:
+                        st.caption("Recovery timeline will appear once events have verdict data.")
 
-            st.markdown("---")
+                with chart_r:
+                    state_rows = [
+                        {"state": dec.get("retailer_state", ""), "severity": dec.get("verdict", {}).get("severity", "?")}
+                        for dec in decisions
+                        if dec.get("retailer_state", "") not in ("", "XX", None)
+                    ]
+                    if state_rows:
+                        state_df = pd.DataFrame(state_rows)
+                        state_counts = state_df.groupby("state").size().reset_index(name="Disruptions")
+                        fig_map = px.choropleth(
+                            state_counts,
+                            locations="state", locationmode="USA-states",
+                            color="Disruptions",
+                            scope="usa",
+                            color_continuous_scale="Reds",
+                            template="plotly_dark",
+                            title="Disruption Heatmap — Events by State",
+                        )
+                        fig_map.update_layout(
+                            height=300,
+                            margin=dict(l=0, r=0, t=40, b=0),
+                            geo=dict(bgcolor="rgba(0,0,0,0)"),
+                        )
+                        st.plotly_chart(fig_map, use_container_width=True)
+                    else:
+                        st.caption("State heatmap will appear once events include retailer_state data.")
 
-            # All events table
-            st.markdown("### 📊 All Response Events")
-            rows = []
-            for i, dec in enumerate(decisions):
-                vv   = dec.get("verdict", {})
-                acts = vv.get("actions_ranked", [])
-                rows.append({
-                    "#":           i + 1,
-                    "Time":        dec.get("timestamp","")[:19],
-                    "Severity":    vv.get("severity","?"),
-                    "Z-Score":     dec.get("z_score","?"),
-                    "Signals":     f"{vv.get('signals_activated',0)}/4",
-                    "Top Action":  acts[0].get("action","?") if acts else "?",
-                    "Recovery(d)": vv.get("recovery_estimate_days","?"),
-                    "Manufacturer":dec.get("manufacturer","?")[:22],
-                    "Retailer":    dec.get("retailer","?")[:22],
-                })
-            st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+                st.markdown("---")
+
+                # Event selector
+                event_labels = [
+                    f"#{i+1}  {d.get('timestamp','')[:19]}  |  "
+                    f"{d.get('verdict',{}).get('severity','?')}  |  "
+                    f"{d.get('manufacturer','?')[:18]} -> {d.get('retailer','?')[:18]}"
+                    for i, d in enumerate(decisions)
+                ]
+                sel = st.selectbox(
+                    "Select anomaly event to inspect:",
+                    range(len(decisions)),
+                    format_func=lambda i: event_labels[i],
+                    index=len(decisions) - 1,
+                )
+                d = decisions[sel]
+                v = d.get("verdict", {})
+
+                # Event header
+                sev_icon = {"CRITICAL": "🔴", "HIGH": "🟠", "MODERATE": "🟡"}.get(v.get("severity"), "⚪")
+                st.markdown(f"## {sev_icon} {v.get('severity','?')} Severity Event")
+
+                h1, h2, h3, h4, h5, h6 = st.columns(6)
+                h1.markdown(f"**Manufacturer**\n\n`{d.get('manufacturer','?')[:28]}`")
+                h2.markdown(f"**Disrupted via**\n\n`{d.get('distributor','?')[:28]}`")
+                h3.markdown(f"**Retailer**\n\n`{d.get('retailer','?')[:28]}`")
+                h4.metric("Z-Score",          f"{d.get('z_score',0):.2f}")
+                h5.metric("Signals Activated",f"{v.get('signals_activated',0)}/4")
+                h6.metric("Est. Recovery",    f"{v.get('recovery_estimate_days','?')} days")
+
+                st.markdown("---")
+
+                # Chain-of-thought
+                st.markdown("### 🧠 Chain-of-Thought Reasoning")
+
+                PHASE_ICONS = {
+                    "DETECTION":          "🔍",
+                    "MEMORY RECALL":      "🧬",
+                    "ALTERNATE ROUTE":    "🗺️",
+                    "BACKUP SUPPLIER":    "🏭",
+                    "INVENTORY TRANSFER": "📦",
+                    "FINAL VERDICT":      "✅",
+                    "CYTOKINE STORM":     "⚡",
+                }
+
+                for step in d.get("thinking", []):
+                    phase  = step.get("phase", "")
+                    icon   = PHASE_ICONS.get(phase, "▪️")
+                    title  = step.get("title", "")
+                    reason = step.get("reasoning", "")
+                    data   = step.get("data", {})
+
+                    with st.expander(f"{icon} Step {step.get('step','')} — {phase}: {title}", expanded=True):
+                        st.markdown(f'<div class="thinking-box">{reason}</div>', unsafe_allow_html=True)
+
+                        if data:
+                            if phase == "MEMORY RECALL" and data.get("matches"):
+                                st.markdown("**Closest historical matches:**")
+                                mem_rows = [{
+                                    "Rank":         m.get("rank"),
+                                    "Distance":     m.get("distance"),
+                                    "Recovery (d)": m.get("recovery_days"),
+                                    "Response":     m.get("response_type"),
+                                    "Disruption":   m.get("disruption_type"),
+                                } for m in data["matches"]]
+                                st.dataframe(pd.DataFrame(mem_rows), use_container_width=True, hide_index=True)
+                                st.success(
+                                    f"📅 Estimated recovery: **{data.get('avg_recovery_days')} days**  ·  "
+                                    f"Recommended: **{data.get('recommended_response','?')}**"
+                                )
+
+                            elif phase == "ALTERNATE ROUTE":
+                                orig = data.get("original_route","")
+                                alt  = data.get("alternate_route","")
+                                c1, c2 = st.columns(2)
+                                with c1:
+                                    st.markdown(f"**Original (disrupted):**")
+                                    st.code(orig)
+                                with c2:
+                                    st.markdown(f"**Alternate route ({data.get('method','?')}):**")
+                                    st.code(alt if alt else "None found")
+                                decay = data.get("decay_factor", 1.0)
+                                if decay >= 0.9:
+                                    decay_label = "Fresh (no recent overuse)"
+                                    decay_color = "green"
+                                elif decay >= 0.7:
+                                    decay_label = "Moderate load (used recently)"
+                                    decay_color = "orange"
+                                else:
+                                    decay_label = "High load — confidence reduced"
+                                    decay_color = "red"
+                                st.markdown(
+                                    f"**Route confidence decay:** "
+                                    f"<span style='color:{decay_color};font-weight:bold'>{decay:.2f} — {decay_label}</span>",
+                                    unsafe_allow_html=True
+                                )
+                                if data.get("top_candidates"):
+                                    st.markdown("**Candidates evaluated:**")
+                                    st.dataframe(pd.DataFrame(data["top_candidates"]), use_container_width=True, hide_index=True)
+                                if data.get("blacklisted"):
+                                    st.warning(f"🚫 Blacklisted nodes excluded: {', '.join(data['blacklisted'][:5])}")
+
+                            elif phase == "BACKUP SUPPLIER" and data.get("top_backups"):
+                                st.markdown(f"**{data.get('affected_retailers','?')} affected retailers · "
+                                            f"{data.get('alternatives_found','?')} alternatives scanned**")
+                                sup_rows = [{
+                                    "Supplier":     b.get("entity","?"),
+                                    "Type":         b.get("type","?"),
+                                    "Backup Score": b.get("backup_score","?"),
+                                    "Risk":         b.get("composite_risk","?"),
+                                    "Volume":       b.get("out_volume","?"),
+                                } for b in data["top_backups"]]
+                                st.dataframe(pd.DataFrame(sup_rows), use_container_width=True, hide_index=True)
+
+                            elif phase == "INVENTORY TRANSFER" and data.get("top_transfers"):
+                                st.markdown(
+                                    f"**State: {data.get('retailer_state','?')}  ·  "
+                                    f"Fuel multiplier: {data.get('fuel_multiplier','?')}x  ·  "
+                                    f"{data.get('candidates_found','?')} candidates found**"
+                                )
+                                inv_rows = [{
+                                    "Distributor":    t.get("distributor","?"),
+                                    "Transfer Score": t.get("transfer_score","?"),
+                                    "Risk":           t.get("composite_risk","?"),
+                                    "Spare Capacity": t.get("spare_capacity","?"),
+                                    "Est. Days":      t.get("estimated_days","?"),
+                                } for t in data["top_transfers"]]
+                                st.dataframe(pd.DataFrame(inv_rows), use_container_width=True, hide_index=True)
+
+                            elif phase == "DETECTION" and data.get("active_blacklist"):
+                                st.warning(f"🚫 Nodes currently blacklisted (recently disrupted): "
+                                           f"{', '.join(data['active_blacklist'])}")
+
+                # Ranked action plan
+                st.markdown("---")
+                st.markdown("### 📋 Ranked Action Plan")
+                actions = d.get("actions", [])
+                if not actions:
+                    st.warning("No actions generated.")
+                else:
+                    for a in actions:
+                        conf = float(a.get("confidence", 0))
+                        pri_icon = {1: "🥇", 2: "🥈", 3: "🥉"}.get(a.get("priority"), "▫️")
+                        col_act, col_conf = st.columns([4, 1])
+                        with col_act:
+                            st.markdown(
+                                f"{pri_icon} **{a.get('action','')}**  \n"
+                                f"-> {a.get('label','')}  \n"
+                                f"<small style='color:#6a8aaa'>{a.get('detail','')[:90]}</small>",
+                                unsafe_allow_html=True
+                            )
+                        with col_conf:
+                            st.metric("Confidence", f"{conf:.0%}")
+                            st.caption(f"ETA: {a.get('eta_days','?')}d · {a.get('method','?')}")
+                        st.progress(conf)
+                        st.markdown("")
+
+                st.markdown("---")
+
+                # All events table
+                st.markdown("### 📊 All Response Events")
+                rows = []
+                for i, dec in enumerate(decisions):
+                    vv   = dec.get("verdict", {})
+                    acts = vv.get("actions_ranked", [])
+                    rows.append({
+                        "#":           i + 1,
+                        "Time":        dec.get("timestamp","")[:19],
+                        "Severity":    vv.get("severity","?"),
+                        "Z-Score":     dec.get("z_score","?"),
+                        "Signals":     f"{vv.get('signals_activated',0)}/4",
+                        "Top Action":  acts[0].get("action","?") if acts else "?",
+                        "Recovery(d)": vv.get("recovery_estimate_days","?"),
+                        "Manufacturer":dec.get("manufacturer","?")[:22],
+                        "Retailer":    dec.get("retailer","?")[:22],
+                    })
+                st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
 
         st.markdown("---")
         if st.button("🔄 Refresh decisions"):
