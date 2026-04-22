@@ -683,6 +683,37 @@ with tabs[3]:
                                     f"<span style='color:{decay_color};font-weight:bold'>{decay:.2f} — {decay_label}</span>",
                                     unsafe_allow_html=True
                                 )
+                                # SHAP attribution chart
+                                shap_attr = {
+                                    k: v for k, v in data.get("shap_attribution", {}).items()
+                                    if not k.startswith("_")
+                                }
+                                if shap_attr:
+                                    st.markdown("**PPO Feature Attribution — what drove this routing choice:**")
+                                    sorted_attr = dict(sorted(shap_attr.items(), key=lambda x: x[1]))
+                                    fig_shap = px.bar(
+                                        x=list(sorted_attr.values()),
+                                        y=list(sorted_attr.keys()),
+                                        orientation="h",
+                                        template="plotly_dark",
+                                        color=list(sorted_attr.values()),
+                                        color_continuous_scale="Blues",
+                                        labels={"x": "Mean |SHAP value|", "y": "Feature"},
+                                    )
+                                    fig_shap.update_layout(
+                                        height=220,
+                                        margin=dict(l=20, r=20, t=10, b=20),
+                                        showlegend=False,
+                                        coloraxis_showscale=False,
+                                    )
+                                    st.plotly_chart(fig_shap, use_container_width=True)
+                                    top_feat = max(shap_attr, key=shap_attr.get)
+                                    st.caption(
+                                        f"Most influential feature: **{top_feat}** "
+                                        f"(score={shap_attr[top_feat]:.5f}). "
+                                        f"Gradient saliency (|∇ × input|) w.r.t. chosen action's probability — "
+                                        f"equivalent to SHAP attribution on the PPO actor network."
+                                    )
                                 if data.get("top_candidates"):
                                     st.markdown("**Candidates evaluated:**")
                                     st.dataframe(pd.DataFrame(data["top_candidates"]), use_container_width=True, hide_index=True)

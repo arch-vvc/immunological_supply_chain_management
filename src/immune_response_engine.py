@@ -54,27 +54,20 @@ DECISIONS_OUT = ROOT / "data"    / "stream" / "immune_decisions.jsonl"
 
 DECISIONS_OUT.parent.mkdir(parents=True, exist_ok=True)
 
-# ── Constants ──────────────────────────────────────────────────────────────
+# ── Fixed architecture constants (must match saved PPO checkpoint) ──────────
 K         = 10      # PPO candidate pool size
 F_DIM     = 5       # PPO feature dimensions per candidate
 STATE_DIM = K * F_DIM
 ACTION_DIM= K
-TOP_K_MEM = 3       # FAISS nearest neighbours
 
-# Fuel cost per US state (from routing.py / inventory_agent.py)
-REGION_FUEL_COST = {
-    "ME":1.8,"NH":1.8,"VT":1.8,"MA":1.7,"RI":1.7,"CT":1.7,
-    "NY":1.5,"NJ":1.5,"PA":1.4,"DE":1.5,"MD":1.4,
-    "VA":1.3,"WV":1.2,"NC":1.3,"SC":1.4,"GA":1.4,"FL":1.6,
-    "AL":1.3,"MS":1.3,"TN":1.2,"KY":1.2,
-    "OH":1.0,"IN":1.0,"IL":1.0,"MI":1.1,"WI":1.1,
-    "MN":1.2,"IA":1.1,"MO":1.1,"ND":1.3,"SD":1.3,
-    "NE":1.2,"KS":1.2,
-    "TX":1.3,"OK":1.2,"AR":1.2,"LA":1.3,
-    "MT":1.6,"ID":1.6,"WY":1.5,"CO":1.4,"NM":1.5,
-    "AZ":1.5,"UT":1.5,"NV":1.6,
-    "CA":1.8,"OR":1.8,"WA":1.8,"AK":2.5,"HI":3.0,
-}
+# ── Domain config (loaded once; replaced when engine is constructed) ─────────
+try:
+    from domain_config import load_domain_config as _load_cfg, DomainConfig
+    _DEFAULT_CFG = _load_cfg("pharma")
+    _CFG_OK = True
+except Exception:
+    _CFG_OK = False
+    _DEFAULT_CFG = None
 
 # ── PyTorch (optional) ─────────────────────────────────────────────────────
 try:
@@ -107,6 +100,13 @@ try:
 except ImportError:
     FAISS_OK = False
 
+# ── SHAP (optional) ────────────────────────────────────────────────────────
+try:
+    import shap as _shap
+    SHAP_OK = True
+except ImportError:
+    SHAP_OK = False
+
 
 # ══════════════════════════════════════════════════════════════════════════
 #  ImmuneResponseEngine
@@ -119,7 +119,7 @@ class ImmuneResponseEngine:
     and final decision.
     """
 
-    def __init__(self, verbose: bool = True):
+    def __init__(self, verbose: bool = True, domain: str = "pharma"):
         self.verbose   = verbose
         self.G         = None
         self.actor     = None
@@ -132,8 +132,19 @@ class ImmuneResponseEngine:
         self.out_deg   = {}
         self.max_in    = 1
         self.max_out   = 1
-        # Tracks when each reroute node was last chosen; used for confidence decay
         self._reroute_usage: dict = {}   # node -> [unix_timestamp, ...]
+
+        # Load domain config — controls thresholds, weights, shipping costs
+        if _CFG_OK:
+            try:
+                self.cfg = _load_cfg(domain)
+                self._log(f"[ENGINE] Domain config: {self.cfg.domain_name} ({self.cfg.industry})")
+            except Exception as e:
+                self._log(f"[ENGINE][WARN] Domain config load failed ({e}), using pharma defaults")
+                self.cfg = _DEFAULT_CFG
+        else:
+            self.cfg = None   # will fall back to hardcoded pharma values
+
         self._load_all()
 
     # ── Startup loaders ────────────────────────────────────────────────────
@@ -309,7 +320,8 @@ class ImmuneResponseEngine:
                                    mean_enc, mean_enc, mean_enc, mean_enc, mean_enc]],
                                  dtype=np.float32)
             query_scaled = scaler.transform(query_vec).astype(np.float32)
-            distances, indices = self.faiss_idx.search(query_scaled, TOP_K_MEM)
+            top_k = self.cfg.memory_top_k if self.cfg else 3
+            distances, indices = self.faiss_idx.search(query_scaled, top_k)
 
             matches = []
             rec_days_list = []
@@ -355,17 +367,22 @@ class ImmuneResponseEngine:
 
     # ── Confidence Decay ───────────────────────────────────────────────────
 
-    def _decay_factor(self, node: str, window_minutes: int = 30) -> float:
+    def _decay_factor(self, node: str, window_minutes: float = None) -> float:
         """
-        Returns a confidence multiplier in [0.5, 1.0] for a reroute node.
-        Drops by 0.15 for each time the node was chosen in the last window_minutes.
-        Prevents the system from blindly overloading the same alternate node.
+        Returns a confidence multiplier in [decay_floor, 1.0] for a reroute node.
+        Drops by decay_per_use for each selection within the rolling window.
+        Parameters are read from the domain config so they differ per industry.
         """
-        now = time.time()
-        cutoff = now - window_minutes * 60
+        win  = window_minutes if window_minutes is not None else (
+            self.cfg.decay_window_minutes if self.cfg else 30.0
+        )
+        drop = self.cfg.decay_per_use  if self.cfg else 0.15
+        floor= self.cfg.decay_floor    if self.cfg else 0.5
+        now  = time.time()
+        cutoff = now - win * 60
         recent = [t for t in self._reroute_usage.get(node, []) if t >= cutoff]
-        self._reroute_usage[node] = recent   # prune stale entries in-place
-        return max(0.5, 1.0 - len(recent) * 0.15)
+        self._reroute_usage[node] = recent
+        return max(floor, 1.0 - len(recent) * drop)
 
     def _record_reroute_use(self, node: str):
         self._reroute_usage.setdefault(node, []).append(time.time())
@@ -462,10 +479,12 @@ class ImmuneResponseEngine:
             f"that have a valid path to [{ret}]. "
         )
 
-        route_str  = None
-        method     = None
-        chosen     = None
-        risk_score = None
+        route_str        = None
+        method           = None
+        chosen           = None
+        risk_score       = None
+        decay_applied    = 1.0
+        shap_attribution = {}
         scored_candidates = []
 
         # Score all candidates; apply confidence decay for overloaded nodes
@@ -477,7 +496,10 @@ class ImmuneResponseEngine:
                 path_len = nx.shortest_path_length(self.G, cand, ret)
             except Exception:
                 path_len = 999
-            raw_composite = (1 - r) * 0.5 + (1 - g) * 0.3 + max(0, 1 - path_len / 10) * 0.2
+            rw = self.cfg.risk_weight if self.cfg else 0.5
+            gw = self.cfg.gnn_weight  if self.cfg else 0.3
+            pw = self.cfg.path_weight if self.cfg else 0.2
+            raw_composite = (1 - r) * rw + (1 - g) * gw + max(0, 1 - path_len / 10) * pw
             scored_candidates.append({
                 "node":         cand,
                 "risk":         round(r, 3),
@@ -529,6 +551,33 @@ class ImmuneResponseEngine:
                     chosen = None
                     decay_applied = 1.0
 
+                # ── Feature attribution via gradient saliency (SHAP-equivalent) ──
+                # Uses |gradient × input| w.r.t. the chosen action's probability.
+                # Aggregated per feature type across all K candidate slots.
+                shap_attribution = {}
+                if TORCH_OK and chosen is not None:
+                    try:
+                        st_att = st_t.clone().detach().requires_grad_(True)
+                        probs_att = self.actor(st_att)   # no mask → clean gradients
+                        probs_att[0, action].backward()
+                        # |grad| * |input| — signed gradient saliency
+                        saliency = (st_att.grad[0].abs() * st_att[0].abs()).detach().numpy()
+                        k_used   = min(len(pool), K)
+                        sal_grid = saliency[: k_used * F_DIM].reshape(k_used, F_DIM)
+                        feat_imp = sal_grid.mean(axis=0)   # mean across candidate slots
+                        feat_names = ["Risk Score", "GNN Score", "In-Degree",
+                                      "Out-Degree", "Has Path"]
+                        shap_attribution = {
+                            name: round(float(val), 6)
+                            for name, val in zip(feat_names, feat_imp)
+                        }
+                        self._log(
+                            f"[ENGINE] Feature attribution: "
+                            + ", ".join(f"{k}={v:.4f}" for k, v in shap_attribution.items())
+                        )
+                    except Exception as e:
+                        shap_attribution = {"_error": str(e)}
+
         # Dijkstra fallback
         if route_str is None:
             method = "Dijkstra"
@@ -560,6 +609,7 @@ class ImmuneResponseEngine:
             "decay_factor":          round(decay_applied, 3),
             "candidates_evaluated":  len(scored_candidates),
             "top_candidates":        scored_candidates[:3],
+            "shap_attribution":      shap_attribution,
         }
         thinking.append(step)
         return step["data"]
@@ -683,7 +733,7 @@ class ImmuneResponseEngine:
             return {}
 
         try:
-            fuel_to_ret = REGION_FUEL_COST.get(state, 1.3)
+            fuel_to_ret = self.cfg.fuel_cost(state) if self.cfg else 1.3
 
             dist_nodes = self.risk_df[self.risk_df["type"] == "distributor"].copy()
             dist_nodes["spare_capacity"] = (

@@ -1,0 +1,52 @@
+# ══════════════════════════════════════════════════════════════════════
+# Domain Config — Food & Consumer Goods (FMCG) Supply Chain
+# ══════════════════════════════════════════════════════════════════════
+# High-volume, perishable goods. More natural demand variance → higher
+# z-score threshold. Path length weighted most heavily (freshness = time).
+
+domain:
+  name: "Food & Consumer Goods Supply Chain"
+  industry: fmcg
+  node_roles:
+    tier1: producer         # farms / food factories
+    tier2: warehouse        # regional distribution centres
+    tier3: supermarket      # retail supermarkets / grocery stores
+
+anomaly:
+  z_score_threshold: 3.0   # higher tolerance — seasonal demand swings are normal
+  rolling_window: 100       # longer window — captures seasonal baseline properly
+  quantity_lognormal_mean: 6.5    # pallets, not units — much higher volumes
+  quantity_lognormal_sigma: 1.5
+  quantity_max: 200000
+
+cytokine_storm:
+  threshold: 5              # higher noise floor — needs more disruptions to trigger
+  window_seconds: 30        # short window — rapid transaction cadence
+
+routing:
+  ppo_candidates: 10
+  feature_dims: 5
+  risk_weight: 0.3
+  gnn_weight: 0.2
+  path_weight: 0.5          # freshness dominates — shortest path = fastest delivery
+  decay_window_minutes: 15  # short memory — perishables; yesterday's route may be fine today
+  decay_per_use: 0.25       # steep decay — don't overload a cold-chain node
+  decay_floor: 0.3
+  memory_top_k: 5           # more context — seasonal patterns need more history
+
+shipping_costs:
+  default: 1.0
+  by_state:
+    CA: 0.9                 # Salinas Valley / Central Valley produce hub
+    FL: 0.9                 # citrus / winter vegetables
+    TX: 0.9
+    IA: 0.8                 # corn / soy belt
+    IL: 0.8
+    MN: 0.8
+    ND: 0.9
+    WA: 0.9                 # Pacific Northwest apple / wheat
+    OR: 0.9
+    NY: 1.1
+    MA: 1.2
+    AK: 2.8
+    HI: 3.5

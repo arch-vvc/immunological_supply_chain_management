@@ -344,7 +344,7 @@ def emit_cytokine_storm(storm_events: list, decisions_path: Path):
 
 
 # ── Main loop ─────────────────────────────────────────────────────────────
-def run():
+def run(domain: str = "pharma"):
     import random as _random
     global random
     import random
@@ -357,7 +357,7 @@ def run():
     engine = None
     if _ENGINE_AVAILABLE:
         try:
-            engine = ImmuneResponseEngine(verbose=False)
+            engine = ImmuneResponseEngine(verbose=False, domain=domain)
             print("[CON] ImmuneResponseEngine loaded ✓ — full chain-of-thought responses enabled\n")
         except Exception as _e:
             print(f"[CON][WARN] Engine init failed: {_e} — falling back to legacy routing\n")
@@ -536,7 +536,30 @@ def run():
         time.sleep(0.1)
 
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description="Supply Chain Stream Consumer")
+    parser.add_argument(
+        "--domain", type=str, default="pharma",
+        help="Domain config to load from config/<domain>.yaml (default: pharma)"
+    )
+    args = parser.parse_args()
+
+    # Patch module-level thresholds from domain config before run()
     try:
-        run()
+        import sys as _sys
+        _sys.path.insert(0, str(ROOT / "src"))
+        from domain_config import load_domain_config as _lcfg
+        _dc = _lcfg(args.domain)
+        ZSCORE_THRESH        = _dc.z_score_threshold
+        CYTOKINE_THRESHOLD   = _dc.cytokine_threshold
+        CYTOKINE_WINDOW_SECS = _dc.cytokine_window_secs
+        WINDOW_SIZE          = _dc.rolling_window
+        print(f"[CON] Domain: {_dc.domain_name}")
+        print(f"[CON] Z-threshold={ZSCORE_THRESH} | Storm={CYTOKINE_THRESHOLD} in {CYTOKINE_WINDOW_SECS}s | Window={WINDOW_SIZE}")
+    except Exception as _e:
+        print(f"[CON][WARN] Could not load domain config: {_e} — using defaults")
+
+    try:
+        run(domain=args.domain)
     except KeyboardInterrupt:
         print("\n[CON] Stopped by user.")

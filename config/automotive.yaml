@@ -1,0 +1,55 @@
+# ══════════════════════════════════════════════════════════════════════
+# Domain Config — Automotive Parts Supply Chain
+# ══════════════════════════════════════════════════════════════════════
+# Same pipeline, different domain. Swap this file via --domain automotive.
+# Reflects JIT (Just-In-Time) manufacturing reality: even 2 disruptions
+# can halt an assembly line, so thresholds are tighter.
+
+domain:
+  name: "Automotive Parts Supply Chain"
+  industry: automotive
+  node_roles:
+    tier1: oem              # original equipment manufacturers (Ford, GM, Toyota)
+    tier2: tier1_supplier   # first-tier suppliers (Bosch, Denso, Magna)
+    tier3: assembly_plant   # end assembly plants / dealerships
+
+anomaly:
+  z_score_threshold: 2.0   # tighter — parts shortages cascade to line stoppages
+  rolling_window: 30        # shorter — automotive demand is spikier (model year cycles)
+  quantity_lognormal_mean: 4.5    # fewer units (engine blocks, not pills)
+  quantity_lognormal_sigma: 0.9
+  quantity_max: 5000
+
+cytokine_storm:
+  threshold: 2              # even 2 simultaneous failures can halt a JIT line
+  window_seconds: 120       # longer window — slower transaction cadence
+
+routing:
+  ppo_candidates: 10
+  feature_dims: 5
+  risk_weight: 0.4
+  gnn_weight: 0.2
+  path_weight: 0.4          # path length weighted more — delivery speed is critical
+  decay_window_minutes: 60  # longer memory — production line disruptions last longer
+  decay_per_use: 0.20       # steeper penalty — fewer viable alternate suppliers
+  decay_floor: 0.4
+  memory_top_k: 3
+
+shipping_costs:
+  default: 1.5              # heavier goods = higher base shipping cost
+  by_state:
+    MI: 1.0                 # Detroit / automotive heartland
+    OH: 1.0                 # Cleveland / Columbus
+    IN: 1.0                 # Indianapolis
+    IL: 1.1                 # Chicago
+    KY: 1.1                 # Toyota Georgetown plant
+    TN: 1.2                 # Volkswagen Chattanooga
+    SC: 1.3                 # BMW Spartanburg
+    AL: 1.3                 # Mercedes Vance, Honda Lincoln
+    TX: 1.4
+    CA: 1.8
+    NY: 1.6
+    FL: 1.7
+    WA: 1.8
+    AK: 3.5
+    HI: 4.0
