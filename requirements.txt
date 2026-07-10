@@ -24,3 +24,6 @@ torch-geometric>=2.4.0
 # stage 12
 xgboost>=2.0.0
 faiss-cpu>=1.7.0
+
+# AI agent (local LLM via Ollama — zero-cost, no API keys)
+requests>=2.31.0

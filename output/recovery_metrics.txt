@@ -5,20 +5,21 @@ Training samples : 80,000
 Test samples     : 20,000
 
 ── Regression (full_recovery_days) ──
-MAE  : 33.96 days
-R²   : 0.2883
+MAE  : 31.63 days
+R²   : 0.3796
 
 ── Classification (response_type) ──
-Accuracy : 0.4738
+Accuracy : 0.5610
+Macro F1 : 0.4099
 
                       precision    recall  f1-score   support
 
-Alternative Supplier       0.69      0.75      0.72      8870
-   Combined Strategy       0.36      0.33      0.34      2315
-      Customer Delay       0.23      0.19      0.21      2583
-    Inventory Buffer       0.23      0.22      0.22      2550
-  Production Reroute       0.28      0.26      0.27      3682
+Alternative Supplier       0.73      0.91      0.81      8872
+   Combined Strategy       0.62      0.40      0.49      2333
+      Customer Delay       0.32      0.10      0.15      2486
+    Inventory Buffer       0.25      0.30      0.27      2537
+  Production Reroute       0.33      0.33      0.33      3772
 
-            accuracy                           0.47     20000
-           macro avg       0.36      0.35      0.35     20000
-        weighted avg       0.46      0.47      0.46     20000
+            accuracy                           0.56     20000
+           macro avg       0.45      0.41      0.41     20000
+        weighted avg       0.53      0.56      0.53     20000

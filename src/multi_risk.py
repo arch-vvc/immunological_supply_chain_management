@@ -12,6 +12,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from xgboost import XGBClassifier
 from sklearn.metrics import f1_score
+from sklearn.model_selection import train_test_split
 
 
 INPUT_PATH = os.path.join("data", "supplementary", "disruption_processed.csv")
@@ -43,16 +44,26 @@ def prepare_xy(frame):
 
 
 def train_and_score(frame):
+    """Train on an 80% split and score on the held-out 20% (never on training rows)."""
     x, y = prepare_xy(frame)
+    try:
+        x_train, x_test, y_train, y_test = train_test_split(
+            x, y, test_size=0.2, random_state=42, stratify=y
+        )
+    except ValueError:
+        # a class has too few members to stratify on this subset — fall back to a plain split
+        x_train, x_test, y_train, y_test = train_test_split(
+            x, y, test_size=0.2, random_state=42
+        )
     model = XGBClassifier(
         n_estimators=200,
         max_depth=6,
         random_state=42,
         eval_metric="mlogloss",
     )
-    model.fit(x, y)
-    preds = model.predict(x)
-    return f1_score(y, preds, average="weighted")
+    model.fit(x_train, y_train)
+    preds = model.predict(x_test)
+    return f1_score(y_test, preds, average="weighted")
 
 
 def main():
@@ -77,7 +88,7 @@ def main():
     print(f"Loaded {len(df):,} rows from {INPUT_PATH}")
 
     full_f1 = train_and_score(df)
-    print(f"Weighted F1 (full dataset): {full_f1:.4f}")
+    print(f"Weighted F1 (full dataset, held-out test split): {full_f1:.4f}")
 
     rows = []
     industries = sorted([v for v in df["industry"].dropna().unique()])

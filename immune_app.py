@@ -3,11 +3,12 @@ Immunological Supply Chain — Focused Dashboard
 ===============================================
 PES University Capstone  PW26_RGP_01
 
-4-tab dashboard focused on the real-time immune response system:
+5-tab dashboard focused on the real-time immune response system:
   Tab 1 — Supply Chain Graph    : network topology + risk heatmap
   Tab 2 — Live Stream           : real-time transaction feed + anomaly signal
   Tab 3 — Immune Memory         : FAISS historical recall results
-  Tab 4 — Immune Response       : chain-of-thought decisions per anomaly event
+  Tab 4 — Immune Response       : Decision Trace per anomaly event
+  Tab 5 — AI Agent              : local LLM narration + chat over the live decision trace
 
 Run:
     # Terminal 1 — data stream
@@ -16,18 +17,34 @@ Run:
     # Terminal 2 — immune response engine
     python3 src/stream_consumer.py
 
-    # Terminal 3 — this dashboard
+    # Terminal 3 — (optional, for Tab 5) local LLM
+    ollama serve
+    ollama pull llama3.2:1b
+
+    # Terminal 4 — this dashboard
     streamlit run immune_app.py
 """
 
-import os, pickle, json, warnings, time
+import os, sys, pickle, json, warnings, time
 warnings.filterwarnings("ignore")
 
 import numpy as np
 import pandas as pd
+
+# pandas 3.x defaults string columns to a PyArrow-backed dtype. This pyarrow
+# build (25.0.0) has a race in its compute kernels that segfaults
+# (libarrow.dylib) when a sort/compare on a string column runs inside
+# Streamlit's multi-threaded runtime. Reverting to legacy numpy object-dtype
+# strings avoids the arrow compute path entirely. Must be set before any
+# pd.read_csv() call anywhere in the process.
+pd.set_option("future.infer_string", False)
+
 import streamlit as st
 import plotly.graph_objects as go
 import plotly.express as px
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))
+from ai_agent import ImmuneAIAgent
 
 # ── Page config ─────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -67,6 +84,35 @@ st.markdown("""
         color: #b0c8e0;
         margin: 0.4rem 0;
     }
+    .narration-box {
+        background: #0a1c14;
+        border-left: 3px solid #2fa86a;
+        border-radius: 4px;
+        padding: 0.9rem 1.1rem;
+        font-size: 0.92rem;
+        line-height: 1.5;
+        color: #cdeedd;
+        margin: 0.5rem 0 1rem 0;
+    }
+    .agent-status {
+        display: inline-block;
+        font-size: 0.78rem;
+        padding: 0.25rem 0.7rem;
+        border-radius: 12px;
+        margin-bottom: 0.8rem;
+    }
+    .agent-status.on  { background: #0d2b1c; color: #4ade80; border: 1px solid #1e6b3f; }
+    .agent-status.off { background: #2b220d; color: #eab308; border: 1px solid #6b551e; }
+    .src-badge {
+        display: inline-block;
+        font-size: 0.7rem;
+        padding: 0.15rem 0.6rem;
+        border-radius: 10px;
+        margin-top: 0.35rem;
+    }
+    .src-badge.verified { background: #0d2b1c; color: #4ade80; border: 1px solid #1e6b3f; }
+    .src-badge.ai       { background: #14213d; color: #7aa2f7; border: 1px solid #253a63; }
+    .src-badge.template { background: #2b220d; color: #eab308; border: 1px solid #6b551e; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -78,6 +124,32 @@ def metric_card(label, value, sub=""):
         <div class="value">{value}</div>
         <div class="sub">{sub}</div>
     </div>""", unsafe_allow_html=True)
+
+
+def render_source_badge(source, tool_used=None):
+    """Confidence cue distinguishing deterministic tool output from the
+    model's own composed text."""
+    if source == "tool":
+        st.markdown(f'<span class="src-badge verified">Verified — computed via {tool_used}()</span>', unsafe_allow_html=True)
+    elif source == "llm":
+        st.markdown('<span class="src-badge ai">AI-generated — cross-check against the metrics above</span>', unsafe_allow_html=True)
+    elif source == "template":
+        st.markdown('<span class="src-badge template">Template fallback — no local model running</span>', unsafe_allow_html=True)
+
+
+def render_execution_trace(trace):
+    """Execution log for a chat answer — a record of which steps actually
+    ran and how long each took, not fabricated chain-of-thought."""
+    if not trace:
+        return
+    total_ms = sum(s.get("duration_ms", 0) for s in trace)
+    with st.expander(f"Execution Trace — {len(trace)} step(s), {total_ms}ms total"):
+        for i, step in enumerate(trace, 1):
+            st.markdown(
+                f"**{i}. {step.get('step', '?')}** · {step.get('duration_ms', 0)}ms  \n"
+                f"<span style='color:#8aa; font-size:0.85rem'>{step.get('detail', '')}</span>",
+                unsafe_allow_html=True,
+            )
 
 
 # ── Cached loaders ───────────────────────────────────────────────────────────
@@ -92,12 +164,16 @@ def load_graph():
     except Exception:
         return None
 
-@st.cache_data
+@st.cache_resource
 def load_graph_risk():
+    # cache_resource, not cache_data: st.cache_data hashes/serializes the
+    # returned DataFrame via PyArrow, which segfaults in this environment
+    # (libarrow.dylib crash on macOS/arm64). cache_resource just keeps the
+    # object in memory without trying to serialize it.
     p = os.path.join(OUT, "graph_risk_scores.csv")
     return pd.read_csv(p) if os.path.exists(p) else pd.DataFrame()
 
-@st.cache_data
+@st.cache_resource
 def load_memory_retrieval():
     p = os.path.join(OUT, "memory_retrieval.csv")
     return pd.read_csv(p) if os.path.exists(p) else pd.DataFrame()
@@ -134,6 +210,122 @@ def load_immune_decisions():
         pass
     return decisions
 
+@st.cache_resource
+def load_anomalies():
+    p = os.path.join(OUT, "anomalies.csv")
+    return pd.read_csv(p) if os.path.exists(p) else pd.DataFrame()
+
+@st.cache_resource
+def load_agent():
+    return ImmuneAIAgent()
+
+
+# ── Agent tools ───────────────────────────────────────────────────────────────
+# Real functions the chat agent can choose to call instead of only narrating a
+# fixed cascade. Each docstring's first line is shown to the model as the
+# tool's description when it decides whether to use it.
+
+def _find_entity(name, known):
+    name_l = str(name).strip().lower()
+    for e in known:
+        if str(e).lower() == name_l:
+            return e
+    partial = [e for e in known if name_l in str(e).lower()]
+    return partial[0] if partial else None
+
+
+def lookup_entity_risk(entity: str) -> dict:
+    """Use this ONLY to report a known entity's current risk score or risk level (a lookup, not a simulation). Not for "what if X fails" questions. Returns composite risk score, graph centrality, and transaction volume for a named supply chain entity."""
+    risk_df = load_graph_risk()
+    if risk_df.empty:
+        return {"found": False, "reason": "risk data not available"}
+    match = _find_entity(entity, risk_df["entity"].tolist())
+    if not match:
+        return {"found": False, "queried": entity, "reason": "no matching entity in the graph"}
+    row = risk_df[risk_df["entity"] == match].iloc[0]
+    return {
+        "found": True,
+        "entity": match,
+        "type": row.get("type"),
+        "composite_risk_0_to_1": round(float(row.get("composite_risk", 0)), 3),
+        "betweenness_centrality": round(float(row.get("betweenness_centrality", 0)), 5),
+        "in_degree": int(row.get("in_degree", 0)),
+        "out_degree": int(row.get("out_degree", 0)),
+        "total_transactions": int(row.get("total_transactions", 0)),
+    }
+
+
+def simulate_node_failure(node: str) -> dict:
+    """Use this for any "what happens if X fails / goes down / is removed / stops operating" question about one or more supply chain nodes (comma-separate multiple names, e.g. "A, B", to simulate simultaneous failures). Actually removes the node(s) from the network and checks whether downstream dependents can still be reached through an alternate route."""
+    import networkx as nx
+    G = load_graph()
+    if G is None:
+        return {"found": False, "reason": "supply chain graph not available"}
+
+    queried_parts = [p.strip() for p in str(node).split(",") if p.strip()]
+    matched, not_found = [], []
+    for part in queried_parts:
+        m = _find_entity(part, list(G.nodes()))
+        (matched if m else not_found).append(m or part)
+
+    if not matched:
+        return {"found": False, "queried": node, "reason": "no matching node in the graph"}
+
+    preds, succs = set(), set()
+    for m in matched:
+        preds.update(G.predecessors(m))
+        succs.update(G.successors(m))
+    preds -= set(matched)
+    succs -= set(matched)
+
+    G2 = G.copy()
+    G2.remove_nodes_from(matched)
+    succs_list = list(succs)
+    preds_list = list(preds)
+    reroutable, unreachable = [], []
+    for s in succs_list[:15]:
+        ok = s in G2 and any(p in G2 and nx.has_path(G2, p, s) for p in preds_list[:5])
+        (reroutable if ok else unreachable).append(s)
+
+    return {
+        "found": True,
+        "node": ", ".join(matched),
+        "nodes_failed": matched,
+        "not_found": not_found,
+        "upstream_suppliers": len(preds_list),
+        "downstream_dependents": len(succs_list),
+        "reroutable_dependents": len(reroutable),
+        "unreachable_dependents": len(unreachable),
+        "sample_unreachable": unreachable[:5],
+        "checked_sample_of": min(len(succs_list), 15),
+    }
+
+
+def compare_recent_incidents() -> dict:
+    """Compare the two most recently recorded immune response incidents — their severity, risk rating, and recovery time. Takes no arguments."""
+    decisions = [d for d in load_immune_decisions() if d.get("event_type") != "cytokine_storm"]
+    if len(decisions) < 2:
+        return {"found": False, "reason": "fewer than 2 recorded incidents so far"}
+
+    def summarize(d):
+        v = d.get("verdict", {})
+        return {
+            "timestamp": d.get("timestamp", "")[:19],
+            "distributor": d.get("distributor"),
+            "severity": v.get("severity"),
+            "risk_rating_out_of_10": ImmuneAIAgent._risk_rating_10(d.get("z_score", 0)),
+            "recovery_days": v.get("recovery_estimate_days"),
+        }
+
+    return {"found": True, "previous": summarize(decisions[-2]), "most_recent": summarize(decisions[-1])}
+
+
+AGENT_TOOLS = {
+    "lookup_entity_risk": lookup_entity_risk,
+    "simulate_node_failure": simulate_node_failure,
+    "compare_recent_incidents": compare_recent_incidents,
+}
+
 
 # ── Header ───────────────────────────────────────────────────────────────────
 st.title("🧬 Immunological Supply Chain")
@@ -146,6 +338,7 @@ tabs = st.tabs([
     "Live Stream",
     "Immune Memory",
     "Immune Response",
+    "AI Agent",
 ])
 
 
@@ -243,19 +436,30 @@ with tabs[0]:
 with tabs[1]:
     st.subheader("🔴 Live Stream Monitor — Real-Time Transaction Feed")
 
-    LIVE_RESULTS_PATH    = os.path.join(STREAM, "live_results.csv")
-    DISRUPTION_FLAG_PATH = os.path.join(STREAM, "disruption_active.flag")
+    # This fragment re-runs on its own every 3s WITHOUT blocking the rest of
+    # the app or doing a full-page st.rerun(). The previous implementation
+    # called time.sleep(3) + st.rerun() directly in the tab body — since all
+    # tab bodies execute on every Streamlit script run regardless of which
+    # tab is visible, that froze the ENTIRE app for 3s on every single rerun,
+    # forever, for every session (busy-loop: render -> freeze -> full
+    # restart -> render -> freeze -> ...). That's what looked like "keeps
+    # refreshing / never shows up."
+    @st.fragment(run_every="3s")
+    def _live_stream_fragment():
+        LIVE_RESULTS_PATH    = os.path.join(STREAM, "live_results.csv")
+        DISRUPTION_FLAG_PATH = os.path.join(STREAM, "disruption_active.flag")
 
-    if not os.path.exists(LIVE_RESULTS_PATH):
-        st.info("Stream is not running yet. Start it with these two commands in separate terminals:")
-        st.code(
-            "# Terminal 1 — emit a row every 2s, inject disruptions every 60s\n"
-            "python3 src/stream_simulator.py --interval 2 --disruption 30 --multi\n\n"
-            "# Terminal 2 — consume with full immune response\n"
-            "python3 src/stream_consumer.py",
-            language="bash"
-        )
-    else:
+        if not os.path.exists(LIVE_RESULTS_PATH):
+            st.info("Stream is not running yet. Start it with these two commands in separate terminals:")
+            st.code(
+                "# Terminal 1 — emit a row every 2s, inject disruptions every 60s\n"
+                "python3 src/stream_simulator.py --interval 2 --disruption 30 --multi\n\n"
+                "# Terminal 2 — consume with full immune response\n"
+                "python3 src/stream_consumer.py",
+                language="bash"
+            )
+            return
+
         df_live = load_live_results()
 
         if df_live.empty:
@@ -338,13 +542,11 @@ with tabs[1]:
             st.dataframe(df_live[show_cols].tail(50).reset_index(drop=True), use_container_width=True)
 
         st.markdown("---")
-        if st.button("🔄 Refresh stream data"):
+        if st.button("🔄 Refresh stream data now", key="manual_refresh_live_stream"):
             st.cache_data.clear()
             st.rerun()
 
-        # Auto-refresh
-        time.sleep(3)
-        st.rerun()
+    _live_stream_fragment()
 
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -447,7 +649,7 @@ with tabs[2]:
 # TAB 4 — IMMUNE RESPONSE
 # ════════════════════════════════════════════════════════════════════════════
 with tabs[3]:
-    st.subheader("🦠 Immune Response Engine — Real-Time Chain-of-Thought Decisions")
+    st.subheader("🦠 Immune Response Engine — Real-Time Decision Trace")
     st.caption(
         "When a disruption is detected, the engine fires 4 parallel response systems: "
         "memory recall · alternate routing · backup supplier · inventory transfer. "
@@ -619,8 +821,8 @@ with tabs[3]:
 
                 st.markdown("---")
 
-                # Chain-of-thought
-                st.markdown("### 🧠 Chain-of-Thought Reasoning")
+                # Decision Trace
+                st.markdown("### 🧠 Decision Trace")
 
                 PHASE_ICONS = {
                     "DETECTION":          "🔍",
@@ -799,3 +1001,166 @@ with tabs[3]:
         st.markdown("---")
         if st.button("🔄 Refresh decisions"):
             st.rerun()
+
+
+# ══════════════════════════════════════════════════════════════════════════
+# TAB 5 — AI AGENT
+# ══════════════════════════════════════════════════════════════════════════
+with tabs[4]:
+    st.subheader("AI Agent — Local LLM Analyst")
+    st.caption(
+        "Turns the immune response engine's structured Decision Trace into plain-English "
+        "briefings and answers, using a model that runs entirely on this machine — no API keys, "
+        "no cloud calls, zero cost."
+    )
+
+    agent = load_agent()
+    is_up = agent.available()
+    if is_up:
+        st.markdown(
+            f'<span class="agent-status on">Local model connected — {agent.model} via Ollama</span>',
+            unsafe_allow_html=True,
+        )
+    else:
+        st.markdown(
+            '<span class="agent-status off">Local model offline — showing template fallback</span>',
+            unsafe_allow_html=True,
+        )
+        with st.expander("How to enable full narration"):
+            st.code("brew install ollama\nollama serve\nollama pull llama3.2:1b", language="bash")
+            st.caption("Once the server is running, reopen this tab — the agent checks automatically.")
+
+    st.markdown("---")
+
+    # ── Latest event narration ──────────────────────────────────────────
+    st.markdown("### Latest Incident Briefing")
+
+    all_decisions = load_immune_decisions()
+    normal_decisions = [d for d in all_decisions if d.get("event_type") != "cytokine_storm"]
+
+    if not normal_decisions:
+        st.info("No immune response events yet. Start the stream to generate one, then come back here.")
+    else:
+        latest_decision = normal_decisions[-1]
+        lv = latest_decision.get("verdict", {})
+        m1, m2, m3, m4, m5 = st.columns(5)
+        m1.metric("Severity", lv.get("severity", "?"))
+        m2.metric("Risk Rating", f"{ImmuneAIAgent._risk_rating_10(latest_decision.get('z_score', 0))}/10")
+        m3.metric("Z-Score", f"{latest_decision.get('z_score', 0):.2f}")
+        m4.metric("Signals Activated", f"{lv.get('signals_activated', 0)}/4")
+        m5.metric("Est. Recovery", f"{lv.get('recovery_estimate_days', '?')} days")
+
+        col_narr, col_btn = st.columns([5, 1])
+        with col_btn:
+            regenerate = st.button("Regenerate", use_container_width=True)
+        cache_key = f"narration::{latest_decision.get('timestamp','')}"
+        if regenerate or cache_key not in st.session_state:
+            with st.spinner("Analyst is reading the trace..."):
+                st.session_state[cache_key] = agent.narrate_event(latest_decision)
+        with col_narr:
+            st.markdown(f'<div class="narration-box">{st.session_state[cache_key]}</div>', unsafe_allow_html=True)
+        render_source_badge("llm" if is_up else "template")
+        st.caption("Narrative text is AI-generated from the verified metrics above — the numbers are computed by the pipeline, the prose is the model's summary of them.")
+
+    st.markdown("---")
+
+    # ── What-if simulation ────────────────────────────────────────────
+    # A 1B local model doesn't always route "what if X fails" chat questions
+    # to simulate_node_failure correctly. This control calls it directly and
+    # deterministically instead — no LLM routing involved — then only uses
+    # the LLM afterward to narrate the already-known result.
+    st.markdown("### What If a Supplier Fails?")
+    st.caption("Directly removes a node (or several, comma-separated) from the live graph and checks reachability — no chat routing involved.")
+
+    wcol_input, wcol_btn = st.columns([3, 1])
+    with wcol_input:
+        whatif_node = st.text_input("Node(s) to simulate failing", key="whatif_node_input", placeholder="e.g. MIAMI-LUKEN INC, HENRY SCHEIN INC")
+    with wcol_btn:
+        st.markdown("<div style='height: 1.9rem'></div>", unsafe_allow_html=True)
+        run_whatif = st.button("Simulate failure", use_container_width=True)
+
+    if run_whatif and whatif_node.strip():
+        with st.spinner("Removing node from the graph and checking reachability..."):
+            st.session_state.whatif_result = simulate_node_failure(whatif_node.strip())
+            st.session_state.pop("whatif_narration", None)
+
+    whatif_result = st.session_state.get("whatif_result")
+    if whatif_result:
+        if not whatif_result.get("found"):
+            st.warning(f'No matching node found for "{whatif_result.get("queried", whatif_node)}".')
+        else:
+            w1, w2, w3, w4 = st.columns(4)
+            w1.metric("Node", whatif_result["node"][:22])
+            w2.metric("Upstream Suppliers", whatif_result["upstream_suppliers"])
+            w3.metric("Still Reachable", whatif_result["reroutable_dependents"])
+            w4.metric("Unreachable", whatif_result["unreachable_dependents"])
+
+            if "whatif_narration" not in st.session_state:
+                with st.spinner("Analyst is interpreting the result..."):
+                    verdict_hint = (
+                        f"{whatif_result['reroutable_dependents']} of {whatif_result['downstream_dependents']} "
+                        f"downstream dependents would REMAIN REACHABLE via an alternate route; "
+                        f"{whatif_result['unreachable_dependents']} would become UNREACHABLE."
+                    )
+                    st.session_state.whatif_narration = agent.explain_tool_result(
+                        f"What happens if {whatif_result['node']} fails? "
+                        f"Key computed finding, restate this clearly and do not contradict it: {verdict_hint}",
+                        "simulate_node_failure", whatif_result,
+                    )
+            st.markdown(f'<div class="narration-box">{st.session_state.whatif_narration}</div>', unsafe_allow_html=True)
+            render_source_badge("tool", "simulate_node_failure")
+
+    st.markdown("---")
+
+    # ── Chat ──────────────────────────────────────────────────────────
+    st.markdown("### Ask the Agent")
+    st.caption("Grounded in the current risk leaderboard and the last few immune response events.")
+
+    risk_df = load_graph_risk()
+    top_risk = (
+        risk_df.sort_values("composite_risk", ascending=False).head(5)[["entity", "composite_risk"]].to_dict("records")
+        if not risk_df.empty and "composite_risk" in risk_df.columns else []
+    )
+    anomalies_df = load_anomalies()
+    anomaly_summary = (
+        f"{len(anomalies_df):,} transactions scored, "
+        f"{int((anomalies_df['anomaly_score'] >= 2).sum()):,} flagged high-confidence"
+        if not anomalies_df.empty and "anomaly_score" in anomalies_df.columns else ""
+    )
+    chat_context = {
+        "top_risk": top_risk,
+        "recent_events": normal_decisions[-5:],
+        "anomaly_summary": anomaly_summary,
+        "whatif_result": st.session_state.get("whatif_result"),
+    }
+
+    if "ai_agent_history" not in st.session_state:
+        st.session_state.ai_agent_history = []
+
+    for msg in st.session_state.ai_agent_history:
+        with st.chat_message(msg["role"]):
+            st.markdown(msg["content"])
+            if msg["role"] == "assistant":
+                render_source_badge(msg.get("source"), msg.get("tool_used"))
+                render_execution_trace(msg.get("trace"))
+
+    question = st.chat_input("Ask about current risk, a recent disruption, or a recommended action...")
+    if question:
+        st.session_state.ai_agent_history.append({"role": "user", "content": question, "source": None, "tool_used": None, "trace": None})
+        with st.chat_message("user"):
+            st.markdown(question)
+        with st.chat_message("assistant"):
+            with st.spinner("Thinking..."):
+                result = agent.chat(question, chat_context, st.session_state.ai_agent_history, tools=AGENT_TOOLS)
+            st.markdown(result["answer"])
+            render_source_badge(result["source"], result["tool_used"])
+            render_execution_trace(result.get("trace"))
+        st.session_state.ai_agent_history.append({
+            "role": "assistant", "content": result["answer"],
+            "source": result["source"], "tool_used": result["tool_used"],
+            "trace": result.get("trace"),
+        })
+
+    if st.session_state.ai_agent_history and st.button("Clear chat"):
+        st.session_state.ai_agent_history = []
+        st.rerun()

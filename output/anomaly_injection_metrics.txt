@@ -1,0 +1,21 @@
+STAGE 3b — ANOMALY DETECTION BENCHMARK (SYNTHETIC INJECTION)
+============================================================
+
+Methodology: independent ground truth via synthetic anomaly
+injection (contamination rate ~2%), following standard practice
+for evaluating unlabeled anomaly detectors (e.g. Emmott et al. 2013).
+This replaces the earlier self-referential pseudo-GT evaluation,
+which scored z-score-derived signals against a stricter threshold
+of themselves and produced a circular, near-zero-precision result.
+
+Base transactions        : 50,000
+Synthetic anomalies added: 975 (1.94% of 50,246 rows)
+  A. Volume spike          — quantity inflated 8-20x
+  B. Frequency burst       — clustered extra transactions on a pair
+  C. Concentration shift   — retailer supply forced through one distributor
+
+Method                          Precision   Recall       F1
+----------------------------------------------------------
+Z-score only  (2+ signals)          0.085    0.027    0.041
+Isolation Forest alone              0.279    0.718    0.401
+Ensemble (2+ incl. IF)              0.292    0.583    0.389

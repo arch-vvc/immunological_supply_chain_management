@@ -26,6 +26,14 @@ Output:
 from __future__ import annotations
 
 import os
+
+# torch, faiss, and xgboost each bundle their own copy of libomp.dylib on macOS.
+# Loading more than one in the same process races on the OpenMP thread pool and
+# segfaults (SIGSEGV inside libomp.dylib). Must be set before any of those
+# libraries — or anything that imports them — is imported.
+os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
+os.environ.setdefault("OMP_NUM_THREADS", "1")
+
 import sys
 import json
 import time

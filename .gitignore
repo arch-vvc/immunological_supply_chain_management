@@ -4,3 +4,8 @@ __pycache__/
 *.pyc
 .DS_Store
 extra data/
+.claude/
+.agents/
+* [0-9].csv
+* [0-9].txt
+* [0-9].flag
