@@ -1,0 +1,56 @@
+{
+  "dataset": "scms",
+  "summary": {
+    "dataset": "scms",
+    "nodes": 204,
+    "edges": 1539,
+    "flows": 10324,
+    "events": 0,
+    "roles": [
+      "country",
+      "manufacturing_site",
+      "vendor"
+    ]
+  },
+  "capabilities": {
+    "HAS_TRANSACTIONS": true,
+    "HAS_TOPOLOGY": true,
+    "HAS_DISRUPTIONS": true,
+    "HAS_LEAD_TIMES": true,
+    "HAS_VALUE": true
+  },
+  "stages": {
+    "anomaly_detection": {
+      "enabled": true,
+      "missing": []
+    },
+    "disruption_detection": {
+      "enabled": true,
+      "missing": []
+    },
+    "graph_risk_routing": {
+      "enabled": true,
+      "missing": []
+    },
+    "ppo_recovery_routing": {
+      "enabled": true,
+      "missing": []
+    },
+    "event_replay": {
+      "enabled": true,
+      "missing": []
+    },
+    "revealed_pref_backtest": {
+      "enabled": true,
+      "missing": []
+    },
+    "safety_stock": {
+      "enabled": true,
+      "missing": []
+    },
+    "value_at_risk": {
+      "enabled": true,
+      "missing": []
+    }
+  }
+}

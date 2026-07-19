@@ -3,7 +3,7 @@ STAGE 14 — SUPPLIER AGENT REPORT
 
 Disrupted entities analysed : 10
 Backup recommendations      : 30
-Avg backup score (rank #1)  : 0.759
+Avg backup score (rank #1)  : 0.612
 
 Scoring weights:
   Safety (1-composite_risk) : 50%
@@ -12,12 +12,12 @@ Scoring weights:
 
 Top-1 backup per disrupted entity:
   ABBOTT LABORATORIES                      → JANSSEN PHARMACEUTICALS INC              (score=1.000)
-  MYLAN PHARMACEUTICALS INC                → JANSSEN PHARMACEUTICALS INC              (score=1.000)
+  SUN PHARMA GLOBAL INC                    → JANSSEN PHARMACEUTICALS INC              (score=1.000)
+  PENN PHARMACEUTICAL SERVICES INC         → MIAMI-LUKEN INC                          (score=0.509)
+  NATIONAL WHOLESALE DRUG CO INC           → MIAMI-LUKEN INC                          (score=0.509)
   MIAMI-LUKEN INC                          → CARDINAL HEALTH INC                      (score=0.555)
   MCKESSON CORPORATION                     → MIAMI-LUKEN INC                          (score=0.509)
   KINRAY LLC                               → MIAMI-LUKEN INC                          (score=0.509)
+  KEYSOURCE MEDICAL INC                    → MIAMI-LUKEN INC                          (score=0.509)
   HENRY SCHEIN INC                         → MIAMI-LUKEN INC                          (score=0.509)
-  DAKOTA DRUG INC                          → MIAMI-LUKEN INC                          (score=0.509)
-  ACTAVIS PHARMA INC                       → JANSSEN PHARMACEUTICALS INC              (score=1.000)
-  WATSON LABORATORIES INC                  → JANSSEN PHARMACEUTICALS INC              (score=1.000)
-  PAR PHARMACEUTICAL INC                   → JANSSEN PHARMACEUTICALS INC              (score=1.000)
+  HD SMITH WHOLESALE DRUG CO               → MIAMI-LUKEN INC                          (score=0.509)

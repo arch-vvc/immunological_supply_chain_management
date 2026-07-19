@@ -1,0 +1,77 @@
+molecule,country,n_shipments,history_quarters,daily_demand_packs,daily_demand_std,lead_mean_days,lead_std_days,lead_source,safety_stock_packs_95,days_of_cover_95,pack_price_usd,buffer_value_usd_95,holding_cost_usd_per_yr,annual_flow_value_usd,sizeable
+Abacavir,Burundi,3,5,1.927,31.721,100.2,62.5,country,560.0,291.0,13.15,7368.0,1842.0,11774.0,True
+Abacavir,"Congo, DRC",16,14,2.497,27.542,125.1,51.9,country,551.0,221.0,14.63,8066.0,2016.0,11531.0,True
+Abacavir,Côte d'Ivoire,52,30,57.119,573.587,126.1,86.7,country,13405.0,235.0,15.89,212999.0,53250.0,410201.0,True
+Abacavir,Guyana,17,19,0.983,9.633,66.4,38.9,country,144.0,147.0,11.46,1652.0,413.0,5175.0,True
+Abacavir,Mozambique,23,32,27.31,492.878,117.1,55.5,country,9149.0,335.0,12.96,118570.0,29642.0,140758.0,True
+Abacavir,Uganda,3,5,13.004,182.763,87.3,49.2,country,3009.0,231.0,11.46,34487.0,8622.0,74238.0,True
+Abacavir,Zimbabwe,12,13,4.23,52.408,140.8,98.5,country,1235.0,292.0,12.5,15439.0,3860.0,18289.0,True
+Abacavir/Lamivudine,"Congo, DRC",5,9,2.116,37.253,125.1,51.9,country,711.0,336.0,4.6,3270.0,817.0,7794.0,True
+Abacavir/Lamivudine,Mozambique,6,8,29.459,254.502,117.1,55.5,country,5285.0,179.0,13.52,71458.0,17864.0,157458.0,True
+Abacavir/Lamivudine,Tanzania,4,4,161.538,1784.296,109.4,60.1,country,34712.0,215.0,4.0,138846.0,34712.0,450424.0,True
+"Chase Buffer, Determine, 100 Tests, 2.5ml x 1 Vial",South Sudan,21,12,1.656,15.804,132.0,31.5,lane,312.0,188.0,5.0,1558.0,390.0,3539.0,True
+Efavirenz,Burundi,4,9,45.234,923.544,100.2,62.5,country,15950.0,353.0,3.33,53113.0,13278.0,69617.0,True
+Efavirenz,"Congo, DRC",23,15,17.015,279.387,125.1,51.9,country,5357.0,315.0,4.12,22071.0,5518.0,26259.0,True
+Efavirenz,Mozambique,55,32,397.693,4438.699,117.1,55.5,country,87228.0,219.0,4.22,368101.0,92025.0,837373.0,True
+Efavirenz,Nigeria,105,31,679.008,9665.101,93.9,52.8,country,165505.0,244.0,5.78,956621.0,239155.0,1272300.0,True
+Efavirenz,South Sudan,6,7,15.389,174.782,122.5,40.8,country,3356.0,218.0,5.31,17838.0,4459.0,26239.0,True
+Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Uganda,9,10,55.267,662.15,87.3,49.2,country,11152.0,202.0,19.92,222156.0,55539.0,393460.0,True
+Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Burundi,6,7,58.154,613.459,100.2,62.5,country,11772.0,202.0,10.12,119136.0,29784.0,264207.0,True
+Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,"Congo, DRC",5,8,100.271,1969.897,125.1,51.9,country,37348.0,372.0,10.78,402614.0,100653.0,463221.0,True
+Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Côte d'Ivoire,12,12,490.956,4593.809,126.1,86.7,country,110343.0,225.0,10.78,1189495.0,297374.0,2124043.0,True
+Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Mozambique,36,10,5224.964,32178.351,117.1,55.5,country,747883.0,143.0,10.78,8062179.0,2015545.0,21291785.0,True
+Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Nigeria,28,13,2937.697,35329.875,93.9,52.8,country,620306.0,211.0,10.52,6525617.0,1631404.0,12047279.0,True
+Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,South Sudan,4,9,81.189,1940.231,122.5,40.8,country,35855.0,442.0,10.65,381856.0,95464.0,303200.0,True
+Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Zambia,12,5,6059.032,55788.868,112.8,72.0,country,1214435.0,200.0,9.99,12132208.0,3033052.0,25503490.0,True
+Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Zimbabwe,27,9,3753.886,52038.917,140.8,98.5,country,1187558.0,316.0,10.78,12801877.0,3200469.0,15896627.0,True
+Emtricitabine/Tenofovir Disoproxil Fumarate,Côte d'Ivoire,20,16,91.104,821.195,126.1,86.7,country,20033.0,220.0,11.75,235383.0,58846.0,460704.0,True
+Emtricitabine/Tenofovir Disoproxil Fumarate,Nigeria,87,20,1100.911,7708.039,93.9,52.8,country,156218.0,142.0,11.75,1835566.0,458891.0,6152601.0,True
+Emtricitabine/Tenofovir Disoproxil Fumarate,Uganda,21,13,31.576,410.858,87.3,49.2,country,6834.0,216.0,26.25,179398.0,44849.0,201910.0,True
+"HIV 1/2, Colloidal Gold, Diagnostic Kit, Antibody",Rwanda,19,7,180.096,1281.082,118.5,88.2,lane,34872.0,194.0,24.5,854375.0,213594.0,1996306.0,True
+"HIV 1/2, Determine Complete HIV Kit",South Sudan,28,15,5.434,38.018,123.7,34.6,lane,763.0,141.0,89.0,67944.0,16986.0,194312.0,True
+"HIV 1/2, Determine Complete HIV Kit",Uganda,15,9,78.563,605.539,92.3,37.4,lane,10754.0,137.0,80.0,860328.0,215082.0,2563182.0,True
+"HIV, Capillary Tubes, for Determine, EDTA, 50uL,100 Pcs",South Sudan,21,14,2.448,27.308,124.7,37.3,lane,525.0,215.0,8.0,4201.0,1050.0,7781.0,True
+Lamivudine,Burundi,4,8,3.105,37.106,100.2,62.5,country,691.0,223.0,1.85,1279.0,320.0,2139.0,True
+Lamivudine,Guyana,26,25,3.334,37.961,66.4,38.9,country,554.0,166.0,1.89,1046.0,262.0,2649.0,True
+Lamivudine,Mozambique,26,31,21.136,240.277,117.1,55.5,country,4707.0,223.0,2.44,11485.0,2871.0,19142.0,True
+Lamivudine/Nevirapine/Stavudine,Côte d'Ivoire,22,11,374.678,4411.653,126.1,86.7,country,97737.0,261.0,7.5,733028.0,183257.0,1057146.0,True
+Lamivudine/Nevirapine/Stavudine,Mozambique,40,32,805.498,12646.028,117.1,55.5,country,237545.0,295.0,7.16,1700821.0,425205.0,2056812.0,True
+Lamivudine/Nevirapine/Stavudine,Nigeria,36,25,99.699,2214.91,93.9,52.8,country,36470.0,366.0,7.12,259668.0,64917.0,253294.0,True
+Lamivudine/Nevirapine/Stavudine,Tanzania,24,27,264.781,7791.796,109.4,60.1,country,137025.0,518.0,4.3,589207.0,147302.0,619197.0,True
+Lamivudine/Nevirapine/Stavudine,Uganda,18,23,20.573,285.108,87.3,49.2,country,4703.0,229.0,7.16,33672.0,8418.0,53724.0,True
+Lamivudine/Nevirapine/Stavudine,Zimbabwe,60,23,1408.201,10430.171,140.8,98.5,country,306744.0,218.0,5.85,1794453.0,448613.0,3201647.0,True
+Lamivudine/Nevirapine/Zidovudine,Burundi,10,13,18.574,276.239,100.2,62.5,country,4948.0,266.0,8.11,40127.0,10032.0,70029.0,True
+Lamivudine/Nevirapine/Zidovudine,Côte d'Ivoire,60,26,1217.671,12251.589,126.1,86.7,country,286111.0,235.0,8.58,2454829.0,613707.0,4199942.0,True
+Lamivudine/Nevirapine/Zidovudine,Nigeria,191,31,4803.184,45551.532,93.9,52.8,country,840201.0,175.0,11.22,9427054.0,2356764.0,16333249.0,True
+Lamivudine/Nevirapine/Zidovudine,South Sudan,7,9,46.387,784.376,122.5,40.8,country,14662.0,316.0,6.13,89879.0,22470.0,108768.0,True
+Lamivudine/Nevirapine/Zidovudine,Swaziland,6,11,156.882,3597.569,114.7,76.7,country,66593.0,424.0,11.22,747169.0,186792.0,718223.0,True
+Lamivudine/Stavudine,Côte d'Ivoire,20,16,320.992,4124.559,126.1,86.7,country,89147.0,278.0,3.28,292401.0,73100.0,347504.0,True
+Lamivudine/Stavudine,Nigeria,8,26,7.284,217.409,93.9,52.8,country,3534.0,485.0,3.4,12016.0,3004.0,6742.0,True
+Lamivudine/Stavudine,Uganda,12,24,2.357,68.364,87.3,49.2,country,1071.0,455.0,2.64,2828.0,707.0,2004.0,True
+Lamivudine/Stavudine,Zambia,12,29,144.979,3119.774,112.8,72.0,country,57330.0,395.0,2.95,169123.0,42281.0,161406.0,True
+Lamivudine/Stavudine,Zimbabwe,54,23,114.138,785.375,140.8,98.5,country,24096.0,211.0,2.95,71083.0,17771.0,115117.0,True
+Lamivudine/Tenofovir Disoproxil Fumarate,Burundi,5,9,4.089,72.305,100.2,62.5,country,1266.0,310.0,4.62,5851.0,1463.0,8163.0,True
+Lamivudine/Tenofovir Disoproxil Fumarate,"Congo, DRC",12,9,2.542,32.911,125.1,51.9,country,645.0,254.0,6.08,3922.0,980.0,5656.0,True
+Lamivudine/Tenofovir Disoproxil Fumarate,Côte d'Ivoire,20,12,209.57,1878.515,126.1,86.7,country,45934.0,219.0,4.7,215890.0,53972.0,414152.0,True
+Lamivudine/Tenofovir Disoproxil Fumarate,Dominican Republic,5,14,16.747,320.433,77.3,58.1,country,4919.0,294.0,5.54,27250.0,6812.0,43438.0,True
+Lamivudine/Tenofovir Disoproxil Fumarate,Mozambique,13,9,210.178,3075.894,117.1,55.5,country,58197.0,277.0,4.7,273527.0,68382.0,367227.0,True
+Lamivudine/Tenofovir Disoproxil Fumarate,Zambia,17,23,462.5,11031.209,112.8,72.0,country,201001.0,435.0,4.64,932645.0,233161.0,1353141.0,True
+Lamivudine/Zidovudine,Burundi,12,13,41.806,779.831,100.2,62.5,country,13581.0,325.0,6.6,89637.0,22409.0,124525.0,True
+Lamivudine/Zidovudine,Côte d'Ivoire,77,35,683.476,6320.337,126.1,86.7,country,152545.0,223.0,8.26,1260021.0,315005.0,1967106.0,True
+Lamivudine/Zidovudine,Ethiopia,8,10,173.829,2341.628,84.9,65.6,country,40273.0,232.0,9.13,367694.0,91924.0,659160.0,True
+Lamivudine/Zidovudine,Guyana,6,29,1.568,41.779,66.4,38.9,country,571.0,364.0,7.13,4073.0,1018.0,5224.0,True
+Lamivudine/Zidovudine,Mozambique,40,34,392.411,6105.538,117.1,55.5,country,114788.0,293.0,7.72,886162.0,221540.0,1067894.0,True
+Lopinavir/Ritonavir,Burundi,12,14,1.996,19.257,100.2,62.5,country,379.0,190.0,20.52,7773.0,1943.0,17528.0,True
+Lopinavir/Ritonavir,Vietnam,64,37,52.877,569.563,121.0,45.9,lane,11086.0,210.0,82.19,911184.0,227796.0,1367029.0,True
+Nevirapine,Burundi,10,10,7.901,83.195,100.2,62.5,country,1597.0,202.0,2.23,3570.0,892.0,7094.0,True
+Nevirapine,Ethiopia,16,21,168.861,3816.867,84.9,65.6,country,60847.0,360.0,3.4,206878.0,51720.0,222464.0,True
+Nevirapine,Guyana,11,25,6.26,114.186,66.4,38.9,country,1587.0,254.0,1.95,3095.0,774.0,6146.0,True
+Nevirapine,Mozambique,43,29,234.197,4121.046,117.1,55.5,country,76644.0,327.0,2.18,167084.0,41771.0,177466.0,True
+Stavudine,Mozambique,14,19,5.804,83.301,117.1,55.5,country,1580.0,272.0,1.49,2353.0,588.0,3793.0,True
+Tenofovir Disoproxil Fumarate,"Congo, DRC",4,11,8.712,184.808,125.1,51.9,country,3491.0,401.0,3.91,13649.0,3412.0,13791.0,True
+Tenofovir Disoproxil Fumarate,Côte d'Ivoire,41,34,38.721,386.806,126.1,86.7,country,9057.0,234.0,5.5,49815.0,12454.0,93225.0,True
+Tenofovir Disoproxil Fumarate,Ghana,4,4,144.754,1885.966,121.4,52.7,country,36523.0,252.0,6.42,234476.0,58619.0,469603.0,True
+Tenofovir Disoproxil Fumarate,Mozambique,16,34,6.618,130.877,117.1,55.5,country,2414.0,365.0,3.91,9439.0,2360.0,26276.0,True
+Tenofovir Disoproxil Fumarate,Nigeria,13,20,12.456,209.337,93.9,52.8,country,3519.0,283.0,6.57,23122.0,5780.0,27575.0,True
+Zidovudine,Burundi,3,6,4.078,61.388,100.2,62.5,country,1098.0,269.0,2.1,2305.0,576.0,3420.0,True
+Zidovudine,Uganda,23,29,37.342,1170.011,87.3,49.2,country,18293.0,490.0,7.5,137200.0,34300.0,85557.0,True

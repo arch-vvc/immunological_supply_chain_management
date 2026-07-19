@@ -158,12 +158,25 @@ def load_embeddings():
         return None
 
 
-# ── Feature names used by RF models ───────────────────────────────────────
+# ── Feature names used by the recovery model ────────────────────────────────
+# Must match FEATURE_COLS in src/recovery_predictor.py exactly (order and
+# values). Stage 8 was rewritten to rank response strategies by predicted
+# outcome instead of classifying which one a human historically picked (that
+# label turned out to be near-unlearnable — see recovery_predictor.py's
+# module docstring). response_type_enc is now an INPUT feature: at decision
+# time we hold everything else fixed and sweep it across every strategy.
 RF_FEATURES = [
-    "disruption_type_enc", "industry_enc", "supplier_region_enc",
-    "supplier_size_enc",   "disruption_severity",
+    "disruption_type_enc", "supplier_size_enc", "disruption_severity",
     "production_impact_pct", "has_backup_supplier",
+    "sev_x_backup", "impact_x_backup", "response_type_enc",
 ]
+
+def unwrap_regressor(bundle):
+    """models/recovery_regressor.pkl is now {model, feature_cols, response_map}
+    (was a bare model before the Stage 8 rewrite). Handle both for safety."""
+    if isinstance(bundle, dict) and "model" in bundle:
+        return bundle["model"], bundle.get("feature_cols", RF_FEATURES), bundle.get("response_map", {})
+    return bundle, RF_FEATURES[:-1], {}   # legacy bare-model pickle, no response_type_enc
 
 # ── Header ─────────────────────────────────────────────────────────────────
 st.title("Immunological Supply Chain")
@@ -222,21 +235,29 @@ with tabs[0]:
 
     _ov_reg_path  = os.path.join(MODELS, "recovery_regressor.pkl")
     _ov_data_path = os.path.join(EXTRA,  "disruption_processed.csv")
+    # Must match FEATURE_COLS in src/recovery_predictor.py exactly.
+    # response_type_enc (the chosen strategy) is an input feature here — see
+    # the module docstring in recovery_predictor.py for why.
     _OV_FEAT_NAMES = [
-        "Disruption Type", "Industry", "Supplier Region",
-        "Supplier Size", "Disruption Severity",
+        "Disruption Type", "Supplier Size", "Disruption Severity",
         "Production Impact %", "Has Backup Supplier",
+        "Severity x Backup", "Impact % x Backup", "Response Strategy",
     ]
     _OV_FEAT_COLS = [
-        "disruption_type_enc", "industry_enc", "supplier_region_enc",
-        "supplier_size_enc", "disruption_severity",
+        "disruption_type_enc", "supplier_size_enc", "disruption_severity",
         "production_impact_pct", "has_backup_supplier",
+        "sev_x_backup", "impact_x_backup", "response_type_enc",
     ]
 
     if os.path.exists(_ov_reg_path):
         try:
             import joblib as _jl
-            _ov_model = _jl.load(_ov_reg_path)
+            _ov_bundle = _jl.load(_ov_reg_path)
+            _ov_model, _bundle_cols, _ = unwrap_regressor(_ov_bundle)
+            if len(_bundle_cols) != len(_OV_FEAT_COLS):
+                # legacy 7-feature pickle — drop the strategy column to match
+                _OV_FEAT_NAMES = _OV_FEAT_NAMES[:-1]
+                _OV_FEAT_COLS  = _OV_FEAT_COLS[:-1]
             _imps = _ov_model.feature_importances_
             _fi_df = pd.DataFrame({
                 "Feature":    _OV_FEAT_NAMES,
@@ -275,6 +296,8 @@ with tabs[0]:
                             .map({True: 1, False: 0, "True": 1, "False": 0})
                             .fillna(0).astype(int)
                         )
+                        _ov_dis["sev_x_backup"]    = _ov_dis["disruption_severity"]   * _ov_dis["has_backup_supplier"]
+                        _ov_dis["impact_x_backup"] = _ov_dis["production_impact_pct"] * _ov_dis["has_backup_supplier"]
                         _ov_dis = _ov_dis.dropna(subset=_OV_FEAT_COLS)
                         _ov_sample = _ov_dis[_OV_FEAT_COLS].sample(min(200, len(_ov_dis)), random_state=42).values
                         _ov_exp = _shap_ov.TreeExplainer(_ov_model)
@@ -601,37 +624,57 @@ with tabs[4]:
 # TAB 6 — RECOVERY PREDICTOR
 # ══════════════════════════════════════════════════════════════════════════
 with tabs[5]:
-    regressor  = load_rf_regressor()
-    classifier = load_rf_classifier()
-    dis_data   = load_disruption_data()
+    _reg_bundle = load_rf_regressor()
+    dis_data    = load_disruption_data()
+    regressor, _reg_cols, response_map = (
+        unwrap_regressor(_reg_bundle) if _reg_bundle is not None else (None, RF_FEATURES, {})
+    )
+    if not response_map and not dis_data.empty:
+        # legacy pickle without a bundled response_map — rebuild from data
+        response_map = dict(zip(dis_data["response_type_enc"].astype(int), dis_data["response_type"]))
+    HAS_STRATEGY_FEATURE = "response_type_enc" in _reg_cols
 
     if regressor is None:
-        st.warning("Run Stage 8 first to train the recovery models.")
+        st.warning("Run Stage 8 first to train the recovery model.")
     else:
-        st.markdown("#### Predict Recovery Time for a Disruption Scenario")
-        st.caption("Select disruption parameters below. The Random Forest models predict "
-                   "full recovery days and the most likely response strategy.")
+        st.markdown("#### Rank Response Strategies for a Disruption Scenario")
+        st.info(
+            "⚠️ This tool is an ABSTRACT what-if calculator — it takes the sliders "
+            "below, not your actual supply graph, so it can never name a real "
+            "backup supplier. For that, see **Network-Grounded Response Plan** "
+            "further down this tab, which searches the real graph for every "
+            "anomaly actually detected in this pipeline run."
+        )
+        st.caption(
+            "Stage 8 does not classify which strategy a human historically picked — "
+            "that label turned out to be near-unlearnable (mutual information ≈ 0 for "
+            "every feature except backup-supplier status; see recovery_predictor.py). "
+            "Instead it predicts recovery time **under each candidate strategy** and "
+            "recommends whichever is fastest. This is decision support based on "
+            "historical association, not a causal guarantee — the per-case number "
+            "carries real error, but the ranking is a stable effect over thousands "
+            "of past disruptions."
+        )
+        st.caption(
+            "Industry and Supplier Region are not shown here — mutual-information "
+            "analysis found they carry near-zero signal for this prediction "
+            "(MI ≈ 0.0002–0.0011) and the current model doesn't use them."
+        )
 
         if not dis_data.empty:
             dis_types   = sorted(dis_data["disruption_type"].dropna().unique().tolist())
-            industries  = sorted(dis_data["industry"].dropna().unique().tolist())
-            regions     = sorted(dis_data["supplier_region"].dropna().unique().tolist())
             sizes       = sorted(dis_data["supplier_size"].dropna().unique().tolist())
             resp_types  = sorted(dis_data["response_type"].dropna().unique().tolist())
         else:
             dis_types  = ["Cyber Attack", "Factory Incident", "Natural Disaster", "Logistics Delay"]
-            industries = ["Pharmaceuticals", "Electronics", "Automotive", "Retail"]
-            regions    = ["Asia-Pacific", "Europe", "North America", "South America"]
             sizes      = ["Small", "Medium", "Large"]
             resp_types = ["Alternative Supplier", "Combined Strategy", "Customer Delay"]
 
         col_a, col_b = st.columns(2)
         with col_a:
             sel_type    = st.selectbox("Disruption Type",    dis_types)
-            sel_ind     = st.selectbox("Industry",           industries)
-            sel_region  = st.selectbox("Supplier Region",    regions)
-        with col_b:
             sel_size    = st.selectbox("Supplier Size",      sizes)
+        with col_b:
             sel_sev     = st.slider("Disruption Severity",   1, 5, 3)
             sel_impact  = st.slider("Production Impact (%)", 0, 100, 40)
 
@@ -644,38 +687,58 @@ with tabs[5]:
 
         if not dis_data.empty:
             type_enc   = encode(dis_data["disruption_type"],   sel_type)
-            ind_enc    = encode(dis_data["industry"],          sel_ind)
-            reg_enc    = encode(dis_data["supplier_region"],   sel_region)
             size_enc   = encode(dis_data["supplier_size"],     sel_size)
         else:
-            type_enc = ind_enc = reg_enc = size_enc = 0
+            type_enc = size_enc = 0
 
-        feat_vec = np.array([[
-            type_enc, ind_enc, reg_enc, size_enc,
-            sel_sev, sel_impact, int(sel_backup),
-        ]], dtype=float)
+        backup_flag  = int(sel_backup)
+        sev_x_backup    = sel_sev * backup_flag
+        impact_x_backup = sel_impact * backup_flag
 
-        if st.button("Predict Recovery", type="primary"):
-            days     = float(regressor.predict(feat_vec)[0])
-            strategy = classifier.predict(feat_vec)[0]
+        base_feats = [type_enc, size_enc, sel_sev, sel_impact, backup_flag,
+                      sev_x_backup, impact_x_backup]
 
-            if not dis_data.empty:
-                resp_cats = sorted(dis_data["response_type"].dropna().unique())
-                strategy_idx = int(strategy)
-                strategy_label = (resp_cats[strategy_idx]
-                                  if 0 <= strategy_idx < len(resp_cats)
-                                  else str(strategy))
+        # Without a backup supplier, "Alternative Supplier" is not an
+        # available option — mirrors the exclusion in response_planner.py.
+        name_to_enc = {v: k for k, v in response_map.items()} if response_map else {}
+        alt_enc = name_to_enc.get("Alternative Supplier")
+
+        if st.button("Rank Strategies", type="primary"):
+            if HAS_STRATEGY_FEATURE and response_map:
+                rows = []
+                for enc, name in response_map.items():
+                    if not sel_backup and enc == alt_enc:
+                        continue   # not an available option without a backup
+                    fv = np.array([base_feats + [float(enc)]], dtype=float)
+                    pred = float(regressor.predict(fv)[0])
+                    rows.append({"Strategy": name, "Predicted Recovery (days)": round(pred, 1),
+                                 "_enc": enc, "_feat_vec": fv})
+                rank_df = pd.DataFrame(rows).sort_values("Predicted Recovery (days)").reset_index(drop=True)
+                best        = rank_df.iloc[0]
+                days        = float(best["Predicted Recovery (days)"])
+                strategy_label = best["Strategy"]
+                feat_vec    = best["_feat_vec"]
             else:
-                strategy_label = str(strategy)
+                # legacy 7-feature pickle — no strategy sweep possible
+                feat_vec = np.array([base_feats], dtype=float)
+                days     = float(regressor.predict(feat_vec)[0])
+                strategy_label = "Alternative Supplier"
+                rank_df  = None
 
             r1, r2 = st.columns(2)
-            with r1: metric_card("Predicted Full Recovery", f"{days:.0f} days")
-            with r2: metric_card("Recommended Strategy",    strategy_label)
+            with r1: metric_card("Fastest Predicted Recovery", f"{days:.0f} days")
+            with r2: metric_card("Recommended Strategy",       strategy_label)
+
+            if rank_df is not None:
+                st.markdown("##### All strategies ranked by predicted recovery")
+                if not sel_backup:
+                    st.caption("'Alternative Supplier' is excluded — not available without a backup supplier.")
+                _show_df = rank_df[["Strategy", "Predicted Recovery (days)"]].copy()
+                st.dataframe(_show_df, use_container_width=True, hide_index=True)
 
             severity_labels = {1: "Minimal", 2: "Low", 3: "Moderate", 4: "High", 5: "Critical"}
             st.info(
-                f"Scenario: **{sel_type}** in **{sel_ind}** | "
-                f"Region: {sel_region} | Size: {sel_size} | "
+                f"Scenario: **{sel_type}** | Size: {sel_size} | "
                 f"Severity: {severity_labels.get(sel_sev, sel_sev)} | "
                 f"Backup supplier: {'Yes' if sel_backup else 'No'}"
             )
@@ -769,15 +832,18 @@ with tabs[5]:
                 _base = float(_ev[0]) if hasattr(_ev, "__len__") else float(_ev)
 
                 PRED_FEATURE_NAMES = [
-                    "Disruption Type", "Industry", "Supplier Region",
-                    "Supplier Size", "Disruption Severity",
+                    "Disruption Type", "Supplier Size", "Disruption Severity",
                     "Production Impact %", "Has Backup Supplier",
+                    "Severity x Backup", "Impact % x Backup",
                 ]
                 PRED_FEATURE_VALUES = [
-                    sel_type, sel_ind, sel_region,
-                    sel_size, f"Severity {sel_sev}",
+                    sel_type, sel_size, f"Severity {sel_sev}",
                     f"{sel_impact}%", "Yes" if sel_backup else "No",
+                    sev_x_backup, impact_x_backup,
                 ]
+                if HAS_STRATEGY_FEATURE:
+                    PRED_FEATURE_NAMES.append("Response Strategy")
+                    PRED_FEATURE_VALUES.append(strategy_label)
 
                 _shap_df = pd.DataFrame({
                     "Feature":       [f"{n}  ({v})" for n, v in zip(PRED_FEATURE_NAMES, PRED_FEATURE_VALUES)],
@@ -894,6 +960,72 @@ with tabs[5]:
                 st.warning(f"Could not load inventory results: {_e}")
         else:
             st.info("Run Stage 15 (Inventory Agent) to see transfer recommendations.")
+
+    # ── Network-Grounded Response Plan (Stage 18) ──────────────────────────
+    st.divider()
+    st.markdown("### Network-Grounded Response Plan (Stage 18)")
+    st.caption(
+        "The strategy ranker above answers an ABSTRACT what-if — it has no "
+        "knowledge of your actual supply graph. This section is the opposite: "
+        "for every anomaly actually detected in this pipeline run, it searches "
+        "the real graph for a proven alternative — a distributor already "
+        "connected to both the manufacturer and the retailer — and reports a "
+        "named entity and route, not a strategy label."
+    )
+
+    _plan_path = os.path.join(OUT, "response_plan.csv")
+    if not os.path.exists(_plan_path):
+        st.info("Run Stage 18 (src/response_planner.py) to generate the response plan.")
+    else:
+        plan_df = pd.read_csv(_plan_path)
+        nb_df = plan_df[plan_df["no_listed_backup"] == True]
+        resolved_df = nb_df[nb_df["days_saved_vs_no_graph"] > 0]
+
+        st.markdown(
+            "**Two different clocks, not one:** 'full recovery' is the "
+            "historical full business-recovery time (inventory rebuilt, "
+            "contracts normalised) — genuinely long, because the training "
+            "data's severe cases are labor strikes and natural disasters. "
+            "That number barely moves just because a name was found. "
+            "'Activation' is a different, much smaller number: how fast "
+            "shipments can physically start moving through the found route. "
+            "**That is where the network's advantage actually shows up.**"
+        )
+
+        c1, c2, c3, c4 = st.columns(4)
+        with c1:
+            metric_card("No Listed Backup", f"{len(nb_df):,}")
+        with c2:
+            resolved_pct = (len(resolved_df) / len(nb_df) * 100) if len(nb_df) else 0
+            metric_card("Resolved to Proven Supplier", f"{len(resolved_df):,}", f"{resolved_pct:.0f}%")
+        with c3:
+            avg_act = resolved_df["activation_days"].mean() if len(resolved_df) else 0
+            metric_card("Avg Reroute Activation", f"{avg_act:.1f} days")
+        with c4:
+            avg_saved = resolved_df["days_saved_vs_no_graph"].mean() if len(resolved_df) else 0
+            metric_card("Avg Full-Recovery Days Saved", f"{avg_saved:.1f} days")
+
+        if len(resolved_df):
+            st.markdown("**Resolved cases** — no listed backup, network found a proven supplier:")
+            show_cols = ["manufacturer", "entity", "retailer", "route",
+                         "activation_days", "est_recovery_days",
+                         "baseline_days_no_graph", "days_saved_vs_no_graph"]
+            show_cols = [c for c in show_cols if c in resolved_df.columns]
+            st.dataframe(
+                resolved_df[show_cols].rename(columns={
+                    "entity": "Backup Supplier Found",
+                    "activation_days": "Activation (days)",
+                    "est_recovery_days": "Full Recovery — Graph (days)",
+                    "baseline_days_no_graph": "Full Recovery — ML-only (days)",
+                    "days_saved_vs_no_graph": "Days Saved",
+                }).reset_index(drop=True),
+                use_container_width=True, height=280
+            )
+
+        _report_path = os.path.join(OUT, "response_plan_report.txt")
+        if os.path.exists(_report_path):
+            with st.expander("Full Stage 18 report"):
+                st.code(open(_report_path).read(), language=None)
 
 # ══════════════════════════════════════════════════════════════════════════
 # TAB 7 — MULTI-DOMAIN RISK
@@ -1059,6 +1191,77 @@ with tabs[7]:
 # ══════════════════════════════════════════════════════════════════════════
 # TAB 9 — LIVE STREAM
 # ══════════════════════════════════════════════════════════════════════════
+# @st.fragment(run_every=...) reruns ONLY this function on its own timer —
+# not the whole script. Before this fix, a bare `time.sleep(3); st.rerun()`
+# at module level re-executed the ENTIRE app every 3 seconds (Streamlit has
+# no notion of "inactive tab" — all tabs' code runs on every rerun), which
+# meant every button click anywhere in the app (e.g. Recovery Predictor's
+# "Rank Strategies") got wiped by the next auto-refresh before its result
+# could ever be seen. Must be defined before tabs[8] calls it.
+@st.fragment(run_every=3)
+def _live_stream_fragment(live_results_path, disruption_flag_path):
+    st.caption("Auto-refreshes every 3 seconds. Keep this tab open during your demo.")
+
+    df_live = pd.read_csv(live_results_path)
+
+    total_rows      = len(df_live)
+    anomaly_rows    = int(df_live["is_anomaly"].sum()) if "is_anomaly" in df_live.columns else 0
+    disruption_rows = int(df_live["disruption_injected"].sum()) if "disruption_injected" in df_live.columns else 0
+    rerouted_rows   = int((df_live["alternate_route"].astype(str).str.strip() != "").sum()) if "alternate_route" in df_live.columns else 0
+
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("Rows Processed",      total_rows)
+    c2.metric("Anomalies Detected",  anomaly_rows,    delta=f"{anomaly_rows} flagged")
+    c3.metric("Disruptions Injected", disruption_rows)
+    c4.metric("Routes Rerouted",     rerouted_rows)
+
+    if os.path.exists(disruption_flag_path):
+        flag_text = open(disruption_flag_path).read()
+        st.error(f"⚡ ACTIVE DISRUPTION DETECTED\n\n{flag_text}")
+
+    st.markdown("#### Recent Anomalies")
+    if "is_anomaly" in df_live.columns:
+        df_anomalies = df_live[df_live["is_anomaly"] == 1].tail(10)
+        if df_anomalies.empty:
+            st.success("No anomalies detected yet — supply chain is healthy.")
+        else:
+            cols_to_show = [c for c in [
+                "timestamp", "manufacturer", "distributor", "retailer",
+                "quantity", "z_score", "disruption_injected",
+                "routing_method", "routing_note", "alternate_route"
+            ] if c in df_anomalies.columns]
+            st.dataframe(df_anomalies[cols_to_show].reset_index(drop=True),
+                         use_container_width=True)
+
+    st.markdown("#### All Transactions (last 50)")
+    cols_to_show = [c for c in [
+        "timestamp", "row_index", "manufacturer", "distributor",
+        "retailer", "quantity", "z_score", "is_anomaly"
+    ] if c in df_live.columns]
+    st.dataframe(df_live[cols_to_show].tail(50).reset_index(drop=True),
+                 use_container_width=True)
+
+    if "z_score" in df_live.columns and "row_index" in df_live.columns:
+        st.markdown("#### Z-Score Signal Over Time")
+        import plotly.graph_objects as go
+        fig_stream = go.Figure()
+        fig_stream.add_trace(go.Scatter(
+            x=df_live["row_index"], y=df_live["z_score"],
+            mode="lines", name="Z-Score",
+            line=dict(color="#00A896", width=1.5)
+        ))
+        fig_stream.add_hline(y=2.5, line_dash="dash", line_color="#F4845F",
+                             annotation_text="Anomaly Threshold (Z=2.5)")
+        fig_stream.update_layout(
+            xaxis_title="Row Index", yaxis_title="Z-Score",
+            template="plotly_dark", height=300,
+            margin=dict(l=40, r=20, t=20, b=40)
+        )
+        st.plotly_chart(fig_stream, use_container_width=True)
+    # Fragment reruns itself every 3s (run_every=3 above) — no manual
+    # sleep/rerun needed, and this no longer touches the rest of the app.
+
+
 with tabs[8]:
     st.subheader("Live Stream Monitor — Real-Time Sensor Feed")
     st.caption(
@@ -1079,67 +1282,8 @@ with tabs[8]:
             language="bash"
         )
     else:
-        st.caption("Auto-refreshes every 3 seconds. Keep this tab open during your demo.")
+        _live_stream_fragment(LIVE_RESULTS_PATH, DISRUPTION_FLAG_PATH)
 
-        df_live = pd.read_csv(LIVE_RESULTS_PATH)
-
-        total_rows      = len(df_live)
-        anomaly_rows    = int(df_live["is_anomaly"].sum()) if "is_anomaly" in df_live.columns else 0
-        disruption_rows = int(df_live["disruption_injected"].sum()) if "disruption_injected" in df_live.columns else 0
-        rerouted_rows   = int((df_live["alternate_route"].astype(str).str.strip() != "").sum()) if "alternate_route" in df_live.columns else 0
-
-        c1, c2, c3, c4 = st.columns(4)
-        c1.metric("Rows Processed",      total_rows)
-        c2.metric("Anomalies Detected",  anomaly_rows,    delta=f"{anomaly_rows} flagged")
-        c3.metric("Disruptions Injected", disruption_rows)
-        c4.metric("Routes Rerouted",     rerouted_rows)
-
-        if os.path.exists(DISRUPTION_FLAG_PATH):
-            flag_text = open(DISRUPTION_FLAG_PATH).read()
-            st.error(f"⚡ ACTIVE DISRUPTION DETECTED\n\n{flag_text}")
-
-        st.markdown("#### Recent Anomalies")
-        if "is_anomaly" in df_live.columns:
-            df_anomalies = df_live[df_live["is_anomaly"] == 1].tail(10)
-            if df_anomalies.empty:
-                st.success("No anomalies detected yet — supply chain is healthy.")
-            else:
-                cols_to_show = [c for c in [
-                    "timestamp", "manufacturer", "distributor", "retailer",
-                    "quantity", "z_score", "disruption_injected",
-                    "routing_method", "routing_note", "alternate_route"
-                ] if c in df_anomalies.columns]
-                st.dataframe(df_anomalies[cols_to_show].reset_index(drop=True),
-                             use_container_width=True)
-
-        st.markdown("#### All Transactions (last 50)")
-        cols_to_show = [c for c in [
-            "timestamp", "row_index", "manufacturer", "distributor",
-            "retailer", "quantity", "z_score", "is_anomaly"
-        ] if c in df_live.columns]
-        st.dataframe(df_live[cols_to_show].tail(50).reset_index(drop=True),
-                     use_container_width=True)
-
-        if "z_score" in df_live.columns and "row_index" in df_live.columns:
-            st.markdown("#### Z-Score Signal Over Time")
-            import plotly.graph_objects as go
-            fig_stream = go.Figure()
-            fig_stream.add_trace(go.Scatter(
-                x=df_live["row_index"], y=df_live["z_score"],
-                mode="lines", name="Z-Score",
-                line=dict(color="#00A896", width=1.5)
-            ))
-            fig_stream.add_hline(y=2.5, line_dash="dash", line_color="#F4845F",
-                                 annotation_text="Anomaly Threshold (Z=2.5)")
-            fig_stream.update_layout(
-                xaxis_title="Row Index", yaxis_title="Z-Score",
-                template="plotly_dark", height=300,
-                margin=dict(l=40, r=20, t=20, b=40)
-            )
-            st.plotly_chart(fig_stream, use_container_width=True)
-
-        time.sleep(3)
-        st.rerun()
 
 # ══════════════════════════════════════════════════════════════════════════
 # TAB 10 — IMMUNE RESPONSE (Chain-of-Thought Real-Time Decisions)

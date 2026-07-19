@@ -44,7 +44,11 @@ def prepare_xy(frame):
 
 
 def train_and_score(frame):
-    """Train on an 80% split and score on the held-out 20% (never on training rows)."""
+    """Train on an 80% split and score on the held-out 20% (never on training rows).
+
+    Returns (model_f1, baseline_f1) — the baseline always predicts the
+    training-set majority class, which is the floor any real model must beat.
+    """
     x, y = prepare_xy(frame)
     try:
         x_train, x_test, y_train, y_test = train_test_split(
@@ -63,7 +67,11 @@ def train_and_score(frame):
     )
     model.fit(x_train, y_train)
     preds = model.predict(x_test)
-    return f1_score(y_test, preds, average="weighted")
+    model_f1 = f1_score(y_test, preds, average="weighted")
+
+    maj_class   = y_train.mode()[0]
+    baseline_f1 = f1_score(y_test, np.full(len(y_test), maj_class), average="weighted")
+    return model_f1, baseline_f1
 
 
 def main():
@@ -87,8 +95,14 @@ def main():
 
     print(f"Loaded {len(df):,} rows from {INPUT_PATH}")
 
-    full_f1 = train_and_score(df)
+    full_f1, full_base = train_and_score(df)
     print(f"Weighted F1 (full dataset, held-out test split): {full_f1:.4f}")
+    print(f"Majority-class baseline F1                     : {full_base:.4f}")
+    print(f"Lift over baseline                             : {full_f1 - full_base:+.4f}")
+    if full_f1 - full_base < 0.05:
+        print("[NOTE] Model barely beats the majority-class floor — the available")
+        print("       features carry little signal about severity. Report this as a")
+        print("       finding; do not present the raw F1 as a capability.")
 
     rows = []
     industries = sorted([v for v in df["industry"].dropna().unique()])
@@ -97,8 +111,10 @@ def main():
         n = len(sub)
         if n < 100:
             continue
-        f1 = train_and_score(sub)
-        rows.append({"Industry": ind, "F1 Score": float(f1), "Sample Size": int(n)})
+        f1, base = train_and_score(sub)
+        rows.append({"Industry": ind, "F1 Score": float(f1),
+                     "Baseline F1": float(base), "Lift": float(f1 - base),
+                     "Sample Size": int(n)})
 
     if not rows:
         print("No industry subsets with at least 100 rows; nothing to save/plot.")
@@ -109,10 +125,11 @@ def main():
 
     out_df = pd.DataFrame(rows).sort_values("F1 Score", ascending=False).reset_index(drop=True)
 
-    print("\nIndustry | F1 Score | Sample Size")
-    print("-" * 55)
+    print("\nIndustry | F1 Score | Baseline F1 | Lift | Sample Size")
+    print("-" * 65)
     for _, r in out_df.iterrows():
-        print(f"{str(r['Industry']):<25} | {r['F1 Score']:.4f} | {int(r['Sample Size']):>11}")
+        print(f"{str(r['Industry']):<25} | {r['F1 Score']:.4f} | {r['Baseline F1']:.4f} "
+              f"| {r['Lift']:+.4f} | {int(r['Sample Size']):>11}")
 
     os.makedirs(os.path.dirname(OUT_CSV), exist_ok=True)
     os.makedirs(os.path.dirname(OUT_FIG), exist_ok=True)

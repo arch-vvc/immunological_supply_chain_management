@@ -1,0 +1,51 @@
+SCMS OUTCOME COUNTERFACTUAL — REPORT
+=======================================================
+
+At each lane's first late shipment, compare realized delivery
+performance over the following year: the vendor procurement actually
+used most (A) vs the walk-forward planner's top pick (B), both
+measured at the SAME molecule scope. Observational, not causal.
+
+Lanes with >=1 late shipment           : 231
+  no shipments in outcome window       : 33
+  planner pick == reality's vendor     : 3  (agreement — no counterfactual)
+  recommended vendor unobservable      : 101  (<3 window shipments)
+  actual vendor unobservable           : 2
+  COMPARABLE (both sides observed)     : 76
+
+── Realized outcomes over the year after t0 (symmetric scope) ──
+
+                               late rate  lateness d/ship
+  actual choice (A)               18.0%            3.7
+  planner pick  (B)                4.0%            1.3
+  random pool vendor               4.0%            1.7   (n=54)
+
+Recommendation had LOWER late rate     : 54/76  (71.1%)
+tied                                   : 13/76  (17.1%)
+actual choice was better               : 9/76  (11.8%)
+mean lateness saved per shipment       : +2.5 days (median +1.5)
+
+── What the random baseline decomposes ──
+planner pick vs random pool vendor     : better 10, tied 33, worse 11  (of 54)
+The planner's pick and a random pool vendor land close together on
+late rate — so the large gap vs the ACTUAL choice is evidence for the
+CATEGORY of action (switch from the troubled incumbent to any
+molecule-experienced alternative), NOT for the specific ranking. Part
+of that gap is selection: the incumbent is measured while its book is
+in trouble; outsiders are measured on their healthy order books.
+Ranking quality is validated separately by the revealed-preference
+backtest (hit rates vs random-from-pool); THIS test validates that
+acting on the alert at all was associated with better outcomes.
+
+HONEST NOTES
+  * Walk-forward: B is chosen from strictly pre-t0 data; outcomes are
+    strictly post-t0. No lookahead on either side.
+  * Symmetric scope: both vendors scored on molecule-level deliveries
+    (any country) — lane-level outcomes for the road-not-taken rarely
+    exist; asymmetric scoping would bias the comparison.
+  * NOT causal: procurement may have optimised price/contracts we do
+    not observe, and each vendor's outcomes are conditioned on the
+    orders it actually won. Read as decision-quality evidence.
+  * Agreement lanes are excluded from the win rate by construction;
+    they are reported above and are a success mode of the planner
+    (see scms_backtest.py hit rates).

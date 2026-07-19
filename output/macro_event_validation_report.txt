@@ -1,0 +1,32 @@
+STAGE 27 — MACRO-STRESS CRISIS VALIDATION (documented real events)
+====================================================================
+
+Question: does the Stage-9 stress composite rise at documented
+real-world crises it was never told about? Event-study deltas
+(mean of 8-week event window minus mean of the prior
+12 weeks) are ranked against a placebo distribution of
+313 non-event windows. DETECTED >= p90, PARTIAL >= p75.
+
+Event                           pre   peak    delta   plc%   verdict  top driver
+--------------------------------------------------------------------------------------------
+COVID-19 pandemic onset       0.274  0.425  +0.0763 100.0%  DETECTED  Inventory_to_Sales_R (+0.406)
+Suez Canal blockage           0.330  0.384  +0.0354  98.1%  DETECTED  Truck_Spot_Rates (+0.158)
+US port congestion peak       0.421  0.496  +0.0611 100.0%  DETECTED  Containerships_Await (+0.264)
+Russia invades Ukraine        0.526  0.575  +0.0149  79.2%   PARTIAL  Diesel_Sales_Prices (+0.323)
+Red Sea shipping attacks      0.286  0.327  +0.0093  69.3%  NOT SEEN  Freight_Transportati (+0.124)
+
+Summary: 3/5 DETECTED, 1 PARTIAL.
+
+Reading the nulls honestly: the composite is five US-AGGREGATE
+indicators (diesel, truck spot rates, containerships at berth, TSI,
+inventory-to-sales), monthly-interpolated and 4-week smoothed. A
+short foreign chokepoint event that global schedules absorbed (Suez,
+6 days) or a rerouting crisis whose cost landed on Asia-Europe lanes
+(Red Sea) SHOULD look muted in US macro data. Detections and nulls
+together say what a US-macro innate-immunity lens can and cannot
+see — which is the claim the paper needs, made precisely.
+
+Caveat: with 5 events this is external validity evidence, not a
+powered statistical test. Placebo percentiles quantify how unusual
+each rise is within THIS series; they are not p-values from an
+independent sample.

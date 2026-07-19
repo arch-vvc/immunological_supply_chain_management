@@ -1,0 +1,1299 @@
+[
+  {
+    "type": "replay",
+    "label": "Haiti earthquake (Jan 2010)",
+    "country": "Haiti",
+    "window": "2010-01..2010-12",
+    "documented": "M7.0 quake destroyed Port-au-Prince port; aid surged through a broken gateway.",
+    "detection": {
+      "n_window": 79,
+      "late_window": 27,
+      "late_rate": 0.342,
+      "baseline_rate": 0.009,
+      "p_value": "2.41e-35",
+      "fired": true
+    },
+    "lanes": [
+      {
+        "molecule": "Abacavir",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T2_QUALIFY_VENDOR",
+        "action": "buffer+qualify",
+        "recommendation": "Buffer now, qualify CIPLA LIMITED",
+        "shortlist": [
+          "CIPLA LIMITED",
+          "Aurobindo Pharma Limited",
+          "S. BUYS WHOLESALER"
+        ],
+        "buffer": {
+          "safety_stock_packs": 2846,
+          "days_of_cover": 271,
+          "buffer_usd": 38712,
+          "holding_usd_per_yr": 9678
+        }
+      },
+      {
+        "molecule": "Didanosine",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T1_IN_COUNTRY_ALTERNATE",
+        "action": "reroute",
+        "recommendation": "Reroute via BRISTOL-MYERS SQUIBB",
+        "alternate": "BRISTOL-MYERS SQUIBB",
+        "coverage": 1.0
+      },
+      {
+        "molecule": "Efavirenz",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T1_IN_COUNTRY_ALTERNATE",
+        "action": "reroute",
+        "recommendation": "Reroute via Aurobindo Pharma Limited",
+        "alternate": "Aurobindo Pharma Limited",
+        "coverage": 1.0
+      },
+      {
+        "molecule": "Indinavir",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T2_QUALIFY_VENDOR",
+        "action": "buffer+qualify",
+        "recommendation": "Buffer now, qualify MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.)",
+        "shortlist": [
+          "MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.)"
+        ],
+        "buffer": {
+          "safety_stock_packs": 234,
+          "days_of_cover": 468,
+          "buffer_usd": 11706,
+          "holding_usd_per_yr": 2927
+        }
+      },
+      {
+        "molecule": "Lamivudine",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T2_QUALIFY_VENDOR",
+        "action": "buffer+qualify",
+        "recommendation": "Buffer now, qualify SUN PHARMACEUTICAL INDUSTRIES LTD (RANBAXY LABORATORIES LIMITED)",
+        "shortlist": [
+          "SUN PHARMACEUTICAL INDUSTRIES LTD (RANBAXY LABORATORIES LIMITED)",
+          "MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES)",
+          "Aurobindo Pharma Limited"
+        ],
+        "buffer": {
+          "safety_stock_packs": 23061,
+          "days_of_cover": 262,
+          "buffer_usd": 44508,
+          "holding_usd_per_yr": 11127
+        }
+      },
+      {
+        "molecule": "Lamivudine/Zidovudine",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T2_QUALIFY_VENDOR",
+        "action": "buffer+qualify",
+        "recommendation": "Buffer now, qualify MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES)",
+        "shortlist": [
+          "MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES)",
+          "CIPLA LIMITED",
+          "Aurobindo Pharma Limited"
+        ],
+        "buffer": {
+          "safety_stock_packs": 92670,
+          "days_of_cover": 207,
+          "buffer_usd": 673708,
+          "holding_usd_per_yr": 168427
+        }
+      },
+      {
+        "molecule": "Nevirapine",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T2_QUALIFY_VENDOR",
+        "action": "buffer+qualify",
+        "recommendation": "Buffer now, qualify STRIDES ARCOLAB LIMITED",
+        "shortlist": [
+          "STRIDES ARCOLAB LIMITED",
+          "HETERO LABS LIMITED",
+          "S. BUYS WHOLESALER"
+        ],
+        "buffer": {
+          "safety_stock_packs": 42818,
+          "days_of_cover": 240,
+          "buffer_usd": 83494,
+          "holding_usd_per_yr": 20874
+        }
+      },
+      {
+        "molecule": "Stavudine",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T2_QUALIFY_VENDOR",
+        "action": "buffer+qualify",
+        "recommendation": "Buffer now, qualify STRIDES ARCOLAB LIMITED",
+        "shortlist": [
+          "STRIDES ARCOLAB LIMITED",
+          "Aurobindo Pharma Limited",
+          "S. BUYS WHOLESALER"
+        ],
+        "buffer": {
+          "safety_stock_packs": 11243,
+          "days_of_cover": 222,
+          "buffer_usd": 16415,
+          "holding_usd_per_yr": 4104
+        }
+      },
+      {
+        "molecule": "Zidovudine",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T1_IN_COUNTRY_ALTERNATE",
+        "action": "reroute",
+        "recommendation": "Reroute via Aurobindo Pharma Limited",
+        "alternate": "Aurobindo Pharma Limited",
+        "coverage": 0.48
+      }
+    ],
+    "summary": {
+      "disrupted_lanes": 9,
+      "resolved": 3,
+      "exposed": 6,
+      "buffer_usd_total": 868543
+    }
+  },
+  {
+    "type": "replay",
+    "label": "Cote d'Ivoire post-election crisis (2010-11)",
+    "country": "C\u00f4te d'Ivoire",
+    "window": "2010-12..2011-08",
+    "documented": "Disputed election -> sanctions, Jan-2011 export ban, civil conflict to Apr-2011.",
+    "detection": {
+      "n_window": 85,
+      "late_window": 40,
+      "late_rate": 0.471,
+      "baseline_rate": 0.057,
+      "p_value": "4.16e-27",
+      "fired": true
+    },
+    "lanes": [
+      {
+        "molecule": "Abacavir",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T2_QUALIFY_VENDOR",
+        "action": "buffer+qualify",
+        "recommendation": "Buffer now, qualify ASPEN PHARMACARE",
+        "shortlist": [
+          "ASPEN PHARMACARE",
+          "S. BUYS WHOLESALER",
+          "Aurobindo Pharma Limited"
+        ],
+        "buffer": {
+          "safety_stock_packs": 13405,
+          "days_of_cover": 235,
+          "buffer_usd": 212999,
+          "holding_usd_per_yr": 53250
+        }
+      },
+      {
+        "molecule": "Abacavir/Lamivudine",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T1_IN_COUNTRY_ALTERNATE",
+        "action": "reroute",
+        "recommendation": "Reroute via Aurobindo Pharma Limited",
+        "alternate": "Aurobindo Pharma Limited",
+        "coverage": 0.66
+      },
+      {
+        "molecule": "Didanosine",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T1_IN_COUNTRY_ALTERNATE",
+        "action": "reroute",
+        "recommendation": "Reroute via BRISTOL-MYERS SQUIBB",
+        "alternate": "BRISTOL-MYERS SQUIBB",
+        "coverage": 0.22
+      },
+      {
+        "molecule": "Efavirenz",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T1_IN_COUNTRY_ALTERNATE",
+        "action": "reroute",
+        "recommendation": "Reroute via MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.)",
+        "alternate": "MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.)",
+        "coverage": 0.03
+      },
+      {
+        "molecule": "Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T1_IN_COUNTRY_ALTERNATE",
+        "action": "reroute",
+        "recommendation": "Reroute via MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.)",
+        "alternate": "MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.)",
+        "coverage": 0.68
+      },
+      {
+        "molecule": "Emtricitabine/Tenofovir Disoproxil Fumarate",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T2_QUALIFY_VENDOR",
+        "action": "buffer+qualify",
+        "recommendation": "Buffer now, qualify GILEAD SCIENCES IRELAND, INC.",
+        "shortlist": [
+          "GILEAD SCIENCES IRELAND, INC.",
+          "S. BUYS WHOLESALER",
+          "PUETRO RICO PHARMACEUTICAL, INC."
+        ],
+        "buffer": {
+          "safety_stock_packs": 20033,
+          "days_of_cover": 220,
+          "buffer_usd": 235383,
+          "holding_usd_per_yr": 58846
+        }
+      },
+      {
+        "molecule": "Lamivudine",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T1_IN_COUNTRY_ALTERNATE",
+        "action": "reroute",
+        "recommendation": "Reroute via Aurobindo Pharma Limited",
+        "alternate": "Aurobindo Pharma Limited",
+        "coverage": 1.0
+      },
+      {
+        "molecule": "Lamivudine/Nevirapine/Zidovudine",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T2_QUALIFY_VENDOR",
+        "action": "buffer+qualify",
+        "recommendation": "Buffer now, qualify MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES)",
+        "shortlist": [
+          "MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES)",
+          "Aurobindo Pharma Limited",
+          "STRIDES ARCOLAB LIMITED"
+        ],
+        "buffer": {
+          "safety_stock_packs": 286111,
+          "days_of_cover": 235,
+          "buffer_usd": 2454829,
+          "holding_usd_per_yr": 613707
+        }
+      },
+      {
+        "molecule": "Lamivudine/Zidovudine",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T2_QUALIFY_VENDOR",
+        "action": "buffer+qualify",
+        "recommendation": "Buffer now, qualify MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES)",
+        "shortlist": [
+          "MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES)",
+          "Aurobindo Pharma Limited",
+          "CIPLA LIMITED"
+        ],
+        "buffer": {
+          "safety_stock_packs": 152545,
+          "days_of_cover": 223,
+          "buffer_usd": 1260021,
+          "holding_usd_per_yr": 315005
+        }
+      },
+      {
+        "molecule": "Lopinavir/Ritonavir",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T1_IN_COUNTRY_ALTERNATE",
+        "action": "reroute",
+        "recommendation": "Reroute via ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV)",
+        "alternate": "ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV)",
+        "coverage": 0.17
+      },
+      {
+        "molecule": "Nevirapine",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T2_QUALIFY_VENDOR",
+        "action": "buffer+qualify",
+        "recommendation": "Buffer now, qualify HETERO LABS LIMITED",
+        "shortlist": [
+          "HETERO LABS LIMITED",
+          "Aurobindo Pharma Limited",
+          "STRIDES ARCOLAB LIMITED"
+        ],
+        "buffer": {
+          "safety_stock_packs": 57781,
+          "days_of_cover": 288,
+          "buffer_usd": 112673,
+          "holding_usd_per_yr": 28168
+        }
+      },
+      {
+        "molecule": "Stavudine",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T1_IN_COUNTRY_ALTERNATE",
+        "action": "reroute",
+        "recommendation": "Reroute via Aurobindo Pharma Limited",
+        "alternate": "Aurobindo Pharma Limited",
+        "coverage": 1.0
+      },
+      {
+        "molecule": "Tenofovir Disoproxil Fumarate",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T2_QUALIFY_VENDOR",
+        "action": "buffer+qualify",
+        "recommendation": "Buffer now, qualify CIPLA LIMITED",
+        "shortlist": [
+          "CIPLA LIMITED",
+          "MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES)",
+          "S. BUYS WHOLESALER"
+        ],
+        "buffer": {
+          "safety_stock_packs": 9057,
+          "days_of_cover": 234,
+          "buffer_usd": 49815,
+          "holding_usd_per_yr": 12454
+        }
+      },
+      {
+        "molecule": "Zidovudine",
+        "disrupted_vendor": "SCMS from RDC",
+        "tier": "T2_QUALIFY_VENDOR",
+        "action": "buffer+qualify",
+        "recommendation": "Buffer now, qualify Aurobindo Pharma Limited",
+        "shortlist": [
+          "Aurobindo Pharma Limited",
+          "S. BUYS WHOLESALER",
+          "JSI R&T INSTITUTE, INC."
+        ],
+        "buffer": {
+          "safety_stock_packs": 25159,
+          "days_of_cover": 219,
+          "buffer_usd": 99378,
+          "holding_usd_per_yr": 24844
+        }
+      }
+    ],
+    "summary": {
+      "disrupted_lanes": 14,
+      "resolved": 7,
+      "exposed": 7,
+      "buffer_usd_total": 4425098
+    }
+  },
+  {
+    "type": "replay",
+    "label": "South Africa strike wave (2010)",
+    "country": "South Africa",
+    "window": "2010-05..2011-02",
+    "documented": "Transnet ports/rail strike (May) + 1M-worker public-sector strike shut clinics (Aug).",
+    "detection": {
+      "n_window": 165,
+      "late_window": 47,
+      "late_rate": 0.285,
+      "baseline_rate": 0.028,
+      "p_value": "2.28e-33",
+      "fired": true
+    },
+    "lanes": [
+      {
+        "molecule": "Efavirenz",
+        "disrupted_vendor": "Aurobindo Pharma Limited",
+        "tier": "T1_IN_COUNTRY_ALTERNATE",
+        "action": "reroute",
+        "recommendation": "Reroute via S. BUYS WHOLESALER",
+        "alternate": "S. BUYS WHOLESALER",
+        "coverage": 1.0
+      },
+      {
+        "molecule": "Lamivudine",
+        "disrupted_vendor": "Aurobindo Pharma Limited / STRIDES ARCOLAB LIMITED",
+        "tier": "T1_IN_COUNTRY_ALTERNATE",
+        "action": "reroute",
+        "recommendation": "Reroute via AUROBINDO PHARAM (SOUTH AFRICA)",
+        "alternate": "AUROBINDO PHARAM (SOUTH AFRICA)",
+        "coverage": 1.0
+      },
+      {
+        "molecule": "Nevirapine",
+        "disrupted_vendor": "Aurobindo Pharma Limited",
+        "tier": "T1_IN_COUNTRY_ALTERNATE",
+        "action": "reroute",
+        "recommendation": "Reroute via S. BUYS WHOLESALER",
+        "alternate": "S. BUYS WHOLESALER",
+        "coverage": 0.44
+      },
+      {
+        "molecule": "Tenofovir Disoproxil Fumarate",
+        "disrupted_vendor": "Aurobindo Pharma Limited / CIPLA LIMITED",
+        "tier": "T1_IN_COUNTRY_ALTERNATE",
+        "action": "reroute",
+        "recommendation": "Reroute via S. BUYS WHOLESALER",
+        "alternate": "S. BUYS WHOLESALER",
+        "coverage": 0.03
+      },
+      {
+        "molecule": "Zidovudine",
+        "disrupted_vendor": "Aurobindo Pharma Limited",
+        "tier": "T1_IN_COUNTRY_ALTERNATE",
+        "action": "reroute",
+        "recommendation": "Reroute via JSI R&T INSTITUTE, INC.",
+        "alternate": "JSI R&T INSTITUTE, INC.",
+        "coverage": 1.0
+      }
+    ],
+    "summary": {
+      "disrupted_lanes": 5,
+      "resolved": 5,
+      "exposed": 0,
+      "buffer_usd_total": 0
+    }
+  },
+  {
+    "type": "knockout",
+    "label": "Knockout: Orgenics, Ltd",
+    "vendor": "Orgenics, Ltd",
+    "summary": {
+      "lanes_served": 74,
+      "resilient": 37,
+      "newly_exposed": 37,
+      "value_at_risk_usd_per_yr": 1141056,
+      "buffer_usd_total": 1739031
+    },
+    "lanes": [
+      {
+        "molecule": "HIV 1/2, Determine Complete HIV Kit",
+        "country": "Uganda",
+        "value_at_risk_usd_per_yr": 551286,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify Standard Diagnostics, Inc.",
+        "shortlist": [
+          "Standard Diagnostics, Inc.",
+          "INVERNESS MEDICAL INNOVATIONS HONG KONG LTD",
+          "Abbott GmbH & Co. KG"
+        ],
+        "buffer": {
+          "safety_stock_packs": 11308,
+          "days_of_cover": 144,
+          "buffer_usd": 904642,
+          "holding_usd_per_yr": 226160
+        }
+      },
+      {
+        "molecule": "HIV 1/2, Determine Complete HIV Kit",
+        "country": "Burundi",
+        "value_at_risk_usd_per_yr": 204583,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify Standard Diagnostics, Inc.",
+        "shortlist": [
+          "Standard Diagnostics, Inc.",
+          "INVERNESS MEDICAL INNOVATIONS HONG KONG LTD",
+          "Abbott GmbH & Co. KG"
+        ],
+        "buffer": {
+          "safety_stock_packs": 3241,
+          "days_of_cover": 173,
+          "buffer_usd": 259243,
+          "holding_usd_per_yr": 64811
+        }
+      },
+      {
+        "molecule": "HIV 1/2, Determine Complete HIV Kit",
+        "country": "Cameroon",
+        "value_at_risk_usd_per_yr": 130132,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify Standard Diagnostics, Inc.",
+        "shortlist": [
+          "Standard Diagnostics, Inc.",
+          "INVERNESS MEDICAL INNOVATIONS HONG KONG LTD",
+          "Abbott GmbH & Co. KG"
+        ],
+        "buffer": {
+          "safety_stock_packs": 4032,
+          "days_of_cover": 217,
+          "buffer_usd": 322581,
+          "holding_usd_per_yr": 80645
+        }
+      },
+      {
+        "molecule": "HIV 1/2, Determine Complete HIV Kit",
+        "country": "South Sudan",
+        "value_at_risk_usd_per_yr": 70695,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify Standard Diagnostics, Inc.",
+        "shortlist": [
+          "Standard Diagnostics, Inc.",
+          "INVERNESS MEDICAL INNOVATIONS HONG KONG LTD",
+          "Abbott GmbH & Co. KG"
+        ],
+        "buffer": {
+          "safety_stock_packs": 785,
+          "days_of_cover": 144,
+          "buffer_usd": 69849,
+          "holding_usd_per_yr": 17462
+        }
+      },
+      {
+        "molecule": "HIV 1/2, Determine Complete HIV Kit",
+        "country": "Sierra Leone",
+        "value_at_risk_usd_per_yr": 34155,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify Standard Diagnostics, Inc.",
+        "shortlist": [
+          "Standard Diagnostics, Inc.",
+          "INVERNESS MEDICAL INNOVATIONS HONG KONG LTD",
+          "Abbott GmbH & Co. KG"
+        ],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV 1/2, Determine HIV Kit, without Lancets",
+        "country": "Tanzania",
+        "value_at_risk_usd_per_yr": 22220,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify ACOUNS NIGERIA LTD",
+        "shortlist": [
+          "ACOUNS NIGERIA LTD",
+          "SCMS from RDC",
+          "INVERNESS MEDICAL INNOVATIONS SOUTH AFRICA (PTY) LTD"
+        ],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV 1/2, Determine Complete HIV Kit",
+        "country": "Lesotho",
+        "value_at_risk_usd_per_yr": 17966,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify Standard Diagnostics, Inc.",
+        "shortlist": [
+          "Standard Diagnostics, Inc.",
+          "INVERNESS MEDICAL INNOVATIONS HONG KONG LTD",
+          "Abbott GmbH & Co. KG"
+        ],
+        "buffer": null
+      },
+      {
+        "molecule": "Chase Buffer, Determine, 100 Tests, 2.5ml x 1 Vial",
+        "country": "Zimbabwe",
+        "value_at_risk_usd_per_yr": 12007,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify WAGENIA",
+        "shortlist": [
+          "WAGENIA",
+          "Standard Diagnostics, Inc."
+        ],
+        "buffer": {
+          "safety_stock_packs": 7920,
+          "days_of_cover": 386,
+          "buffer_usd": 39601,
+          "holding_usd_per_yr": 9900
+        }
+      },
+      {
+        "molecule": "HIV 1/2, Determine HIV Kit, without Lancets",
+        "country": "Benin",
+        "value_at_risk_usd_per_yr": 11034,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify ACOUNS NIGERIA LTD",
+        "shortlist": [
+          "ACOUNS NIGERIA LTD",
+          "SCMS from RDC",
+          "INVERNESS MEDICAL INNOVATIONS SOUTH AFRICA (PTY) LTD"
+        ],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV 1/2, Determine Complete HIV Kit",
+        "country": "Mali",
+        "value_at_risk_usd_per_yr": 10930,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify Standard Diagnostics, Inc.",
+        "shortlist": [
+          "Standard Diagnostics, Inc.",
+          "INVERNESS MEDICAL INNOVATIONS HONG KONG LTD",
+          "Abbott GmbH & Co. KG"
+        ],
+        "buffer": {
+          "safety_stock_packs": 295,
+          "days_of_cover": 232,
+          "buffer_usd": 23615,
+          "holding_usd_per_yr": 5904
+        }
+      },
+      {
+        "molecule": "HIV 1/2, Determine Complete HIV Kit",
+        "country": "Liberia",
+        "value_at_risk_usd_per_yr": 10375,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify Standard Diagnostics, Inc.",
+        "shortlist": [
+          "Standard Diagnostics, Inc.",
+          "INVERNESS MEDICAL INNOVATIONS HONG KONG LTD",
+          "Abbott GmbH & Co. KG"
+        ],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV 1/2, Determine Complete HIV Kit",
+        "country": "Malawi",
+        "value_at_risk_usd_per_yr": 10136,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify Standard Diagnostics, Inc.",
+        "shortlist": [
+          "Standard Diagnostics, Inc.",
+          "INVERNESS MEDICAL INNOVATIONS HONG KONG LTD",
+          "Abbott GmbH & Co. KG"
+        ],
+        "buffer": {
+          "safety_stock_packs": 494,
+          "days_of_cover": 266,
+          "buffer_usd": 39543,
+          "holding_usd_per_yr": 9886
+        }
+      },
+      {
+        "molecule": "HIV 1/2, Determine Complete HIV Kit",
+        "country": "Swaziland",
+        "value_at_risk_usd_per_yr": 8633,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify Standard Diagnostics, Inc.",
+        "shortlist": [
+          "Standard Diagnostics, Inc.",
+          "INVERNESS MEDICAL INNOVATIONS HONG KONG LTD",
+          "Abbott GmbH & Co. KG"
+        ],
+        "buffer": {
+          "safety_stock_packs": 261,
+          "days_of_cover": 354,
+          "buffer_usd": 20917,
+          "holding_usd_per_yr": 5229
+        }
+      },
+      {
+        "molecule": "HIV, Capillary Tubes, for Determine, EDTA, 50uL,100 Pcs",
+        "country": "Ethiopia",
+        "value_at_risk_usd_per_yr": 8539,
+        "tier": "T5_SINGLE_SOURCED",
+        "recommendation": "No alternate anywhere \u2014 buffer only",
+        "shortlist": [],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV 1/2, DoubleCheck II Kit",
+        "country": "Kyrgyzstan",
+        "value_at_risk_usd_per_yr": 8432,
+        "tier": "T5_SINGLE_SOURCED",
+        "recommendation": "No alternate anywhere \u2014 buffer only",
+        "shortlist": [],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV 1/2, Determine HIV Kit, without Lancets",
+        "country": "Uganda",
+        "value_at_risk_usd_per_yr": 6531,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify ACOUNS NIGERIA LTD",
+        "shortlist": [
+          "ACOUNS NIGERIA LTD",
+          "SCMS from RDC",
+          "INVERNESS MEDICAL INNOVATIONS SOUTH AFRICA (PTY) LTD"
+        ],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV 1/2, DoubleCheck Gold Kit",
+        "country": "Congo, DRC",
+        "value_at_risk_usd_per_yr": 4428,
+        "tier": "T5_SINGLE_SOURCED",
+        "recommendation": "No alternate anywhere \u2014 buffer only",
+        "shortlist": [],
+        "buffer": {
+          "safety_stock_packs": 455,
+          "days_of_cover": 402,
+          "buffer_usd": 16608,
+          "holding_usd_per_yr": 4152
+        }
+      },
+      {
+        "molecule": "HIV 1/2, Determine Kit without Lancets, Buffer or Capillary Tubes, 100 Tests",
+        "country": "Mozambique",
+        "value_at_risk_usd_per_yr": 4182,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify WAGENIA",
+        "shortlist": [
+          "WAGENIA",
+          "REINBOLD EXPORT IMPORT"
+        ],
+        "buffer": {
+          "safety_stock_packs": 214,
+          "days_of_cover": 361,
+          "buffer_usd": 15472,
+          "holding_usd_per_yr": 3868
+        }
+      },
+      {
+        "molecule": "HIV, Capillary Tubes, for Determine, EDTA, 50uL,100 Pcs",
+        "country": "South Sudan",
+        "value_at_risk_usd_per_yr": 2672,
+        "tier": "T5_SINGLE_SOURCED",
+        "recommendation": "No alternate anywhere \u2014 buffer only",
+        "shortlist": [],
+        "buffer": {
+          "safety_stock_packs": 525,
+          "days_of_cover": 215,
+          "buffer_usd": 4202,
+          "holding_usd_per_yr": 1051
+        }
+      },
+      {
+        "molecule": "HIV 1/2, Clearview Complete Kit",
+        "country": "Mali",
+        "value_at_risk_usd_per_yr": 2647,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC",
+          "INVERNESS MEDICAL INNOVATIONS SOUTH AFRICA (PTY) LTD"
+        ],
+        "buffer": {
+          "safety_stock_packs": 111,
+          "days_of_cover": 233,
+          "buffer_usd": 10529,
+          "holding_usd_per_yr": 2632
+        }
+      },
+      {
+        "molecule": "HIV 1/2, Determine Kit without Lancets, Buffer or Capillary Tubes, 100 Tests",
+        "country": "Cameroon",
+        "value_at_risk_usd_per_yr": 2618,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify WAGENIA",
+        "shortlist": [
+          "WAGENIA",
+          "REINBOLD EXPORT IMPORT"
+        ],
+        "buffer": {
+          "safety_stock_packs": 92,
+          "days_of_cover": 223,
+          "buffer_usd": 6651,
+          "holding_usd_per_yr": 1663
+        }
+      },
+      {
+        "molecule": "HIV, Capillary Tubes, for Determine, EDTA, 50uL,100 Pcs",
+        "country": "Uganda",
+        "value_at_risk_usd_per_yr": 1560,
+        "tier": "T5_SINGLE_SOURCED",
+        "recommendation": "No alternate anywhere \u2014 buffer only",
+        "shortlist": [],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV, Lancet, Safety, for HIV Test kits, 100 Pcs",
+        "country": "Uganda",
+        "value_at_risk_usd_per_yr": 996,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC"
+        ],
+        "buffer": {
+          "safety_stock_packs": 526,
+          "days_of_cover": 389,
+          "buffer_usd": 2630,
+          "holding_usd_per_yr": 657
+        }
+      },
+      {
+        "molecule": "Chase Buffer, Determine, 100 Tests, 2.5ml x 1 Vial",
+        "country": "South Sudan",
+        "value_at_risk_usd_per_yr": 968,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify WAGENIA",
+        "shortlist": [
+          "WAGENIA",
+          "Standard Diagnostics, Inc."
+        ],
+        "buffer": {
+          "safety_stock_packs": 309,
+          "days_of_cover": 187,
+          "buffer_usd": 1547,
+          "holding_usd_per_yr": 387
+        }
+      },
+      {
+        "molecule": "HIV 1/2, ImmunoComb TriSpot Ag - Ab Kit",
+        "country": "Mali",
+        "value_at_risk_usd_per_yr": 867,
+        "tier": "T5_SINGLE_SOURCED",
+        "recommendation": "No alternate anywhere \u2014 buffer only",
+        "shortlist": [],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV 1/2, ImmunoComb TriSpot Ag - Ab Kit",
+        "country": "Senegal",
+        "value_at_risk_usd_per_yr": 726,
+        "tier": "T5_SINGLE_SOURCED",
+        "recommendation": "No alternate anywhere \u2014 buffer only",
+        "shortlist": [],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV 1/2, ImmunoComb II BiSpot EIA Kit",
+        "country": "Mali",
+        "value_at_risk_usd_per_yr": 526,
+        "tier": "T5_SINGLE_SOURCED",
+        "recommendation": "No alternate anywhere \u2014 buffer only",
+        "shortlist": [],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV 1/2, Determine Complete HIV Kit",
+        "country": "Guinea",
+        "value_at_risk_usd_per_yr": 384,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify Standard Diagnostics, Inc.",
+        "shortlist": [
+          "Standard Diagnostics, Inc.",
+          "INVERNESS MEDICAL INNOVATIONS HONG KONG LTD",
+          "Abbott GmbH & Co. KG"
+        ],
+        "buffer": null
+      },
+      {
+        "molecule": "Chase Buffer, Determine, 100 Tests, 2.5ml x 1 Vial",
+        "country": "Mozambique",
+        "value_at_risk_usd_per_yr": 312,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify WAGENIA",
+        "shortlist": [
+          "WAGENIA",
+          "Standard Diagnostics, Inc."
+        ],
+        "buffer": {
+          "safety_stock_packs": 214,
+          "days_of_cover": 334,
+          "buffer_usd": 1071,
+          "holding_usd_per_yr": 268
+        }
+      },
+      {
+        "molecule": "Chase Buffer, Determine, 100 Tests, 2.5ml x 1 Vial",
+        "country": "Swaziland",
+        "value_at_risk_usd_per_yr": 173,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify WAGENIA",
+        "shortlist": [
+          "WAGENIA",
+          "Standard Diagnostics, Inc."
+        ],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV, Lancet, Safety, for HIV Test kits, 100 Pcs",
+        "country": "Mali",
+        "value_at_risk_usd_per_yr": 93,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC"
+        ],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV, Lancet, Safety, for HIV Test kits, 100 Pcs",
+        "country": "Swaziland",
+        "value_at_risk_usd_per_yr": 83,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC"
+        ],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV, Capillary Tubes, for Determine, EDTA, 50uL,100 Pcs",
+        "country": "Sudan",
+        "value_at_risk_usd_per_yr": 82,
+        "tier": "T5_SINGLE_SOURCED",
+        "recommendation": "No alternate anywhere \u2014 buffer only",
+        "shortlist": [],
+        "buffer": {
+          "safety_stock_packs": 29,
+          "days_of_cover": 134,
+          "buffer_usd": 231,
+          "holding_usd_per_yr": 58
+        }
+      },
+      {
+        "molecule": "Chase Buffer, Determine, 100 Tests, 2.5ml x 1 Vial",
+        "country": "Cameroon",
+        "value_at_risk_usd_per_yr": 53,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify WAGENIA",
+        "shortlist": [
+          "WAGENIA",
+          "Standard Diagnostics, Inc."
+        ],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV, Lancet, Safety, for HIV Test kits, 100 Pcs",
+        "country": "Nigeria",
+        "value_at_risk_usd_per_yr": 29,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC"
+        ],
+        "buffer": {
+          "safety_stock_packs": 9905,
+          "days_of_cover": 133,
+          "buffer_usd": 99,
+          "holding_usd_per_yr": 25
+        }
+      },
+      {
+        "molecule": "HIV, Lancet, Safety, for HIV Test kits, 100 Pcs",
+        "country": "Benin",
+        "value_at_risk_usd_per_yr": 2,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC"
+        ],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV, Lancet, Safety, for HIV Test kits, 100 Pcs",
+        "country": "Haiti",
+        "value_at_risk_usd_per_yr": 1,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC"
+        ],
+        "buffer": null
+      }
+    ]
+  },
+  {
+    "type": "knockout",
+    "label": "Knockout: Standard Diagnostics, Inc.",
+    "vendor": "Standard Diagnostics, Inc.",
+    "summary": {
+      "lanes_served": 21,
+      "resilient": 9,
+      "newly_exposed": 12,
+      "value_at_risk_usd_per_yr": 201254,
+      "buffer_usd_total": 82518
+    },
+    "lanes": [
+      {
+        "molecule": "HIV 1/2, Bioline 3.0 Kit (no accessories)",
+        "country": "Tanzania",
+        "value_at_risk_usd_per_yr": 132112,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC"
+        ],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV 1/2, Bioline 3.0 Kit, Lancets, Capillary pipets, Alcohol swabs included",
+        "country": "C\u00f4te d'Ivoire",
+        "value_at_risk_usd_per_yr": 50816,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC"
+        ],
+        "buffer": {
+          "safety_stock_packs": 4025,
+          "days_of_cover": 394,
+          "buffer_usd": 82518,
+          "holding_usd_per_yr": 20630
+        }
+      },
+      {
+        "molecule": "HIV 1/2, Bioline 3.0 Kit (no accessories)",
+        "country": "Rwanda",
+        "value_at_risk_usd_per_yr": 12808,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC"
+        ],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV 1/2, Bioline 3.0 Kit, Lancets, Capillary pipets, Alcohol swabs included",
+        "country": "Sierra Leone",
+        "value_at_risk_usd_per_yr": 3282,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC"
+        ],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV 1/2, Bioline 3.0 Kit",
+        "country": "Dominican Republic",
+        "value_at_risk_usd_per_yr": 1225,
+        "tier": "T5_SINGLE_SOURCED",
+        "recommendation": "No alternate anywhere \u2014 buffer only",
+        "shortlist": [],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV 1/2, Bioline 3.0 Kit, Lancets, Capillary pipets, Alcohol swabs included",
+        "country": "Benin",
+        "value_at_risk_usd_per_yr": 495,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC"
+        ],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV 1/2, Bioline 3.0 Kit, Lancets, Capillary pipets, Alcohol swabs included",
+        "country": "Liberia",
+        "value_at_risk_usd_per_yr": 363,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC"
+        ],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV 1/2, Bioline 3.0 Kit, Lancets, Capillary pipets, Alcohol swabs included",
+        "country": "Botswana",
+        "value_at_risk_usd_per_yr": 85,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC"
+        ],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV 1/2, Bioline 3.0 Diluent, 25 Tests",
+        "country": "Dominican Republic",
+        "value_at_risk_usd_per_yr": 59,
+        "tier": "T5_SINGLE_SOURCED",
+        "recommendation": "No alternate anywhere \u2014 buffer only",
+        "shortlist": [],
+        "buffer": null
+      },
+      {
+        "molecule": "Malaria Antigen P.f , HRP2, Kit",
+        "country": "Haiti",
+        "value_at_risk_usd_per_yr": 5,
+        "tier": "T5_SINGLE_SOURCED",
+        "recommendation": "No alternate anywhere \u2014 buffer only",
+        "shortlist": [],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV 1/2, Bioline 3.0 Diluent, 25 Tests",
+        "country": "Sudan",
+        "value_at_risk_usd_per_yr": 2,
+        "tier": "T5_SINGLE_SOURCED",
+        "recommendation": "No alternate anywhere \u2014 buffer only",
+        "shortlist": [],
+        "buffer": null
+      },
+      {
+        "molecule": "Chase Buffer, Determine, 100 Tests, 2.5ml x 1 Vial",
+        "country": "Dominican Republic",
+        "value_at_risk_usd_per_yr": 0,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify WAGENIA",
+        "shortlist": [
+          "WAGENIA",
+          "Orgenics, Ltd"
+        ],
+        "buffer": null
+      }
+    ]
+  },
+  {
+    "type": "knockout",
+    "label": "Knockout: Trinity Biotech, Plc",
+    "vendor": "Trinity Biotech, Plc",
+    "summary": {
+      "lanes_served": 25,
+      "resilient": 14,
+      "newly_exposed": 11,
+      "value_at_risk_usd_per_yr": 772776,
+      "buffer_usd_total": 825092
+    },
+    "lanes": [
+      {
+        "molecule": "HIV 1/2, Uni-Gold HIV Kit",
+        "country": "Nigeria",
+        "value_at_risk_usd_per_yr": 530113,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC",
+          "TURE PHARMACEUTICALS & MEDICAL SUPPLIES P.L.C."
+        ],
+        "buffer": {
+          "safety_stock_packs": 19192,
+          "days_of_cover": 384,
+          "buffer_usd": 614139,
+          "holding_usd_per_yr": 153535
+        }
+      },
+      {
+        "molecule": "HIV 1/2, Uni-Gold HIV Kit",
+        "country": "Guyana",
+        "value_at_risk_usd_per_yr": 146107,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC",
+          "TURE PHARMACEUTICALS & MEDICAL SUPPLIES P.L.C."
+        ],
+        "buffer": {
+          "safety_stock_packs": 1989,
+          "days_of_cover": 154,
+          "buffer_usd": 63650,
+          "holding_usd_per_yr": 15912
+        }
+      },
+      {
+        "molecule": "HIV 1/2, Uni-Gold HIV Kit",
+        "country": "Uganda",
+        "value_at_risk_usd_per_yr": 31153,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC",
+          "TURE PHARMACEUTICALS & MEDICAL SUPPLIES P.L.C."
+        ],
+        "buffer": {
+          "safety_stock_packs": 1355,
+          "days_of_cover": 393,
+          "buffer_usd": 43364,
+          "holding_usd_per_yr": 10841
+        }
+      },
+      {
+        "molecule": "HIV 1/2, Uni-Gold HIV Kit",
+        "country": "South Sudan",
+        "value_at_risk_usd_per_yr": 24814,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC",
+          "TURE PHARMACEUTICALS & MEDICAL SUPPLIES P.L.C."
+        ],
+        "buffer": {
+          "safety_stock_packs": 697,
+          "days_of_cover": 131,
+          "buffer_usd": 22290,
+          "holding_usd_per_yr": 5573
+        }
+      },
+      {
+        "molecule": "HIV 1/2, Uni-Gold HIV Kit",
+        "country": "Congo, DRC",
+        "value_at_risk_usd_per_yr": 18949,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC",
+          "TURE PHARMACEUTICALS & MEDICAL SUPPLIES P.L.C."
+        ],
+        "buffer": {
+          "safety_stock_packs": 1114,
+          "days_of_cover": 238,
+          "buffer_usd": 35640,
+          "holding_usd_per_yr": 8910
+        }
+      },
+      {
+        "molecule": "HIV 1/2, Uni-Gold HIV Kit",
+        "country": "Lesotho",
+        "value_at_risk_usd_per_yr": 8539,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC",
+          "TURE PHARMACEUTICALS & MEDICAL SUPPLIES P.L.C."
+        ],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV 1/2, Uni-Gold HIV Kit",
+        "country": "Swaziland",
+        "value_at_risk_usd_per_yr": 6592,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC",
+          "TURE PHARMACEUTICALS & MEDICAL SUPPLIES P.L.C."
+        ],
+        "buffer": {
+          "safety_stock_packs": 776,
+          "days_of_cover": 367,
+          "buffer_usd": 24826,
+          "holding_usd_per_yr": 6206
+        }
+      },
+      {
+        "molecule": "HIV 1/2, Uni-Gold HIV Kit",
+        "country": "Dominican Republic",
+        "value_at_risk_usd_per_yr": 4526,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC",
+          "TURE PHARMACEUTICALS & MEDICAL SUPPLIES P.L.C."
+        ],
+        "buffer": {
+          "safety_stock_packs": 437,
+          "days_of_cover": 181,
+          "buffer_usd": 13988,
+          "holding_usd_per_yr": 3497
+        }
+      },
+      {
+        "molecule": "HIV 1/2, Uni-Gold HIV Kit",
+        "country": "Malawi",
+        "value_at_risk_usd_per_yr": 1547,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC",
+          "TURE PHARMACEUTICALS & MEDICAL SUPPLIES P.L.C."
+        ],
+        "buffer": {
+          "safety_stock_packs": 206,
+          "days_of_cover": 291,
+          "buffer_usd": 6600,
+          "holding_usd_per_yr": 1650
+        }
+      },
+      {
+        "molecule": "HIV 1/2, Uni-Gold HIV Kit",
+        "country": "Liberia",
+        "value_at_risk_usd_per_yr": 239,
+        "tier": "T2_QUALIFY_VENDOR",
+        "recommendation": "Qualify SCMS from RDC",
+        "shortlist": [
+          "SCMS from RDC",
+          "TURE PHARMACEUTICALS & MEDICAL SUPPLIES P.L.C."
+        ],
+        "buffer": null
+      },
+      {
+        "molecule": "HIV 1, Uni-Gold Recombigen HIV Control, Vial 2 x 0.5 ml",
+        "country": "Botswana",
+        "value_at_risk_usd_per_yr": 197,
+        "tier": "T5_SINGLE_SOURCED",
+        "recommendation": "No alternate anywhere \u2014 buffer only",
+        "shortlist": [],
+        "buffer": {
+          "safety_stock_packs": 19,
+          "days_of_cover": 292,
+          "buffer_usd": 595,
+          "holding_usd_per_yr": 149
+        }
+      }
+    ]
+  }
+]

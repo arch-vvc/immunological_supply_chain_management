@@ -1,0 +1,23 @@
+{
+  "features": [
+    "abs_z_quantity",
+    "z_freq",
+    "abs_z_surge",
+    "concentration",
+    "iforest_score"
+  ],
+  "coef": [
+    -0.001877077695215391,
+    0.09075093760571303,
+    -0.31430636627554154,
+    -0.20941133518366625,
+    23.942222108485094
+  ],
+  "intercept": -11.279557784356742,
+  "threshold": 0.8999999999999999,
+  "tuned_on_seed": 42,
+  "held_out_f1": 0.3864,
+  "held_out_precision": 0.2852,
+  "held_out_precision_adjusted": 0.8585,
+  "held_out_recall": 0.603
+}

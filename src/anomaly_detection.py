@@ -10,7 +10,11 @@ Five detection dimensions:
   5. Isolation Forest  — ML-based joint-distribution outlier detection (5th signal)
 
 A transaction flagged on 2+ dimensions is classified as a high-confidence anomaly.
-Precision/Recall/F1 reported using 3+ Z-score agreement as pseudo-ground-truth.
+
+Evaluation note: detection quality (P/R/F1) is NOT measured here — flags
+derived from the detectors cannot also serve as ground truth. The independent
+benchmark lives in anomaly_eval_injection.py (Stage 3b), which injects known
+synthetic anomalies and scores the same detectors against that label.
 """
 
 import pandas as pd
@@ -18,7 +22,6 @@ import numpy as np
 from scipy.stats import zscore
 from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import precision_score, recall_score, f1_score
 import os
 import shutil
 import tempfile
@@ -46,35 +49,45 @@ FREQ_Z   = _thresholds.get("frequency_zscore",      2.5)
 SURGE_Z  = _thresholds.get("temporal_surge_zscore", 2.5)
 CONC_PCT = _thresholds.get("concentration_pct",     0.90)
 
-# ── Macro stress adjustment ───────────────────────────────────
-# If Stage 9 has run, load stress scores and tighten thresholds
-# on high-stress periods (catch more anomalies when environment is bad)
+# ── Macro stress adjustment (per-week) ────────────────────────
+# If Stage 9 has run, each TRANSACTION's z-thresholds are scaled by the
+# multiplier of ITS OWN calendar week's macro stress — tighten in high-stress
+# weeks (catch more), relax in low-stress weeks (fewer false alarms). This is
+# the paper's theta_adj = lambda * theta_base applied per week rather than as
+# one run-level average. Transactions outside indicator coverage fall back to
+# the coverage-mean multiplier (equivalent to the old static behaviour).
 MACRO_STRESS = os.path.join(ROOT, "output", "macro_stress_scores.csv")
 
-def get_macro_multiplier(date_series):
-    """Return a threshold multiplier based on avg macro stress for the dataset period."""
+def _stress_lambda(score):
+    # HIGH stress (>=0.65) -> 0.75 (lower thresholds = more sensitive)
+    # LOW  stress (<0.40)  -> 1.20 (higher thresholds = fewer false positives)
+    if score >= 0.65:
+        return 0.75
+    elif score >= 0.40:
+        return 1.00
+    return 1.20
+
+def get_weekly_multipliers(date_series):
+    """Per-transaction multiplier Series aligned to date_series, plus
+    (share of rows inside indicator coverage, fallback multiplier)."""
     if not os.path.exists(MACRO_STRESS):
-        return 1.0
+        return pd.Series(1.0, index=date_series.index), 0.0, 1.0
     try:
-        stress_df = pd.read_csv(MACRO_STRESS, parse_dates=["date"])
-        d_min, d_max = date_series.min(), date_series.max()
-        mask  = (stress_df["date"] >= d_min) & (stress_df["date"] <= d_max)
-        sub   = stress_df[mask]
-        if len(sub) == 0:
-            # Dataset dates outside stress range — use overall mean
-            avg_stress = stress_df["stress_score"].mean()
-        else:
-            avg_stress = sub["stress_score"].mean()
-        # HIGH stress (≥0.65) → multiplier 0.75 (lower thresholds = more sensitive)
-        # LOW  stress (<0.40) → multiplier 1.20 (higher thresholds = fewer false positives)
-        if avg_stress >= 0.65:
-            return 0.75
-        elif avg_stress >= 0.40:
-            return 1.00
-        else:
-            return 1.20
+        stress_df = (pd.read_csv(MACRO_STRESS, parse_dates=["date"])
+                       .sort_values("date"))
+        fallback = _stress_lambda(stress_df["stress_score"].mean())
+        d = (date_series.rename("date").reset_index()
+                        .sort_values("date"))
+        merged = pd.merge_asof(d, stress_df[["date", "stress_score"]],
+                               on="date", direction="backward",
+                               tolerance=pd.Timedelta(days=14))
+        in_cov = float(merged["stress_score"].notna().mean())
+        lam = merged["stress_score"].apply(
+            lambda s: fallback if pd.isna(s) else _stress_lambda(s))
+        lam.index = merged["index"]
+        return lam.sort_index(), in_cov, fallback
     except Exception:
-        return 1.0
+        return pd.Series(1.0, index=date_series.index), 0.0, 1.0
 
 print("=" * 55)
 print("  STAGE 3 — MULTI-DIMENSIONAL ANOMALY DETECTION")
@@ -89,24 +102,44 @@ df = pd.read_csv(INPUT)
 df["date"] = pd.to_datetime(df["date"])
 print(f"Loaded {len(df):,} transactions.")
 
-# Apply macro stress multiplier to thresholds
-_mult  = get_macro_multiplier(df["date"])
-VOL_Z    = round(VOL_Z   * _mult, 2)
-FREQ_Z   = round(FREQ_Z  * _mult, 2)
-SURGE_Z  = round(SURGE_Z * _mult, 2)
-_stress_label = "HIGH — thresholds tightened" if _mult < 1 else ("LOW — thresholds relaxed" if _mult > 1 else "MEDIUM — thresholds unchanged")
-print(f"  Macro stress : {_stress_label}  (multiplier={_mult})")
-print(f"  Final thresholds: volume Z>{VOL_Z}  freq Z>{FREQ_Z}  surge Z>{SURGE_Z}\n")
+# Apply PER-WEEK macro stress multipliers to thresholds
+df["macro_lambda"], _in_cov, _fallback = get_weekly_multipliers(df["date"])
+_lam_counts = df["macro_lambda"].value_counts().sort_index()
+_lam_desc = "  ".join(f"λ={lam:g}:{cnt:,}" for lam, cnt in _lam_counts.items())
+print(f"  Macro stress : per-week thresholds — {_lam_desc}")
+print(f"                 {_in_cov:.0%} of transactions inside indicator coverage "
+      f"(out-of-coverage rows use coverage-mean λ={_fallback:g})")
+print(f"  Base thresholds x row λ: volume Z>{VOL_Z}λ  freq Z>{FREQ_Z}λ  surge Z>{SURGE_Z}λ\n")
+
+
+def robust_z(x):
+    """Median/MAD z-score — robust to the very outliers we are trying to detect.
+
+    Standard (mean/std) z-scores are non-robust: a cluster of extreme values
+    inflates the std so much that the extremes themselves stop clearing the
+    threshold (on the injection benchmark, plain-z volume recall was only 7%).
+    MAD (median absolute deviation) barely moves under a small fraction of
+    outliers, so genuine spikes keep a large score.  Scaled by 1.4826 so it
+    equals the ordinary z-score for normally-distributed data.
+    """
+    x = np.asarray(x, dtype=float)
+    med   = np.median(x)
+    scale = 1.4826 * np.median(np.abs(x - med))
+    if scale < 1e-9:                       # degenerate: mostly identical values
+        s = x.std()
+        return (x - x.mean()) / s if s > 1e-9 else np.zeros_like(x)
+    return (x - med) / scale
+
 
 # ─────────────────────────────────────────────
-# DIMENSION 1: Volume Anomaly (Z-score)
+# DIMENSION 1: Volume Anomaly (robust Z-score)
 # Flags transactions where quantity is an extreme outlier
 # ─────────────────────────────────────────────
-df["z_quantity"] = zscore(df["quantity"])
-df["flag_volume"] = df["z_quantity"].abs() > VOL_Z
+df["z_quantity"] = robust_z(df["quantity"])
+df["flag_volume"] = df["z_quantity"].abs() > VOL_Z * df["macro_lambda"]
 
 n = df["flag_volume"].sum()
-print(f"[1] Volume Anomaly       : {n} flagged  (|Z-score| > {VOL_Z})")
+print(f"[1] Volume Anomaly       : {n} flagged  (|Z-score| > {VOL_Z}·λ_week)")
 
 # ─────────────────────────────────────────────
 # DIMENSION 2: Frequency Anomaly
@@ -120,14 +153,14 @@ pair_freq = (
 df = df.merge(pair_freq, on=["manufacturer", "retailer"], how="left")
 
 if df["pair_freq"].std() > 0:
-    df["z_freq"] = zscore(df["pair_freq"])
+    df["z_freq"] = robust_z(df["pair_freq"])
 else:
     df["z_freq"] = 0.0
 
-df["flag_frequency"] = df["z_freq"] > FREQ_Z
+df["flag_frequency"] = df["z_freq"] > FREQ_Z * df["macro_lambda"]
 
 n = df["flag_frequency"].sum()
-print(f"[2] Frequency Anomaly    : {n} flagged  (pair transaction count Z > {FREQ_Z})")
+print(f"[2] Frequency Anomaly    : {n} flagged  (pair transaction count Z > {FREQ_Z}·λ_week)")
 
 # ─────────────────────────────────────────────
 # DIMENSION 3: Temporal Surge
@@ -142,9 +175,9 @@ monthly = (
 )
 
 def safe_zscore(x):
-    if len(x) < 2 or x.std() == 0:
+    if len(x) < 2:
         return pd.Series(np.zeros(len(x)), index=x.index)
-    return pd.Series(zscore(x), index=x.index)
+    return pd.Series(robust_z(x), index=x.index)
 
 monthly["z_surge"] = monthly.groupby("manufacturer")["monthly_total"].transform(safe_zscore)
 
@@ -154,10 +187,10 @@ df = df.merge(
     how="left"
 )
 df["z_surge"] = df["z_surge"].fillna(0)
-df["flag_surge"] = df["z_surge"].abs() > SURGE_Z
+df["flag_surge"] = df["z_surge"].abs() > SURGE_Z * df["macro_lambda"]
 
 n = df["flag_surge"].sum()
-print(f"[3] Temporal Surge       : {n} flagged  (monthly volume Z > {SURGE_Z})")
+print(f"[3] Temporal Surge       : {n} flagged  (monthly volume Z > {SURGE_Z}·λ_week)")
 
 # ─────────────────────────────────────────────
 # DIMENSION 4: Concentration Risk
@@ -214,49 +247,54 @@ n = df["flag_iforest"].sum()
 print(f"[5] Isolation Forest     : {n} flagged  (contamination=0.05, n_estimators=100)")
 
 # ─────────────────────────────────────────────
-# COMPOSITE SCORING (now 5 signals)
+# COMPOSITE SCORING (5 signals)
+# High-confidence rule: the calibrated logistic ensemble from the injection
+# benchmark (Stage 3b) when its calibration file exists — it beat every
+# rule-based ensemble on held-out injections (F1 0.39 vs 0.28 for the legacy
+# 2+ rule). Falls back to the legacy 2+ count on a fresh run where Stage 3b
+# hasn't produced a calibration yet.
 # ─────────────────────────────────────────────
-
-# Save Z-score only count before adding IF (used as pseudo ground truth below)
 zscore_flag_cols  = ["flag_volume", "flag_frequency", "flag_surge", "flag_concentration"]
-df["zscore_count"] = df[zscore_flag_cols].sum(axis=1)
-
 all_flag_cols     = zscore_flag_cols + ["flag_iforest"]
 df["anomaly_score"] = df[all_flag_cols].sum(axis=1)
-df["is_anomaly"]    = df["anomaly_score"] >= 2   # 2+ dimensions = high-confidence
-df["is_suspect"]    = (df["anomaly_score"] == 1)
+
+CALIB = os.path.join(ROOT, "output", "anomaly_ensemble_calibration.json")
+_rule = "legacy 2+ signal count"
+if os.path.exists(CALIB):
+    try:
+        import json
+        with open(CALIB) as _f:
+            _cal = json.load(_f)
+        _X = np.column_stack([
+            df["z_quantity"].abs().values,
+            df["z_freq"].values,
+            df["z_surge"].abs().values,
+            df["concentration"].values,
+            df["iforest_score"].values,
+        ])
+        _logits = _X @ np.array(_cal["coef"]) + _cal["intercept"]
+        df["ensemble_proba"] = 1.0 / (1.0 + np.exp(-_logits))
+        df["is_anomaly"] = df["ensemble_proba"] >= _cal["threshold"]
+        _rule = (f"calibrated ensemble (thr={_cal['threshold']:.2f}, "
+                 f"held-out F1={_cal['held_out_f1']:.3f})")
+    except Exception as _e:
+        print(f"[WARN] calibration unusable ({_e}) — using legacy 2+ rule")
+        df["is_anomaly"] = df["anomaly_score"] >= 2
+else:
+    df["is_anomaly"] = df["anomaly_score"] >= 2
+if "ensemble_proba" not in df.columns:
+    df["ensemble_proba"] = np.nan
+df["is_suspect"] = (~df["is_anomaly"]) & (df["anomaly_score"] >= 1)
 
 print(f"\n──────────────────────────────────────────────────")
 print(f"  RESULTS")
 print(f"──────────────────────────────────────────────────")
-print(f"  High-confidence anomalies (2+ dimensions) : {df['is_anomaly'].sum()}")
-print(f"  Suspect transactions    (1 dimension)     : {df['is_suspect'].sum()}")
-print(f"  Clean transactions                        : {(df['anomaly_score'] == 0).sum():,}")
-
-# ─────────────────────────────────────────────
-# PRECISION / RECALL / F1 EVALUATION
-# Pseudo-ground-truth: transactions where 3+ Z-score signals fire
-# (high agreement across independent statistical tests = high-confidence true anomaly)
-# This lets us evaluate the 2+ threshold and Isolation Forest as independent detectors.
-# ─────────────────────────────────────────────
-print(f"\n──────────────────────────────────────────────────")
-print(f"  PRECISION / RECALL / F1  (pseudo-GT: zscore_count >= 3)")
-print(f"──────────────────────────────────────────────────")
-
-y_true = (df["zscore_count"] >= 3).astype(int)
-n_gt   = y_true.sum()
-print(f"  Ground-truth positives  : {n_gt} transactions ({n_gt/len(df)*100:.2f}%)")
-
-def _prf(y_true, y_pred, label):
-    p = precision_score(y_true, y_pred, zero_division=0)
-    r = recall_score(y_true, y_pred, zero_division=0)
-    f = f1_score(y_true, y_pred, zero_division=0)
-    print(f"  {label:<36}  P={p:.3f}  R={r:.3f}  F1={f:.3f}")
-    return p, r, f
-
-p1, r1, f1_zs = _prf(y_true, (df["zscore_count"] >= 2).astype(int),  "Z-score only  (2+ signals)")
-p2, r2, f1_if = _prf(y_true, df["flag_iforest"].astype(int),          "Isolation Forest alone")
-p3, r3, f1_en = _prf(y_true, df["is_anomaly"].astype(int),            "Ensemble (2+ incl. IF)  ← current")
+print(f"  Decision rule                             : {_rule}")
+print(f"  High-confidence anomalies                 : {df['is_anomaly'].sum()}")
+print(f"  Suspect transactions (signal, not flagged): {df['is_suspect'].sum()}")
+print(f"  Clean transactions                        : {((~df['is_anomaly']) & (df['anomaly_score'] == 0)).sum():,}")
+print(f"\n  Detection quality (P/R/F1) is measured by the independent")
+print(f"  injection benchmark — run: python3 src/anomaly_eval_injection.py")
 
 # Save metrics report
 METRICS_OUT = os.path.join(ROOT, "output", "anomaly_metrics.txt")
@@ -266,8 +304,9 @@ _am = "\n".join([
     "=" * 50,
     "",
     f"Dataset size         : {len(df):,} transactions",
-    f"Macro stress mult    : {_mult}  ({_stress_label})",
-    f"Final Z thresholds   : vol={VOL_Z}  freq={FREQ_Z}  surge={SURGE_Z}",
+    f"Macro stress         : per-week λ ({_lam_desc}); "
+    f"{_in_cov:.0%} of rows in indicator coverage, fallback λ={_fallback:g}",
+    f"Base Z thresholds    : vol={VOL_Z}·λ  freq={FREQ_Z}·λ  surge={SURGE_Z}·λ",
     "",
     "Signal counts:",
     f"  [1] Volume Anomaly       : {df['flag_volume'].sum()}",
@@ -276,17 +315,15 @@ _am = "\n".join([
     f"  [4] Concentration Risk   : {df['flag_concentration'].sum()}",
     f"  [5] Isolation Forest     : {df['flag_iforest'].sum()}",
     "",
-    f"High-confidence anomalies (2+ signals) : {df['is_anomaly'].sum()}",
-    f"Suspect transactions    (1 signal)     : {df['is_suspect'].sum()}",
+    f"Decision rule        : {_rule}",
+    f"High-confidence anomalies              : {df['is_anomaly'].sum()}",
+    f"Suspect transactions (unflagged signal): {df['is_suspect'].sum()}",
     "",
-    "Evaluation  (pseudo-GT: zscore_count >= 3)",
-    f"  Ground-truth positives  : {n_gt}",
-    "",
-    f"  {'Method':<36}  {'Precision':>9}  {'Recall':>6}  {'F1':>6}",
-    f"  {'-'*36}  {'-'*9}  {'-'*6}  {'-'*6}",
-    f"  {'Z-score only  (2+ signals)':<36}  {p1:>9.3f}  {r1:>6.3f}  {f1_zs:>6.3f}",
-    f"  {'Isolation Forest alone':<36}  {p2:>9.3f}  {r2:>6.3f}  {f1_if:>6.3f}",
-    f"  {'Ensemble (2+ incl. IF)':<36}  {p3:>9.3f}  {r3:>6.3f}  {f1_en:>6.3f}",
+    "Detection quality (Precision/Recall/F1) is evaluated against an",
+    "INDEPENDENT ground truth in Stage 3b (anomaly_eval_injection.py):",
+    "known synthetic anomalies are injected and the same detectors are",
+    "scored against the injection label. See anomaly_injection_metrics.txt.",
+    "Flags derived from the detectors are never reused as ground truth.",
 ])
 try:
     with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False) as tmp:
@@ -302,14 +339,15 @@ except Exception as _e:
 # SAVE ANOMALIES
 # ─────────────────────────────────────────────
 anomalies = df[df["is_anomaly"]].copy()
-anomalies = anomalies.sort_values("anomaly_score", ascending=False)
+anomalies = anomalies.sort_values(["ensemble_proba", "anomaly_score"],
+                                  ascending=False, na_position="last")
 
 os.makedirs(os.path.dirname(OUTPUT), exist_ok=True)
 anomalies[[
     "date", "manufacturer", "distributor", "retailer",
     "retailer_state", "quantity", "z_quantity",
     "flag_volume", "flag_frequency", "flag_surge", "flag_concentration",
-    "flag_iforest", "iforest_score", "anomaly_score"
+    "flag_iforest", "iforest_score", "anomaly_score", "ensemble_proba"
 ]].to_csv(OUTPUT, index=False)
 
 print(f"\nTop anomalies:")

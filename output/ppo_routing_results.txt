@@ -1,18 +1,40 @@
-PPO Routing Agent — Evaluation Report
-======================================
-Evaluated on 1093 disruption scenarios with meaningful risk variation.
-(Scenarios where all candidates share the same risk are excluded — no contrast to show.)
+PPO Routing Agent — Evaluation Report (multi-step cascade)
+===========================================================
+Evaluated on 300 episodes of 6 sequential reroute demands
+served from one candidate pool under capacity (CAP=2 uses) and
+load-dependent effective risk (+0.15/use — config decay_per_use).
+All methods replay the SAME episodes (same pool, same demand order)
+and evolve their own load state; pools require risk spread >= 0.05.
 
-Metric                            PPO Agent    Dijkstra
--------------------------------------------------------
-Success Rate                         100.0%      100.0%
-Avg Hops (on success)                  2.00        2.00
-Avg Risk of Chosen Route              0.930       0.970
-Risk Reduction vs Dijkstra           +0.040    baseline
-PPO Chose Safer Route                 89.6%         n/a
+Method          Avg Total Reward  Avg Eff. Risk   Unserved
+------------------------------------------------------------
+PPO                        37.35          0.964         26
+Random                     33.22          0.966         72
+Dijkstra                   33.22          0.966         72
+Risk-greedy                35.94          0.963         42
 
-Interpretation:
-  Dijkstra: picks shortest path, breaks ties by highest-risk node (naive baseline).
-  PPO: trained with a risk penalty (-3 reward for high-risk routes).
-  On scenarios with real risk variation, PPO consistently avoids the risky node.
-  This mirrors the immune system analogy: recognise threat, choose safer path.
+PPO beats myopic Risk-greedy      : 7.0% of episodes (greedy wins 1.7%)
+PPO strictly safer than Dijkstra : 42.7% of episodes
+
+Baselines:
+  Random       — uniform among usable candidates (sanity floor).
+  Dijkstra     — min hops among usable; hops are all 1 on this graph, so
+                 this is the risk-blind baseline with random tie-break.
+  Risk-greedy  — lowest CURRENT effective risk among usable. This is the
+                 myopic heuristic that provably ties PPO in the one-step
+                 task; here it can exhaust the flexible low-risk candidate
+                 early and get cornered by later demands.
+
+How to read this:
+  'Unserved' counts demands no usable candidate could serve (-20 each) —
+  the cost of burning capacity without foresight. If PPO beats greedy on
+  total reward, the learned policy is doing genuine multi-step planning;
+  if greedy stays ahead, note WHY before concluding RL adds nothing:
+  effective-risk greedy is not truly myopic here. The decay_per_use
+  load step feeds back into its objective — every use raises a
+  candidate's effective risk above the pool's base-risk spread, so
+  greedy automatically rotates candidates. The immune-style confidence
+  decay is itself a strong load balancer; that heuristic surviving a
+  trained PPO policy is a finding about the heuristic, not a bug in
+  the agent. PPO clearing Random AND Dijkstra confirms it learned the
+  risk/capacity structure.

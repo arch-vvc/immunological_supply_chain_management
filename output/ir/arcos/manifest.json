@@ -1,0 +1,67 @@
+{
+  "dataset": "arcos",
+  "summary": {
+    "dataset": "arcos",
+    "nodes": 2131,
+    "edges": 23264,
+    "flows": 50000,
+    "events": 0,
+    "roles": [
+      "distributor",
+      "manufacturer",
+      "retailer"
+    ]
+  },
+  "capabilities": {
+    "HAS_TRANSACTIONS": true,
+    "HAS_TOPOLOGY": true,
+    "HAS_DISRUPTIONS": false,
+    "HAS_LEAD_TIMES": false,
+    "HAS_VALUE": false
+  },
+  "stages": {
+    "anomaly_detection": {
+      "enabled": true,
+      "missing": []
+    },
+    "disruption_detection": {
+      "enabled": false,
+      "missing": [
+        "HAS_DISRUPTIONS"
+      ]
+    },
+    "graph_risk_routing": {
+      "enabled": true,
+      "missing": []
+    },
+    "ppo_recovery_routing": {
+      "enabled": true,
+      "missing": []
+    },
+    "event_replay": {
+      "enabled": false,
+      "missing": [
+        "HAS_DISRUPTIONS"
+      ]
+    },
+    "revealed_pref_backtest": {
+      "enabled": false,
+      "missing": [
+        "HAS_DISRUPTIONS"
+      ]
+    },
+    "safety_stock": {
+      "enabled": false,
+      "missing": [
+        "HAS_LEAD_TIMES"
+      ]
+    },
+    "value_at_risk": {
+      "enabled": false,
+      "missing": [
+        "HAS_VALUE",
+        "HAS_DISRUPTIONS"
+      ]
+    }
+  }
+}

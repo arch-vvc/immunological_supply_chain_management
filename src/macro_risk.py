@@ -141,7 +141,9 @@ def classify(v):
 stress_df["stress_level"] = stress_df["stress_score"].apply(classify)
 
 # ── Save ──────────────────────────────────────────────────────
-stress_df[["date", "stress_score", "stress_level"]].to_csv(OUT_CSV, index=False)
+# Component columns are exported too: the LSTM forecaster (Stage 10) uses the
+# raw indicators as multivariate input instead of only the smoothed composite.
+stress_df[["date", "stress_score", "stress_level"] + stress_cols].to_csv(OUT_CSV, index=False)
 print(f"\n  Stress scores saved → {OUT_CSV}")
 print(f"  Weeks computed : {len(stress_df):,}")
 print(f"  Score range    : {stress_df['stress_score'].min():.3f} → {stress_df['stress_score'].max():.3f}")

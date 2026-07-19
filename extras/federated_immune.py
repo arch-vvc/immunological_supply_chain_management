@@ -139,11 +139,13 @@ def federated_query(
         meta = pickle.load(f)
     scaler = meta["scaler"]
 
-    # Build query vector (same encoding as immune_response_engine)
+    # Build query vector (same encoding as immune_response_engine);
+    # padded/truncated to the index's declared dimensionality
     severity    = min(z / 10.0 * 4 + 1, 5.0)
     prod_impact = min(abs(z) / 10.0 * 100, 100.0)
-    qvec = np.array([[severity, prod_impact, has_backup,
-                      0.0, 0.0, 0.0, 0.0, 0.0]], dtype=np.float32)
+    n_feat = int(meta.get("n_features", 3))
+    base   = [severity, prod_impact, has_backup]
+    qvec   = np.array([(base + [0.0] * n_feat)[:n_feat]], dtype=np.float32)
     qvec_scaled = scaler.transform(qvec).astype(np.float32)
 
     org_results   = {}   # org_name -> list of {distance, recovery_days, response_type}
@@ -217,8 +219,9 @@ def compare_federated_vs_single(z: float = 3.5):
     scaler = meta["scaler"]
     severity    = min(z / 10.0 * 4 + 1, 5.0)
     prod_impact = min(abs(z) / 10.0 * 100, 100.0)
-    qvec = np.array([[severity, prod_impact, 1.0,
-                      0.0, 0.0, 0.0, 0.0, 0.0]], dtype=np.float32)
+    n_feat = int(meta.get("n_features", 3))
+    base   = [severity, prod_impact, 1.0]
+    qvec   = np.array([(base + [0.0] * n_feat)[:n_feat]], dtype=np.float32)
     qvec_scaled = scaler.transform(qvec).astype(np.float32)
 
     print(f"\n{SEP}")

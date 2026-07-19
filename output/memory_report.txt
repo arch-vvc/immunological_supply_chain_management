@@ -1,20 +1,32 @@
 STAGE 13 — IMMUNOLOGICAL MEMORY REPORT
 =======================================================
 
+Held-out evaluation (80% indexed, 20% querying, seed 42):
+  Recovery days  — k-NN(k=3) MAE : 36.3 days
+                   predict-the-mean   : 42.3 days
+  Response type  — k-NN(k=3) acc : 49.5%
+                   majority-class     : 44.5%
+  (Memory recall is only a capability to the extent it beats
+   these baselines on features observable at query time.)
+
 Index size              : 100,000 historical disruptions
-Dimensions              : 8 features
+Dimensions              : 3 observable features (disruption_severity, production_impact_pct, has_backup_supplier)
 Index type              : FAISS IndexFlatL2 (exact search)
-Anomalies queried       : 1535
+Anomalies queried       : 1664
 Top-K retrieved per query: 3
 
 Aggregate retrieval results:
-  Avg match distance    : 0.4329
-  Avg recovery days     : 75.0
+  Avg match distance    : 1.0816
+  Avg recovery days     : 56.7 (per-anomaly spread std=23.9)
   Top response type     : Alternative Supplier
-  Top disruption type   : Labor Strike
+  Top disruption type   : Natural Disaster
+
+Design note: only query-time-observable features enter the distance
+metric. The earlier 8-dim index padded five unobservable categorical
+dims with dataset means, which contributed ~0 distance for every
+query and diluted the similarity signal.
 
 Immune analogy:
   Memory B-cells (FAISS vectors) recognise similar antigens (disruption
   signatures) and activate a targeted response faster than the innate
-  immune system could derive from scratch. Each pipeline run that detects
-  anomalies adds new signatures to the index (clonal selection).
+  immune system could derive from scratch.

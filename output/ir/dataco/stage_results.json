@@ -1,0 +1,78 @@
+{
+  "anomaly_detection": {
+    "status": "ran",
+    "requires": [
+      "HAS_TRANSACTIONS"
+    ],
+    "n_flows": 180519,
+    "n_injected": 3610,
+    "precision": 1.0,
+    "recall": 0.5089,
+    "f1": 0.6745,
+    "baseline_random_f1": 0.0135,
+    "flagged": 1837,
+    "threshold": 3.5,
+    "eval": "synthetic injection (2% volume spikes)"
+  },
+  "disruption_detection": {
+    "status": "ran",
+    "requires": [
+      "HAS_DISRUPTIONS"
+    ],
+    "n_test": 54156,
+    "base_late_rate": 0.5454,
+    "precision": 0.547,
+    "recall": 0.904,
+    "f1": 0.6816,
+    "precision_lift_over_base": 1.0,
+    "baseline_always_late_f1": 0.7058,
+    "method": "lane-history temporal holdout (70/30)"
+  },
+  "safety_stock": {
+    "status": "ran",
+    "requires": [
+      "HAS_LEAD_TIMES"
+    ],
+    "n_lanes_sized": 2259,
+    "total_buffer_usd": 389793.0,
+    "holding_usd_per_yr": 97448.0,
+    "service_level": "95%"
+  },
+  "event_replay": {
+    "status": "ran",
+    "requires": [
+      "HAS_DISRUPTIONS"
+    ],
+    "windows_tested": 826,
+    "n_alerts": 46,
+    "base_late_rate": 0.547,
+    "top_alerts": [
+      "Nueva Zelanda 2016-04: 306/440 late (z=6.26)",
+      "Ghana 2016-12: 45/51 late (z=4.81)",
+      "Brasil 2015-06: 345/530 late (z=4.81)"
+    ]
+  },
+  "value_at_risk": {
+    "status": "ran",
+    "requires": [
+      "HAS_VALUE",
+      "HAS_DISRUPTIONS"
+    ],
+    "n_late_flows": 98743,
+    "value_at_risk_usd": 20108984.0,
+    "total_value_usd": 36784735.0,
+    "late_value_share": 0.5467
+  },
+  "graph_risk_routing": {
+    "status": "skipped",
+    "missing": [
+      "HAS_TOPOLOGY"
+    ]
+  },
+  "ppo_recovery_routing": {
+    "status": "skipped",
+    "missing": [
+      "HAS_TOPOLOGY"
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+STAGE 18 — NETWORK-GROUNDED RESPONSE PLANNER
+=======================================================
+
+Anomalies planned            : 1,664
+
+Action mix (preference ladder, most-proven first):
+  T1_REROUTE_EXISTING          1582  ( 95.1%)
+  T2_DEFACTO_ALT_SUPPLIER         0  (  0.0%)
+  T3_NEW_LASTMILE                82  (  4.9%)
+  T4_INVENTORY_TRANSFER           0  (  0.0%)
+  T5_CUSTOMER_DELAY               0  (  0.0%)
+
+── Headline: two different clocks, not one ──────────────────────
+'Recovery days' historically means full downstream business recovery
+(inventory rebuilt, contracts normalised) — genuinely long because the
+training data's severe cases are things like labor strikes and natural
+disasters. That number barely moves just because a name was found.
+'Activation days' is a different, much smaller number: how fast
+shipments can physically start moving through the found route. THAT is
+where the network's advantage actually shows up.
+
+Anomalies with NO listed backup supplier : 137
+  resolved to a PROVEN supplier (T1/T2)  : 55  (40.1%)
+  avg reroute activation time            : 1.5 days
+  avg full recovery: graph-grounded      : 71.2 days
+  avg full recovery: ML-only baseline    : 97.0 days
+  mean full-recovery days saved per case : 25.7 days
+
+Method: 'no backup supplier' in the disruption data means no LISTED
+backup. The supply graph usually contains a de-facto one — a distributor
+already serving the same retailer or carrying the same manufacturer.
+The planner walks a preference ladder (reroute via existing hub → 
+de-facto alternate supplier → new last-mile → inventory transfer →
+customer delay), scoring candidates by in-state volume share (proximity
+evidenced by the network's own behaviour), composite risk, and spare
+capacity. Recovery estimates come from an actuarial lookup over 100K
+historical disruptions (strategy x backup x severity means) — they are
+historical associations, not causal guarantees.
+
+Note: on the synthetic ARCOS graph (20 well-connected distributors),
+T1 resolves nearly everything — the ladder's lower tiers matter on
+sparser real networks (e.g. DataCo regions).

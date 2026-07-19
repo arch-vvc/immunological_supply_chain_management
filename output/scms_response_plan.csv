@@ -1,0 +1,1187 @@
+vendor_disrupted,molecule,country,shipment_qty,delay_days,severity,lane_vendor_count,has_alternate,action,alternate_vendor,volume_coverage,route
+"Orgenics, Ltd","HIV 1/2, Determine HIV Kit, without Lancets",Haiti,750.0,8,2,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.54,SCMS from RDC -> Haiti
+MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Nigeria,9.0,29,3,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,1.0,SCMS from RDC -> Nigeria
+Orasure Technologies Inc.,"HIV 1/2, OraQuick Advance HIV Rapid Antibody Kit",Botswana,5.0,28,3,3,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,1.0,SCMS from RDC -> Botswana
+BIO-RAD LABORATORIES (FRANCE),"HIV, Genie II HIV-1/HIV-2 Kit",Nigeria,375.0,15,2,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,1.0,SCMS from RDC -> Nigeria
+S. BUYS WHOLESALER,Zidovudine,South Africa,50.0,4,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> South Africa
+BIO-RAD LABORATORIES (FRANCE),"HIV, Genie II HIV-1/HIV-2 Kit",Côte d'Ivoire,1000.0,35,3,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.415,SCMS from RDC -> Côte d'Ivoire
+"CHEMBIO DIAGNOSTIC SYSTEMS, INC.","HIV 1/2, Stat-Pak HIV, Kit",Nigeria,11500.0,24,3,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.457,SCMS from RDC -> Nigeria
+Aurobindo Pharma Limited,Stavudine,Ethiopia,35065.0,34,3,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.025,SCMS from RDC -> Ethiopia
+"Orgenics, Ltd","HIV 1/2, Determine HIV Kit, without Lancets",Zambia,2000.0,13,2,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.203,SCMS from RDC -> Zambia
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Kenya,7500.0,21,2,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.047,SCMS from RDC -> Kenya
+"Trinity Biotech, Plc","HIV 1/2, Uni-Gold HIV Kit",Rwanda,500.0,43,3,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,1.0,SCMS from RDC -> Rwanda
+Abbott GmbH & Co. KG,"HIV 1/2, Determine Complete HIV Kit",Nigeria,1500.0,48,4,3,True,T1_ALT_VENDOR_SAME_LANE,"Orgenics, Ltd",1.0,"Orgenics, Ltd -> Nigeria"
+ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),Lopinavir/Ritonavir,Vietnam,2000.0,45,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,SCMS from RDC,1.0,SCMS from RDC -> Vietnam
+BIO-RAD LABORATORIES (FRANCE),"HIV, Genie II HIV-1/HIV-2 Kit",Côte d'Ivoire,476.0,3,1,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.872,SCMS from RDC -> Côte d'Ivoire
+BIO-RAD LABORATORIES (FRANCE),"HIV, Genie II HIV-1/HIV-2 Kit",Côte d'Ivoire,18.0,7,1,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,1.0,SCMS from RDC -> Côte d'Ivoire
+Aurobindo Pharma Limited,Didanosine,Vietnam,1700.0,63,4,3,True,T1_ALT_VENDOR_SAME_LANE,BRISTOL-MYERS SQUIBB,0.235,BRISTOL-MYERS SQUIBB -> Vietnam
+"Orgenics, Ltd","HIV 1/2, Determine HIV Kit, without Lancets",Guyana,300.0,12,2,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,1.0,SCMS from RDC -> Guyana
+S. BUYS WHOLESALER,Lamivudine,South Africa,3304.0,127,5,7,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+S. BUYS WHOLESALER,Stavudine,South Africa,24.0,63,4,2,True,T1_ALT_VENDOR_SAME_LANE,"JSI R&T INSTITUTE, INC.",1.0,"JSI R&T INSTITUTE, INC. -> South Africa"
+S. BUYS WHOLESALER,Lopinavir/Ritonavir,South Africa,50.0,8,2,4,True,T1_ALT_VENDOR_SAME_LANE,"JSI R&T INSTITUTE, INC.",1.0,"JSI R&T INSTITUTE, INC. -> South Africa"
+"Orgenics, Ltd","HIV 1/2, Determine HIV Kit, without Lancets",Guyana,442.0,17,2,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.916,SCMS from RDC -> Guyana
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Kenya,7500.0,49,4,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.047,SCMS from RDC -> Kenya
+SUN PHARMACEUTICAL INDUSTRIES LTD (RANBAXY LABORATORIES LIMITED),Zidovudine,Vietnam,600.0,3,1,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Vietnam
+"JSI R&T INSTITUTE, INC.",Didanosine,South Africa,4.0,95,5,3,True,T1_ALT_VENDOR_SAME_LANE,S. BUYS WHOLESALER,1.0,S. BUYS WHOLESALER -> South Africa
+S. BUYS WHOLESALER,Lamivudine,South Africa,1000.0,4,1,7,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Mozambique,73012.0,38,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,0.268,CIPLA LIMITED -> Mozambique
+SCMS from RDC,Lamivudine/Zidovudine,Tanzania,51364.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.296,Aurobindo Pharma Limited -> Tanzania
+SCMS from RDC,Efavirenz,Côte d'Ivoire,3024.0,14,2,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),0.535,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Côte d'Ivoire
+SCMS from RDC,Lamivudine,Mozambique,374.0,21,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Mozambique
+SCMS from RDC,Lamivudine,Ethiopia,29500.0,27,3,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.441,Aurobindo Pharma Limited -> Ethiopia
+SCMS from RDC,Abacavir,Tanzania,5730.0,1,1,4,True,T1_ALT_VENDOR_SAME_LANE,GLAXOSMITHKLINE EXPORT LIMITED,1.0,GLAXOSMITHKLINE EXPORT LIMITED -> Tanzania
+SCMS from RDC,Nevirapine,Côte d'Ivoire,5581.0,18,2,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> Côte d'Ivoire
+SCMS from RDC,Nevirapine,Côte d'Ivoire,1547.0,43,3,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> Côte d'Ivoire
+SCMS from RDC,Nevirapine,Ethiopia,12745.0,5,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Ethiopia
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Nigeria,4836.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Côte d'Ivoire,35600.0,14,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,0.551,CIPLA LIMITED -> Côte d'Ivoire
+SCMS from RDC,Lamivudine,Ethiopia,29500.0,20,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.441,Aurobindo Pharma Limited -> Ethiopia
+SCMS from RDC,Lamivudine,Ethiopia,30874.0,34,3,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.421,Aurobindo Pharma Limited -> Ethiopia
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Kenya,1.0,3,1,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,1.0,SCMS from RDC -> Kenya
+Aurobindo Pharma Limited,Efavirenz,South Africa,54768.0,43,3,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,2744.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.364,Abbott GmbH & Co. KG -> Nigeria
+CIPLA LIMITED,Tenofovir Disoproxil Fumarate,South Africa,19992.0,104,5,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> South Africa
+"Standard Diagnostics, Inc.","HIV 1/2, Bioline 3.0 Kit, Lancets, Capillary pipets, Alcohol swabs included",Tanzania,10000.0,30,3,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.31,SCMS from RDC -> Tanzania
+Aurobindo Pharma Limited,Lamivudine,South Africa,6395.0,192,5,7,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+Aurobindo Pharma Limited,Efavirenz,South Africa,12000.0,64,4,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+Aurobindo Pharma Limited,Nevirapine,Cameroon,34595.0,8,2,3,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.317,SCMS from RDC -> Cameroon
+Aurobindo Pharma Limited,Lamivudine/Tenofovir Disoproxil Fumarate,Rwanda,41286.0,2,1,4,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Rwanda
+S. BUYS WHOLESALER,Efavirenz,South Africa,9612.0,25,3,6,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,1859.0,48,4,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.538,Abbott GmbH & Co. KG -> Nigeria
+Aurobindo Pharma Limited,Efavirenz,South Africa,1515.0,91,5,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",South Sudan,100.0,5,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,INVERNESS MEDICAL INNOVATIONS HONG KONG LTD,1.0,INVERNESS MEDICAL INNOVATIONS HONG KONG LTD -> South Sudan
+CIPLA LIMITED,Nevirapine,South Africa,37870.0,15,2,6,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+Aurobindo Pharma Limited,Nevirapine,Tanzania,28663.0,2,1,3,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.383,SCMS from RDC -> Tanzania
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Zambia,2863.0,7,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.349,Abbott GmbH & Co. KG -> Zambia
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,4987.0,14,2,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.201,Abbott GmbH & Co. KG -> Nigeria
+CIPLA LIMITED,Tenofovir Disoproxil Fumarate,South Africa,47625.0,10,2,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> South Africa
+Aurobindo Pharma Limited,Lamivudine,South Africa,33338.0,27,3,7,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",South Sudan,70.0,5,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,INVERNESS MEDICAL INNOVATIONS HONG KONG LTD,1.0,INVERNESS MEDICAL INNOVATIONS HONG KONG LTD -> South Sudan
+Aurobindo Pharma Limited,Efavirenz,South Africa,2247.0,12,2,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+Aurobindo Pharma Limited,Nevirapine,Uganda,11310.0,2,1,4,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Uganda
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,3144.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.318,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Mozambique,2939.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.34,Abbott GmbH & Co. KG -> Mozambique
+Aurobindo Pharma Limited,Efavirenz,South Africa,106589.0,24,3,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,0.731,EMCURE PHARMACEUTICALS LTD -> South Africa
+Aurobindo Pharma Limited,Nevirapine,Uganda,1503.0,2,1,4,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Uganda
+Aurobindo Pharma Limited,Efavirenz,South Africa,91772.0,7,1,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,0.849,EMCURE PHARMACEUTICALS LTD -> South Africa
+"SHANGHAI KEHUA BIOENGINEERING CO.,LTD.  (KHB)","HIV 1/2, Colloidal Gold, Diagnostic Kit, Antibody",Rwanda,4156.0,49,4,1,False,T5_SINGLE_SOURCED,,,(single-sourced: hold & buffer)
+Aurobindo Pharma Limited,Efavirenz,South Africa,34560.0,38,3,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Kenya,8331.0,2,1,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.042,SCMS from RDC -> Kenya
+Aurobindo Pharma Limited,Nevirapine,South Africa,4529.0,53,4,6,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+Aurobindo Pharma Limited,Nevirapine,Uganda,10368.0,2,1,4,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Uganda
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Zambia,2415.0,4,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.414,Abbott GmbH & Co. KG -> Zambia
+"Orgenics, Ltd","Chase Buffer, Determine, 100 Tests, 2.5ml x 1 Vial",South Sudan,20.0,5,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,WAGENIA,1.0,WAGENIA -> South Sudan
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Zambia,3038.0,4,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.329,Abbott GmbH & Co. KG -> Zambia
+Aurobindo Pharma Limited,Efavirenz,South Africa,64316.0,24,3,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,4177.0,17,2,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.239,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV, Capillary Tubes, for Determine, EDTA, 50uL,100 Pcs",South Sudan,20.0,5,1,1,False,T5_SINGLE_SOURCED,,,(single-sourced: hold & buffer)
+Aurobindo Pharma Limited,Lamivudine,South Africa,2004.0,87,4,7,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+S. BUYS WHOLESALER,Tenofovir Disoproxil Fumarate,South Africa,2837.0,1,1,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,2874.0,70,4,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.348,Abbott GmbH & Co. KG -> Nigeria
+Aurobindo Pharma Limited,Efavirenz,South Africa,116218.0,31,3,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,0.67,EMCURE PHARMACEUTICALS LTD -> South Africa
+Aurobindo Pharma Limited,Lamivudine,South Africa,34067.0,27,3,7,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,2352.0,19,2,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.425,Abbott GmbH & Co. KG -> Nigeria
+Aurobindo Pharma Limited,Zidovudine,South Africa,10357.0,55,4,4,True,T1_ALT_VENDOR_SAME_LANE,"JSI R&T INSTITUTE, INC.",0.077,"JSI R&T INSTITUTE, INC. -> South Africa"
+CIPLA LIMITED,Tenofovir Disoproxil Fumarate,South Africa,12346.0,27,3,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> South Africa
+Aurobindo Pharma Limited,Lamivudine,South Africa,11640.0,106,5,7,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+"Orgenics, Ltd","Chase Buffer, Determine, 100 Tests, 2.5ml x 1 Vial",South Sudan,45.0,5,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,WAGENIA,1.0,WAGENIA -> South Sudan
+Aurobindo Pharma Limited,Efavirenz,South Africa,53954.0,3,1,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+S. BUYS WHOLESALER,Lamivudine,South Africa,43.0,1,1,7,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+CIPLA LIMITED,Tenofovir Disoproxil Fumarate,South Africa,44717.0,47,4,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> South Africa
+Aurobindo Pharma Limited,Efavirenz,South Africa,108211.0,64,4,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,0.72,EMCURE PHARMACEUTICALS LTD -> South Africa
+Aurobindo Pharma Limited,Nevirapine,South Africa,10233.0,63,4,6,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+CIPLA LIMITED,Tenofovir Disoproxil Fumarate,South Africa,2016.0,10,2,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,3023.0,6,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.331,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,2853.0,48,4,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.351,Abbott GmbH & Co. KG -> Nigeria
+Aurobindo Pharma Limited,Efavirenz,Tanzania,25741.0,3,1,4,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Tanzania
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,2835.0,3,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.353,Abbott GmbH & Co. KG -> Nigeria
+Aurobindo Pharma Limited,Nevirapine,South Africa,14065.0,25,3,6,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+Aurobindo Pharma Limited,Zidovudine,South Africa,17470.0,19,2,4,True,T1_ALT_VENDOR_SAME_LANE,"JSI R&T INSTITUTE, INC.",0.046,"JSI R&T INSTITUTE, INC. -> South Africa"
+Aurobindo Pharma Limited,Efavirenz,South Africa,119251.0,7,1,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,0.653,EMCURE PHARMACEUTICALS LTD -> South Africa
+STRIDES ARCOLAB LIMITED,Efavirenz,Ghana,60000.0,7,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.589,Aurobindo Pharma Limited -> Ghana
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Zambia,6314.0,15,2,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.158,Abbott GmbH & Co. KG -> Zambia
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,614.0,2,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,1.0,Abbott GmbH & Co. KG -> Nigeria
+Aurobindo Pharma Limited,Efavirenz,South Africa,40135.0,38,3,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Vietnam,22232.0,3,1,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.799,HETERO LABS LIMITED -> Vietnam
+CIPLA LIMITED,Tenofovir Disoproxil Fumarate,South Africa,7610.0,127,5,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> South Africa
+Aurobindo Pharma Limited,Efavirenz,South Africa,19214.0,37,3,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+S. BUYS WHOLESALER,Efavirenz,South Africa,6387.0,16,2,6,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> South Africa
+Aurobindo Pharma Limited,Lamivudine/Nevirapine/Zidovudine,Cameroon,38515.0,22,3,3,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.76,SCMS from RDC -> Cameroon
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,6375.0,7,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.157,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,3038.0,4,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.329,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,6010.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.166,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,3064.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.326,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Kenya,5938.0,19,2,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.059,SCMS from RDC -> Kenya
+STRIDES ARCOLAB LIMITED,Efavirenz,Ghana,60000.0,6,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.589,Aurobindo Pharma Limited -> Ghana
+Aurobindo Pharma Limited,Nevirapine,South Africa,19098.0,103,5,6,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+CIPLA LIMITED,Tenofovir Disoproxil Fumarate,South Africa,51920.0,14,2,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> South Africa
+Aurobindo Pharma Limited,Tenofovir Disoproxil Fumarate,South Africa,42938.0,101,5,5,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,2996.0,2,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.334,Abbott GmbH & Co. KG -> Nigeria
+CIPLA LIMITED,Nevirapine,South Africa,35364.0,48,4,6,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+Aurobindo Pharma Limited,Tenofovir Disoproxil Fumarate,South Africa,14155.0,9,2,5,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> South Africa
+Aurobindo Pharma Limited,Zidovudine,South Africa,8366.0,84,4,4,True,T1_ALT_VENDOR_SAME_LANE,"JSI R&T INSTITUTE, INC.",0.096,"JSI R&T INSTITUTE, INC. -> South Africa"
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,2744.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.364,Abbott GmbH & Co. KG -> Nigeria
+CIPLA LIMITED,Tenofovir Disoproxil Fumarate,South Africa,63785.0,86,4,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.834,Aurobindo Pharma Limited -> South Africa
+CIPLA LIMITED,Nevirapine,South Africa,96770.0,15,2,6,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,0.765,STRIDES ARCOLAB LIMITED -> South Africa
+Aurobindo Pharma Limited,Nevirapine,South Africa,38400.0,28,3,6,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,5884.0,8,2,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.17,Abbott GmbH & Co. KG -> Nigeria
+Aurobindo Pharma Limited,Efavirenz,South Africa,20060.0,43,3,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Kenya,4440.0,19,2,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.079,SCMS from RDC -> Kenya
+Aurobindo Pharma Limited,Efavirenz,South Africa,32080.0,32,3,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+Aurobindo Pharma Limited,Efavirenz,South Africa,52516.0,64,4,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+Aurobindo Pharma Limited,Zidovudine,South Africa,7548.0,31,3,4,True,T1_ALT_VENDOR_SAME_LANE,"JSI R&T INSTITUTE, INC.",0.106,"JSI R&T INSTITUTE, INC. -> South Africa"
+"Orgenics, Ltd","HIV 1/2, Determine HIV Kit, without Lancets",Mozambique,2591.0,13,2,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.156,SCMS from RDC -> Mozambique
+Aurobindo Pharma Limited,Lopinavir/Ritonavir,Uganda,10679.0,5,1,3,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.264,SCMS from RDC -> Uganda
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Zambia,2950.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.339,Abbott GmbH & Co. KG -> Zambia
+Aurobindo Pharma Limited,Tenofovir Disoproxil Fumarate,South Africa,108677.0,13,2,5,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,0.498,CIPLA LIMITED -> South Africa
+Aurobindo Pharma Limited,Efavirenz,South Africa,125247.0,30,3,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,0.622,EMCURE PHARMACEUTICALS LTD -> South Africa
+Aurobindo Pharma Limited,Nevirapine,"Congo, DRC",492.0,8,2,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,1.0,"SCMS from RDC -> Congo, DRC"
+CIPLA LIMITED,Tenofovir Disoproxil Fumarate,South Africa,83238.0,40,3,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.639,Aurobindo Pharma Limited -> South Africa
+Aurobindo Pharma Limited,Tenofovir Disoproxil Fumarate,South Africa,59681.0,13,2,5,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,0.907,CIPLA LIMITED -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Zambia,3000.0,7,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.333,Abbott GmbH & Co. KG -> Zambia
+Aurobindo Pharma Limited,Lamivudine,South Africa,17013.0,1,1,7,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,4697.0,6,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.213,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Kenya,7888.0,3,1,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.044,SCMS from RDC -> Kenya
+Aurobindo Pharma Limited,Nevirapine,South Africa,40751.0,2,1,6,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+"Orgenics, Ltd","Chase Buffer, Determine, 100 Tests, 2.5ml x 1 Vial",South Sudan,50.0,5,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,WAGENIA,1.0,WAGENIA -> South Sudan
+Aurobindo Pharma Limited,Tenofovir Disoproxil Fumarate,South Africa,76097.0,94,5,5,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,0.711,CIPLA LIMITED -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Kenya,6636.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.053,SCMS from RDC -> Kenya
+Aurobindo Pharma Limited,Efavirenz,South Africa,35357.0,7,1,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,1960.0,48,4,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.51,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Kenya,7110.0,3,1,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.049,SCMS from RDC -> Kenya
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,8149.0,29,3,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.123,Abbott GmbH & Co. KG -> Nigeria
+Aurobindo Pharma Limited,Tenofovir Disoproxil Fumarate,South Africa,39878.0,32,3,5,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> South Africa
+REINBOLD EXPORT IMPORT,"HIV 1/2, Determine Complete HIV Kit",Haiti,1250.0,7,1,4,True,T1_ALT_VENDOR_SAME_LANE,"Orgenics, Ltd",1.0,"Orgenics, Ltd -> Haiti"
+Aurobindo Pharma Limited,Tenofovir Disoproxil Fumarate,South Africa,28907.0,67,4,5,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> South Africa
+Aurobindo Pharma Limited,Nevirapine,South Africa,38341.0,1,1,6,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+Aurobindo Pharma Limited,Nevirapine,South Africa,11980.0,1,1,6,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+CIPLA LIMITED,Nevirapine,South Africa,38400.0,55,4,6,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+CIPLA LIMITED,Tenofovir Disoproxil Fumarate,South Africa,54247.0,49,4,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.981,Aurobindo Pharma Limited -> South Africa
+Aurobindo Pharma Limited,Efavirenz,South Africa,87018.0,31,3,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,0.895,EMCURE PHARMACEUTICALS LTD -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Kenya,1.0,3,1,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,1.0,SCMS from RDC -> Kenya
+Aurobindo Pharma Limited,Lamivudine,South Africa,11628.0,150,5,7,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+Aurobindo Pharma Limited,Lamivudine,South Africa,76554.0,32,3,7,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+Aurobindo Pharma Limited,Tenofovir Disoproxil Fumarate,South Africa,124312.0,7,1,5,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,0.435,CIPLA LIMITED -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Zambia,2835.0,3,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.353,Abbott GmbH & Co. KG -> Zambia
+Aurobindo Pharma Limited,Efavirenz,South Africa,120.0,31,3,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+Aurobindo Pharma Limited,Efavirenz,South Africa,9572.0,112,5,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,2887.0,83,4,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.346,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,2744.0,8,2,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.364,Abbott GmbH & Co. KG -> Nigeria
+Aurobindo Pharma Limited,Tenofovir Disoproxil Fumarate,South Africa,42131.0,50,4,5,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> South Africa
+CIPLA LIMITED,Tenofovir Disoproxil Fumarate,South Africa,44293.0,3,1,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,2744.0,8,2,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.364,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,2880.0,70,4,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.347,Abbott GmbH & Co. KG -> Nigeria
+S. BUYS WHOLESALER,Stavudine,South Africa,1700.0,6,1,2,True,T1_ALT_VENDOR_SAME_LANE,"JSI R&T INSTITUTE, INC.",0.118,"JSI R&T INSTITUTE, INC. -> South Africa"
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,3154.0,21,2,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.317,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,6340.0,8,2,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.158,Abbott GmbH & Co. KG -> Nigeria
+Aurobindo Pharma Limited,Lamivudine,South Africa,33711.0,27,3,7,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,3038.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.329,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Zambia,2910.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.344,Abbott GmbH & Co. KG -> Zambia
+"Orgenics, Ltd","Chase Buffer, Determine, 100 Tests, 2.5ml x 1 Vial",South Sudan,15.0,5,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,WAGENIA,1.0,WAGENIA -> South Sudan
+Aurobindo Pharma Limited,Efavirenz,South Africa,54000.0,3,1,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+ASPEN PHARMACARE,Abacavir,South Africa,12000.0,36,3,6,True,T1_ALT_VENDOR_SAME_LANE,GLAXOSMITHKLINE EXPORT LIMITED,1.0,GLAXOSMITHKLINE EXPORT LIMITED -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Mozambique,5102.0,28,3,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.196,Abbott GmbH & Co. KG -> Mozambique
+Aurobindo Pharma Limited,Efavirenz,South Africa,31680.0,71,4,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+Aurobindo Pharma Limited,Efavirenz,South Africa,31680.0,50,4,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+Aurobindo Pharma Limited,Efavirenz,South Africa,53916.0,7,1,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,3072.0,6,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.326,Abbott GmbH & Co. KG -> Nigeria
+"SHANGHAI KEHUA BIOENGINEERING CO.,LTD.  (KHB)","HIV 1/2, Colloidal Gold, Diagnostic Kit, Antibody",Rwanda,4230.0,49,4,1,False,T5_SINGLE_SOURCED,,,(single-sourced: hold & buffer)
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Zambia,2814.0,4,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.355,Abbott GmbH & Co. KG -> Zambia
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,2744.0,8,2,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.364,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,2100.0,42,3,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.476,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Zimbabwe,2450.0,11,2,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.143,SCMS from RDC -> Zimbabwe
+STRIDES ARCOLAB LIMITED,Lamivudine,South Africa,122743.0,58,4,7,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,0.326,CIPLA LIMITED -> South Africa
+EMCURE PHARMACEUTICALS LTD,Efavirenz,South Africa,105813.0,39,3,6,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.334,Aurobindo Pharma Limited -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,3050.0,4,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.328,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,2949.0,4,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.339,Abbott GmbH & Co. KG -> Nigeria
+Aurobindo Pharma Limited,Zidovudine,South Africa,2098.0,86,4,4,True,T1_ALT_VENDOR_SAME_LANE,"JSI R&T INSTITUTE, INC.",0.381,"JSI R&T INSTITUTE, INC. -> South Africa"
+HETERO LABS LIMITED,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Botswana,39550.0,2,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,SCMS from RDC,0.774,SCMS from RDC -> Botswana
+CIPLA LIMITED,Tenofovir Disoproxil Fumarate,South Africa,64771.0,2,1,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.821,Aurobindo Pharma Limited -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Kenya,1500.0,3,1,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.233,SCMS from RDC -> Kenya
+Aurobindo Pharma Limited,Lamivudine,South Africa,11640.0,41,3,7,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+Aurobindo Pharma Limited,Nevirapine,Uganda,11036.0,2,1,4,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Uganda
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,3076.0,6,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.325,Abbott GmbH & Co. KG -> Nigeria
+CIPLA LIMITED,Tenofovir Disoproxil Fumarate,South Africa,64738.0,14,2,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.822,Aurobindo Pharma Limited -> South Africa
+Aurobindo Pharma Limited,Tenofovir Disoproxil Fumarate,South Africa,146670.0,71,4,5,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,0.369,CIPLA LIMITED -> South Africa
+Aurobindo Pharma Limited,Efavirenz,South Africa,58489.0,7,1,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Zambia,2127.0,4,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.47,Abbott GmbH & Co. KG -> Zambia
+Aurobindo Pharma Limited,Nevirapine,Zambia,39201.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.28,SCMS from RDC -> Zambia
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,10364.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.096,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,3040.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.329,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,3056.0,4,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.327,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,2835.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.353,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,2128.0,5,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.47,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,3076.0,4,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.325,Abbott GmbH & Co. KG -> Nigeria
+HETERO LABS LIMITED,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Vietnam,14016.0,7,1,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Vietnam
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,1750.0,10,2,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.571,Abbott GmbH & Co. KG -> Nigeria
+Aurobindo Pharma Limited,Efavirenz,South Africa,70.0,15,2,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+CIPLA LIMITED,Nevirapine,South Africa,48446.0,30,3,6,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,3056.0,6,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.327,Abbott GmbH & Co. KG -> Nigeria
+"Standard Diagnostics, Inc.","HIV 1/2, Bioline 3.0 Kit, Lancets, Capillary pipets, Alcohol swabs included",Tanzania,10000.0,6,1,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.31,SCMS from RDC -> Tanzania
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Tanzania,1044.0,1,1,4,True,T1_ALT_VENDOR_SAME_LANE,"Standard Diagnostics, Inc.",1.0,"Standard Diagnostics, Inc. -> Tanzania"
+Aurobindo Pharma Limited,Lamivudine/Tenofovir Disoproxil Fumarate,Rwanda,48640.0,1,1,4,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Rwanda
+Aurobindo Pharma Limited,Tenofovir Disoproxil Fumarate,South Africa,29031.0,84,4,5,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,3180.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.314,Abbott GmbH & Co. KG -> Nigeria
+CIPLA LIMITED,Tenofovir Disoproxil Fumarate,South Africa,51828.0,35,3,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> South Africa
+Aurobindo Pharma Limited,Zidovudine,South Africa,86467.0,52,4,4,True,T1_ALT_VENDOR_SAME_LANE,"JSI R&T INSTITUTE, INC.",0.009,"JSI R&T INSTITUTE, INC. -> South Africa"
+Aurobindo Pharma Limited,Efavirenz,South Africa,246113.0,13,2,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,0.317,EMCURE PHARMACEUTICALS LTD -> South Africa
+Aurobindo Pharma Limited,Lamivudine/Zidovudine,Tanzania,53051.0,7,1,3,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.283,SCMS from RDC -> Tanzania
+"Orgenics, Ltd","HIV, Capillary Tubes, for Determine, EDTA, 50uL,100 Pcs",South Sudan,50.0,5,1,1,False,T5_SINGLE_SOURCED,,,(single-sourced: hold & buffer)
+Aurobindo Pharma Limited,Lamivudine,South Africa,25342.0,43,3,7,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,2744.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.364,Abbott GmbH & Co. KG -> Nigeria
+Aurobindo Pharma Limited,Tenofovir Disoproxil Fumarate,South Africa,100.0,13,2,5,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> South Africa
+"Orgenics, Ltd","HIV, Capillary Tubes, for Determine, EDTA, 50uL,100 Pcs",South Sudan,15.0,5,1,1,False,T5_SINGLE_SOURCED,,,(single-sourced: hold & buffer)
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Kenya,4555.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.077,SCMS from RDC -> Kenya
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Uganda,3032.0,4,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,INVERNESS MEDICAL INNOVATIONS HONG KONG LTD,1.0,INVERNESS MEDICAL INNOVATIONS HONG KONG LTD -> Uganda
+Aurobindo Pharma Limited,Efavirenz,South Africa,17357.0,31,3,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+EMCURE PHARMACEUTICALS LTD,Efavirenz,South Africa,47963.0,18,2,6,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.737,Aurobindo Pharma Limited -> South Africa
+Aurobindo Pharma Limited,Lamivudine/Zidovudine,Tanzania,39360.0,7,1,3,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.381,SCMS from RDC -> Tanzania
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,2769.0,16,2,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.361,Abbott GmbH & Co. KG -> Nigeria
+Aurobindo Pharma Limited,Efavirenz,South Africa,29380.0,50,4,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,3041.0,4,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.329,Abbott GmbH & Co. KG -> Nigeria
+CIPLA LIMITED,Tenofovir Disoproxil Fumarate,South Africa,51382.0,127,5,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Kenya,6618.0,19,2,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.053,SCMS from RDC -> Kenya
+Aurobindo Pharma Limited,Nevirapine,Zambia,38939.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.282,SCMS from RDC -> Zambia
+"Standard Diagnostics, Inc.","HIV 1/2, Bioline 3.0 Kit, Lancets, Capillary pipets, Alcohol swabs included",Tanzania,10000.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.31,SCMS from RDC -> Tanzania
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Mozambique,2863.0,12,2,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.349,Abbott GmbH & Co. KG -> Mozambique
+Aurobindo Pharma Limited,Efavirenz,South Africa,96721.0,30,3,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,0.806,EMCURE PHARMACEUTICALS LTD -> South Africa
+Aurobindo Pharma Limited,Tenofovir Disoproxil Fumarate,South Africa,77473.0,13,2,5,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,0.699,CIPLA LIMITED -> South Africa
+Aurobindo Pharma Limited,Tenofovir Disoproxil Fumarate,South Africa,58143.0,21,2,5,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,0.931,CIPLA LIMITED -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",South Sudan,90.0,5,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,INVERNESS MEDICAL INNOVATIONS HONG KONG LTD,1.0,INVERNESS MEDICAL INNOVATIONS HONG KONG LTD -> South Sudan
+ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),Lopinavir/Ritonavir,Zimbabwe,1364.0,14,2,4,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,1.0,SCMS from RDC -> Zimbabwe
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,2744.0,43,3,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.364,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,2334.0,44,3,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.428,Abbott GmbH & Co. KG -> Nigeria
+Aurobindo Pharma Limited,Lamivudine,South Africa,16999.0,27,3,7,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),Lopinavir/Ritonavir,Zimbabwe,1021.0,33,3,4,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,1.0,SCMS from RDC -> Zimbabwe
+ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),Lopinavir/Ritonavir,"Congo, DRC",24.0,19,2,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,1.0,"SCMS from RDC -> Congo, DRC"
+"Standard Diagnostics, Inc.","HIV 1/2, Bioline 3.0 Kit, Lancets, Capillary pipets, Alcohol swabs included",Tanzania,10000.0,6,1,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,0.31,SCMS from RDC -> Tanzania
+MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),Lamivudine/Nevirapine/Zidovudine,Vietnam,12816.0,3,1,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Vietnam
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,5905.0,14,2,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.169,Abbott GmbH & Co. KG -> Nigeria
+Aurobindo Pharma Limited,Lamivudine/Nevirapine/Zidovudine,Tanzania,7255.0,3,1,4,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,1.0,SCMS from RDC -> Tanzania
+CIPLA LIMITED,Nevirapine,South Africa,50326.0,34,3,6,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,5903.0,10,2,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.169,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,3064.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.326,Abbott GmbH & Co. KG -> Nigeria
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Nigeria,2933.0,70,4,3,True,T1_ALT_VENDOR_SAME_LANE,Abbott GmbH & Co. KG,0.341,Abbott GmbH & Co. KG -> Nigeria
+CIPLA LIMITED,Tenofovir Disoproxil Fumarate,South Africa,12722.0,16,2,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> South Africa
+S. BUYS WHOLESALER,Lopinavir/Ritonavir,South Africa,710.0,2,1,4,True,T1_ALT_VENDOR_SAME_LANE,"JSI R&T INSTITUTE, INC.",0.303,"JSI R&T INSTITUTE, INC. -> South Africa"
+CIPLA LIMITED,Tenofovir Disoproxil Fumarate,South Africa,57577.0,33,3,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.924,Aurobindo Pharma Limited -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",Kenya,4.0,21,2,2,True,T1_ALT_VENDOR_SAME_LANE,SCMS from RDC,1.0,SCMS from RDC -> Kenya
+Aurobindo Pharma Limited,Efavirenz,South Africa,31875.0,13,2,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+STRIDES ARCOLAB LIMITED,Lamivudine,South Africa,212409.0,23,3,7,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,0.189,CIPLA LIMITED -> South Africa
+Aurobindo Pharma Limited,Tenofovir Disoproxil Fumarate,South Africa,11711.0,23,3,5,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> South Africa
+Aurobindo Pharma Limited,Efavirenz,South Africa,39049.0,71,4,6,True,T1_ALT_VENDOR_SAME_LANE,EMCURE PHARMACEUTICALS LTD,1.0,EMCURE PHARMACEUTICALS LTD -> South Africa
+"Orgenics, Ltd","HIV 1/2, Determine Complete HIV Kit",South Sudan,30.0,5,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,INVERNESS MEDICAL INNOVATIONS HONG KONG LTD,1.0,INVERNESS MEDICAL INNOVATIONS HONG KONG LTD -> South Sudan
+SCMS from RDC,Zidovudine,Mozambique,92.0,7,1,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Uganda,59.0,7,1,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Nevirapine,Haiti,3635.0,9,2,4,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Haiti
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Nigeria,6203.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Lamivudine,Ethiopia,2000.0,14,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Ethiopia
+SCMS from RDC,Lamivudine/Zidovudine,Haiti,64241.0,1,1,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.237,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,208501.0,6,1,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.161,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Abacavir,Côte d'Ivoire,588.0,10,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,ASPEN PHARMACARE -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Stavudine,Mozambique,2996.0,3,1,2,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Mozambique
+SCMS from RDC,Nevirapine,Côte d'Ivoire,628.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> Côte d'Ivoire
+SCMS from RDC,Zidovudine,Haiti,3872.0,16,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.542,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Lamivudine,Zambia,10131.0,18,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Abacavir/Lamivudine,Côte d'Ivoire,2610.0,22,3,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.86,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Uganda,117367.0,22,3,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.114,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Nevirapine,Uganda,1000.0,6,1,4,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Uganda
+SCMS from RDC,Tenofovir Disoproxil Fumarate,Côte d'Ivoire,859.0,51,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Stavudine,Zimbabwe,2786.0,50,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Zidovudine,Haiti,1242.0,20,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Uganda,100000.0,13,2,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.134,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Efavirenz,Nigeria,57468.0,20,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.615,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Efavirenz,Zimbabwe,6392.0,30,3,3,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Zimbabwe,35000.0,30,3,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.384,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Efavirenz,Nigeria,1280.0,21,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Lamivudine/Zidovudine,Uganda,15107.0,4,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Nevirapine,Uganda,11326.0,14,2,4,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Uganda
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Swaziland,30000.0,5,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Swaziland
+SCMS from RDC,Nevirapine,Uganda,13993.0,2,1,4,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Uganda
+SCMS from RDC,Lamivudine/Zidovudine,"Congo, DRC",1500.0,7,1,2,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,"Congo, DRC",1176.0,4,1,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Lopinavir/Ritonavir,"Congo, DRC",147.0,4,1,2,True,T1_ALT_VENDOR_SAME_LANE,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),1.0,"ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV) -> Congo, DRC"
+SCMS from RDC,Nevirapine,"Congo, DRC",341.0,4,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Zidovudine,"Congo, DRC",1029.0,26,3,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Zidovudine,"Congo, DRC",98.0,28,3,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,"Congo, DRC",20.0,7,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,"MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Congo, DRC"
+SCMS from RDC,Nevirapine,Mozambique,2870.0,22,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Mozambique
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Côte d'Ivoire,92352.0,1,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,0.363,HETERO LABS LIMITED -> Côte d'Ivoire
+SCMS from RDC,Abacavir,Burundi,350.0,4,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,ASPEN PHARMACARE -> Burundi
+SCMS from RDC,Lamivudine,Côte d'Ivoire,9900.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Efavirenz,Uganda,45840.0,11,2,6,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.771,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Abacavir,Zambia,2548.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.265,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Nigeria,66637.0,4,1,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.553,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Uganda,7126.0,24,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,South Sudan,549.0,6,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> South Sudan
+SCMS from RDC,Zidovudine,Guyana,1927.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Guyana
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Tanzania,31000.0,18,2,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Tanzania
+SCMS from RDC,Lamivudine/Zidovudine,Cameroon,6246.0,9,2,2,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> Cameroon
+SCMS from RDC,Efavirenz,Burundi,4032.0,17,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Burundi
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Tanzania,58920.0,12,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.378,Aurobindo Pharma Limited -> Tanzania
+SCMS from RDC,Lamivudine/Zidovudine,"Congo, DRC",10590.0,165,5,2,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,0.742,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,"Congo, DRC",7404.0,165,5,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,"MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Congo, DRC"
+SCMS from RDC,Efavirenz,Tanzania,6823.0,16,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Tanzania
+SCMS from RDC,Lopinavir/Ritonavir,Zimbabwe,8599.0,2,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.395,Aurobindo Pharma Limited -> Zimbabwe
+SCMS from RDC,Efavirenz,Guyana,71.0,4,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Guyana
+SCMS from RDC,Lamivudine/Zidovudine,Burundi,6141.0,2,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Burundi
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Burundi,1344.0,2,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Burundi
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Zimbabwe,20160.0,9,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Tanzania,6097.0,4,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,1.0,CIPLA LIMITED -> Tanzania
+SCMS from RDC,Zidovudine,"Congo, DRC",10916.0,88,4,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.192,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Nevirapine,"Congo, DRC",6032.0,72,4,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Lopinavir/Ritonavir,Côte d'Ivoire,1784.0,11,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lopinavir/Ritonavir,Tanzania,909.0,19,2,2,True,T1_ALT_VENDOR_SAME_LANE,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),1.0,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV) -> Tanzania
+SCMS from RDC,Lamivudine/Stavudine,Haiti,58.0,7,1,4,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Haiti
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,39600.0,10,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.846,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Mozambique,80071.0,20,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.362,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Mozambique
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Zimbabwe,8609.0,10,2,4,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Zimbabwe,115211.0,10,2,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.117,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Zimbabwe,90000.0,10,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.322,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Rwanda,29993.0,3,1,4,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Rwanda
+SCMS from RDC,Abacavir/Lamivudine,Tanzania,23964.0,19,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,0.414,CIPLA LIMITED -> Tanzania
+SCMS from RDC,Abacavir/Lamivudine,Côte d'Ivoire,2200.0,12,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Mozambique,35533.0,20,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,0.552,CIPLA LIMITED -> Mozambique
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Tanzania,46066.0,19,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.386,HETERO LABS LIMITED -> Tanzania
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Côte d'Ivoire,40035.0,14,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,0.837,HETERO LABS LIMITED -> Côte d'Ivoire
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Tanzania,20921.0,2,1,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.404,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Tanzania
+SCMS from RDC,Nevirapine,"Congo, DRC",2167.0,48,4,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Nevirapine,Uganda,21764.0,18,2,4,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Uganda
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Rwanda,2381.0,32,3,4,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Rwanda
+SCMS from RDC,Nevirapine,Zambia,1222.0,10,2,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Tanzania,116931.0,44,3,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.152,HETERO LABS LIMITED -> Tanzania
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Zimbabwe,87667.0,3,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.33,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Efavirenz,Côte d'Ivoire,5840.0,12,2,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),0.277,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Côte d'Ivoire
+SCMS from RDC,Lopinavir/Ritonavir,Tanzania,32294.0,56,4,2,True,T1_ALT_VENDOR_SAME_LANE,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),0.039,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV) -> Tanzania
+SCMS from RDC,Abacavir/Lamivudine,Zambia,60000.0,2,1,2,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,0.165,CIPLA LIMITED -> Zambia
+SCMS from RDC,Abacavir/Lamivudine,Zimbabwe,23000.0,16,2,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.25,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Zambia,21529.0,6,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zambia
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,"Congo, DRC",7480.0,8,2,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Tanzania,22002.0,7,1,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.384,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Tanzania
+SCMS from RDC,Abacavir,"Congo, DRC",715.0,42,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,"ASPEN PHARMACARE -> Congo, DRC"
+SCMS from RDC,Lamivudine,"Congo, DRC",980.0,42,3,2,True,T1_ALT_VENDOR_SAME_LANE,MICRO LABS LIMITED,1.0,"MICRO LABS LIMITED -> Congo, DRC"
+SCMS from RDC,Lopinavir/Ritonavir,"Congo, DRC",1727.0,42,3,2,True,T1_ALT_VENDOR_SAME_LANE,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),0.724,"ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV) -> Congo, DRC"
+SCMS from RDC,Efavirenz,Mozambique,12710.0,68,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Nevirapine,Mozambique,2030.0,60,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Mozambique
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,40070.0,27,3,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.836,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Lamivudine/Zidovudine,South Sudan,132.0,15,2,2,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> South Sudan
+SCMS from RDC,Abacavir/Lamivudine,Zimbabwe,50847.0,4,1,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.113,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Lopinavir/Ritonavir,"Congo, DRC",1156.0,19,2,2,True,T1_ALT_VENDOR_SAME_LANE,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),1.0,"ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV) -> Congo, DRC"
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Uganda,42531.0,5,1,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.866,HETERO LABS LIMITED -> Uganda
+SCMS from RDC,Zidovudine,Côte d'Ivoire,4000.0,12,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.525,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Efavirenz,Rwanda,868.0,10,2,6,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Rwanda
+SCMS from RDC,Lamivudine/Zidovudine,Mozambique,17246.0,31,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.882,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Zimbabwe,57804.0,10,2,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.232,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Burundi,912.0,1,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Burundi
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Nigeria,350505.0,10,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,0.096,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Nigeria,59014.0,10,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,0.568,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Abacavir/Lamivudine,Rwanda,50867.0,19,2,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.113,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Rwanda
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Côte d'Ivoire,145000.0,10,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,0.231,HETERO LABS LIMITED -> Côte d'Ivoire
+SCMS from RDC,Lopinavir/Ritonavir,"Congo, DRC",2710.0,22,3,2,True,T1_ALT_VENDOR_SAME_LANE,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),0.462,"ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV) -> Congo, DRC"
+SCMS from RDC,Lopinavir/Ritonavir,Côte d'Ivoire,10000.0,6,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.339,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Zambia,148665.0,10,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.195,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zambia
+SCMS from RDC,Lamivudine,Nigeria,50.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Nevirapine,Nigeria,36.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Nevirapine,Côte d'Ivoire,1437.0,6,1,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> Côte d'Ivoire
+SCMS from RDC,Zidovudine,Côte d'Ivoire,9780.0,6,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.215,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine,Côte d'Ivoire,8010.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Zidovudine,Ethiopia,20000.0,2,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.76,Aurobindo Pharma Limited -> Ethiopia
+SCMS from RDC,Lamivudine/Zidovudine+Efavirenz,Nigeria,854.0,48,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Efavirenz,Haiti,39312.0,13,2,8,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.899,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Stavudine,Haiti,336.0,13,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Didanosine,Haiti,192.0,7,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Lamivudine/Stavudine,Zimbabwe,5900.0,4,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine,Zambia,32920.0,4,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.395,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Côte d'Ivoire,8640.0,26,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Nevirapine,Côte d'Ivoire,233.0,22,3,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> Côte d'Ivoire
+SCMS from RDC,Lopinavir/Ritonavir,Ethiopia,3900.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.87,Aurobindo Pharma Limited -> Ethiopia
+SCMS from RDC,Tenofovir Disoproxil Fumarate,Côte d'Ivoire,4480.0,22,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Zidovudine,Côte d'Ivoire,12240.0,6,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.172,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Zidovudine,Côte d'Ivoire,13362.0,22,3,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.157,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Efavirenz,Uganda,52231.0,6,1,6,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.677,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Lamivudine/Zidovudine,Zambia,25000.0,5,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.608,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Côte d'Ivoire,45000.0,51,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,0.745,HETERO LABS LIMITED -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Stavudine,Zimbabwe,3453.0,46,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Didanosine,Ethiopia,6872.0,8,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.088,Aurobindo Pharma Limited -> Ethiopia
+SCMS from RDC,Didanosine,Ethiopia,1237.0,8,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.489,Aurobindo Pharma Limited -> Ethiopia
+SCMS from RDC,Lamivudine/Zidovudine,Zimbabwe,1988.0,13,2,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Zimbabwe,19512.0,15,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,1.0,CIPLA LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine/Zidovudine,Nigeria,32000.0,14,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.539,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Lamivudine/Zidovudine,Nigeria,12609.0,21,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Efavirenz,Nigeria,1220.0,21,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Lamivudine/Zidovudine,Ghana,29998.0,11,2,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.369,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Ghana
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,125202.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.268,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Nigeria,62611.0,6,1,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),0.085,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Nigeria
+SCMS from RDC,Efavirenz,Haiti,49425.0,2,1,8,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.715,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Lamivudine/Zidovudine,Mozambique,25312.0,15,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.601,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Zidovudine,Haiti,8768.0,23,3,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.24,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Nevirapine,Haiti,34100.0,23,3,4,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.792,HETERO LABS LIMITED -> Haiti
+SCMS from RDC,Zidovudine,Mozambique,5625.0,34,3,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.133,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Efavirenz,Uganda,47312.0,19,2,6,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.747,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Zimbabwe,70000.0,7,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,0.28,CIPLA LIMITED -> Zimbabwe
+SCMS from RDC,Zidovudine,Mozambique,2350.0,14,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.318,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Zimbabwe,75507.0,2,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,0.26,CIPLA LIMITED -> Zimbabwe
+SCMS from RDC,Efavirenz,"Congo, DRC",59.0,4,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Abacavir,Haiti,1470.0,10,2,4,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> Haiti
+SCMS from RDC,Nevirapine,Mozambique,41737.0,17,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Mozambique
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,185875.0,17,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.18,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Lamivudine/Zidovudine,Burundi,15.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Burundi
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,117749.0,3,1,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.285,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Nevirapine,Nigeria,100156.0,6,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.07,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Lopinavir/Ritonavir,Uganda,4968.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.683,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Abacavir,Rwanda,4928.0,7,1,4,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,0.851,CIPLA LIMITED -> Rwanda
+SCMS from RDC,Nevirapine,"Congo, DRC",738.0,143,5,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Zambia,100000.0,7,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.777,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Tanzania,15027.0,2,1,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.563,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Tanzania
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Zimbabwe,29506.0,9,2,4,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Zimbabwe,21300.0,9,2,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.631,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Côte d'Ivoire,8778.0,2,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Côte d'Ivoire
+SCMS from RDC,Efavirenz,Mozambique,43563.0,5,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.812,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Nevirapine,Dominican Republic,3200.0,27,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Dominican Republic
+SCMS from RDC,Nevirapine,Uganda,11490.0,9,2,4,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Uganda
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Uganda,26112.0,10,2,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Uganda
+SCMS from RDC,Lopinavir/Ritonavir,Burundi,213.0,2,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,"ABBVIE, SRL (FORMALLY ABBOTT LABORATORIES INTERNATIONAL CO.)",1.0,"ABBVIE, SRL (FORMALLY ABBOTT LABORATORIES INTERNATIONAL CO.) -> Burundi"
+SCMS from RDC,Lamivudine/Zidovudine,Uganda,54728.0,14,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.278,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Uganda,4403.0,34,3,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Uganda
+SCMS from RDC,Tenofovir Disoproxil Fumarate,Mozambique,1000.0,12,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Nevirapine,Rwanda,41250.0,11,2,4,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.654,HETERO LABS LIMITED -> Rwanda
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Burundi,1920.0,7,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Burundi
+SCMS from RDC,Lopinavir/Ritonavir,Burundi,392.0,13,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,"ABBVIE, SRL (FORMALLY ABBOTT LABORATORIES INTERNATIONAL CO.)",1.0,"ABBVIE, SRL (FORMALLY ABBOTT LABORATORIES INTERNATIONAL CO.) -> Burundi"
+SCMS from RDC,Lopinavir/Ritonavir,Uganda,8760.0,7,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.387,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Lamivudine,Côte d'Ivoire,1700.0,4,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Abacavir,Mozambique,1440.0,62,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,ASPEN PHARMACARE -> Mozambique
+SCMS from RDC,Abacavir,Mozambique,6275.0,62,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,ASPEN PHARMACARE -> Mozambique
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Nigeria,150000.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,0.223,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Nigeria,961.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Nigeria,200000.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.145,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Nigeria
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Tanzania,2178.0,56,4,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Tanzania
+SCMS from RDC,Abacavir/Lamivudine,Uganda,1446.0,17,2,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Mozambique,47205.0,20,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,0.415,CIPLA LIMITED -> Mozambique
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Uganda,40800.0,7,1,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.903,HETERO LABS LIMITED -> Uganda
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Rwanda,50000.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.579,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Rwanda
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Rwanda,68517.0,5,1,4,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Rwanda
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Guyana,2881.0,11,2,3,True,T1_ALT_VENDOR_SAME_LANE,"PUETRO RICO PHARMACEUTICAL, INC.",1.0,"PUETRO RICO PHARMACEUTICAL, INC. -> Guyana"
+SCMS from RDC,Lamivudine,Guyana,118.0,3,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Guyana
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Uganda,30874.0,11,2,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.938,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Lopinavir/Ritonavir,Zambia,25482.0,29,3,3,True,T1_ALT_VENDOR_SAME_LANE,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),0.049,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV) -> Zambia
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Mozambique,177954.0,10,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.163,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Mozambique
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Mozambique,263351.0,10,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.11,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Mozambique
+SCMS from RDC,Nevirapine,Zambia,54470.0,9,2,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.496,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Côte d'Ivoire,100000.0,10,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,0.335,HETERO LABS LIMITED -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Zidovudine,Haiti,13626.0,36,3,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Zidovudine,"Congo, DRC",380.0,77,4,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Lamivudine/Zidovudine,Zambia,13535.0,19,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Efavirenz,"Congo, DRC",710.0,42,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Abacavir,Mozambique,3700.0,68,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,ASPEN PHARMACARE -> Mozambique
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,85490.0,27,3,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.392,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Abacavir/Lamivudine,Uganda,9308.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.619,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Zidovudine,Zambia,5281.0,2,1,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.141,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zambia
+SCMS from RDC,Abacavir/Lamivudine,Rwanda,1296.0,10,2,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Rwanda
+SCMS from RDC,Nevirapine,Rwanda,157062.0,1,1,4,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.172,HETERO LABS LIMITED -> Rwanda
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Côte d'Ivoire,20000.0,41,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Côte d'Ivoire,30000.0,24,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Côte d'Ivoire
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Mozambique,15654.0,13,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Mozambique
+SCMS from RDC,Lamivudine/Zidovudine,Mozambique,71377.0,14,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.213,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Zidovudine,"Congo, DRC",10.0,61,4,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Lamivudine/Zidovudine,Mozambique,75535.0,11,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.201,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Zambia,42812.0,13,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.677,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zambia
+SCMS from RDC,Lamivudine/Zidovudine,Côte d'Ivoire,48928.0,6,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.311,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Efavirenz,Nigeria,16.0,5,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Stavudine,Nigeria,50.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Zambia,110000.0,3,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.988,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zambia
+SCMS from RDC,Nevirapine,Zambia,20000.0,3,1,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Efavirenz,Côte d'Ivoire,31092.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),0.052,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Stavudine,Côte d'Ivoire,11060.0,1,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Côte d'Ivoire
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Guyana,4955.0,13,2,3,True,T1_ALT_VENDOR_SAME_LANE,"PUETRO RICO PHARMACEUTICAL, INC.",0.989,"PUETRO RICO PHARMACEUTICAL, INC. -> Guyana"
+SCMS from RDC,Lamivudine/Zidovudine,Haiti,34769.0,1,1,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.437,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Tenofovir Disoproxil Fumarate,Côte d'Ivoire,2552.0,4,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Nigeria,7000.0,1,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Nevirapine,Nigeria,47150.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.148,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Lamivudine,Haiti,19320.0,7,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.673,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Uganda,1193.0,6,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,1.0,CIPLA LIMITED -> Uganda
+SCMS from RDC,Zidovudine,Nigeria,15650.0,19,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.134,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Lopinavir/Ritonavir,Côte d'Ivoire,1000.0,6,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine,Côte d'Ivoire,8100.0,9,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Abacavir,Dominican Republic,3073.0,14,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,ASPEN PHARMACARE -> Dominican Republic
+SCMS from RDC,Lopinavir/Ritonavir,Dominican Republic,1100.0,14,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Dominican Republic
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Zambia,220002.0,25,3,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.455,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Lamivudine,Haiti,9009.0,16,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Stavudine,Haiti,168.0,16,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Zidovudine,Haiti,2583.0,16,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.813,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Efavirenz,Zambia,28271.0,14,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Lamivudine,Côte d'Ivoire,17320.0,22,3,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.751,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Zidovudine,Côte d'Ivoire,18507.0,22,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.822,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Efavirenz,Côte d'Ivoire,2440.0,14,2,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),0.663,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Côte d'Ivoire
+SCMS from RDC,Lamivudine,Zambia,21678.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.6,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Lamivudine/Zidovudine,Uganda,30107.0,1,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.505,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Efavirenz,Zimbabwe,3348.0,46,4,3,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine/Stavudine,Zimbabwe,4952.0,46,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Uganda,720.0,53,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Nevirapine,Zambia,18000.0,20,2,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Efavirenz,Zimbabwe,1152.0,13,2,3,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Nigeria,70651.0,20,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.521,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Lamivudine/Zidovudine,Nigeria,30091.0,21,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.573,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Nigeria,57749.0,20,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Nigeria,206853.0,21,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,0.162,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Lopinavir/Ritonavir,Benin,611.0,17,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,"ABBVIE, SRL (FORMALLY ABBOTT LABORATORIES INTERNATIONAL CO.)",1.0,"ABBVIE, SRL (FORMALLY ABBOTT LABORATORIES INTERNATIONAL CO.) -> Benin"
+SCMS from RDC,Tenofovir Disoproxil Fumarate,Ghana,2110.0,11,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Ghana
+SCMS from RDC,Lamivudine/Zidovudine,Mozambique,15048.0,5,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Uganda,30000.0,14,2,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Uganda
+SCMS from RDC,Lamivudine,Haiti,9200.0,23,3,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Uganda,3330.0,12,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Uganda,105000.0,19,2,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.128,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Stavudine,Haiti,4520.0,8,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Zambia,26060.0,12,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Lamivudine/Zidovudine,Mozambique,28168.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.54,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Nevirapine,Mozambique,2940.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Mozambique
+SCMS from RDC,Nevirapine,"Congo, DRC",186.0,18,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,"Congo, DRC",8.0,18,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,"MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Congo, DRC"
+SCMS from RDC,Nevirapine,"Congo, DRC",699.0,26,3,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Zimbabwe,17556.0,16,2,4,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,20000.0,17,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,100000.0,3,1,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.335,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Nevirapine,Zimbabwe,52164.0,20,2,5,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine/Zidovudine,Burundi,1728.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Burundi
+SCMS from RDC,Abacavir,Zimbabwe,100.0,11,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,ASPEN PHARMACARE -> Zimbabwe
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Tanzania,152880.0,13,2,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.292,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Tanzania
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Uganda,39792.0,6,1,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.338,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Zidovudine,Burundi,574.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Burundi
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Uganda,15795.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.851,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Uganda,52127.0,9,2,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.556,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Uganda,17310.0,9,2,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Zidovudine,Mozambique,18597.0,12,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.04,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Tanzania,30598.0,18,2,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Tanzania
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Uganda,15117.0,26,3,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.889,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Lopinavir/Ritonavir,Côte d'Ivoire,20000.0,6,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.17,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Efavirenz,Uganda,96480.0,14,2,6,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.366,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Lamivudine/Zidovudine,Uganda,7619.0,14,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Efavirenz,Uganda,36007.0,15,2,6,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.982,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Efavirenz,"Congo, DRC",238.0,165,5,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Lopinavir/Ritonavir,"Congo, DRC",378.0,165,5,2,True,T1_ALT_VENDOR_SAME_LANE,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),1.0,"ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV) -> Congo, DRC"
+SCMS from RDC,Lamivudine/Zidovudine,"Congo, DRC",864.0,164,5,2,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Efavirenz,"Congo, DRC",312.0,164,5,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Efavirenz,Guyana,98.0,4,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Guyana
+SCMS from RDC,Lamivudine/Zidovudine,Mozambique,3035.0,13,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Uganda,4637.0,4,1,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Lopinavir/Ritonavir,Mozambique,12960.0,62,4,2,True,T1_ALT_VENDOR_SAME_LANE,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),0.097,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV) -> Mozambique
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Nigeria,130437.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.222,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Nigeria
+SCMS from RDC,Efavirenz,Tanzania,5687.0,56,4,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Tanzania
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Mozambique,66054.0,10,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.439,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Mozambique
+SCMS from RDC,Lamivudine/Zidovudine,Rwanda,8600.0,25,3,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Rwanda
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Tanzania,40000.0,19,2,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.211,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Tanzania
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,145400.0,19,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.231,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Tenofovir Disoproxil Fumarate,Côte d'Ivoire,4641.0,1,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Zambia,25511.0,25,3,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Tanzania,43460.0,2,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.512,Aurobindo Pharma Limited -> Tanzania
+SCMS from RDC,Lamivudine,Guyana,188.0,3,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Guyana
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Tanzania,206508.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.216,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Tanzania
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Nigeria,40409.0,5,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.717,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Nigeria
+SCMS from RDC,Lamivudine/Zidovudine,Haiti,20000.0,12,2,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.76,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Zambia,166295.0,7,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.654,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zambia
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Burundi,2880.0,26,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Burundi
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Burundi,1152.0,26,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Burundi
+SCMS from RDC,Nevirapine,Burundi,450.0,26,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Burundi
+SCMS from RDC,Lamivudine/Stavudine,Zambia,5232.0,4,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zambia
+SCMS from RDC,Lopinavir/Ritonavir,Mozambique,49000.0,30,3,2,True,T1_ALT_VENDOR_SAME_LANE,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),0.026,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV) -> Mozambique
+SCMS from RDC,Nevirapine,"Congo, DRC",1330.0,34,3,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Nevirapine,South Sudan,2125.0,59,4,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> South Sudan
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,"Congo, DRC",2825.0,42,3,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Lopinavir/Ritonavir,Zambia,312.0,54,4,3,True,T1_ALT_VENDOR_SAME_LANE,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),1.0,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV) -> Zambia
+SCMS from RDC,Efavirenz,"Congo, DRC",2660.0,19,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Lamivudine/Zidovudine,Côte d'Ivoire,14344.0,12,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Abacavir,Mozambique,2173.0,4,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,ASPEN PHARMACARE -> Mozambique
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Mozambique,380000.0,13,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.076,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Mozambique
+SCMS from RDC,Abacavir,Mozambique,5280.0,14,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,ASPEN PHARMACARE -> Mozambique
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Zimbabwe,400000.0,1,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.072,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Lamivudine/Zidovudine,Côte d'Ivoire,100000.0,12,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.152,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lopinavir/Ritonavir,Burundi,320.0,1,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,"ABBVIE, SRL (FORMALLY ABBOTT LABORATORIES INTERNATIONAL CO.)",1.0,"ABBVIE, SRL (FORMALLY ABBOTT LABORATORIES INTERNATIONAL CO.) -> Burundi"
+SCMS from RDC,Lamivudine/Zidovudine,Uganda,45671.0,15,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.333,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,"Congo, DRC",70971.0,30,3,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,0.232,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Abacavir/Lamivudine,"Congo, DRC",820.0,22,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Lopinavir/Ritonavir,Senegal,100.0,3,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,"ABBVIE, SRL (FORMALLY ABBOTT LABORATORIES INTERNATIONAL CO.)",1.0,"ABBVIE, SRL (FORMALLY ABBOTT LABORATORIES INTERNATIONAL CO.) -> Senegal"
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Côte d'Ivoire,6750.0,6,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Côte d'Ivoire
+SCMS from RDC,Lopinavir/Ritonavir,Cameroon,12000.0,9,2,2,True,T1_ALT_VENDOR_SAME_LANE,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),0.104,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV) -> Cameroon
+SCMS from RDC,Abacavir,Zambia,19099.0,8,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.035,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Nevirapine,Zambia,61154.0,11,2,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.441,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Lamivudine/Zidovudine,Nigeria,214.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Lamivudine,Nigeria,75.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Lamivudine,Nigeria,5500.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Zidovudine,Côte d'Ivoire,2352.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.893,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Didanosine,Côte d'Ivoire,1833.0,1,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.33,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Abacavir,Côte d'Ivoire,2590.0,2,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,ASPEN PHARMACARE -> Côte d'Ivoire
+SCMS from RDC,Efavirenz,Côte d'Ivoire,769.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),1.0,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Nigeria,40148.0,29,3,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.917,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Zimbabwe,298.0,3,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,1.0,CIPLA LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine,Haiti,3168.0,7,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Uganda,2797.0,6,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Abacavir,Tanzania,23358.0,16,2,4,True,T1_ALT_VENDOR_SAME_LANE,GLAXOSMITHKLINE EXPORT LIMITED,0.856,GLAXOSMITHKLINE EXPORT LIMITED -> Tanzania
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Nigeria,28868.0,1,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Nevirapine,Nigeria,13104.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.534,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Nevirapine,Nigeria,34801.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.201,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Nevirapine,Haiti,27900.0,7,1,4,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.968,HETERO LABS LIMITED -> Haiti
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Zimbabwe,112100.0,4,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,0.175,CIPLA LIMITED -> Zimbabwe
+SCMS from RDC,Efavirenz,Uganda,27304.0,5,1,6,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Uganda,31084.0,5,1,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.432,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Nigeria,2000.0,19,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,1.0,CIPLA LIMITED -> Nigeria
+SCMS from RDC,Lamivudine/Zidovudine,Nigeria,72023.0,19,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.239,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Lamivudine/Zidovudine,Haiti,36139.0,19,2,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.421,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Nevirapine,Côte d'Ivoire,19767.0,22,3,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> Côte d'Ivoire
+SCMS from RDC,Lamivudine,Côte d'Ivoire,3660.0,22,3,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Zambia,3355.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> Zambia
+SCMS from RDC,Didanosine,Côte d'Ivoire,648.0,14,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.933,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Abacavir/Lamivudine,Côte d'Ivoire,1309.0,51,4,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Zidovudine,Côte d'Ivoire,20376.0,51,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.746,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Côte d'Ivoire,11280.0,75,4,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),0.472,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Côte d'Ivoire
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Nigeria,60756.0,41,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Lamivudine,Haiti,2111.0,35,3,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Didanosine,Zimbabwe,105.0,46,4,3,True,T1_ALT_VENDOR_SAME_LANE,BRISTOL-MYERS SQUIBB,1.0,BRISTOL-MYERS SQUIBB -> Zimbabwe
+SCMS from RDC,Didanosine,Zimbabwe,45.0,46,4,3,True,T1_ALT_VENDOR_SAME_LANE,BRISTOL-MYERS SQUIBB,1.0,BRISTOL-MYERS SQUIBB -> Zimbabwe
+SCMS from RDC,Lamivudine,Zambia,54869.0,36,3,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.237,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Lamivudine/Zidovudine,Zambia,120000.0,20,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.127,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Nevirapine,Zambia,7946.0,39,3,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Stavudine,Mozambique,630.0,23,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Zidovudine,Zambia,10394.0,57,4,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.072,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zambia
+SCMS from RDC,Lamivudine/Stavudine,Zimbabwe,4669.0,15,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Nevirapine,Nigeria,42371.0,15,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.165,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Lamivudine,Nigeria,3173.0,21,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Nevirapine,Nigeria,15508.0,20,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.451,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Nevirapine,Zambia,112000.0,51,4,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.241,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Benin,14770.0,22,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,1.0,CIPLA LIMITED -> Benin
+SCMS from RDC,Lamivudine/Stavudine,Benin,8800.0,22,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Benin
+SCMS from RDC,Nevirapine,Ghana,38040.0,16,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.184,Aurobindo Pharma Limited -> Ghana
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,135900.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.247,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Didanosine,Haiti,180.0,2,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Lamivudine/Zidovudine,Haiti,30000.0,23,3,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.507,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Zambia,13154.0,113,5,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Swaziland,23861.0,6,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Swaziland
+SCMS from RDC,Lamivudine/Zidovudine,"Congo, DRC",274.0,4,1,2,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Nevirapine,"Congo, DRC",163.0,7,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Lamivudine,Haiti,2808.0,10,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,14125.0,17,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Nevirapine,Burundi,1800.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Burundi
+SCMS from RDC,Lamivudine/Stavudine,Zimbabwe,7150.0,20,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Zimbabwe,11574.0,20,2,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Efavirenz,Zambia,155202.0,7,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.228,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Nevirapine,Uganda,18350.0,8,2,4,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Uganda
+SCMS from RDC,Lopinavir/Ritonavir,Uganda,5000.0,8,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.679,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Nevirapine,Uganda,4535.0,1,1,4,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Uganda
+SCMS from RDC,Lamivudine/Zidovudine,"Congo, DRC",1296.0,143,5,2,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,"Congo, DRC",990.0,143,5,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Abacavir/Lamivudine,"Congo, DRC",54.0,143,5,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Efavirenz,"Congo, DRC",228.0,143,5,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Côte d'Ivoire,38722.0,2,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,0.866,HETERO LABS LIMITED -> Côte d'Ivoire
+SCMS from RDC,Efavirenz,Mozambique,34200.0,5,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Mozambique,66956.0,12,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.433,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Mozambique
+SCMS from RDC,Nevirapine,Nigeria,109238.0,8,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.064,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Zambia,176213.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.441,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Efavirenz,Zimbabwe,4800.0,6,1,3,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Uganda,44017.0,26,3,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.305,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Lamivudine/Stavudine,Nigeria,1945.0,1,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Nigeria
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,"Congo, DRC",800.0,164,5,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Lamivudine/Zidovudine,Uganda,45233.0,16,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.336,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Efavirenz,Zambia,10000.0,7,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Lopinavir/Ritonavir,Uganda,13040.0,29,3,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.26,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Zimbabwe,131520.0,9,2,4,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.28,HETERO LABS LIMITED -> Zimbabwe
+SCMS from RDC,Lopinavir/Ritonavir,Uganda,13164.0,24,3,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.258,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Nevirapine,Tanzania,56540.0,4,1,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.477,HETERO LABS LIMITED -> Tanzania
+SCMS from RDC,Lamivudine,Rwanda,5233.0,68,4,4,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> Rwanda
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Zimbabwe,39360.0,13,2,4,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.936,HETERO LABS LIMITED -> Zimbabwe
+SCMS from RDC,Lopinavir/Ritonavir,Haiti,1865.0,3,1,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Lopinavir/Ritonavir,Burundi,88.0,7,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,"ABBVIE, SRL (FORMALLY ABBOTT LABORATORIES INTERNATIONAL CO.)",1.0,"ABBVIE, SRL (FORMALLY ABBOTT LABORATORIES INTERNATIONAL CO.) -> Burundi"
+SCMS from RDC,Nevirapine,South Sudan,378.0,20,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> South Sudan
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Rwanda,1303.0,3,1,4,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Rwanda
+SCMS from RDC,Abacavir/Lamivudine,Côte d'Ivoire,9500.0,18,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.236,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Abacavir/Lamivudine,Uganda,1864.0,17,2,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Abacavir,Tanzania,11022.0,19,2,4,True,T1_ALT_VENDOR_SAME_LANE,GLAXOSMITHKLINE EXPORT LIMITED,1.0,GLAXOSMITHKLINE EXPORT LIMITED -> Tanzania
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Rwanda,49998.0,5,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.445,Aurobindo Pharma Limited -> Rwanda
+SCMS from RDC,Lamivudine/Zidovudine,Guyana,287.0,3,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Guyana
+SCMS from RDC,Zidovudine,Guyana,190.0,3,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Guyana
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Mozambique,127671.0,10,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.227,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Mozambique
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Rwanda,15862.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Rwanda
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Rwanda,30205.0,32,3,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.959,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Rwanda
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Zambia,27900.0,13,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zambia
+SCMS from RDC,Abacavir/Lamivudine,Côte d'Ivoire,489.0,10,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Rwanda,53705.0,9,2,4,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Rwanda
+SCMS from RDC,Lopinavir/Ritonavir,Burundi,200.0,26,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,"ABBVIE, SRL (FORMALLY ABBOTT LABORATORIES INTERNATIONAL CO.)",1.0,"ABBVIE, SRL (FORMALLY ABBOTT LABORATORIES INTERNATIONAL CO.) -> Burundi"
+SCMS from RDC,Nevirapine,Tanzania,43293.0,56,4,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.624,HETERO LABS LIMITED -> Tanzania
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Zambia,17801.0,25,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zambia
+SCMS from RDC,Lamivudine/Zidovudine,Zambia,35000.0,19,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.434,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Abacavir/Lamivudine,Zambia,18027.0,51,4,2,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,0.551,CIPLA LIMITED -> Zambia
+SCMS from RDC,Nevirapine,"Congo, DRC",2725.0,34,3,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Lamivudine/Stavudine,Mozambique,5232.0,68,4,2,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Mozambique
+SCMS from RDC,Abacavir,Zambia,5432.0,54,4,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.124,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Zambia,14055.0,25,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zambia
+SCMS from RDC,Nevirapine,Rwanda,178258.0,42,3,4,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.151,HETERO LABS LIMITED -> Rwanda
+SCMS from RDC,Lamivudine/Zidovudine,"Congo, DRC",800.0,19,2,2,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Lopinavir/Ritonavir,Côte d'Ivoire,10275.0,12,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.33,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lopinavir/Ritonavir,Haiti,2000.0,14,2,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Mozambique,438409.0,13,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.066,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Mozambique
+SCMS from RDC,Lamivudine/Zidovudine,Côte d'Ivoire,5.0,12,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Rwanda,10000.0,17,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Rwanda
+SCMS from RDC,Lamivudine/Zidovudine,Zambia,54000.0,26,3,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.282,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,"Congo, DRC",14329.0,30,3,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Lamivudine/Zidovudine,Côte d'Ivoire,18928.0,6,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.803,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Abacavir,Zambia,80901.0,8,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.008,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Zidovudine,Nigeria,98.0,5,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Efavirenz,Nigeria,200.0,5,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Nevirapine,Uganda,10453.0,5,1,4,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Uganda
+SCMS from RDC,Zidovudine,Haiti,120.0,9,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Nigeria,20000.0,29,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Uganda,200.0,12,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,1.0,CIPLA LIMITED -> Uganda
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Zimbabwe,47390.0,3,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,0.414,CIPLA LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine/Zidovudine,Haiti,14875.0,1,1,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Uganda,20000.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.672,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Stavudine,Haiti,168.0,7,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Lamivudine,Haiti,3840.0,13,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Uganda,31932.0,5,1,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.421,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Efavirenz,Côte d'Ivoire,1785.0,24,3,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),0.906,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Côte d'Ivoire
+SCMS from RDC,Efavirenz,Mozambique,30000.0,3,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Mozambique,30000.0,3,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,0.653,CIPLA LIMITED -> Mozambique
+SCMS from RDC,Nevirapine,Haiti,53200.0,19,2,4,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.507,HETERO LABS LIMITED -> Haiti
+SCMS from RDC,Efavirenz,Haiti,1778.0,19,2,8,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Abacavir,Côte d'Ivoire,600.0,9,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,ASPEN PHARMACARE -> Côte d'Ivoire
+SCMS from RDC,Stavudine,Côte d'Ivoire,6551.0,9,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Abacavir,Haiti,600.0,16,2,4,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> Haiti
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Côte d'Ivoire,9920.0,22,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Nevirapine,Zambia,140000.0,4,1,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.193,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Uganda,8988.0,22,3,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Lopinavir/Ritonavir,Ethiopia,8000.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.424,Aurobindo Pharma Limited -> Ethiopia
+SCMS from RDC,Lopinavir/Ritonavir,Haiti,1320.0,37,3,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Didanosine,Côte d'Ivoire,3008.0,14,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.201,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Zidovudine,Côte d'Ivoire,15621.0,14,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.974,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine,Côte d'Ivoire,7420.0,51,4,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Efavirenz,Côte d'Ivoire,20.0,68,4,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),1.0,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Zimbabwe,88719.0,50,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,0.221,CIPLA LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Zimbabwe,22074.0,50,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,0.888,CIPLA LIMITED -> Zimbabwe
+SCMS from RDC,Efavirenz,Côte d'Ivoire,20.0,76,4,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),1.0,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Côte d'Ivoire
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Uganda,6600.0,13,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Efavirenz,Zimbabwe,4250.0,13,2,3,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Zimbabwe,69207.0,15,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,0.283,CIPLA LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Zimbabwe,10114.0,15,2,4,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Nigeria,53109.0,21,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,0.631,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Tanzania,54375.0,78,4,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.82,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Tanzania
+SCMS from RDC,Lamivudine/Zidovudine,Mozambique,39636.0,1,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.384,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Lopinavir/Ritonavir,Tanzania,4389.0,11,2,2,True,T1_ALT_VENDOR_SAME_LANE,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),0.285,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV) -> Tanzania
+SCMS from RDC,Lamivudine/Zidovudine,Haiti,18958.0,23,3,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.802,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Lopinavir/Ritonavir,Swaziland,5410.0,6,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,"ABBVIE, SRL (FORMALLY ABBOTT LABORATORIES INTERNATIONAL CO.)",0.845,"ABBVIE, SRL (FORMALLY ABBOTT LABORATORIES INTERNATIONAL CO.) -> Swaziland"
+SCMS from RDC,Efavirenz,Zambia,72974.0,4,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.485,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Lamivudine/Stavudine,Zimbabwe,76.0,7,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Haiti,66672.0,10,2,6,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.503,HETERO LABS LIMITED -> Haiti
+SCMS from RDC,Efavirenz,Burundi,27000.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Burundi
+SCMS from RDC,Lamivudine/Zidovudine,Zimbabwe,3345.0,20,2,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Nigeria,149952.0,4,1,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.246,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Mozambique,97351.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.298,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Mozambique
+SCMS from RDC,Efavirenz,South Sudan,66.0,6,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> South Sudan
+SCMS from RDC,Lamivudine,Burundi,552.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Burundi
+SCMS from RDC,Lamivudine/Zidovudine,Côte d'Ivoire,86152.0,2,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.177,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Nevirapine,Guyana,583.0,1,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Guyana
+SCMS from RDC,Lamivudine/Zidovudine,Mozambique,100000.0,14,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.152,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Côte d'Ivoire,46600.0,13,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.622,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Cameroon,70000.0,9,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.318,Aurobindo Pharma Limited -> Cameroon
+SCMS from RDC,Nevirapine,Zimbabwe,23090.0,6,1,5,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Burundi,960.0,6,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Burundi
+SCMS from RDC,Lopinavir/Ritonavir,Uganda,12022.0,15,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.282,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,"Congo, DRC",20697.0,165,5,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,0.794,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Abacavir,Uganda,2880.0,34,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,ASPEN PHARMACARE -> Uganda
+SCMS from RDC,Nevirapine,Zimbabwe,131520.0,9,2,5,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,0.563,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine/Zidovudine,Mozambique,21984.0,13,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.692,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Zidovudine,Guyana,1300.0,11,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Guyana
+SCMS from RDC,Efavirenz,Tanzania,5117.0,4,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Tanzania
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Zambia,66205.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Abacavir,Zambia,11833.0,9,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.057,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Zidovudine,Mozambique,13290.0,62,4,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.056,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Tanzania,9301.0,56,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,1.0,CIPLA LIMITED -> Tanzania
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Tanzania,7894.0,56,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,1.0,CIPLA LIMITED -> Tanzania
+SCMS from RDC,Lopinavir/Ritonavir,Burundi,27.0,7,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,"ABBVIE, SRL (FORMALLY ABBOTT LABORATORIES INTERNATIONAL CO.)",1.0,"ABBVIE, SRL (FORMALLY ABBOTT LABORATORIES INTERNATIONAL CO.) -> Burundi"
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Mozambique,70000.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.414,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Mozambique
+SCMS from RDC,Abacavir,Tanzania,16357.0,7,1,4,True,T1_ALT_VENDOR_SAME_LANE,GLAXOSMITHKLINE EXPORT LIMITED,1.0,GLAXOSMITHKLINE EXPORT LIMITED -> Tanzania
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Uganda,52800.0,47,4,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.698,HETERO LABS LIMITED -> Uganda
+SCMS from RDC,Efavirenz,Guyana,48.0,3,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Guyana
+SCMS from RDC,Zidovudine,Guyana,803.0,3,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Guyana
+SCMS from RDC,Lopinavir/Ritonavir,Nigeria,15826.0,2,1,2,True,T1_ALT_VENDOR_SAME_LANE,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),0.079,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV) -> Nigeria
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Zambia,29440.0,13,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zambia
+SCMS from RDC,Abacavir/Lamivudine,Côte d'Ivoire,3291.0,10,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.682,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Abacavir/Lamivudine,Côte d'Ivoire,3709.0,10,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.605,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Haiti,2581.0,12,2,6,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Haiti
+SCMS from RDC,Nevirapine,Rwanda,30666.0,34,3,4,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.88,HETERO LABS LIMITED -> Rwanda
+SCMS from RDC,Nevirapine,Zambia,6778.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Abacavir/Lamivudine,Mozambique,2555.0,9,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,1.0,CIPLA LIMITED -> Mozambique
+SCMS from RDC,Efavirenz,Mozambique,20340.0,67,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Nevirapine,Tanzania,28464.0,56,4,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.948,HETERO LABS LIMITED -> Tanzania
+SCMS from RDC,Abacavir,Zimbabwe,301.0,18,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,ASPEN PHARMACARE -> Zimbabwe
+SCMS from RDC,Lamivudine/Stavudine,Mozambique,26700.0,68,4,2,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,0.675,STRIDES ARCOLAB LIMITED -> Mozambique
+SCMS from RDC,Tenofovir Disoproxil Fumarate,"Congo, DRC",1540.0,42,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Rwanda,2274.0,2,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Rwanda
+SCMS from RDC,Efavirenz,Mozambique,6600.0,60,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Tanzania,20000.0,31,3,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Tanzania
+SCMS from RDC,Lopinavir/Ritonavir,Zambia,32905.0,4,1,3,True,T1_ALT_VENDOR_SAME_LANE,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),0.038,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV) -> Zambia
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,74930.0,57,4,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.447,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Zidovudine,"Congo, DRC",1090.0,24,3,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Zidovudine,Rwanda,2125.0,4,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.988,Aurobindo Pharma Limited -> Rwanda
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Zambia,11536.0,2,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zambia
+SCMS from RDC,Abacavir,Guyana,100.0,31,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,ASPEN PHARMACARE -> Guyana
+SCMS from RDC,Zidovudine,"Congo, DRC",714.0,19,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Abacavir/Lamivudine,Côte d'Ivoire,137.0,4,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Efavirenz,Côte d'Ivoire,64445.0,4,1,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),0.025,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Zidovudine,Zambia,132000.0,20,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.115,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Lamivudine/Zidovudine,Tanzania,19389.0,24,3,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.784,Aurobindo Pharma Limited -> Tanzania
+SCMS from RDC,Lopinavir/Ritonavir,Uganda,11607.0,7,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.292,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Burundi,9360.0,1,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Burundi
+SCMS from RDC,Lamivudine/Zidovudine,Nigeria,51431.0,8,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.335,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Efavirenz,Zambia,108856.0,10,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.325,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Nevirapine,Zambia,221000.0,10,2,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.122,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Nevirapine,Zambia,89575.0,10,2,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.301,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Lamivudine/Zidovudine,Zambia,6258.0,11,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Nevirapine,Nigeria,3000.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Abacavir,Côte d'Ivoire,4000.0,1,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,ASPEN PHARMACARE -> Côte d'Ivoire
+SCMS from RDC,Efavirenz,Côte d'Ivoire,3444.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),0.47,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Côte d'Ivoire
+SCMS from RDC,Efavirenz,Uganda,5000.0,2,1,6,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Lamivudine,Haiti,8520.0,7,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Nigeria,5000.0,1,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Nigeria,3000.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Nevirapine,Nigeria,28600.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.245,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Nevirapine,Nigeria,3322.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Lamivudine/Zidovudine,Haiti,52752.0,7,1,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.288,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Zimbabwe,50000.0,4,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,0.392,CIPLA LIMITED -> Zimbabwe
+SCMS from RDC,Stavudine,Haiti,600.0,13,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Lamivudine/Zidovudine,Uganda,21506.0,5,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.707,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Uganda,8375.0,5,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Efavirenz,Nigeria,2150.0,19,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Nigeria,21400.0,19,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Efavirenz,Zambia,128000.0,4,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.276,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Lamivudine/Stavudine,Mozambique,8556.0,13,2,2,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Mozambique
+SCMS from RDC,Lamivudine/Zidovudine,Côte d'Ivoire,50928.0,26,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.299,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Abacavir,Zambia,17045.0,7,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.04,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Zidovudine,Côte d'Ivoire,551.0,9,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine,Haiti,4810.0,16,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Abacavir,Guatemala,2005.0,10,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,ASPEN PHARMACARE -> Guatemala
+SCMS from RDC,Efavirenz,Guatemala,34553.0,10,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Guatemala
+SCMS from RDC,Efavirenz,Côte d'Ivoire,492.0,22,3,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),1.0,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Côte d'Ivoire
+SCMS from RDC,Abacavir,Côte d'Ivoire,2436.0,22,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,ASPEN PHARMACARE -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Zidovudine,Uganda,6361.0,22,3,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Nevirapine,Uganda,11979.0,1,1,4,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Uganda
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Nigeria,19836.0,42,3,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),0.268,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Nigeria
+SCMS from RDC,Efavirenz,Uganda,45000.0,13,2,6,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.786,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Nevirapine,Zimbabwe,9073.0,9,2,5,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Efavirenz,Zimbabwe,811.0,75,4,3,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Tanzania,28200.0,34,3,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Tanzania
+SCMS from RDC,Tenofovir Disoproxil Fumarate,Nigeria,3000.0,21,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Tenofovir Disoproxil Fumarate,Ghana,10914.0,16,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Ghana
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Zimbabwe,9226.0,7,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,1.0,CIPLA LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Zimbabwe,24940.0,7,1,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.539,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Lamivudine/Stavudine,Zimbabwe,4669.0,2,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Nevirapine,"Congo, DRC",151.0,28,3,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,"Congo, DRC",19.0,28,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,"MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Congo, DRC"
+SCMS from RDC,Zidovudine,"Congo, DRC",105.0,7,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Nevirapine,Mozambique,41998.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Mozambique
+SCMS from RDC,Abacavir,Haiti,2250.0,10,2,4,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> Haiti
+SCMS from RDC,Lopinavir/Ritonavir,Burundi,240.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,"ABBVIE, SRL (FORMALLY ABBOTT LABORATORIES INTERNATIONAL CO.)",1.0,"ABBVIE, SRL (FORMALLY ABBOTT LABORATORIES INTERNATIONAL CO.) -> Burundi"
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Mozambique,4666.0,3,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,1.0,CIPLA LIMITED -> Mozambique
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Zimbabwe,71030.0,20,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,0.276,CIPLA LIMITED -> Zimbabwe
+SCMS from RDC,Abacavir,Zambia,7452.0,3,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.091,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Tenofovir Disoproxil Fumarate,Libya,2816.0,3,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Libya
+SCMS from RDC,Nevirapine,Uganda,36000.0,11,2,4,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Uganda
+SCMS from RDC,Abacavir,Zambia,27452.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.025,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Efavirenz,Rwanda,50400.0,12,2,6,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.702,Aurobindo Pharma Limited -> Rwanda
+SCMS from RDC,Lamivudine/Zidovudine,"Congo, DRC",1296.0,143,5,2,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Nevirapine,Guyana,3485.0,3,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Guyana
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Zimbabwe,73271.0,9,2,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.183,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Côte d'Ivoire,50000.0,2,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,0.67,HETERO LABS LIMITED -> Côte d'Ivoire
+SCMS from RDC,Zidovudine,Guyana,397.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Guyana
+SCMS from RDC,Nevirapine,Uganda,36229.0,9,2,4,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Uganda
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Dominican Republic,8250.0,27,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Dominican Republic
+SCMS from RDC,Zidovudine,Mozambique,13150.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.057,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Zambia,53787.0,14,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Nevirapine,Zimbabwe,10227.0,6,1,5,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Nevirapine,Zimbabwe,98203.0,6,1,5,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,0.754,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Zimbabwe,49000.0,7,1,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.274,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Uganda,100000.0,15,2,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.134,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Abacavir,"Congo, DRC",379.0,165,5,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,"ASPEN PHARMACARE -> Congo, DRC"
+SCMS from RDC,Lamivudine,"Congo, DRC",373.0,165,5,2,True,T1_ALT_VENDOR_SAME_LANE,MICRO LABS LIMITED,1.0,"MICRO LABS LIMITED -> Congo, DRC"
+SCMS from RDC,Lamivudine,Burundi,927.0,45,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Burundi
+SCMS from RDC,Zidovudine,Burundi,1480.0,45,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Burundi
+SCMS from RDC,Lamivudine/Zidovudine,"Congo, DRC",1413.0,164,5,2,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,"Congo, DRC",5076.0,164,5,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Abacavir/Lamivudine,"Congo, DRC",40.0,164,5,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Zidovudine,Guyana,160.0,4,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Guyana
+SCMS from RDC,Nevirapine,Zambia,35496.0,5,1,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.761,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Zambia,20000.0,85,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Tanzania,50000.0,9,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.445,Aurobindo Pharma Limited -> Tanzania
+SCMS from RDC,Lamivudine,Côte d'Ivoire,4800.0,14,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Nevirapine,Burundi,687.0,7,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Burundi
+SCMS from RDC,Lamivudine/Zidovudine,Mozambique,34552.0,10,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.44,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Efavirenz,South Sudan,66.0,20,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> South Sudan
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Côte d'Ivoire,50510.0,3,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.574,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Rwanda,36406.0,5,1,4,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Rwanda
+SCMS from RDC,Lamivudine,Côte d'Ivoire,1481.0,14,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lopinavir/Ritonavir,Zambia,3599.0,29,3,3,True,T1_ALT_VENDOR_SAME_LANE,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),0.348,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV) -> Zambia
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Tanzania,76134.0,46,4,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.585,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Tanzania
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Tanzania,1542.0,10,2,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Tanzania
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Zambia,123856.0,13,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.877,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zambia
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Côte d'Ivoire,24765.0,12,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Côte d'Ivoire
+SCMS from RDC,Nevirapine,Zambia,2000.0,10,2,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Tanzania,151208.0,4,1,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.117,HETERO LABS LIMITED -> Tanzania
+SCMS from RDC,Lopinavir/Ritonavir,Mozambique,12800.0,36,3,2,True,T1_ALT_VENDOR_SAME_LANE,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),0.098,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV) -> Mozambique
+SCMS from RDC,Lopinavir/Ritonavir,Burundi,200.0,6,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,"ABBVIE, SRL (FORMALLY ABBOTT LABORATORIES INTERNATIONAL CO.)",1.0,"ABBVIE, SRL (FORMALLY ABBOTT LABORATORIES INTERNATIONAL CO.) -> Burundi"
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Tanzania,17000.0,25,3,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Tanzania
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Guyana,2158.0,35,3,3,True,T1_ALT_VENDOR_SAME_LANE,"PUETRO RICO PHARMACEUTICAL, INC.",1.0,"PUETRO RICO PHARMACEUTICAL, INC. -> Guyana"
+SCMS from RDC,Lamivudine/Zidovudine,Mozambique,9784.0,62,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Lamivudine/Zidovudine,"Congo, DRC",900.0,42,3,2,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Lamivudine/Zidovudine,Mozambique,15000.0,59,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,33922.0,59,4,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.988,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Tanzania,57859.0,31,3,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.385,Aurobindo Pharma Limited -> Tanzania
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,90000.0,27,3,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.372,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Abacavir/Lamivudine,Uganda,3273.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Namibia,54147.0,13,2,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.823,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Namibia
+SCMS from RDC,Nevirapine,Zambia,41768.0,20,2,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.646,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Abacavir/Lamivudine,Uganda,5403.0,25,3,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Côte d'Ivoire,50700.0,12,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,0.661,HETERO LABS LIMITED -> Côte d'Ivoire
+SCMS from RDC,Abacavir/Lamivudine,Côte d'Ivoire,2000.0,12,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Zidovudine,Zambia,1846.0,20,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Nevirapine,Mozambique,1400.0,10,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Mozambique
+SCMS from RDC,Lamivudine/Zidovudine,Burundi,325.0,1,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Burundi
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Nigeria,128500.0,10,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.225,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Nigeria
+SCMS from RDC,Efavirenz,"Congo, DRC",300.0,12,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Abacavir,Rwanda,2966.0,14,2,4,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> Rwanda
+SCMS from RDC,Tenofovir Disoproxil Fumarate,Mozambique,960.0,17,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Nevirapine,Nigeria,253.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Nigeria,600.0,5,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Zidovudine,Côte d'Ivoire,8430.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.249,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Zidovudine,Uganda,3360.0,2,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Nevirapine,Uganda,2000.0,2,1,4,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Uganda
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Uganda,5500.0,7,1,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Zidovudine,Mozambique,6552.0,7,1,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.114,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Indinavir,Haiti,450.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),0.253,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Haiti
+SCMS from RDC,Lamivudine,Côte d'Ivoire,4340.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Abacavir,Haiti,256.0,7,1,4,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> Haiti
+SCMS from RDC,Efavirenz,Haiti,168.0,7,1,8,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Nigeria,55070.0,1,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,0.609,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Lamivudine,Haiti,3584.0,13,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,48551.0,14,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.69,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Efavirenz,Zimbabwe,5900.0,4,1,3,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Stavudine,Haiti,14448.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.645,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Nigeria,33162.0,19,2,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),0.16,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Nigeria
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Zambia,69247.0,4,1,2,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,0.283,CIPLA LIMITED -> Zambia
+SCMS from RDC,Nevirapine,Tanzania,110000.0,3,1,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.245,HETERO LABS LIMITED -> Tanzania
+SCMS from RDC,Abacavir,Côte d'Ivoire,5070.0,26,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,ASPEN PHARMACARE -> Côte d'Ivoire
+SCMS from RDC,Efavirenz,Côte d'Ivoire,1764.0,26,3,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),0.917,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Côte d'Ivoire
+SCMS from RDC,Efavirenz,Côte d'Ivoire,69384.0,26,3,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),0.023,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Côte d'Ivoire
+SCMS from RDC,Stavudine,Côte d'Ivoire,1013.0,9,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Nevirapine,Côte d'Ivoire,4200.0,9,2,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> Côte d'Ivoire
+SCMS from RDC,Nevirapine,Zambia,10000.0,25,3,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Haiti,400.0,16,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Lamivudine,Haiti,8000.0,16,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Côte d'Ivoire,4800.0,8,2,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),1.0,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Côte d'Ivoire
+SCMS from RDC,Lopinavir/Ritonavir,Ethiopia,2680.0,1,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Ethiopia
+SCMS from RDC,Zidovudine,Uganda,10000.0,11,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.21,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Zidovudine,Côte d'Ivoire,5000.0,29,3,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.42,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Abacavir,Côte d'Ivoire,3564.0,51,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,ASPEN PHARMACARE -> Côte d'Ivoire
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Côte d'Ivoire,300.0,75,4,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),1.0,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Nigeria,154667.0,40,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,0.217,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Zimbabwe,55000.0,30,3,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.244,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Lamivudine/Zidovudine,Mozambique,45000.0,14,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.338,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Nevirapine,Zambia,84.0,20,2,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Efavirenz,Zambia,170858.0,57,4,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.207,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Lamivudine,Mozambique,2268.0,13,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Mozambique
+SCMS from RDC,Nevirapine,Nigeria,22623.0,15,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.309,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Nevirapine,Côte d'Ivoire,3500.0,35,3,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> Côte d'Ivoire
+SCMS from RDC,Nevirapine,Haiti,4000.0,35,3,4,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Haiti
+SCMS from RDC,Nevirapine,Ghana,25509.0,16,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.274,Aurobindo Pharma Limited -> Ghana
+SCMS from RDC,Lamivudine/Zidovudine,Haiti,20642.0,2,1,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.737,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Lamivudine/Zidovudine,Uganda,32000.0,19,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.475,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Stavudine,Mozambique,538.0,10,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Zidovudine,Zambia,1917.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.388,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zambia
+SCMS from RDC,Zidovudine,Zambia,44163.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.017,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zambia
+SCMS from RDC,Nevirapine,Haiti,2848.0,8,2,4,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Haiti
+SCMS from RDC,Lamivudine/Stavudine,Zimbabwe,4593.0,7,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Efavirenz,Zimbabwe,6392.0,2,1,3,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Nevirapine,Zambia,8000.0,10,2,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,"Congo, DRC",15.0,26,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,"MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Congo, DRC"
+SCMS from RDC,Efavirenz,Haiti,1680.0,10,2,8,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Nevirapine,Burundi,170.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Burundi
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Burundi,10000.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Burundi
+SCMS from RDC,Zidovudine,Côte d'Ivoire,9000.0,9,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.233,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Nigeria,15594.0,4,1,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Nevirapine,Uganda,699.0,1,1,4,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Uganda
+SCMS from RDC,Lamivudine/Zidovudine,Uganda,2512.0,3,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Zidovudine,"Congo, DRC",738.0,143,5,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Mozambique,7680.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Mozambique
+SCMS from RDC,Zidovudine,Côte d'Ivoire,3000.0,10,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.7,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Zidovudine,Côte d'Ivoire,43848.0,2,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.347,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Zidovudine,Mozambique,2151.0,14,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.347,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Zidovudine,Mozambique,567.0,14,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Uganda,61394.0,13,2,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.472,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Nigeria,2027.0,2,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,1.0,CIPLA LIMITED -> Nigeria
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Zambia,78787.0,8,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.986,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Cameroon,45000.0,9,2,4,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.644,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Cameroon
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Zimbabwe,131520.0,6,1,4,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.28,HETERO LABS LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Zimbabwe,14217.0,7,1,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.945,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Lopinavir/Ritonavir,Côte d'Ivoire,16000.0,6,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.212,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Zidovudine,Côte d'Ivoire,2000.0,6,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Zidovudine,Burundi,8040.0,2,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Burundi
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Uganda,21709.0,18,2,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Uganda
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Tanzania,3478.0,4,1,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Tanzania
+SCMS from RDC,Lamivudine/Zidovudine,Uganda,4160.0,4,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Lamivudine,Burundi,549.0,48,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Burundi
+SCMS from RDC,Nevirapine,Côte d'Ivoire,2000.0,7,1,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> Côte d'Ivoire
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Tanzania,337.0,56,4,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Tanzania
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Tanzania,9312.0,35,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,1.0,CIPLA LIMITED -> Tanzania
+SCMS from RDC,Efavirenz,South Sudan,2100.0,20,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> South Sudan
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Rwanda,26540.0,3,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.838,Aurobindo Pharma Limited -> Rwanda
+SCMS from RDC,Abacavir/Lamivudine,Tanzania,9458.0,19,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,1.0,CIPLA LIMITED -> Tanzania
+SCMS from RDC,Abacavir/Lamivudine,Zimbabwe,2088.0,12,2,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Zidovudine,Côte d'Ivoire,5700.0,13,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.368,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Nevirapine,Tanzania,13171.0,19,2,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Tanzania
+SCMS from RDC,Lopinavir/Ritonavir,Rwanda,5247.0,25,3,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.647,Aurobindo Pharma Limited -> Rwanda
+SCMS from RDC,Abacavir,Côte d'Ivoire,6200.0,13,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,ASPEN PHARMACARE -> Côte d'Ivoire
+SCMS from RDC,Abacavir/Lamivudine,Côte d'Ivoire,611.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Côte d'Ivoire,100000.0,14,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,0.335,HETERO LABS LIMITED -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Zidovudine,Rwanda,18000.0,8,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.845,Aurobindo Pharma Limited -> Rwanda
+SCMS from RDC,Lopinavir/Ritonavir,Guyana,1484.0,3,1,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Guyana
+SCMS from RDC,Lamivudine,Côte d'Ivoire,519.0,14,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Nigeria,401961.0,2,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.072,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Nigeria
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Uganda,34138.0,28,3,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.394,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Nigeria,15.0,2,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Efavirenz,Mozambique,63000.0,10,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.561,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Efavirenz,Zimbabwe,819.0,18,2,3,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Zimbabwe
+SCMS from RDC,Lamivudine,Mozambique,648.0,10,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Mozambique
+SCMS from RDC,Nevirapine,Côte d'Ivoire,4000.0,10,2,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Rwanda,97619.0,32,3,4,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Rwanda
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,47108.0,9,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.711,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Tanzania,14789.0,4,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Tanzania
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Zambia,29440.0,4,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zambia
+SCMS from RDC,Abacavir,Zambia,323.0,14,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,South Sudan,7764.0,15,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> South Sudan
+SCMS from RDC,Lopinavir/Ritonavir,Zambia,35822.0,6,1,3,True,T1_ALT_VENDOR_SAME_LANE,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),0.035,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV) -> Zambia
+SCMS from RDC,Lamivudine/Zidovudine,"Congo, DRC",3485.0,8,2,2,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Abacavir/Lamivudine,Côte d'Ivoire,10000.0,9,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.225,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Abacavir/Lamivudine,Côte d'Ivoire,2600.0,9,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.863,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Zidovudine,Zambia,7130.0,51,4,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.104,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zambia
+SCMS from RDC,Efavirenz,"Congo, DRC",2955.0,42,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Zidovudine,"Congo, DRC",2829.0,42,3,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.742,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,"Congo, DRC",3300.0,42,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,"MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Congo, DRC"
+SCMS from RDC,Lamivudine/Zidovudine,Mozambique,90472.0,68,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.168,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Efavirenz,Mozambique,77000.0,60,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.459,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Zidovudine,Uganda,1000.0,1,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Zambia,20327.0,19,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zambia
+SCMS from RDC,Tenofovir Disoproxil Fumarate,"Congo, DRC",5850.0,19,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Efavirenz,Côte d'Ivoire,25555.0,4,1,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),0.063,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Zidovudine,Côte d'Ivoire,1956.0,12,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Zidovudine,Mozambique,43334.0,4,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.351,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Lopinavir/Ritonavir,Côte d'Ivoire,11728.0,15,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.289,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Zidovudine,Côte d'Ivoire,19000.0,12,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.8,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Nevirapine,Zambia,198040.0,26,3,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.136,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Zimbabwe,4550.0,10,2,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Lamivudine/Zidovudine,Zimbabwe,20000.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.553,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Burundi,1728.0,1,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Burundi
+SCMS from RDC,Lamivudine/Zidovudine,Nigeria,148569.0,8,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.116,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Nevirapine,Togo,240.0,24,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Togo
+SCMS from RDC,Lamivudine,"Congo, DRC",110.0,61,4,2,True,T1_ALT_VENDOR_SAME_LANE,MICRO LABS LIMITED,1.0,"MICRO LABS LIMITED -> Congo, DRC"
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,"Congo, DRC",4355.0,12,2,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Lamivudine/Zidovudine,Nigeria,37742.0,20,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.457,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Efavirenz,"Congo, DRC",9800.0,30,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Tenofovir Disoproxil Fumarate,Rwanda,385.0,7,1,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Rwanda
+SCMS from RDC,Efavirenz,Côte d'Ivoire,9800.0,6,1,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),0.165,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Côte d'Ivoire
+SCMS from RDC,Efavirenz,Nigeria,301.0,5,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Efavirenz,Nigeria,2200.0,5,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Efavirenz,Côte d'Ivoire,30464.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),0.053,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Côte d'Ivoire
+SCMS from RDC,Lamivudine,Côte d'Ivoire,2000.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Nevirapine,Haiti,26400.0,2,1,4,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Haiti
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Zimbabwe,28610.0,3,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,0.685,CIPLA LIMITED -> Zimbabwe
+SCMS from RDC,Tenofovir Disoproxil Fumarate,Côte d'Ivoire,488.0,4,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Nigeria,40750.0,1,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,0.822,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Zidovudine,Haiti,4672.0,13,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.449,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Nevirapine,Nigeria,1400.0,5,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,71449.0,14,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.469,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Efavirenz,Haiti,70.0,7,1,8,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Haiti
+SCMS from RDC,Efavirenz,Nigeria,48860.0,19,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.724,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Lamivudine,Nigeria,4100.0,19,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Lamivudine/Stavudine,Uganda,204.0,6,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Uganda
+SCMS from RDC,Tenofovir Disoproxil Fumarate,Nigeria,2500.0,19,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,120099.0,24,3,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.279,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Efavirenz,Zambia,170000.0,7,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.208,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Zambia,59446.0,7,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Nevirapine,Côte d'Ivoire,100425.0,22,3,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,0.577,CIPLA LIMITED -> Côte d'Ivoire
+SCMS from RDC,Abacavir,Zambia,16200.0,16,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.042,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Nevirapine,Côte d'Ivoire,2084.0,6,1,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,CIPLA LIMITED -> Côte d'Ivoire
+SCMS from RDC,Emtricitabine/Tenofovir Disoproxil Fumarate,Côte d'Ivoire,14440.0,51,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Zidovudine,Zimbabwe,1884.0,30,3,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Nevirapine,Zambia,10927.0,39,3,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Nevirapine,Uganda,10500.0,13,2,4,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Uganda
+SCMS from RDC,Lamivudine/Zidovudine,Uganda,14893.0,13,2,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Zimbabwe,20000.0,13,2,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.672,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Nigeria,87357.0,21,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,0.384,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Nevirapine,Zambia,10000.0,33,3,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Nevirapine,Nigeria,17376.0,14,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.403,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Nevirapine,Nigeria,64995.0,21,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.108,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Nevirapine,Zambia,31043.0,51,4,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.87,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Zidovudine,Mozambique,6250.0,1,1,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.12,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Lamivudine/Zidovudine,Mozambique,26308.0,15,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.578,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Uganda,30000.0,19,2,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Uganda
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Zimbabwe,10114.0,7,1,4,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Zimbabwe
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Nigeria,2389.0,105,5,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),1.0,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Nigeria
+SCMS from RDC,Tenofovir Disoproxil Fumarate,Ghana,38760.0,120,5,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Ghana
+SCMS from RDC,Abacavir,"Congo, DRC",147.0,4,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,"ASPEN PHARMACARE -> Congo, DRC"
+SCMS from RDC,Zidovudine,"Congo, DRC",166.0,18,2,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Mozambique,25394.0,17,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,0.772,CIPLA LIMITED -> Mozambique
+SCMS from RDC,Lamivudine/Zidovudine,Burundi,25240.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.603,Aurobindo Pharma Limited -> Burundi
+SCMS from RDC,Abacavir,Burundi,350.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,ASPEN PHARMACARE -> Burundi
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,2551.0,3,1,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Nevirapine,Mozambique,24496.0,1,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Mozambique
+SCMS from RDC,Efavirenz,Zambia,70156.0,4,1,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.504,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Zidovudine,Uganda,2250.0,3,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.933,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Uganda,13620.0,24,3,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Uganda
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,"Congo, DRC",3960.0,143,5,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Didanosine,"Congo, DRC",42.0,143,5,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Lamivudine/Zidovudine,Mozambique,660.0,14,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Zidovudine,Mozambique,184.0,14,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Lopinavir/Ritonavir,Tanzania,7995.0,18,2,2,True,T1_ALT_VENDOR_SAME_LANE,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),0.156,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV) -> Tanzania
+SCMS from RDC,Efavirenz,Nigeria,10743.0,8,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Nigeria
+SCMS from RDC,Efavirenz,Cameroon,33000.0,9,2,3,True,T1_ALT_VENDOR_SAME_LANE,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Cameroon
+SCMS from RDC,Efavirenz,Uganda,7363.0,15,2,6,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Uganda
+SCMS from RDC,Nevirapine,"Congo, DRC",761.0,165,5,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Zidovudine,"Congo, DRC",502.0,164,5,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,"Aurobindo Pharma Limited -> Congo, DRC"
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Zimbabwe,61591.0,8,2,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.218,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zimbabwe
+SCMS from RDC,Nevirapine,Burundi,2280.0,1,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Burundi
+SCMS from RDC,Lopinavir/Ritonavir,Guyana,1634.0,4,1,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Guyana
+SCMS from RDC,Efavirenz,Burundi,5568.0,9,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Burundi
+SCMS from RDC,Lamivudine/Zidovudine,Mozambique,39997.0,13,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.38,Aurobindo Pharma Limited -> Mozambique
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,"Congo, DRC",510.0,88,4,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,"MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Congo, DRC"
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Côte d'Ivoire,41700.0,10,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,0.804,HETERO LABS LIMITED -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Uganda,2277.0,4,1,3,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Uganda
+SCMS from RDC,Lopinavir/Ritonavir,Tanzania,32753.0,19,2,2,True,T1_ALT_VENDOR_SAME_LANE,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),0.038,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV) -> Tanzania
+SCMS from RDC,Lamivudine/Nevirapine/Stavudine,Tanzania,3879.0,35,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,CIPLA LIMITED,1.0,CIPLA LIMITED -> Tanzania
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,South Sudan,3746.0,20,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> South Sudan
+SCMS from RDC,Nevirapine,Tanzania,20000.0,40,3,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Tanzania
+SCMS from RDC,Efavirenz,Tanzania,21596.0,35,3,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Tanzania
+SCMS from RDC,Lopinavir/Ritonavir,Côte d'Ivoire,20440.0,17,2,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.166,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Rwanda,119370.0,3,1,2,True,T1_ALT_VENDOR_SAME_LANE,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.243,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Rwanda
+SCMS from RDC,Efavirenz/Emtricitabine/Tenofovir Disoproxil Fumarate,Zambia,3866.0,4,1,2,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Zambia
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Nigeria,37869.0,2,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,HETERO LABS LIMITED,0.885,HETERO LABS LIMITED -> Nigeria
+SCMS from RDC,Abacavir,Tanzania,27293.0,7,1,4,True,T1_ALT_VENDOR_SAME_LANE,GLAXOSMITHKLINE EXPORT LIMITED,0.733,GLAXOSMITHKLINE EXPORT LIMITED -> Tanzania
+SCMS from RDC,Nevirapine,Mozambique,2100.0,10,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,STRIDES ARCOLAB LIMITED,1.0,STRIDES ARCOLAB LIMITED -> Mozambique
+SCMS from RDC,Abacavir,Mozambique,405.0,1,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,ASPEN PHARMACARE,1.0,ASPEN PHARMACARE -> Mozambique
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Zambia,12590.0,13,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zambia
+SCMS from RDC,Abacavir,Tanzania,2707.0,22,3,4,True,T1_ALT_VENDOR_SAME_LANE,GLAXOSMITHKLINE EXPORT LIMITED,1.0,GLAXOSMITHKLINE EXPORT LIMITED -> Tanzania
+SCMS from RDC,Efavirenz,Guyana,75.0,5,1,3,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Guyana
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Mozambique,2199.0,30,3,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Mozambique
+SCMS from RDC,Efavirenz,South Sudan,4488.0,15,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> South Sudan
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,114324.0,59,4,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.293,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,103410.0,59,4,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.324,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Tanzania,42141.0,31,3,4,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,0.528,Aurobindo Pharma Limited -> Tanzania
+SCMS from RDC,Lamivudine/Zidovudine,Guyana,228.0,9,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Guyana
+SCMS from RDC,Lamivudine/Zidovudine,"Congo, DRC",4670.0,19,2,2,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,"Congo, DRC",3460.0,19,2,3,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Lamivudine,"Congo, DRC",1976.0,19,2,2,True,T1_ALT_VENDOR_SAME_LANE,MICRO LABS LIMITED,1.0,"MICRO LABS LIMITED -> Congo, DRC"
+SCMS from RDC,Efavirenz,Côte d'Ivoire,32400.0,4,1,2,True,T1_ALT_VENDOR_SAME_LANE,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.),0.05,MERCK SHARP & DOHME IDEA GMBH (FORMALLY MERCK SHARP & DOHME B.V.) -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Zidovudine,Côte d'Ivoire,55995.0,4,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.272,Aurobindo Pharma Limited -> Côte d'Ivoire
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Zambia,18447.0,20,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Zambia
+SCMS from RDC,Nevirapine,Zambia,71600.0,26,3,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.377,HETERO LABS LIMITED -> Zambia
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Uganda,27365.0,45,3,3,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Uganda
+SCMS from RDC,Tenofovir Disoproxil Fumarate,Rwanda,200.0,10,2,5,True,T1_ALT_VENDOR_SAME_LANE,Aurobindo Pharma Limited,1.0,Aurobindo Pharma Limited -> Rwanda
+SCMS from RDC,Lamivudine/Zidovudine,"Congo, DRC",490.0,61,4,2,True,T1_ALT_VENDOR_SAME_LANE,CIPLA LIMITED,1.0,"CIPLA LIMITED -> Congo, DRC"
+SCMS from RDC,Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Mozambique,200000.0,9,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),0.145,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Mozambique
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,28516.0,17,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,1.0,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Lamivudine/Nevirapine/Zidovudine,Mozambique,300000.0,11,2,2,True,T1_ALT_VENDOR_SAME_LANE,HETERO LABS LIMITED,0.112,HETERO LABS LIMITED -> Mozambique
+SCMS from RDC,Lamivudine/Tenofovir Disoproxil Fumarate,Mozambique,16006.0,17,2,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),1.0,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES) -> Mozambique
+SCMS from RDC,Lamivudine/Zidovudine,Côte d'Ivoire,21072.0,6,1,1,True,T2_ALT_VENDOR_OTHER_COUNTRY,Aurobindo Pharma Limited,0.722,Aurobindo Pharma Limited -> Côte d'Ivoire

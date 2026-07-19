@@ -1,0 +1,34 @@
+CASE TABLE — DOCUMENTED REAL-WORLD EVENTS vs THIS SYSTEM
+==========================================================
+
+Events encoded: 11   (3 found blind IN our own data by Stage 21, 3 machine-cross-checked)
+
+EX-ANTE exposure flag :  YES 3   PARTIAL 4   NO 4
+RESPONSE match        :  YES 4   PARTIAL 7   NO 0
+
+event                                 date                ex-ante  match   
+---------------------------------------------------------------------------
+Haiti earthquake                      2010-01-12          NO       PARTIAL 
+Cote d'Ivoire post-election crisis    2010-12 to 2011-04  PARTIAL  PARTIAL 
+South Africa strike wave              2010-05 + 2010-08/0 NO       PARTIAL 
+Tohoku earthquake -> Renesas Naka fab 2011-03-11          PARTIAL  YES     
+Xirallic pigment shortage (Merck Onah 2011-03-11          YES      PARTIAL 
+KFC UK distribution switch            2018-02             YES      YES     
+Ever Given / Suez blockage            2021-03-23 to 03-29 NO       PARTIAL 
+COVID-19 PPE shortage                 2020 Q1-Q2          PARTIAL  YES     
+Texas freeze (Winter Storm Uri)       2021-02-13 to 02-20 YES      YES     
+Colonial Pipeline ransomware          2021-05-07 to 05-12 PARTIAL  PARTIAL 
+Eyjafjallajokull ash cloud            2010-04-14 to 04-21 NO       PARTIAL 
+
+LIMITATIONS SURFACED BY THE CASES (paper material, not hidden):
+  1. Route/chokepoint edges are not modelled (Suez, Colonial's artery).
+  2. The ladder has no PRODUCT SUBSTITUTION tier (Xirallic's instant fix).
+  3. Detection runs per-country; per-MODE series would catch mode outages
+     (ash cloud was visible at 17% vs 10% but diluted below threshold).
+
+READ HONESTLY:
+  The claim is CONSISTENCY with documented reality — the system flags the
+  right failure modes where its data exists, recommends what firms
+  actually ended up doing, and independently finds documented crises in
+  real delivery data. NO counterfactual 'we would have done better' claim
+  is made anywhere.

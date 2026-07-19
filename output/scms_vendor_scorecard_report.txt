@@ -1,0 +1,39 @@
+SCMS VENDOR SCORECARD + QUALIFICATION SHORTLIST
+=======================================================
+
+score = 0.35*reliability(shrunk k=5) + 0.35*capacity + 0.3*experience(log)
+Weights are a stated design choice — validated (not fitted) via the
+walk-forward backtest in src/test_vendor_scorecard.py.
+
+Exposed lanes                 : 92
+  with >=1 qualification candidate : 90
+  buffer-only (no vendor anywhere) : 2
+  median candidates per lane       : 6
+
+── The counter-offer (what-if, comparative indicator) ──
+Lanes with computable buffer what-if : 72
+  potential buffer release (positive deltas): $5,174,725
+  lanes where candidate pipeline is SLOWER  : 48 (shown, not hidden)
+
+Top 10 lanes by potential buffer release:
+  molecule                      country        top candidate                 OTIF   release $
+  Efavirenz/Lamivudine/Tenofovi Zimbabwe       MYLAN LABORATORIES LTD (FOR  0.994   3,598,306
+  Lamivudine/Nevirapine/Stavudi Zimbabwe       HETERO LABS LIMITED          0.993     726,997
+  Lamivudine/Nevirapine/Zidovud Côte d'Ivoire  HETERO LABS LIMITED          0.993     319,209
+  Lamivudine/Zidovudine         Côte d'Ivoire  HETERO LABS LIMITED          0.993     184,352
+  Lamivudine/Nevirapine/Stavudi Côte d'Ivoire  HETERO LABS LIMITED          0.993      75,052
+  Abacavir                      Côte d'Ivoire  ASPEN PHARMACARE             0.976      57,750
+  Emtricitabine/Tenofovir Disop Côte d'Ivoire  Aurobindo Pharma Limited     0.859      52,012
+  Lamivudine/Stavudine          Zimbabwe       STRIDES ARCOLAB LIMITED      0.957      38,815
+  Lamivudine/Stavudine          Côte d'Ivoire  STRIDES ARCOLAB LIMITED      0.957      26,414
+  Lamivudine/Nevirapine/Stavudi Mozambique     HETERO LABS LIMITED          0.993      19,640
+
+HONEST NOTES
+  * Reliability is shrunk toward the global mean (k=5): a vendor with
+    1 perfect shipment cannot outrank one with 200 at 95%.
+  * The buffer what-if swaps the lane's lead-time profile for the
+    candidate's OWN observed profile (vendor→country preferred over
+    vendor-global). Lead times mix vendor and destination effects;
+    read as a comparative indicator, not a promise.
+  * Qualification cost/time is NOT modelled — this ranks WHO to
+    qualify, it does not claim qualification is free.

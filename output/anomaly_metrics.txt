@@ -2,24 +2,22 @@ STAGE 3 — ANOMALY DETECTION METRICS
 ==================================================
 
 Dataset size         : 50,000 transactions
-Macro stress mult    : 1.2  (LOW — thresholds relaxed)
-Final Z thresholds   : vol=3.6  freq=3.0  surge=3.0
+Macro stress         : per-week λ (λ=1.2:50,000); 0% of rows in indicator coverage, fallback λ=1.2
+Base Z thresholds    : vol=3.0·λ  freq=2.5·λ  surge=2.5·λ
 
 Signal counts:
-  [1] Volume Anomaly       : 899
+  [1] Volume Anomaly       : 5598
   [2] Frequency Anomaly    : 470
-  [3] Temporal Surge       : 1092
+  [3] Temporal Surge       : 2751
   [4] Concentration Risk   : 142
   [5] Isolation Forest     : 2500
 
-High-confidence anomalies (2+ signals) : 1535
-Suspect transactions    (1 signal)     : 1780
+Decision rule        : calibrated ensemble (thr=0.90, held-out F1=0.386)
+High-confidence anomalies              : 1664
+Suspect transactions (unflagged signal): 6956
 
-Evaluation  (pseudo-GT: zscore_count >= 3)
-  Ground-truth positives  : 21
-
-  Method                                Precision  Recall      F1
-  ------------------------------------  ---------  ------  ------
-  Z-score only  (2+ signals)                0.091   1.000   0.166
-  Isolation Forest alone                    0.008   1.000   0.017
-  Ensemble (2+ incl. IF)                    0.014   1.000   0.027
+Detection quality (Precision/Recall/F1) is evaluated against an
+INDEPENDENT ground truth in Stage 3b (anomaly_eval_injection.py):
+known synthetic anomalies are injected and the same detectors are
+scored against the injection label. See anomaly_injection_metrics.txt.
+Flags derived from the detectors are never reused as ground truth.

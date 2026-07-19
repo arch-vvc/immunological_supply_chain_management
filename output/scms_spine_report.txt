@@ -1,0 +1,30 @@
+SCMS SPINE — REAL UNIFIED NO-BACKUP / RECOVERY ANALYSIS
+=======================================================
+
+One real dataset: network + disruptions in the same rows. No synthetic
+recovery table, no cross-dataset subtraction.
+
+Real disruptions analysed (late shipments) : 1,186
+  delay days  median 12  mean 21.4  p90 51
+
+Action mix (ladder over REAL alternate vendors):
+  T1  proven IN-COUNTRY alternate vendor (drop-in backup)
+  T2  vendor supplies molecule elsewhere, NOT this country (onboarding)
+  T5  no vendor supplies this molecule anywhere (true single-source)
+    T1_ALT_VENDOR_SAME_LANE         846  ( 71.3%)
+    T2_ALT_VENDOR_OTHER_COUNTRY     335  ( 28.2%)
+    T5_SINGLE_SOURCED                 5  (  0.4%)
+
+── What the data proves (and what it doesn't) ──────────────────
+RESOLVED  — proven in-country alternate      : 846  (71%)
+  avg volume coverage of alternate           : 70%  (417/846 fully covered)
+EXPOSED   — no in-country alternate           : 340  (29%)  -> buffer / qualify a vendor
+    of which onboarding-candidate (T2)        : 335
+    of which no vendor anywhere  (T5)         : 5
+  volume on exposed (no in-country) lanes     : 31% of disrupted units
+
+HONEST CAVEAT: a shipment's delay is the disruption COST, not recovery-
+after-switching. An alternate vendor helps the NEXT order, not the one
+in transit. We therefore claim only alternate EXISTENCE and CAPACITY
+coverage — both directly observable — never a delay reduction for the
+disrupted shipment itself.

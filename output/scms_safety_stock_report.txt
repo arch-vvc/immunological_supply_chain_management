@@ -1,0 +1,57 @@
+SCMS SAFETY-STOCK SIZING — EXPOSED LANES, REAL INPUTS
+=======================================================
+
+King's formula  SS = z*sqrt(L*sd^2 + D^2*sL^2)  with the lane's own
+demand history and real vendor lead times (PO->Delivered).
+Service level 95% (z=1.65); holding rate 25%/yr.
+
+Exposed lanes (spine T2/T5)        : 92
+  sized                            : 76
+  insufficient history (listed)    : 16
+
+TOTAL buffer investment @95%       : $72,175,573
+TOTAL buffer investment @99%       : $101,920,658
+Annual holding cost @95%           : $18,043,889 /yr
+Annual supply flow protected       : $131,252,464 /yr
+  buffer as share of annual flow   : 55.0%
+Median days of cover               : 248 days
+Lanes where LEAD-TIME variance dominates demand variance: 3/76
+
+Top 10 buffers by investment:
+  molecule                        country          SS packs  cover    buffer $  LT src
+  Efavirenz/Lamivudine/Tenofovir  Zimbabwe        1,187,558   316d  12,801,877 country
+  Efavirenz/Lamivudine/Tenofovir  Zambia          1,214,435   200d  12,132,208 country
+  Lamivudine/Nevirapine/Zidovudin Nigeria           840,201   175d   9,427,054 country
+  Efavirenz/Lamivudine/Tenofovir  Mozambique        747,883   143d   8,062,179 country
+  Efavirenz/Lamivudine/Tenofovir  Nigeria           620,306   211d   6,525,617 country
+  Lamivudine/Nevirapine/Zidovudin Côte d'Ivoire     286,111   235d   2,454,829 country
+  Emtricitabine/Tenofovir Disopro Nigeria           156,218   142d   1,835,566 country
+  Lamivudine/Nevirapine/Stavudine Zimbabwe          306,744   218d   1,794,453 country
+  Lamivudine/Nevirapine/Stavudine Mozambique        237,545   295d   1,700,821 country
+  Lamivudine/Zidovudine           Côte d'Ivoire     152,545   223d   1,260,021 country
+
+Not sized (insufficient history):
+  Abacavir | Dominican Republic  — only 2 shipment(s)
+  Abacavir | Guatemala  — only 1 shipment(s)
+  Efavirenz | Guatemala  — history spans only 1 quarter(s)
+  Efavirenz/Emtricitabine/Tenofovir Disopr | Botswana  — history spans only 1 quarter(s)
+  Emtricitabine/Tenofovir Disoproxil Fumar | Haiti  — only 1 shipment(s)
+  Lamivudine/Nevirapine/Stavudine | Benin  — only 1 shipment(s)
+  Lamivudine/Nevirapine/Zidovudine | Zambia  — history spans only 2 quarter(s)
+  Lamivudine/Stavudine | Benin  — only 1 shipment(s)
+  Lamivudine/Tenofovir Disoproxil Fumarate | Swaziland  — only 2 shipment(s)
+  Lamivudine/Zidovudine+Efavirenz | Nigeria  — history spans only 1 quarter(s)
+  Lopinavir/Ritonavir | Benin  — only 1 shipment(s)
+  Lopinavir/Ritonavir | Senegal  — only 1 shipment(s)
+  ... and 4 more
+
+READ THIS BEFORE QUOTING
+  * What drives the buffers: demand-variance x lead-time (L*sd^2) term
+    dominates on 73/76 lanes; pure lead-time variance (sigma_L=76d) on 3.
+    i.e. the cost comes from LUMPY demand flowing through LONG (mean
+    115d) single-sourced pipelines — not a formula artifact.
+    Dual-sourcing (qualification shortlist) shortens and de-risks the
+    pipeline, attacking both terms; that business case is now in dollars.
+  * Demand here is lumpy; treat sizes as planning magnitudes.
+  * Buffer economics assume the lane keeps flowing at its historical
+    rate and value; prices are the lane's own median pack price.

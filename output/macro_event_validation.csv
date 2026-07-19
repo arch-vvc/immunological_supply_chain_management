@@ -1,0 +1,6 @@
+event,start,pre_mean,window_peak,delta,placebo_percentile,peak_percentile_all_history,top_driver,driver_delta,verdict,note
+COVID-19 pandemic onset,2020-03-01,0.2743,0.4247,0.0763,100.0,78.2,Inventory_to_Sales_R,0.4063,DETECTED,WHO declaration 2020-03-11; US freight shock Feb-Apr 2020
+Suez Canal blockage,2021-03-23,0.3298,0.3837,0.0354,98.1,74.8,Truck_Spot_Rates,0.158,DETECTED,Ever Given aground 2021-03-23 to 03-29; ~$9.6B/day trade held
+US port congestion peak,2021-09-01,0.4212,0.4958,0.0611,100.0,84.8,Containerships_Await,0.2636,DETECTED,record LA/Long Beach anchorage queues Sep-Oct 2021
+Russia invades Ukraine,2022-02-24,0.5259,0.575,0.0149,79.2,92.3,Diesel_Sales_Prices,0.3228,PARTIAL,energy/diesel and freight cost shock from 2022-02-24
+Red Sea shipping attacks,2023-12-15,0.2865,0.3273,0.0093,69.3,67.8,Freight_Transportati,0.124,NOT SEEN,Houthi attacks; carriers reroute around the Cape from Dec 2023

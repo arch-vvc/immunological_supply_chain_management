@@ -243,6 +243,7 @@ class ImmuneResponseEngine:
         state = str(event.get("retailer_state", "")).upper().strip()
         qty   = float(event.get("quantity", 0))
         z     = float(event.get("z_score",  0))
+        thr   = float(event.get("threshold", 2.5))   # macro-adjusted by caller
         ts    = datetime.now().isoformat()
 
         thinking = []   # chain-of-thought steps
@@ -254,7 +255,7 @@ class ImmuneResponseEngine:
             "title": "Anomaly detected in live feed",
             "reasoning": (
                 f"Shipment from [{mfr}] via [{dist}] to [{ret}] triggered an alert. "
-                f"Quantity={qty:.0f}, Z-score={z:.2f} (threshold=2.5). "
+                f"Quantity={qty:.0f}, Z-score={z:.2f} (threshold={thr:g}, macro-adjusted). "
                 f"{'Disruption flag was explicitly set in the data.' if event.get('disruption_injected') else 'Statistical anomaly — quantity deviates significantly from rolling window.'} "
                 f"Initiating full immune response cascade."
             ),
@@ -315,17 +316,18 @@ class ImmuneResponseEngine:
             meta      = self.faiss_meta
             scaler    = meta["scaler"]
             outcomes  = meta["outcomes"]
-            ddf_proxy = outcomes   # use outcomes as proxy for mean encoding
 
-            # Map live anomaly → disruption feature space (same mapping as immunological_memory.py)
+            # Map live anomaly → observable disruption feature space
+            # (same mapping as immunological_memory.py)
             severity    = min(z / 10.0 * 4 + 1, 5.0)
             prod_impact = min(abs(z) / 10.0 * 100, 100.0)
             has_backup  = 1.0
 
-            # Use mean values for categorical features
-            mean_enc = 0.0
-            query_vec = np.array([[severity, prod_impact, has_backup,
-                                   mean_enc, mean_enc, mean_enc, mean_enc, mean_enc]],
+            # Match the index layout: observable features first; legacy 8-dim
+            # indexes are padded with zeros for the unobservable dims
+            n_feat    = int(meta.get("n_features", 3))
+            base_vec  = [severity, prod_impact, has_backup]
+            query_vec = np.array([(base_vec + [0.0] * n_feat)[:n_feat]],
                                  dtype=np.float32)
             query_scaled = scaler.transform(query_vec).astype(np.float32)
             top_k = self.cfg.memory_top_k if self.cfg else 3
@@ -420,10 +422,10 @@ class ImmuneResponseEngine:
             severity    = min(z / 10.0 * 4 + 1, 5.0)
             prod_impact = min(abs(z) / 10.0 * 100, 100.0)
             has_backup  = 1.0 if verdict.get("actions_ranked") else 0.0
-            mean_enc    = 0.0   # categorical features unknown at live time; use neutral value
 
-            new_vec    = np.array([[severity, prod_impact, has_backup,
-                                    mean_enc, mean_enc, mean_enc, mean_enc, mean_enc]],
+            n_feat     = int(meta.get("n_features", 3))
+            base_vec   = [severity, prod_impact, has_backup]
+            new_vec    = np.array([(base_vec + [0.0] * n_feat)[:n_feat]],
                                   dtype=np.float32)
             new_scaled = scaler.transform(new_vec).astype(np.float32)
             self.faiss_idx.add(new_scaled)
@@ -523,14 +525,23 @@ class ImmuneResponseEngine:
         if self.actor is not None and TORCH_OK:
             pool = candidates[:K]
             random.shuffle(pool)
-            state_vec = []
+            # Feature layout must mirror ppo_routing_agent.py: risk and GNN
+            # are min-max normalised WITHIN the candidate pool (the policy is
+            # trained on pool-relative contrast, not absolute levels)
+            feats = []
             for cand in pool:
                 r   = self.risk_map.get(cand, 0.5)
                 g   = self.gnn_map.get(cand, 0.5)
                 ind  = self.in_deg.get(cand, 0) / self.max_in
                 outd = self.out_deg.get(cand, 0) / self.max_out
                 hp   = 1.0 if nx.has_path(self.G, cand, ret) else 0.0
-                state_vec.extend([r, g, ind, outd, hp])
+                feats.append([r, g, ind, outd, hp])
+            for col in (0, 1):
+                vals = [f[col] for f in feats]
+                lo, span = min(vals), (max(vals) - min(vals)) or 1.0
+                for f in feats:
+                    f[col] = (f[col] - lo) / span
+            state_vec = [v for f in feats for v in f]
             while len(state_vec) < STATE_DIM:
                 state_vec.extend([0.0] * F_DIM)
             mask = [1.0] * len(pool) + [0.0] * (K - len(pool))

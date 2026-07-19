@@ -53,11 +53,39 @@ STREAM_DIR = ROOT / "data" / "stream"
 STREAM_DIR.mkdir(parents=True, exist_ok=True)
 
 WINDOW_SIZE        = 50
-ZSCORE_THRESH      = 2.5
+ZSCORE_THRESH      = 2.5      # base threshold (domain config may override)
 K                  = 10
 F_DIM              = 5
 STATE_DIM          = K * F_DIM
 ACTION_DIM         = K
+
+# ── Macro-stress threshold adaptation (innate immunity, live path) ─────────
+# The consumer reads the LATEST week of the Stage-9 stress index and scales
+# its rolling z-threshold: theta_eff = theta_base * lambda(stress). HIGH
+# stress tightens detection (0.75x), LOW relaxes it (1.20x) — the same
+# mapping Stage 3 uses per-week in batch. Re-checked every REFRESH_SECS so a
+# regime change shows up in the live feed without restarting the consumer.
+MACRO_STRESS_CSV     = ROOT / "output" / "macro_stress_scores.csv"
+MACRO_REFRESH_SECS   = 300
+EFFECTIVE_ZTHRESH    = ZSCORE_THRESH   # updated at startup + on refresh
+
+
+def macro_lambda_now():
+    """(lambda, level, score) from the most recent stress week; neutral on error."""
+    try:
+        import csv as _csv
+        with open(MACRO_STRESS_CSV, newline="", encoding="utf-8") as f:
+            last = None
+            for last in _csv.DictReader(f):
+                pass
+        score = float(last["stress_score"])
+        if score >= 0.65:
+            return 0.75, "HIGH", score
+        if score >= 0.40:
+            return 1.00, "MEDIUM", score
+        return 1.20, "LOW", score
+    except Exception:
+        return 1.0, "UNKNOWN", float("nan")
 
 # Cytokine storm: cascade alert when N+ disruptions hit within TIME window
 CYTOKINE_THRESHOLD   = 3      # number of anomalies that triggers a storm
@@ -215,7 +243,7 @@ def check_anomaly(quantity: float, window: deque):
     if std == 0:
         return False, 0.0
     z = abs((quantity - mean) / std)
-    return z > ZSCORE_THRESH, round(z, 3)
+    return z > EFFECTIVE_ZTHRESH, round(z, 3)
 
 # ── Results writer ────────────────────────────────────────────────────────
 RESULT_FIELDS = [
@@ -348,10 +376,18 @@ def run(domain: str = "pharma"):
     import random as _random
     global random
     import random
+    global EFFECTIVE_ZTHRESH
 
     print("[CON] Stream consumer starting (Full Immune Response)...")
     print(f"[CON] Watching : {LIVE_FEED}")
     print(f"[CON] Results  → {LIVE_RESULTS}\n")
+
+    # Macro-stress adaptive threshold: theta_eff = theta_base * lambda(stress)
+    _lam, _level, _score = macro_lambda_now()
+    EFFECTIVE_ZTHRESH = round(ZSCORE_THRESH * _lam, 3)
+    _last_macro_check = time.time()
+    print(f"[CON] Macro stress {_level} (score={_score:.3f}) → "
+          f"z-threshold {ZSCORE_THRESH} × λ={_lam:g} = {EFFECTIVE_ZTHRESH}\n")
 
     # Load the full immune response engine (handles graph, PPO, FAISS, supplier, inventory)
     engine = None
@@ -391,6 +427,17 @@ def run(domain: str = "pharma"):
     print("[CON] Waiting for stream data...\n")
 
     while True:
+        # Periodic macro refresh — a stress regime change retunes the live
+        # threshold without restarting the consumer
+        if time.time() - _last_macro_check >= MACRO_REFRESH_SECS:
+            _last_macro_check = time.time()
+            _nlam, _nlevel, _nscore = macro_lambda_now()
+            _new = round(ZSCORE_THRESH * _nlam, 3)
+            if _new != EFFECTIVE_ZTHRESH:
+                print(f"[CON] Macro regime change: {_level} → {_nlevel} "
+                      f"(score={_nscore:.3f}) — z-threshold {EFFECTIVE_ZTHRESH} → {_new}")
+                _level, EFFECTIVE_ZTHRESH = _nlevel, _new
+
         if not LIVE_FEED.exists():
             time.sleep(0.5)
             continue
@@ -441,6 +488,7 @@ def run(domain: str = "pharma"):
                         "retailer_state":    state,
                         "quantity":          qty,
                         "z_score":           z_score,
+                        "threshold":         EFFECTIVE_ZTHRESH,
                         "disruption_injected": is_disruption,
                         "timestamp":         datetime.now().isoformat(),
                     }

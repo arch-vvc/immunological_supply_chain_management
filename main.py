@@ -9,6 +9,7 @@ Usage:
     python3 main.py --only 6                    # run only visualization
     python3 main.py --only 0                    # run Stage 0 (sample raw ARCOS)
     python3 main.py --onboard /path/to/data.csv # auto-detect columns + run pipeline
+    python3 main.py --metrics                   # run pipeline and print project metrics
 
 Stages:
     0 — Dataset Sampling           (optional: needs data/raw/datasetuc.csv)
@@ -25,6 +26,21 @@ Stages:
     11 — PPO Recovery Routing Agent
     12 — Multi-Domain Risk Modelling
     13 — Immunological Memory (FAISS) — builds vector index + queries current anomalies
+    14 — Supplier Agent (backup supplier scoring)
+    15 — Inventory Agent (emergency stock transfers)
+    16 — Immune Response Engine (real-time test)
+    17 — Anomaly Detection Benchmark (independent injection ground truth)
+    18 — Network-Grounded Response Planner (preference ladder over the graph)
+    19 — SCMS Spine (real unified network + disruption analysis)
+    20 — SCMS Revealed-Preference Backtest (walk-forward validation)
+    21 — SCMS Real-Event Replay (blind detection of Haiti 2010)
+    22 — SCMS Safety-Stock Sizing (priced buffers for exposed lanes)
+    23 — SCMS Vendor Scorecard (qualification shortlists; tests in src/test_vendor_scorecard.py)
+    24 — Case Table (documented real-world events vs this system)
+    25 — Event-Reaction Harness (replay documented events + vendor knockout)
+    26 — Dataset-Independent IR Pipeline (adapters -> canonical IR -> capability-gated stages)
+    27 — Macro-Stress Crisis Validation (event study vs documented crises + placebo inference)
+    28 — SCMS Outcome Counterfactual (planner's pick vs procurement's real choice, realized outcomes)
 """
 
 import os
@@ -54,6 +70,18 @@ ALL_STAGES = [
     (14, "Supplier Agent (Digital Antibody #2)",      "src/supplier_agent.py"),
     (15, "Inventory Agent (Digital Antibody #4)",     "src/inventory_agent.py"),
     (16, "Immune Response Engine (Real-Time Test)",   "src/immune_response_engine.py"),
+    (17, "Anomaly Detection Benchmark (Injection GT)","src/anomaly_eval_injection.py"),
+    (18, "Network-Grounded Response Planner",         "src/response_planner.py"),
+    (19, "SCMS Spine (Real Unified Analysis)",        "src/scms_spine.py"),
+    (20, "SCMS Revealed-Preference Backtest",         "src/scms_backtest.py"),
+    (21, "SCMS Real-Event Replay (Haiti 2010)",       "src/scms_event_replay.py"),
+    (22, "SCMS Safety-Stock Sizing (Exposed Lanes)",  "src/scms_safety_stock.py"),
+    (23, "SCMS Vendor Scorecard + Shortlists",        "src/scms_vendor_scorecard.py"),
+    (24, "Case Table (Documented Real Events)",       "src/case_table.py"),
+    (25, "Event-Reaction Harness (Replay + Knockout)", "src/scms_event_harness.py"),
+    (26, "Dataset-Independent IR Pipeline (adapters -> IR -> gated stages)", "src/ir_pipeline.py"),
+    (27, "Macro-Stress Crisis Validation (documented real events)", "src/macro_event_validation.py"),
+    (28, "SCMS Outcome Counterfactual (recommendation vs what happened IRL)", "src/scms_counterfactual.py"),
 ]
 
 # Default pipeline skips Stage 0 (optional sampling step)
@@ -95,6 +123,7 @@ def main():
     parser.add_argument("--from",    type=int,  dest="from_stage",   default=1,    help="Start from stage N (default: 1)")
     parser.add_argument("--only",    type=int,  dest="only_stage",   default=None, help="Run only stage N")
     parser.add_argument("--onboard", type=str,  dest="onboard_file", default=None, help="Path to company CSV — auto-detects columns and runs pipeline")
+    parser.add_argument("--metrics", action="store_true", dest="show_metrics", help="Print the project-wide metrics summary after the pipeline finishes")
     args = parser.parse_args()
 
     print(BANNER)
@@ -135,6 +164,14 @@ def main():
     print(f"  Figures  → {os.path.join(ROOT, 'output', 'figures')}")
     print(f"  Models   → {os.path.join(ROOT, 'models')}")
     print()
+
+    if args.show_metrics:
+        metrics_script = os.path.join(ROOT, "src", "project_metrics.py")
+        print("  PROJECT METRICS")
+        print(f"  {'-' * 56}")
+        result = subprocess.run([sys.executable, metrics_script], cwd=ROOT)
+        if result.returncode != 0:
+            print("[WARN] Project metrics summary failed.")
 
 
 if __name__ == "__main__":

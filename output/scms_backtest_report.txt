@@ -1,0 +1,34 @@
+SCMS REVEALED-PREFERENCE BACKTEST — REPORT
+=======================================================
+
+Walk-forward: at each lane's FIRST late delivery (t0), the planner
+builds its shortlist from data strictly before t0. Ground truth = a
+brand-new vendor that really entered the lane afterwards.
+
+Lanes with >=1 late shipment          : 231
+  no new vendor ever entered          : 146  (not evaluable)
+  EVALUABLE (new vendor entered)      : 85
+  entrant nameable at t0 (in pool)    : 60  (71% — pool-containment rate)
+  candidate pool size                 : median 4, mean 4.1
+
+── Hit rates: was the actual future vendor on the shortlist? ──
+
+                             hit@1   hit@3
+STRICT (all evaluable lanes; unnameable = miss)
+  planner (0.6cap+0.4est)    34.1%   62.4%
+  popularity-only            23.5%   62.4%
+  capacity-only              34.1%   56.5%
+  random-from-pool           27.1%   55.2%
+CONDITIONAL (entrant was in pool at t0)
+  planner (0.6cap+0.4est)    48.3%   88.3%
+  popularity-only            33.3%   88.3%
+  capacity-only              48.3%   80.0%
+  random-from-pool           38.4%   78.2%
+
+HONEST NOTES
+  * Claim is consistency/feasibility with real subsequent procurement,
+    NOT causation and NOT 'procurement followed the tool'.
+  * t0 = first late delivery (single pre-registered choice, no tuning).
+  * Scoring rule is the planner's existing 0.6/0.4 — not fitted here.
+  * Entrants outside the pool at t0 (new-to-molecule vendors) are
+    unnameable in principle; STRICT counts them as misses anyway.

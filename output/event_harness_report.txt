@@ -1,0 +1,125 @@
+SCMS EVENT-REACTION HARNESS — TRACES
+=======================================================
+
+REPLAY — Haiti earthquake (Jan 2010)
+  Real event : M7.0 quake destroyed Port-au-Prince port; aid surged through a broken gateway.
+  Window     : Haiti  2010-01..2010-12
+
+  STEP 1 — DETECTION (blind, walk-forward)
+    late-rate 34% (27/79) vs baseline 1%  ->  p=2.41e-35  *** ALERT FIRED ***
+
+  STEP 2 — RESPONSE  (9 disrupted lanes: 3 reroutable, 6 exposed)
+    [T2] Abacavir                           -> Buffer now, qualify CIPLA LIMITED            buffer $38,712
+    [T1] Didanosine                         -> Reroute via BRISTOL-MYERS SQUIBB             coverage 100%
+    [T1] Efavirenz                          -> Reroute via Aurobindo Pharma Limited         coverage 100%
+    [T2] Indinavir                          -> Buffer now, qualify MERCK SHARP & DOHME IDEA buffer $11,706
+    [T2] Lamivudine                         -> Buffer now, qualify SUN PHARMACEUTICAL INDUS buffer $44,508
+    [T2] Lamivudine/Zidovudine              -> Buffer now, qualify MYLAN LABORATORIES LTD ( buffer $673,708
+    [T2] Nevirapine                         -> Buffer now, qualify STRIDES ARCOLAB LIMITED  buffer $83,494
+    [T2] Stavudine                          -> Buffer now, qualify STRIDES ARCOLAB LIMITED  buffer $16,415
+    [T1] Zidovudine                         -> Reroute via Aurobindo Pharma Limited         coverage 48%
+
+  STEP 3 — TOTALS: buffer exposure $868,543
+
+REPLAY — Cote d'Ivoire post-election crisis (2010-11)
+  Real event : Disputed election -> sanctions, Jan-2011 export ban, civil conflict to Apr-2011.
+  Window     : Côte d'Ivoire  2010-12..2011-08
+
+  STEP 1 — DETECTION (blind, walk-forward)
+    late-rate 47% (40/85) vs baseline 6%  ->  p=4.16e-27  *** ALERT FIRED ***
+
+  STEP 2 — RESPONSE  (14 disrupted lanes: 7 reroutable, 7 exposed)
+    [T2] Abacavir                           -> Buffer now, qualify ASPEN PHARMACARE         buffer $212,999
+    [T1] Abacavir/Lamivudine                -> Reroute via Aurobindo Pharma Limited         coverage 66%
+    [T1] Didanosine                         -> Reroute via BRISTOL-MYERS SQUIBB             coverage 22%
+    [T1] Efavirenz                          -> Reroute via MERCK SHARP & DOHME IDEA GMBH (F coverage 3%
+    [T1] Efavirenz/Emtricitabine/Tenofovir  -> Reroute via MERCK SHARP & DOHME IDEA GMBH (F coverage 68%
+    [T2] Emtricitabine/Tenofovir Disoproxil -> Buffer now, qualify GILEAD SCIENCES IRELAND, buffer $235,383
+    [T1] Lamivudine                         -> Reroute via Aurobindo Pharma Limited         coverage 100%
+    [T2] Lamivudine/Nevirapine/Zidovudine   -> Buffer now, qualify MYLAN LABORATORIES LTD ( buffer $2,454,829
+    [T2] Lamivudine/Zidovudine              -> Buffer now, qualify MYLAN LABORATORIES LTD ( buffer $1,260,021
+    [T1] Lopinavir/Ritonavir                -> Reroute via ABBVIE LOGISTICS (FORMERLY ABBOT coverage 17%
+    [T2] Nevirapine                         -> Buffer now, qualify HETERO LABS LIMITED      buffer $112,673
+    [T1] Stavudine                          -> Reroute via Aurobindo Pharma Limited         coverage 100%
+    ... and 2 more lanes
+
+  STEP 3 — TOTALS: buffer exposure $4,425,098
+
+REPLAY — South Africa strike wave (2010)
+  Real event : Transnet ports/rail strike (May) + 1M-worker public-sector strike shut clinics (Aug).
+  Window     : South Africa  2010-05..2011-02
+
+  STEP 1 — DETECTION (blind, walk-forward)
+    late-rate 28% (47/165) vs baseline 3%  ->  p=2.28e-33  *** ALERT FIRED ***
+
+  STEP 2 — RESPONSE  (5 disrupted lanes: 5 reroutable, 0 exposed)
+    [T1] Efavirenz                          -> Reroute via S. BUYS WHOLESALER               coverage 100%
+    [T1] Lamivudine                         -> Reroute via AUROBINDO PHARAM (SOUTH AFRICA)  coverage 100%
+    [T1] Nevirapine                         -> Reroute via S. BUYS WHOLESALER               coverage 44%
+    [T1] Tenofovir Disoproxil Fumarate      -> Reroute via S. BUYS WHOLESALER               coverage 3%
+    [T1] Zidovudine                         -> Reroute via JSI R&T INSTITUTE, INC.          coverage 100%
+
+  STEP 3 — TOTALS: buffer exposure $0
+
+KNOCKOUT — Orgenics, Ltd
+
+  STEP 1 — IMPACT: served 74 lanes -> 37 still covered, 37 NEWLY EXPOSED
+  STEP 2 — VALUE AT RISK: $1,141,056/yr on newly-exposed lanes
+
+  STEP 3 — RESPONSE (top exposed lanes by value):
+    HIV 1/2, Determine Complete HI Uganda         $   551,286/yr -> Qualify Standard Diagnostics, Inc.
+    HIV 1/2, Determine Complete HI Burundi        $   204,583/yr -> Qualify Standard Diagnostics, Inc.
+    HIV 1/2, Determine Complete HI Cameroon       $   130,132/yr -> Qualify Standard Diagnostics, Inc.
+    HIV 1/2, Determine Complete HI South Sudan    $    70,695/yr -> Qualify Standard Diagnostics, Inc.
+    HIV 1/2, Determine Complete HI Sierra Leone   $    34,155/yr -> Qualify Standard Diagnostics, Inc.
+    HIV 1/2, Determine HIV Kit, wi Tanzania       $    22,220/yr -> Qualify ACOUNS NIGERIA LTD
+    HIV 1/2, Determine Complete HI Lesotho        $    17,966/yr -> Qualify Standard Diagnostics, Inc.
+    Chase Buffer, Determine, 100 T Zimbabwe       $    12,007/yr -> Qualify WAGENIA
+    HIV 1/2, Determine HIV Kit, wi Benin          $    11,034/yr -> Qualify ACOUNS NIGERIA LTD
+    HIV 1/2, Determine Complete HI Mali           $    10,930/yr -> Qualify Standard Diagnostics, Inc.
+    HIV 1/2, Determine Complete HI Liberia        $    10,375/yr -> Qualify Standard Diagnostics, Inc.
+    HIV 1/2, Determine Complete HI Malawi         $    10,136/yr -> Qualify Standard Diagnostics, Inc.
+    ... and 25 more exposed lanes
+
+  STEP 4 — MITIGATION: buffer exposure $1,739,031 (the cost of absorbing this shock with stock alone)
+
+KNOCKOUT — Standard Diagnostics, Inc.
+
+  STEP 1 — IMPACT: served 21 lanes -> 9 still covered, 12 NEWLY EXPOSED
+  STEP 2 — VALUE AT RISK: $201,254/yr on newly-exposed lanes
+
+  STEP 3 — RESPONSE (top exposed lanes by value):
+    HIV 1/2, Bioline 3.0 Kit (no a Tanzania       $   132,112/yr -> Qualify SCMS from RDC
+    HIV 1/2, Bioline 3.0 Kit, Lanc Côte d'Ivoire  $    50,816/yr -> Qualify SCMS from RDC
+    HIV 1/2, Bioline 3.0 Kit (no a Rwanda         $    12,808/yr -> Qualify SCMS from RDC
+    HIV 1/2, Bioline 3.0 Kit, Lanc Sierra Leone   $     3,282/yr -> Qualify SCMS from RDC
+    HIV 1/2, Bioline 3.0 Kit       Dominican Repu $     1,225/yr -> No alternate anywhere — buffer only
+    HIV 1/2, Bioline 3.0 Kit, Lanc Benin          $       495/yr -> Qualify SCMS from RDC
+    HIV 1/2, Bioline 3.0 Kit, Lanc Liberia        $       363/yr -> Qualify SCMS from RDC
+    HIV 1/2, Bioline 3.0 Kit, Lanc Botswana       $        85/yr -> Qualify SCMS from RDC
+    HIV 1/2, Bioline 3.0 Diluent,  Dominican Repu $        59/yr -> No alternate anywhere — buffer only
+    Malaria Antigen P.f , HRP2, Ki Haiti          $         5/yr -> No alternate anywhere — buffer only
+    HIV 1/2, Bioline 3.0 Diluent,  Sudan          $         2/yr -> No alternate anywhere — buffer only
+    Chase Buffer, Determine, 100 T Dominican Repu $         0/yr -> Qualify WAGENIA
+
+  STEP 4 — MITIGATION: buffer exposure $82,518 (the cost of absorbing this shock with stock alone)
+
+KNOCKOUT — Trinity Biotech, Plc
+
+  STEP 1 — IMPACT: served 25 lanes -> 14 still covered, 11 NEWLY EXPOSED
+  STEP 2 — VALUE AT RISK: $772,776/yr on newly-exposed lanes
+
+  STEP 3 — RESPONSE (top exposed lanes by value):
+    HIV 1/2, Uni-Gold HIV Kit      Nigeria        $   530,113/yr -> Qualify SCMS from RDC
+    HIV 1/2, Uni-Gold HIV Kit      Guyana         $   146,107/yr -> Qualify SCMS from RDC
+    HIV 1/2, Uni-Gold HIV Kit      Uganda         $    31,153/yr -> Qualify SCMS from RDC
+    HIV 1/2, Uni-Gold HIV Kit      South Sudan    $    24,814/yr -> Qualify SCMS from RDC
+    HIV 1/2, Uni-Gold HIV Kit      Congo, DRC     $    18,949/yr -> Qualify SCMS from RDC
+    HIV 1/2, Uni-Gold HIV Kit      Lesotho        $     8,539/yr -> Qualify SCMS from RDC
+    HIV 1/2, Uni-Gold HIV Kit      Swaziland      $     6,592/yr -> Qualify SCMS from RDC
+    HIV 1/2, Uni-Gold HIV Kit      Dominican Repu $     4,526/yr -> Qualify SCMS from RDC
+    HIV 1/2, Uni-Gold HIV Kit      Malawi         $     1,547/yr -> Qualify SCMS from RDC
+    HIV 1/2, Uni-Gold HIV Kit      Liberia        $       239/yr -> Qualify SCMS from RDC
+    HIV 1, Uni-Gold Recombigen HIV Botswana       $       197/yr -> No alternate anywhere — buffer only
+
+  STEP 4 — MITIGATION: buffer exposure $825,092 (the cost of absorbing this shock with stock alone)

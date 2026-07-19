@@ -1,0 +1,59 @@
+{
+  "dataset": "dataco",
+  "summary": {
+    "dataset": "dataco",
+    "nodes": 175,
+    "edges": 3220,
+    "flows": 180519,
+    "events": 0,
+    "roles": [
+      "department",
+      "market"
+    ]
+  },
+  "capabilities": {
+    "HAS_TRANSACTIONS": true,
+    "HAS_TOPOLOGY": false,
+    "HAS_DISRUPTIONS": true,
+    "HAS_LEAD_TIMES": true,
+    "HAS_VALUE": true
+  },
+  "stages": {
+    "anomaly_detection": {
+      "enabled": true,
+      "missing": []
+    },
+    "disruption_detection": {
+      "enabled": true,
+      "missing": []
+    },
+    "graph_risk_routing": {
+      "enabled": false,
+      "missing": [
+        "HAS_TOPOLOGY"
+      ]
+    },
+    "ppo_recovery_routing": {
+      "enabled": false,
+      "missing": [
+        "HAS_TOPOLOGY"
+      ]
+    },
+    "event_replay": {
+      "enabled": true,
+      "missing": []
+    },
+    "revealed_pref_backtest": {
+      "enabled": true,
+      "missing": []
+    },
+    "safety_stock": {
+      "enabled": true,
+      "missing": []
+    },
+    "value_at_risk": {
+      "enabled": true,
+      "missing": []
+    }
+  }
+}

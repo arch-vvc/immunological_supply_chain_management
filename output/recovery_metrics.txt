@@ -1,25 +1,29 @@
-RECOVERY PREDICTOR — MODEL METRICS
-=============================================
+RECOVERY PREDICTOR + STRATEGY RANKER — METRICS
+==================================================
 
 Training samples : 80,000
 Test samples     : 20,000
 
 ── Regression (full_recovery_days) ──
-MAE  : 31.63 days
-R²   : 0.3796
+MAE  : 31.23 days   (predict-the-mean baseline: 42.51 days)
+R²   : 0.3896
 
-── Classification (response_type) ──
-Accuracy : 0.5610
-Macro F1 : 0.4099
+── Predicted recovery by strategy (test-set counterfactual sweep) ──
+Strategy                model pred   empirical
+Alternative Supplier        71.0d       62.8d
+Combined Strategy           76.0d      108.1d
+Customer Delay              88.1d       80.3d
+Inventory Buffer            74.7d       68.0d
+Production Reroute          81.0d       88.9d
+model spread across strategies: 17.1 days
 
-                      precision    recall  f1-score   support
+The classifier that predicted which strategy a human chose was REMOVED:
+its target was near-unlearnable (MI ~0 for all features except
+has_backup_supplier; the 4 no-backup strategies are ~uniformly assigned
+w.r.t. every recorded feature). We instead predict recovery days under
+each candidate strategy and recommend the fastest.
 
-Alternative Supplier       0.73      0.91      0.81      8872
-   Combined Strategy       0.62      0.40      0.49      2333
-      Customer Delay       0.32      0.10      0.15      2486
-    Inventory Buffer       0.25      0.30      0.27      2537
-  Production Reroute       0.33      0.33      0.33      3772
-
-            accuracy                           0.56     20000
-           macro avg       0.45      0.41      0.41     20000
-        weighted avg       0.53      0.56      0.53     20000
+CAVEAT: these are observational associations, not controlled causal
+effects. Read as 'cases like this historically recovered fastest under X'.
+The per-case recovery number carries ~MAE-wide error; the strategy
+ranking is a stable mean effect over thousands of samples.

@@ -1,0 +1,92 @@
+{
+  "anomaly_detection": {
+    "status": "ran",
+    "requires": [
+      "HAS_TRANSACTIONS"
+    ],
+    "n_flows": 50000,
+    "n_injected": 1000,
+    "precision": 0.1299,
+    "recall": 0.799,
+    "f1": 0.2234,
+    "baseline_random_f1": 0.0344,
+    "flagged": 6153,
+    "threshold": 3.5,
+    "eval": "synthetic injection (2% volume spikes)"
+  },
+  "disruption_detection": {
+    "status": "skipped",
+    "missing": [
+      "HAS_DISRUPTIONS"
+    ]
+  },
+  "safety_stock": {
+    "status": "skipped",
+    "missing": [
+      "HAS_LEAD_TIMES"
+    ]
+  },
+  "event_replay": {
+    "status": "skipped",
+    "missing": [
+      "HAS_DISRUPTIONS"
+    ]
+  },
+  "value_at_risk": {
+    "status": "skipped",
+    "missing": [
+      "HAS_VALUE",
+      "HAS_DISRUPTIONS"
+    ]
+  },
+  "graph_risk_routing": {
+    "status": "ran",
+    "requires": [
+      "HAS_TOPOLOGY"
+    ],
+    "n_nodes": 2131,
+    "n_edges": 23264,
+    "top_risk_nodes": [
+      "BELLCO DRUG CORP",
+      "KEYSOURCE MEDICAL INC",
+      "PENN PHARMACEUTICAL SERVICES INC"
+    ],
+    "top_decile_volume_share": 1.0,
+    "random_decile_volume_share": 0.1867,
+    "concentration_lift": 5.36,
+    "late_rate_lift_top_decile": null,
+    "knockout_reroute_rate_top5": 0.9998,
+    "knockout_reroute_rate_random": 0.9999
+  },
+  "ppo_recovery_routing": {
+    "status": "ran",
+    "requires": [
+      "HAS_TOPOLOGY"
+    ],
+    "n_train": 800,
+    "n_test": 300,
+    "cascade": "6 demands, pool 4, cap 2, +0.15/use",
+    "avg_total_reward": {
+      "ppo": 36.939,
+      "dijkstra": 33.919,
+      "risk_greedy": 36.586,
+      "random": 33.826
+    },
+    "avg_route_risk": {
+      "ppo": 0.9867,
+      "dijkstra": 0.9874,
+      "risk_greedy": 0.9867,
+      "random": 0.9877
+    },
+    "unserved": {
+      "ppo": 26,
+      "dijkstra": 60,
+      "risk_greedy": 30,
+      "random": 61
+    },
+    "ppo_beats_greedy_pct": 2.7,
+    "greedy_beats_ppo_pct": 1.3,
+    "ppo_beats_dijkstra_pct": 38.7,
+    "note": "PPO beats myopic risk-greedy \u2014 multi-step planning pays on this graph"
+  }
+}

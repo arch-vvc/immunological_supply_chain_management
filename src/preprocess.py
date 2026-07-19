@@ -71,6 +71,8 @@ col_map  = cfg.get("columns", {})
 settings = cfg.get("settings", {})
 
 filepath = ds.get("path", "")
+if filepath and not os.path.isabs(filepath):
+    filepath = os.path.join(ROOT, filepath)
 sep      = ds.get("separator", ",")
 encoding = ds.get("encoding", "utf-8")
 

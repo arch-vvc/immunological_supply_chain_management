@@ -1,0 +1,116 @@
+{
+  "anomaly_detection": {
+    "status": "ran",
+    "requires": [
+      "HAS_TRANSACTIONS"
+    ],
+    "n_flows": 10324,
+    "n_injected": 206,
+    "precision": 0.0519,
+    "recall": 0.6408,
+    "f1": 0.096,
+    "baseline_random_f1": 0.0369,
+    "flagged": 2545,
+    "threshold": 3.5,
+    "eval": "synthetic injection (2% volume spikes)"
+  },
+  "disruption_detection": {
+    "status": "ran",
+    "requires": [
+      "HAS_DISRUPTIONS"
+    ],
+    "n_test": 3098,
+    "base_late_rate": 0.1604,
+    "precision": 0.3971,
+    "recall": 0.0543,
+    "f1": 0.0956,
+    "precision_lift_over_base": 2.48,
+    "baseline_always_late_f1": 0.2765,
+    "method": "lane-history temporal holdout (70/30)"
+  },
+  "safety_stock": {
+    "status": "ran",
+    "requires": [
+      "HAS_LEAD_TIMES"
+    ],
+    "n_lanes_sized": 345,
+    "total_buffer_usd": 69598215.0,
+    "holding_usd_per_yr": 17399554.0,
+    "service_level": "95%"
+  },
+  "event_replay": {
+    "status": "ran",
+    "requires": [
+      "HAS_DISRUPTIONS"
+    ],
+    "windows_tested": 355,
+    "n_alerts": 46,
+    "base_late_rate": 0.1149,
+    "top_alerts": [
+      "Congo, DRC 2014-02: 15/15 late (z=10.75)",
+      "Nigeria 2011-07: 20/26 late (z=10.46)",
+      "Tanzania 2014-02: 14/14 late (z=10.39)"
+    ]
+  },
+  "value_at_risk": {
+    "status": "ran",
+    "requires": [
+      "HAS_VALUE",
+      "HAS_DISRUPTIONS"
+    ],
+    "n_late_flows": 1186,
+    "value_at_risk_usd": 259034271.0,
+    "total_value_usd": 1627584457.0,
+    "late_value_share": 0.1592
+  },
+  "graph_risk_routing": {
+    "status": "ran",
+    "requires": [
+      "HAS_TOPOLOGY"
+    ],
+    "n_nodes": 204,
+    "n_edges": 578,
+    "top_risk_nodes": [
+      "SCMS from RDC",
+      "Haiti",
+      "Nigeria"
+    ],
+    "top_decile_volume_share": 0.9882,
+    "random_decile_volume_share": 0.0813,
+    "concentration_lift": 12.15,
+    "late_rate_lift_top_decile": 1.03,
+    "knockout_reroute_rate_top5": 0.9693,
+    "knockout_reroute_rate_random": 1.0
+  },
+  "ppo_recovery_routing": {
+    "status": "ran",
+    "requires": [
+      "HAS_TOPOLOGY"
+    ],
+    "n_train": 800,
+    "n_test": 300,
+    "cascade": "6 demands, pool 4, cap 2, +0.15/use",
+    "avg_total_reward": {
+      "ppo": 37.302,
+      "dijkstra": 24.8,
+      "risk_greedy": 36.607,
+      "random": 23.704
+    },
+    "avg_route_risk": {
+      "ppo": 0.3287,
+      "dijkstra": 0.4124,
+      "risk_greedy": 0.3362,
+      "random": 0.4163
+    },
+    "unserved": {
+      "ppo": 145,
+      "dijkstra": 263,
+      "risk_greedy": 151,
+      "random": 274
+    },
+    "ppo_beats_greedy_pct": 10.3,
+    "greedy_beats_ppo_pct": 7.0,
+    "ppo_beats_dijkstra_pct": 75.0,
+    "note": "PPO beats myopic risk-greedy \u2014 multi-step planning pays on this graph"
+  }
+}
