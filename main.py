@@ -91,6 +91,7 @@ BANNER = """
 ╔══════════════════════════════════════════════════════╗
 ║   IMMUNOLOGICAL SUPPLY CHAIN                         ║
 ║   Self-Healing Supply Chains with AI Antibodies      ║
+║   28-Stage Pipeline · Multi-Dataset · Real-Time      ║
 ║   PES University — ISA Capstone  PW26_RGP_01         ║
 ╚══════════════════════════════════════════════════════╝
 """
