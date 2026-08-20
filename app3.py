@@ -414,7 +414,7 @@ with tab_overview:
 
     n_nodes   = G.number_of_nodes()   if G    else "—"
     n_edges   = G.number_of_edges()   if G    else "—"
-    n_anom    = len(anom[anom["anomaly_score"] >= 2]) if not anom.empty else "—"
+    n_anom    = len(anom) if not anom.empty else "—"   # ensemble-flagged (matches Stage 3 / paper)
     n_high    = len(risk[risk["risk_score"] > 0.7])   if not risk.empty else "—"
 
     forecast_level = "—"
@@ -426,7 +426,7 @@ with tab_overview:
     c1, c2, c3, c4, c5 = st.columns(5)
     with c1: metric_card("Nodes in Graph",    f"{n_nodes:,}" if isinstance(n_nodes, int) else n_nodes)
     with c2: metric_card("Edges in Graph",    f"{n_edges:,}" if isinstance(n_edges, int) else n_edges)
-    with c3: metric_card("High-Conf Anomalies", f"{n_anom:,}"  if isinstance(n_anom, int)  else n_anom, "score >= 2")
+    with c3: metric_card("High-Conf Anomalies", f"{n_anom:,}"  if isinstance(n_anom, int)  else n_anom, "calibrated ensemble")
     with c4: metric_card("High-Risk Entities",  f"{n_high:,}"  if isinstance(n_high, int)  else n_high, "risk > 0.70")
     with c5: metric_card("Next-Week Forecast",  forecast_level, "macro stress level")
 
@@ -616,9 +616,16 @@ with tab_anomaly:
         susp = anom[anom["anomaly_score"] == 1].copy()
 
         c1, c2, c3 = st.columns(3)
-        with c1: metric_card("Total Flagged",         f"{len(anom):,}")
-        with c2: metric_card("High-Confidence (2+)",  f"{len(high):,}")
-        with c3: metric_card("Suspect (1 signal)",    f"{len(susp):,}")
+        with c1: metric_card("Flagged (ensemble)",      f"{len(anom):,}")
+        with c2: metric_card("Corroborated (≥2 signals)", f"{len(high):,}")
+        with c3: metric_card("Single-signal",           f"{len(susp):,}")
+
+        st.caption(
+            "Decision rule: calibrated logistic ensemble over the five detection "
+            "signals (held-out F1 0.386; adjusted precision 0.86). All flagged rows "
+            "are confirmed anomalies — the cards break them down by how many z-score "
+            "signals corroborate each, not into confident vs. unconfident."
+        )
 
         st.markdown("#### Anomaly Score Distribution")
         score_counts = anom["anomaly_score"].value_counts().sort_index()

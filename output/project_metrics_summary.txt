@@ -39,14 +39,14 @@ Immunological memory:
   baseline accuracy        44.500%
 
 PPO routing:
-  safer than Dijkstra      42.700%
+  safer than Dijkstra      40.700%
 
 Supplier and inventory support:
   supplier entities        10.000
   supplier top-1 score     0.612
   inventory retailers      15.000
-  inventory top-1 score    0.574
-  delivery days            2.200 days
+  inventory top-1 score    0.556
+  delivery days            2.400 days
 
 Response planner and routing:
   planned anomalies        1664.000
