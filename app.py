@@ -2704,3 +2704,188 @@ with tab_live:
         st.markdown("---")
         if st.button("🔄 Refresh decisions"):
             st.rerun()
+
+
+# ══════════════════════════════════════════════════════════════════════════
+# TAB 9 (cont.) — REAL-EVENT REPLAY PLAYBACK
+# Stage 21's blind walk-forward detections on real SCMS deliveries, played
+# window by window, with Stage 25's per-lane response when the alert fires.
+# This is a PLAYBACK of committed results, deliberately separate from the
+# live engine above (which runs on the ARCOS graph and synthetic rows).
+# ══════════════════════════════════════════════════════════════════════════
+with tab_live:
+    st.divider()
+    st.subheader("🎞 Real-Event Replay — documented crises, window by window")
+    st.caption(
+        "A playback of the Stage-21 detector on **real** SCMS delivery data: for "
+        "each country it sees only that country's own past late-rate and the "
+        "shipments inside a rolling 3-month window, and fires when the binomial "
+        "surprise crosses a fixed p < 0.001 (no per-event tuning). When the alert "
+        "fires inside a documented crisis, the Stage-25 response ladder shows the "
+        "moves the system would have made using only pre-event knowledge. This "
+        "replays committed detections; it is not the live engine above, which "
+        "runs on the ARCOS graph."
+    )
+    _rp_csv  = os.path.join(OUT, "scms_event_replay.csv")
+    _rp_json = os.path.join(OUT, "event_harness.json")
+    if not (os.path.exists(_rp_csv) and os.path.exists(_rp_json)):
+        st.info("Run Stage 21 (`scms_event_replay.py`) and Stage 25 (`scms_event_harness.py`) first.")
+    else:
+        _er_all = pd.read_csv(_rp_csv)
+        with open(_rp_json) as _f:
+            _rp_scn = [s for s in json.load(_f) if s.get("type") == "replay"]
+
+        _rp_pick = st.selectbox("Documented event", range(len(_rp_scn)),
+                                format_func=lambda i: _rp_scn[i]["label"], key="rp_pick")
+        _ev = _rp_scn[_rp_pick]
+        _rows = (_er_all[_er_all["country"] == _ev["country"]]
+                 .sort_values("window_end").reset_index(drop=True).copy())
+        _rows["date"] = pd.to_datetime(_rows["window_end"] + "-01")
+        _rows["p_value"] = pd.to_numeric(_rows["p_value"], errors="coerce")
+        _rows["surprise"] = -np.log10(_rows["p_value"].clip(lower=1e-300))
+        _w0, _w1 = _ev["window"].split("..")
+        _w0d = pd.Timestamp(_w0 + "-01")
+        _w1d = pd.Timestamp(_w1 + "-01") + pd.offsets.MonthEnd(0)
+        _n = len(_rows)
+        _doc_mask = (_rows["date"] >= _w0d) & (_rows["date"] <= _w1d)
+        _alert_in_doc = _rows.index[(_rows["alert"] == 1) & _doc_mask].tolist()
+        _first_alert = _alert_in_doc[0] if _alert_in_doc else None
+        _onset_idx = int(_rows.index[_rows["date"] >= _w0d][0]) if (_rows["date"] >= _w0d).any() else 0
+        _start_idx = max(0, _onset_idx - 9)          # start from the quiet run-up
+
+        # ── playback state (reset when the event changes) ──────────────────
+        if st.session_state.get("rp_event") != _rp_pick:
+            st.session_state.update(rp_event=_rp_pick, rp_idx=_start_idx, rp_playing=False)
+        st.session_state["rp_idx"] = int(min(max(st.session_state.get("rp_idx", _start_idx), 0), _n - 1))
+
+        st.markdown(f"**Documented:** {_ev['documented']}  \n"
+                    f"**Country / window:** {_ev['country']} · {_w0} to {_w1}  ·  "
+                    f"{_n} detector windows on record")
+
+        # controls live OUTSIDE the fragment so a click triggers a full rerun,
+        # which is what re-evaluates run_every below.
+        b1, b2, b3, b4, b5 = st.columns([1, 1, 1, 1.4, 2])
+        with b1:
+            if st.session_state["rp_playing"]:
+                if st.button("⏸ Pause", use_container_width=True, key="rp_pause"):
+                    st.session_state["rp_playing"] = False
+            else:
+                if st.button("▶ Play", type="primary", use_container_width=True, key="rp_play"):
+                    if st.session_state["rp_idx"] >= _n - 1:
+                        st.session_state["rp_idx"] = _start_idx
+                    st.session_state["rp_playing"] = True
+        with b2:
+            if st.button("⏭ Step", use_container_width=True, key="rp_step"):
+                st.session_state["rp_playing"] = False
+                st.session_state["rp_idx"] = min(st.session_state["rp_idx"] + 1, _n - 1)
+        with b3:
+            if st.button("↺ Reset", use_container_width=True, key="rp_reset"):
+                st.session_state["rp_playing"] = False
+                st.session_state["rp_idx"] = _start_idx
+        with b4:
+            if st.button("🚨 Jump to alert", use_container_width=True, key="rp_jump",
+                         disabled=_first_alert is None):
+                st.session_state["rp_playing"] = False
+                st.session_state["rp_idx"] = int(_first_alert)
+        with b5:
+            _rp_speed = st.select_slider("Speed", options=[0.25, 0.5, 1.0, 2.0], value=0.5,
+                                         format_func=lambda v: f"{v:g} s / window", key="rp_speed")
+
+        _rp_playing = bool(st.session_state.get("rp_playing"))
+
+        @st.fragment(run_every=_rp_speed if _rp_playing else None)
+        def _replay_view():
+            idx = int(st.session_state["rp_idx"])
+            if st.session_state.get("rp_playing"):
+                if idx < _n - 1:
+                    idx += 1
+                    st.session_state["rp_idx"] = idx
+                else:
+                    st.session_state["rp_playing"] = False
+                    st.rerun(scope="app")
+            cur  = _rows.iloc[idx]
+            seen = _rows.iloc[: idx + 1]
+            in_doc = bool(_doc_mask.iloc[idx])
+            fired_so_far = _first_alert is not None and idx >= _first_alert
+            status = ("🚨 ALERT" if int(cur["alert"]) == 1 else
+                      ("watching" if in_doc else "quiet"))
+
+            k1, k2, k3, k4, k5 = st.columns(5)
+            with k1: metric_card("Window ending", str(cur["window_end"]),
+                                 "inside documented crisis" if in_doc else "before / after")
+            with k2: metric_card("Shipments in window", f"{int(cur['n_window'])}",
+                                 f"{int(cur['late_window'])} late")
+            with k3: metric_card("Late rate", f"{cur['late_rate']*100:.0f}%",
+                                 f"own baseline {cur['baseline_rate']*100:.1f}%")
+            with k4: metric_card("Surprise", f"p = {cur['p_value']:.1e}",
+                                 "threshold p < 0.001")
+            with k5: metric_card("Detector", status,
+                                 (f"first fired {str(_rows.iloc[_first_alert]['window_end'])}"
+                                  if fired_so_far else "no alert yet"))
+
+            # ── late-rate chart with the playhead ──────────────────────────
+            fig_r = go.Figure()
+            fig_r.add_vrect(x0=_w0d, x1=_w1d, fillcolor="#ffb300", opacity=0.10, line_width=0,
+                            annotation_text="documented crisis", annotation_position="top left",
+                            annotation_font=dict(color="#ffb300", size=10))
+            fig_r.add_trace(go.Scatter(x=_rows["date"], y=_rows["baseline_rate"] * 100, mode="lines",
+                                       name="country's own baseline", line=dict(color="#78909c", dash="dot", width=1.2)))
+            fig_r.add_trace(go.Scatter(x=seen["date"], y=seen["late_rate"] * 100, mode="lines+markers",
+                                       name="late rate (3-mo window)", line=dict(color="#4fc3f7", width=2),
+                                       marker=dict(size=5)))
+            _al = seen[seen["alert"] == 1]
+            if not _al.empty:
+                fig_r.add_trace(go.Scatter(x=_al["date"], y=_al["late_rate"] * 100, mode="markers",
+                                           name="alert fired", marker=dict(color="#ef5350", size=11, symbol="x")))
+            fig_r.add_vline(x=cur["date"], line=dict(color="#e0e0ff", width=1.5))
+            fig_r.update_layout(template="plotly_dark", paper_bgcolor="#0f0f1a", plot_bgcolor="#0f0f1a",
+                                height=300, margin=dict(l=40, r=20, t=30, b=40),
+                                yaxis_title="Late shipments (%)", xaxis_title="Window end",
+                                legend=dict(orientation="h", y=1.14, x=0),
+                                xaxis=dict(range=[_rows["date"].min(), _rows["date"].max()]))
+            fig_s = go.Figure()
+            fig_s.add_vrect(x0=_w0d, x1=_w1d, fillcolor="#ffb300", opacity=0.10, line_width=0)
+            fig_s.add_trace(go.Bar(x=seen["date"], y=seen["surprise"], name="−log10 p",
+                                   marker_color=["#ef5350" if a == 1 else "#4fc3f7" for a in seen["alert"]]))
+            fig_s.add_hline(y=3, line=dict(color="#ffb300", dash="dash"),
+                            annotation_text="alert threshold (p = 0.001)", annotation_position="top left",
+                            annotation_font=dict(color="#ffb300", size=10))
+            fig_s.add_vline(x=cur["date"], line=dict(color="#e0e0ff", width=1.5))
+            fig_s.update_layout(template="plotly_dark", paper_bgcolor="#0f0f1a", plot_bgcolor="#0f0f1a",
+                                height=220, margin=dict(l=40, r=20, t=20, b=40), showlegend=False,
+                                yaxis_title="Surprise (−log10 p)",
+                                xaxis=dict(range=[_rows["date"].min(), _rows["date"].max()]))
+            g1, g2 = st.columns([3, 2])
+            with g1: st.plotly_chart(fig_r, use_container_width=True)
+            with g2: st.plotly_chart(fig_s, use_container_width=True)
+
+            # ── response ladder engages once the alert has fired ───────────
+            if fired_so_far:
+                _lag = int(_first_alert) - _onset_idx
+                _d = _ev["detection"]; _sm = _ev["summary"]
+                st.error(
+                    f"🚨 Detector fired at window **{_rows.iloc[_first_alert]['window_end']}**, "
+                    f"{_lag} window(s) after the documented onset ({_w0}), on the country's own "
+                    f"history alone. Over the documented window: {_d['late_window']}/{_d['n_window']} "
+                    f"late ({_d['late_rate']*100:.0f}% vs {_d['baseline_rate']*100:.1f}% baseline, "
+                    f"p = {_d['p_value']}). Response ladder engaged (Stage 25, pre-event data only):"
+                )
+                r1, r2, r3 = st.columns(3)
+                with r1: metric_card("Disrupted lanes", f"{_sm['disrupted_lanes']}", "molecule × vendor in this country")
+                with r2: metric_card("Reroutable now", f"{_sm['resolved']}", f"{_sm['exposed']} exposed → qualify + buffer")
+                with r3: metric_card("Buffer exposure", f"${_sm['buffer_usd_total']/1e6:.2f}M", "if absorbed by safety stock")
+                _lr = [{
+                    "Molecule": e["molecule"], "Disrupted vendor": e["disrupted_vendor"],
+                    "Tier": e["tier"].split("_")[0], "System's move": e["recommendation"],
+                    "Buffer $": (f"${e['buffer']['buffer_usd']:,}" if e.get("buffer") else ""),
+                } for e in _ev["lanes"]]
+                st.dataframe(pd.DataFrame(_lr), use_container_width=True, hide_index=True,
+                             height=min(320, 36 * len(_lr) + 40))
+            elif in_doc:
+                st.warning("Inside the documented window — the detector has not crossed its "
+                           "threshold yet. Keep playing.")
+            else:
+                st.info("Quiet run-up: the country's late rate sits on its own baseline. "
+                        "Press ▶ Play or ⏭ Step to advance.")
+
+        _replay_view()
