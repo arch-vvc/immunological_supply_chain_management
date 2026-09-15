@@ -2,7 +2,7 @@
 SCMS Event-Reaction Harness — watch the model respond to a shock
 ================================================================
 Two ways to stress the system against reality, both on the SAME real SCMS
-data and reusing the SAME response logic as the rest of the pipeline
+data, reusing the scorecard's vendor statistics and the safety-stock sizing
 (imported from scms_vendor_scorecard):
 
   REPLAY   — a documented historical event (country + date window). We replay
@@ -137,7 +137,12 @@ def size_buffer(ctx, lane):
 
 
 def best_incountry(alts, mol, S):
-    """Pick the strongest already-on-lane alternate (reliability x capacity)."""
+    """Pick the strongest already-on-lane alternate by reliability x capacity.
+    NOTE: this is the harness's own tie-break among vendors ALREADY on the
+    lane, not the Stage-19/20/28 planner rule (0.6 capacity + 0.4
+    establishment, isc_common.W_CAP/W_ESTAB) and not the Stage-23 scorecard.
+    The replay/knockout demo reuses the scorecard's *data* (S) and the
+    safety-stock sizing; its vendor pick is this simpler product."""
     def key(v):
         rel = S["vendor"].get(v, {}).get("reliability", 0.0)
         cap = S["vm"].get((v, mol), {}).get("med_qty", 0.0)

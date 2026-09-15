@@ -1,28 +1,26 @@
-pandas
-networkx
-scipy
-matplotlib
-numpy
-pyyaml
-scikit-learn
-openpyxl
+# Numeric core — pinned to the versions the committed results were produced with
+pandas==3.0.3
+numpy==2.4.6
+scipy==1.18.0
+scikit-learn==1.9.0
+networkx==3.6.1
+matplotlib==3.11.0
+pyyaml==6.0.3
+openpyxl==3.1.5
 
 # dashboard & explainability
-streamlit>=1.32.0
-plotly>=5.15.0
-shap>=0.44.0
+streamlit==1.59.1
+plotly==6.9.0
+shap==0.52.0
 
-# deep learning & RL
+# deep learning — GNN, LSTM and PPO are hand-rolled in plain torch (no
+# stable-baselines3 / gymnasium / torch-geometric; those were listed but never
+# imported). torch stays unpinned so CI can install the CPU wheel.
 torch>=2.0.0
-stable-baselines3>=2.2.0
-gymnasium>=0.29.0
 
-# graph
-torch-geometric>=2.4.0
-
-# stage 12
-xgboost>=2.0.0
-faiss-cpu>=1.7.0
+# stage 12 / 13
+xgboost==3.3.0
+faiss-cpu==1.14.3
 
 # AI agent (local LLM via Ollama — zero-cost, no API keys)
-requests>=2.31.0
+requests==2.34.2

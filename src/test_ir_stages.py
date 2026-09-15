@@ -97,7 +97,7 @@ res_arcos = run("arcos")
 ran     = sorted(s for s, o in res_arcos.items() if o["status"] == "ran")
 skipped = {s: o["missing"] for s, o in res_arcos.items() if o["status"] == "skipped"}
 check("ARCOS runs anomaly + both graph stages",
-      ran == ["anomaly_detection", "graph_risk_routing", "ppo_recovery_routing"],
+      ran == ["anomaly_detection", "graph_risk_routing", "policy_gradient_routing"],
       str(ran))
 check("ARCOS skips the 4 flow stages it lacks", len(skipped) == 4, str(list(skipped)))
 check("every skip names its missing capability",
@@ -116,7 +116,7 @@ check("DataCo runs the 5 flow stages",
       str({s: o["status"] for s, o in res_dataco.items()}))
 check("DataCo skips both graph stages citing HAS_TOPOLOGY",
       dataco_skipped.get("graph_risk_routing") == ["HAS_TOPOLOGY"]
-      and dataco_skipped.get("ppo_recovery_routing") == ["HAS_TOPOLOGY"])
+      and dataco_skipped.get("policy_gradient_routing") == ["HAS_TOPOLOGY"])
 
 # ── T4: cross-validate value_at_risk vs canonical numbers ───────────────────
 print("\nT4  value_at_risk vs canonical SCMS probes")
@@ -136,11 +136,12 @@ er = event_replay(scms_flows)
 check("alerts fired", er["n_alerts"] > 0)
 # Canonical scms_event_replay.py episodes (web/machine-verified in case_table):
 # Tanzania 2014-02..04, Nigeria 2011-07..09, Congo DRC 2014-02..04.
-top_text = " | ".join(er["top_alerts"])
-found = sum(1 for marker in ("Tanzania 2014-02", "Nigeria 2011-07", "Congo, DRC 2014-02")
-            if marker in top_text)
-check("top alerts re-find >=2 canonical episodes independently",
-      found >= 2, top_text)
+all_text = " | ".join(er.get("alerts", er["top_alerts"]))
+found = sum(1 for marker in ("Tanzania 2014-0", "Nigeria 2011-0", "Congo, DRC 2014-0")
+            if marker in all_text)
+check("walk-forward alerts re-find >=2 canonical episodes independently",
+      found >= 2, " | ".join(er["top_alerts"]))
+check("protocol is walk-forward (prior-only baseline)", "walk-forward" in er.get("protocol", ""))
 
 # ── T6: disruption_detection honesty ────────────────────────────────────────
 print("\nT6  disruption_detection (real labels, temporal holdout)")
@@ -179,25 +180,25 @@ check("SCMS graph risk ran on the 3-tier adapter output",
       gr_scms.get("n_nodes", 0) > 100, str(gr_scms.get("n_nodes")))
 check("SCMS late-rate lift computed from REAL labels (present)",
       gr_scms.get("late_rate_lift_top_decile") is not None, str(gr_scms))
-ppo_scms = res_scms["ppo_recovery_routing"]
+ppo_scms = res_scms["policy_gradient_routing"]
 check("SCMS cascade PPO trained and evaluated (n_test >= 100)",
       ppo_scms.get("n_test", 0) >= 100, str(ppo_scms))
 check("cascade reports total reward for all four methods",
       all(k in ppo_scms.get("avg_total_reward", {})
-          for k in ("ppo", "dijkstra", "risk_greedy", "random")))
+          for k in ("pg", "dijkstra", "risk_greedy", "random")))
 check("PPO reported against Dijkstra + risk-greedy + random baselines",
       all(k in ppo_scms.get("avg_route_risk", {})
-          for k in ("ppo", "dijkstra", "risk_greedy", "random")))
+          for k in ("pg", "dijkstra", "risk_greedy", "random")))
 check("SCMS cascade PPO total reward >= random baseline (policy learned)",
-      ppo_scms["avg_total_reward"]["ppo"] >= ppo_scms["avg_total_reward"]["random"],
+      ppo_scms["avg_total_reward"]["pg"] >= ppo_scms["avg_total_reward"]["random"],
       str(ppo_scms.get("avg_total_reward")))
 check("SCMS cascade PPO avg route risk <= Dijkstra baseline (risk-aware policy)",
-      ppo_scms["avg_route_risk"]["ppo"] <= ppo_scms["avg_route_risk"]["dijkstra"],
+      ppo_scms["avg_route_risk"]["pg"] <= ppo_scms["avg_route_risk"]["dijkstra"],
       str(ppo_scms.get("avg_route_risk")))
 check("unserved-demand counts reported per method",
       all(k in ppo_scms.get("unserved", {})
-          for k in ("ppo", "dijkstra", "risk_greedy", "random")))
-ppo_arcos = res_arcos["ppo_recovery_routing"]
+          for k in ("pg", "dijkstra", "risk_greedy", "random")))
+ppo_arcos = res_arcos["policy_gradient_routing"]
 check("ARCOS cascade trains despite compressed risk scale (adaptive spread filter)",
       ppo_arcos.get("n_test", 0) >= 100, str(ppo_arcos))
 

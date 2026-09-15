@@ -19,52 +19,34 @@ dependencies = { file = ["requirements.txt"] }
 # editable mode (pip install -e .) makes each one importable from anywhere —
 # the dashboard, tests/ and extras/ — without sys.path manipulation.
 # tests/test_runner.py fails if a new src/ module is missing from this list.
+# Only IMPORT-SAFE modules are exposed: libraries, and stages whose work is
+# behind `if __name__ == "__main__"`. Most stage scripts run their whole
+# pipeline at module scope (importing them would re-run the stage and rewrite
+# outputs), so they are deliberately NOT listed — run them via main.py.
+# tests/test_runner.py enforces this property for every module listed here.
 [tool.setuptools]
 package-dir = { "" = "src" }
 py-modules = [
     "ai_agent",
-    "anomaly_detection",
-    "anomaly_eval_injection",
     "arcos_adapter",
     "auto_onboard",
-    "build_chain",
-    "case_table",
     "dataco_adapter",
     "domain_config",
-    "generate_arcos",
-    "gnn_explainer",
     "gnn_encoder",
+    "gnn_explainer",
     "immune_response_engine",
-    "immunological_memory",
-    "inventory_agent",
     "ir_pipeline",
     "ir_schema",
     "ir_stages",
-    "lstm_forecaster",
+    "isc_common",
     "macro_event_validation",
-    "macro_risk",
-    "multi_risk",
-    "ppo_routing_agent",
-    "preprocess",
     "project_metrics",
-    "recovery_predictor",
-    "response_planner",
     "results_manifest",
-    "risk_analysis",
-    "routing",
-    "sample_dataset",
     "scms_adapter",
-    "scms_backtest",
-    "scms_counterfactual",
     "scms_event_harness",
-    "scms_event_replay",
-    "scms_safety_stock",
-    "scms_spine",
     "scms_vendor_scorecard",
     "stream_consumer",
     "stream_simulator",
-    "supplier_agent",
-    "visualize",
 ]
 
 [tool.pytest.ini_options]

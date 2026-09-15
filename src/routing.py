@@ -38,26 +38,7 @@ OUTPUT = os.path.join(ROOT, "output", "routing_results.txt")
 MAX_DELIVERY_DAYS = 7   # time window constraint — trigger Inventory Agent if exceeded
 BASE_DELIVERY_DAYS_PER_HOP = 1.5  # baseline days per supply chain hop
 
-REGION_FUEL_COST = {
-    # Northeast (long haul from Midwest)
-    "ME": 1.8, "NH": 1.8, "VT": 1.8, "MA": 1.7, "RI": 1.7, "CT": 1.7,
-    "NY": 1.5, "NJ": 1.5, "PA": 1.4, "DE": 1.5, "MD": 1.4,
-    # Southeast
-    "VA": 1.3, "WV": 1.2, "NC": 1.3, "SC": 1.4, "GA": 1.4, "FL": 1.6,
-    "AL": 1.3, "MS": 1.3, "TN": 1.2, "KY": 1.2,
-    # Midwest (baseline hub)
-    "OH": 1.0, "IN": 1.0, "IL": 1.0, "MI": 1.1, "WI": 1.1,
-    "MN": 1.2, "IA": 1.1, "MO": 1.1, "ND": 1.3, "SD": 1.3,
-    "NE": 1.2, "KS": 1.2,
-    # South Central
-    "TX": 1.3, "OK": 1.2, "AR": 1.2, "LA": 1.3,
-    # Mountain / Southwest
-    "MT": 1.6, "ID": 1.6, "WY": 1.5, "CO": 1.4, "NM": 1.5,
-    "AZ": 1.5, "UT": 1.5, "NV": 1.6,
-    # Pacific (highest cost)
-    "CA": 1.8, "OR": 1.8, "WA": 1.8, "AK": 2.5, "HI": 3.0,
-}
-DEFAULT_FUEL_COST = 1.3   # fallback for unknown / non-US states
+from isc_common import REGION_FUEL_COST, DEFAULT_FUEL_COST   # single source (config/pharma.yaml)
 
 print("=" * 55)
 print("  STAGE 5 — DISRUPTION INJECTION & RECOVERY ROUTING")

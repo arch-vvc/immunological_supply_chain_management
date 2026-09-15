@@ -56,7 +56,7 @@ CSV_OUT = os.path.join(ROOT, "output", "scms_counterfactual.csv")
 RPT_OUT = os.path.join(ROOT, "output", "scms_counterfactual_report.txt")
 FIG_OUT = os.path.join(ROOT, "output", "figures", "fig12_scms_counterfactual.png")
 
-W_CAP, W_ESTAB = 0.6, 0.4               # planner rule — reused, not re-tuned
+from isc_common import W_CAP, W_ESTAB     # planner rule — one definition for Stages 19/20/28
 WINDOW_DAYS    = 365                    # outcome window after t0
 MIN_N          = 3                      # min shipments per side to compare
 SEED           = 42

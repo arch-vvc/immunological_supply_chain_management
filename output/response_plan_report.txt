@@ -22,9 +22,9 @@ where the network's advantage actually shows up.
 Anomalies with NO listed backup supplier : 137
   resolved to a PROVEN supplier (T1/T2)  : 55  (40.1%)
   avg reroute activation time            : 1.5 days
-  avg full recovery: graph-grounded      : 71.2 days
-  avg full recovery: ML-only baseline    : 97.0 days
-  mean full-recovery days saved per case : 25.7 days
+  avg full recovery: graph-grounded      : 72.1 days
+  avg full recovery: ML-only baseline    : 98.1 days
+  mean full-recovery days saved per case : 25.9 days
 
 Method: 'no backup supplier' in the disruption data means no LISTED
 backup. The supply graph usually contains a de-facto one — a distributor

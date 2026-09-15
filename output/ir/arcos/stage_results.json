@@ -58,7 +58,7 @@
     "knockout_reroute_rate_top5": 0.9998,
     "knockout_reroute_rate_random": 0.9999
   },
-  "ppo_recovery_routing": {
+  "policy_gradient_routing": {
     "status": "ran",
     "requires": [
       "HAS_TOPOLOGY"
@@ -67,19 +67,19 @@
     "n_test": 300,
     "cascade": "6 demands, pool 4, cap 2, +0.15/use",
     "avg_total_reward": {
-      "ppo": 36.939,
+      "pg": 36.939,
       "dijkstra": 33.919,
       "risk_greedy": 36.586,
       "random": 33.826
     },
     "avg_route_risk": {
-      "ppo": 0.9867,
+      "pg": 0.9867,
       "dijkstra": 0.9874,
       "risk_greedy": 0.9867,
       "random": 0.9877
     },
     "unserved": {
-      "ppo": 26,
+      "pg": 26,
       "dijkstra": 60,
       "risk_greedy": 30,
       "random": 61

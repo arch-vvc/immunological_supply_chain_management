@@ -331,9 +331,9 @@ with tab_ir:
                 if stage == "graph_risk_routing":
                     return (f"concentration lift ×{d.get('concentration_lift', 0)} · "
                             f"reroute {100 * (d.get('knockout_reroute_rate_top5') or 0):.1f}%")
-                if stage == "ppo_recovery_routing":
+                if stage == "policy_gradient_routing":
                     tot = d.get("avg_total_reward", {})
-                    return (f"reward {tot.get('ppo', 0):.1f} vs greedy "
+                    return (f"reward {tot.get('pg', 0):.1f} vs greedy "
                             f"{tot.get('risk_greedy', 0):.1f} · beats greedy "
                             f"{d.get('ppo_beats_greedy_pct', 0):.0f}%")
                 return ""
@@ -354,14 +354,14 @@ with tab_ir:
             # Topology stages get the spotlight: they are what the 3-tier SCMS
             # adapter unlocked, and the PPO-vs-baselines table is the payoff.
             graph_ds = [n for n, res in results.items()
-                        if res.get("ppo_recovery_routing", {}).get("status") == "ran"
-                        and "avg_route_risk" in res["ppo_recovery_routing"]]
+                        if res.get("policy_gradient_routing", {}).get("status") == "ran"
+                        and "avg_route_risk" in res["policy_gradient_routing"]]
             if graph_ds:
                 st.markdown("**Topology stages — graph risk & cascade PPO routing**")
                 cols = st.columns(len(graph_ds))
                 for col, n in zip(cols, graph_ds):
                     gr  = results[n].get("graph_risk_routing", {})
-                    ppo = results[n]["ppo_recovery_routing"]
+                    ppo = results[n]["policy_gradient_routing"]
                     tot = ppo.get("avg_total_reward", {})
                     avg = ppo["avg_route_risk"]
                     uns = ppo.get("unserved", {})
@@ -372,9 +372,9 @@ with tab_ir:
                                    + f" · cascade: {ppo.get('cascade', '')}")
                         st.dataframe(pd.DataFrame([
                             {"method": "PPO (linear, PPO-clip)",
-                             "total reward": tot.get("ppo"),
-                             "route risk": avg.get("ppo"),
-                             "unserved": uns.get("ppo")},
+                             "total reward": tot.get("pg"),
+                             "route risk": avg.get("pg"),
+                             "unserved": uns.get("pg")},
                             {"method": "Risk-greedy (myopic)",
                              "total reward": tot.get("risk_greedy"),
                              "route risk": avg.get("risk_greedy"),
@@ -772,15 +772,45 @@ with tab_risk:
             if os.path.exists(fig_path):
                 st.image(fig_path, use_column_width=True)
 
+        # ── GNN score: does it detect anything? (node-level injection benchmark) ──
+        _gb = load_json("gnn_injection_eval.json")
+        if _gb and _gb.get("summary"):
+            _s = _gb["summary"]
+            st.markdown("#### Is the GNN score a detector? — node-level injection benchmark")
+            st.caption(
+                f"On held-out seeds {_gb['seeds']}, {_gb['n_injected_per_seed']} structural anomalies "
+                "are planted into a copy of the real graph (starved, flooded, or rewired nodes), the "
+                "autoencoder is retrained from scratch on each copy, and its score is asked to rank the "
+                "planted nodes against simple degree/volume z-score baselines. This is the only ground "
+                "truth behind the 'structurally anomalous' label."
+            )
+            _b1, _b2, _b3, _b4 = st.columns(4)
+            with _b1: metric_card("GNN AUC", f"{_s['gnn_auc']['mean']:.3f}", f"± {_s['gnn_auc']['std']:.3f} over seeds")
+            with _b2: metric_card("Best baseline AUC", f"{max(_s['volume_z_auc']['mean'], _s['degree_z_auc']['mean'], _s['max_z_auc']['mean']):.3f}",
+                                  "|z| volume / degree / max")
+            with _b3: metric_card("GNN precision@k", f"{_s['gnn_p_at_k']['mean']:.2f}",
+                                  f"baseline {_s['max_z_p_at_k']['mean']:.2f}")
+            with _b4: metric_card("Recall by kind", f"{_s['gnn_recall_starve']['mean']:.0%} / {_s['gnn_recall_flood']['mean']:.0%} / {_s['gnn_recall_rewire']['mean']:.0%}",
+                                  "starved / flooded / rewired")
+            _rew = _s['gnn_recall_rewire']['mean']
+            st.caption(
+                ("The GNN ranks planted anomalies better than the degree/volume baselines" if _s['gnn_auc']['mean'] > _s['max_z_auc']['mean'] + 0.02
+                 else "The GNN does not beat the degree/volume baselines")
+                + (f", but it largely misses REWIRED nodes (recall {_rew:.0%}): it sees volume shocks, not changed connectivity." if _rew < 0.3 else ".")
+            )
+            with st.expander("Full benchmark report"):
+                _gt = os.path.join(OUT, "gnn_injection_metrics.txt")
+                if os.path.exists(_gt):
+                    st.code(open(_gt).read(), language=None)
+
         # ── GNN explainer — why is this node risky? ────────────────────
         st.markdown("#### Why is this node risky? — GNN neighbourhood explainer")
         st.caption(
-            "Gradient-style attribution over the node's k-hop neighbourhood: "
-            "each neighbour is scored by how strongly its embedding pulls the "
-            "target toward the high-reconstruction-error region the autoencoder "
-            "flags as anomalous (embedding similarity × neighbour risk, plus an "
-            "embedding-tension term). Top drivers are the nodes to monitor or "
-            "isolate first to reduce cascade risk."
+            "A similarity-and-tension heuristic over the node's k-hop neighbourhood "
+            "(no gradients): each neighbour scores |cosine similarity| × its own GNN "
+            "score, plus an embedding-tension term. Read it as *which neighbours look "
+            "most implicated*, not as a causal attribution. Top drivers are the nodes "
+            "to monitor or isolate first."
         )
         _G_x   = load_graph()
         _emb_x = load_embeddings()
@@ -909,8 +939,10 @@ with tab_risk:
         "Does the Stage-9 stress composite rise at documented global crises it "
         "was never told about? Event study: mean of the 8-week event window "
         "minus the prior 12 weeks, ranked against a placebo distribution of "
-        "non-event windows. DETECTED ≥ p90, PARTIAL ≥ p75. Nulls are shown, "
-        "not hidden — they say what a US-macro lens cannot see."
+        "non-event windows. DETECTED ≥ p90, PARTIAL ≥ p75. The composite is "
+        "CAUSAL: each indicator is scored as a percentile rank of its own history "
+        "up to that week and carried forward, never scaled by the full series. "
+        "Nulls are shown, not hidden — they say what a US-macro lens cannot see."
     )
     _mv_path = os.path.join(OUT, "macro_event_validation.csv")
     if not os.path.exists(_mv_path):
@@ -2314,11 +2346,17 @@ def _live_stream_fragment(live_results_path, disruption_flag_path):
     disruption_rows = int(df_live["disruption_injected"].sum()) if "disruption_injected" in df_live.columns else 0
     rerouted_rows   = int((df_live["alternate_route"].astype(str).str.strip() != "").sum()) if "alternate_route" in df_live.columns else 0
 
-    c1, c2, c3, c4 = st.columns(4)
+    caught_rows = (int(((df_live["disruption_injected"].astype(str) == "1")
+                        & (df_live["is_anomaly"].astype(str) == "1")).sum())
+                   if {"disruption_injected", "is_anomaly"} <= set(df_live.columns) else 0)
+    c1, c2, c3, c4, c5 = st.columns(5)
     c1.metric("Rows Processed",      total_rows)
     c2.metric("Anomalies Detected",  anomaly_rows,    delta=f"{anomaly_rows} flagged")
-    c3.metric("Disruptions Injected", disruption_rows)
-    c4.metric("Routes Rerouted",     rerouted_rows)
+    c3.metric("Disruptions Injected", disruption_rows,
+              help="Rows the simulator flagged. The flag is NOT used by the detector; it only scores recall.")
+    c4.metric("Injected Caught",     f"{caught_rows}/{disruption_rows}" if disruption_rows else "—",
+              help="Detector recall on injected rows: real rolling z-score or the zero-quantity rule.")
+    c5.metric("Routes Rerouted",     rerouted_rows)
 
     if os.path.exists(disruption_flag_path):
         flag_text = open(disruption_flag_path).read()

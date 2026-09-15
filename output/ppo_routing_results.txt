@@ -1,25 +1,27 @@
 PPO Routing Agent — Evaluation Report (multi-step cascade)
 ===========================================================
-Evaluated on 300 episodes of 6 sequential reroute demands
-served from one candidate pool under capacity (CAP=2 uses) and
+Evaluated on 300 HELD-OUT episodes of 6 sequential reroute demands
+(anchored at 6 test distributors the policy never trained on;
+trained on 14 others), served from one candidate pool of
+4 under capacity (CAP=2 uses) and
 load-dependent effective risk (+0.15/use — config decay_per_use).
 All methods replay the SAME episodes (same pool, same demand order)
 and evolve their own load state; pools require risk spread >= 0.05.
 
 Method          Avg Total Reward     SD  Avg Eff. Risk   Unserved
 ------------------------------------------------------------
-PPO                        37.00   8.26          0.963         30
-Random                     33.22  12.17          0.966         72
-Dijkstra                   33.22  11.77          0.966         72
-Risk-greedy                35.94   9.71          0.963         42
+PPO                        37.18   7.74          0.963         28
+Random                     34.29  10.87          0.966         60
+Dijkstra                   34.64  11.05          0.966         56
+Risk-greedy                36.56   8.53          0.963         35
 
-PPO beats myopic Risk-greedy      : 6.3% of episodes (greedy wins 2.3%)
-PPO strictly safer than Dijkstra : 42.0% of episodes
+PPO beats myopic Risk-greedy      : 7.7% of episodes (greedy wins 5.0%)
+PPO strictly safer than Dijkstra : 39.0% of episodes
 
 Paired bootstrap 95% CI on total reward (5,000 resamples over 300 episodes):
-  PPO − Risk-greedy : +1.06  [+0.18, +1.94]
-  PPO − Dijkstra    : +3.78  [+2.53, +5.02]
-  (SD column above is across episodes; SEM for PPO = 0.48)
+  PPO − Risk-greedy : +0.62  [-0.36, +1.59]
+  PPO − Dijkstra    : +2.54  [+1.38, +3.69]
+  (SD column above is across episodes; SEM for PPO = 0.45)
 
 Baselines:
   Random       — uniform among usable candidates (sanity floor).
@@ -31,15 +33,16 @@ Baselines:
                  early and get cornered by later demands.
 
 How to read this:
-  'Unserved' counts demands no usable candidate could serve (-20 each) —
-  the cost of burning capacity without foresight. If PPO beats greedy on
-  total reward, the learned policy is doing genuine multi-step planning;
-  if greedy stays ahead, note WHY before concluding RL adds nothing:
-  effective-risk greedy is not truly myopic here. The decay_per_use
-  load step feeds back into its objective — every use raises a
-  candidate's effective risk above the pool's base-risk spread, so
-  greedy automatically rotates candidates. The immune-style confidence
-  decay is itself a strong load balancer; that heuristic surviving a
-  trained PPO policy is a finding about the heuristic, not a bug in
-  the agent. PPO clearing Random AND Dijkstra confirms it learned the
-  risk/capacity structure.
+  'Unserved' counts demands no usable candidate could serve (-20 each).
+  The paired CI on PPO − Risk-greedy is the test: an interval above zero
+  means the learned policy plans across steps better than the load-aware
+  heuristic; an interval containing zero means it does not. The pool-size
+  sweep below shows in which regime that holds, so the headline setting
+  is not the only one reported.
+
+Pool-size sweep (each size retrained from scratch; same seed, same held-out anchors):
+  pool  capacity  binds?     PPO  greedy  dijkstra  unserved P/G/D       PPO−greedy [95% CI]
+     4         8     yes   37.18   36.56     34.64   28/ 35/ 56      +0.62 [-0.36, +1.59]
+     6        12      no   40.05   39.96     38.53    0/  1/ 14      +0.09 [-0.00, +0.27]
+     8        16      no   40.27   40.27     39.26    0/  0/  7      +0.00 [-0.00, +0.00]
+  Reading: PPO does not significantly beat the myopic heuristic at any pool size tested [4, 6, 8]; the learned policy adds nothing the load-aware heuristic lacks here.

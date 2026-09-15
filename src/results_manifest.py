@@ -57,6 +57,8 @@ SEEDS = {
     "multi_domain_xgboost": 42,
     "immunological_memory_split": 42,
     "ppo_routing_agent": 42,
+    "ppo_entity_split": "30% of eligible distributors held out (seed 42); evaluation only on held-out",
+    "gnn_injection_benchmark_seeds": [43, 44, 45, 46],
     "scms_counterfactual_bootstrap": 42,
     "ir_stages_betweenness": 42,
 }
@@ -157,6 +159,21 @@ def build() -> dict:
                                                     m["ppo"].get("safer_pct")),
             "paired_delta_reward": ppo.get("paired_delta_reward"),
         },
+        "gnn_injection_benchmark": (lambda g: {
+            "seeds": g.get("seeds"),
+            "gnn_auc": g["summary"]["gnn_auc"]["mean"],
+            "gnn_auc_std": g["summary"]["gnn_auc"]["std"],
+            "gnn_precision_at_k": g["summary"]["gnn_p_at_k"]["mean"],
+            "best_baseline_auc": max(g["summary"]["volume_z_auc"]["mean"],
+                                     g["summary"]["degree_z_auc"]["mean"],
+                                     g["summary"]["max_z_auc"]["mean"]),
+            "gnn_recall_rewire": g["summary"]["gnn_recall_rewire"]["mean"],
+        } if g and g.get("summary") else {})(_json("gnn_injection_eval.json")),
+        "ppo_pool_sweep": (lambda sw: {
+            k: {"ppo_minus_greedy_mean": v["ppo_minus_greedy"]["mean"],
+                "ppo_minus_greedy_ci95": v["ppo_minus_greedy"]["ci95"],
+                "unserved_ppo": v["unserved"]["PPO"], "capacity_binds": v["capacity_binds"]}
+            for k, v in sw.items()} if sw else {})(_json("ppo_pool_sweep.json")),
         "multi_domain_risk": dict(m["multi"]),
         "macro_crisis_validation": _macro_events(),
         "scms_counterfactual": {

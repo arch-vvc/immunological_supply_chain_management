@@ -3,8 +3,8 @@ STAGE 15 — INVENTORY AGENT REPORT
 
 At-risk retailers analysed  : 15
 Transfer recommendations    : 45
-Avg transfer score (rank #1): 0.556
-Avg estimated delivery days : 2.4
+Avg transfer score (rank #1): 0.571
+Avg estimated delivery days : 2.2
 
 Scoring weights:
   Spare capacity  : 40%
@@ -12,18 +12,18 @@ Scoring weights:
   Fuel efficiency : 25%
 
 Top-1 transfer per at-risk retailer:
-  MEDICO PHARMACY #4239 (VT)             → CARDINAL HEALTH INC                    (score=0.533  ~2.7d)
-  HOMETOWN PHARMACY #1142 (NE)           → CARDINAL HEALTH INC                    (score=0.608  ~1.8d)
-  FAMILY CARE PHARMACY #3942 (NM)        → DIRECT RX                              (score=0.570  ~2.2d)
-  GOOD NEIGHBOR PHARMACY #2219 (NM)      → CARDINAL HEALTH INC                    (score=0.570  ~2.2d)
-  WALGREENS #7869 (VT)                   → CARDINAL HEALTH INC                    (score=0.533  ~2.7d)
+  CORNER DRUG STORE #1656 (DE)           → CARDINAL HEALTH INC                    (score=0.570  ~2.2d)
   HARRIS TEETER PHARMACY #6503 (MO)      → CARDINAL HEALTH INC                    (score=0.620  ~1.7d)
-  SUNRISE PHARMACY #4284 (TX)            → CARDINAL HEALTH INC                    (score=0.595  ~2.0d)
+  WALGREENS #7869 (VT)                   → CARDINAL HEALTH INC                    (score=0.533  ~2.7d)
   TUG VALLEY PHARMACY #1 (WV)            → CARDINAL HEALTH INC                    (score=0.608  ~1.8d)
+  SUNRISE PHARMACY #4284 (TX)            → CARDINAL HEALTH INC                    (score=0.595  ~2.0d)
+  HOMETOWN PHARMACY #1142 (NE)           → CARDINAL HEALTH INC                    (score=0.608  ~1.8d)
   HEALTH MART PHARMACY #8084 (WA)        → CARDINAL HEALTH INC                    (score=0.533  ~2.7d)
-  QUALITY CARE PHARMACY #2449 (MD)       → CARDINAL HEALTH INC                    (score=0.583  ~2.1d)
-  QUALITY CARE PHARMACY #5456 (WA)       → CARDINAL HEALTH INC                    (score=0.533  ~2.7d)
-  QUALITY CARE PHARMACY #9423 (NM)       → DIRECT RX                              (score=0.570  ~2.2d)
-  SUNRISE PHARMACY #3108 (NM)            → CARDINAL HEALTH INC                    (score=0.570  ~2.2d)
-  VILLAGE PHARMACY #1824 (WA)            → DIRECT RX                              (score=0.532  ~2.7d)
-  SUNRISE PHARMACY #4396 (HI)            → DIRECT RX                              (score=0.382  ~4.5d)
+  MEDICO PHARMACY #4239 (VT)             → CARDINAL HEALTH INC                    (score=0.533  ~2.7d)
+  WINN-DIXIE PHARMACY #5416 (AL)         → CARDINAL HEALTH INC                    (score=0.595  ~2.0d)
+  GOOD NEIGHBOR PHARMACY #2219 (NM)      → CARDINAL HEALTH INC                    (score=0.570  ~2.2d)
+  FAMILY CARE PHARMACY #3942 (NM)        → DIRECT RX                              (score=0.570  ~2.2d)
+  HARRIS TEETER PHARMACY #1358 (CA)      → CARDINAL HEALTH INC                    (score=0.533  ~2.7d)
+  WINN-DIXIE PHARMACY #4662 (VT)         → DIRECT RX                              (score=0.532  ~2.7d)
+  WALMART PHARMACY #7726 (SD)            → CARDINAL HEALTH INC                    (score=0.595  ~2.0d)
+  CVS PHARMACY #9401 (NY)                → DIRECT RX                              (score=0.570  ~2.2d)

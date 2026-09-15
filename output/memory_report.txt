@@ -16,8 +16,8 @@ Anomalies queried       : 1664
 Top-K retrieved per query: 3
 
 Aggregate retrieval results:
-  Avg match distance    : 1.0816
-  Avg recovery days     : 56.7 (per-anomaly spread std=23.9)
+  Avg match distance    : 1.0252
+  Avg recovery days     : 59.0 (per-anomaly spread std=24.4)
   Top response type     : Alternative Supplier
   Top disruption type   : Natural Disaster
 

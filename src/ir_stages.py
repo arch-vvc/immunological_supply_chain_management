@@ -14,13 +14,14 @@ Seven stages, each returning proper metrics (not just counts):
   disruption_detection HAS_DISRUPTIONS    REAL late/on-time labels, temporal
                                           holdout -> precision / recall / F1
   safety_stock         HAS_LEAD_TIMES     King's SS -> $ buffer
-  event_replay         HAS_DISRUPTIONS    walk-forward proportion test ->
+  event_replay         HAS_DISRUPTIONS    walk-forward binomial surprise ->
                                           anomalous late-rate windows (alerts)
   value_at_risk        HAS_VALUE+DISRUPT  $ value riding on late flows
   graph_risk_routing   HAS_TOPOLOGY       centrality risk (mirrors Stage 4's
                                           composite) validated by volume/late
                                           concentration + knockout reroute test
-  ppo_recovery_routing HAS_TOPOLOGY       linear-policy PPO-clip on a multi-
+  policy_gradient_routing HAS_TOPOLOGY     linear softmax policy, clipped policy-
+                                          gradient (REINFORCE-style, NO critic) on a multi-
                                           step reroute CASCADE (capacity +
                                           load-dependent risk) vs myopic risk-
                                           greedy / Dijkstra / random baselines
@@ -57,7 +58,7 @@ REQUIRES = {
     "event_replay":         ["HAS_DISRUPTIONS"],
     "value_at_risk":        ["HAS_VALUE", "HAS_DISRUPTIONS"],
     "graph_risk_routing":   ["HAS_TOPOLOGY"],
-    "ppo_recovery_routing": ["HAS_TOPOLOGY"],
+    "policy_gradient_routing": ["HAS_TOPOLOGY"],
 }
 
 Z_95, HOLDING_RATE = 1.65, 0.25       # King's formula constants (mirror Stage 22)
@@ -236,9 +237,11 @@ def safety_stock(flows: list[dict]) -> dict:
         leads = [l for _, _, _, l in ships]
         span  = max((ships[-1][0] - ships[0][0]).days, 90)
         d_mean = sum(qtys) / span
-        d_std  = statistics.pstdev(qtys) / math.sqrt(span) if len(qtys) > 1 else 0.0
+        # SAMPLE std (statistics.stdev), matching scms_safety_stock.py — the
+        # population estimator used before understates variance at n=3.
+        d_std  = statistics.stdev(qtys) / math.sqrt(span) if len(qtys) > 1 else 0.0
         l_mean = statistics.mean(leads)
-        l_std  = statistics.pstdev(leads) if len(leads) > 1 else 0.0
+        l_std  = statistics.stdev(leads) if len(leads) > 1 else 0.0
         if d_mean <= 0:
             continue
         ss95   = Z_95 * math.sqrt(l_mean * d_std ** 2 + d_mean ** 2 * l_std ** 2)
@@ -253,14 +256,22 @@ def safety_stock(flows: list[dict]) -> dict:
     }
 
 
-# ── Stage: event_replay — walk-forward proportion test on late-rate ──────────
+# ── Stage: event_replay — blind walk-forward late-rate surprise ─────────────
 
-def event_replay(flows: list[dict], z_crit: float = 3.09, min_n: int = 10) -> dict:
-    """Group late/on-time flows by (destination, year-month); flag any window
-    whose late-rate is significantly above the global base rate (one-sided
-    normal-approx proportion test, z>=3.09 ≈ alpha 0.001). Mirrors
-    scms_event_replay.py's blind walk-forward idea, IR-native."""
-    windows = defaultdict(lambda: [0, 0])       # (loc, ym) -> [late, total]
+def event_replay(flows: list[dict], alpha: float = 1e-3, min_n: int = 10,
+                 window_months: int = 3, min_prior_months: int = 12,
+                 min_prior_n: int = 30) -> dict:
+    """Blind WALK-FORWARD late-rate surprise test, per destination.
+
+    Mirrors scms_event_replay.py exactly in what each window is allowed to
+    know: a rolling `window_months` window ending at month m is tested against
+    the destination's OWN late rate over the months strictly BEFORE the window
+    (Laplace-smoothed), with an exact one-sided binomial tail. Nothing after
+    the window — and no other destination — enters the baseline. The previous
+    IR version tested every window against the whole-history global rate,
+    which used the future and was not walk-forward despite claiming to be.
+    """
+    per_loc: dict = defaultdict(lambda: defaultdict(lambda: [0, 0]))   # loc -> ym -> [late, n]
     g_late = g_tot = 0
     for r in flows:
         if r.get("status") not in ("late", "on_time"):
@@ -269,31 +280,69 @@ def event_replay(flows: list[dict], z_crit: float = 3.09, min_n: int = 10) -> di
         if len(ts) < 7:
             continue
         y = 1 if r.get("status") == "late" else 0
-        key = (r.get("dst"), ts[:7])
-        windows[key][0] += y
-        windows[key][1] += 1
+        per_loc[r.get("dst")][ts[:7]][0] += y
+        per_loc[r.get("dst")][ts[:7]][1] += 1
         g_late += y
         g_tot  += 1
     if g_tot == 0:
         return {"note": "no dated labeled flows"}
 
-    base = g_late / g_tot
-    denom = math.sqrt(base * (1 - base)) if 0 < base < 1 else 0.0
+    def _binom_tail(k, n, p):
+        """P[X >= k] for X ~ Binomial(n, p), summed in log space so large
+        windows (DataCo has thousands of flows per destination-month) do not
+        overflow the way math.comb(n, j) * p**j does."""
+        if k <= 0:
+            return 1.0
+        if p <= 0.0:
+            return 0.0 if k > 0 else 1.0
+        if p >= 1.0:
+            return 1.0
+        lp, lq = math.log(p), math.log1p(-p)
+        lg_n1 = math.lgamma(n + 1)
+        terms = [lg_n1 - math.lgamma(j + 1) - math.lgamma(n - j + 1) + j * lp + (n - j) * lq
+                 for j in range(k, n + 1)]
+        m = max(terms)
+        return min(1.0, math.exp(m) * sum(math.exp(t - m) for t in terms))
+
+    def _month_index(ym):
+        y, m = int(ym[:4]), int(ym[5:7])
+        return y * 12 + (m - 1)
+
     alerts = []
     tested = 0
-    for (loc, ym), (late, tot) in windows.items():
-        if tot < min_n or denom == 0:
+    for loc, months in per_loc.items():
+        by_idx = {_month_index(ym): v for ym, v in months.items()}
+        if not by_idx:
             continue
-        tested += 1
-        z = (late / tot - base) / (denom / math.sqrt(tot))
-        if z >= z_crit:
-            alerts.append((round(z, 2), loc, ym, late, tot))
-    alerts.sort(reverse=True)
+        first, last = min(by_idx), max(by_idx)
+        for mi in range(first + min_prior_months, last + 1):
+            win = range(mi - window_months + 1, mi + 1)
+            n_win    = sum(by_idx[j][1] for j in win if j in by_idx)
+            late_win = sum(by_idx[j][0] for j in win if j in by_idx)
+            if n_win < min_n:
+                continue
+            prior = [j for j in by_idx if j < mi - window_months + 1]
+            n_pri    = sum(by_idx[j][1] for j in prior)
+            late_pri = sum(by_idx[j][0] for j in prior)
+            if n_pri < min_prior_n:
+                continue
+            p0 = (late_pri + 1) / (n_pri + 2)                # Laplace-smoothed prior rate
+            pval = _binom_tail(late_win, n_win, p0)
+            tested += 1
+            if pval < alpha:
+                ym = f"{mi // 12:04d}-{mi % 12 + 1:02d}"
+                alerts.append((pval, loc, ym, late_win, n_win, p0))
+    alerts.sort(key=lambda t: (t[0], t[1], t[2]))
+    fmt = [f"{loc} {ym}: {late}/{tot} late vs {p0:.1%} prior (p={pv:.1e})"
+           for pv, loc, ym, late, tot, p0 in alerts]
     return {
         "windows_tested": tested, "n_alerts": len(alerts),
-        "base_late_rate": round(base, 4),
-        "top_alerts": [f"{loc} {ym}: {late}/{tot} late (z={z})"
-                       for z, loc, ym, late, tot in alerts[:3]],
+        "base_late_rate": round(g_late / g_tot, 4),            # reference only, not used in the test
+        "top_alerts": fmt[:5],
+        "alerts": fmt,
+        "protocol": (f"walk-forward: {window_months}-month window vs the destination's own "
+                     f"prior late rate (>= {min_prior_months} prior months, >= {min_prior_n} "
+                     f"prior shipments), exact binomial tail, alpha={alpha:g}"),
     }
 
 
@@ -477,9 +526,9 @@ def graph_risk_routing(flows: list[dict], nodes: list[dict], edges: list[dict],
     }
 
 
-# ── Stage: ppo_recovery_routing — cascade PPO vs baselines ───────────────────
+# ── Stage: policy_gradient_routing — cascade clipped policy gradient vs baselines ─
 
-def ppo_recovery_routing(flows: list[dict], nodes: list[dict], edges: list[dict],
+def policy_gradient_routing(flows: list[dict], nodes: list[dict], edges: list[dict],
                          seed: int = 42, pool_size: int = 4, d_steps: int = 6,
                          cap: int = 2, load_step: float = 0.15,
                          episodes: int = 2400, eval_episodes: int = 300,
@@ -494,7 +543,9 @@ def ppo_recovery_routing(flows: list[dict], nodes: list[dict], edges: list[dict]
     load_step (config decay_per_use — clonal exhaustion) and not every
     candidate can serve every demand. Foresight now has value: burning the
     flexible low-risk candidate early corners the policy later (-20 per
-    unserved demand). Linear softmax policy, PPO clipped surrogate,
+    unserved demand). Linear softmax policy trained with a PPO-STYLE clipped
+    surrogate on Monte-Carlo returns — no value function / critic, so this is
+    clipped REINFORCE, not PPO; the stage is named accordingly. Batch-normalised
     Monte-Carlo returns — pure stdlib, runs on any IR dataset with topology.
     Baselines replay the SAME episodes with their own load state: myopic
     effective-risk greedy, Dijkstra (hops all 1 -> risk-blind random valid),
@@ -556,7 +607,7 @@ def ppo_recovery_routing(flows: list[dict], nodes: list[dict], edges: list[dict]
         s = sum(ex.values())
         return {i: e / s for i, e in ex.items()}
 
-    # ── training: cycle the train specs, PPO-clip on MC returns ──
+    # ── training: cycle the train specs, clipped policy gradient on MC returns ──
     ppo_epochs, batch_cap = 4, 256
     batch, played = [], 0
     order = list(range(len(train_specs)))
@@ -623,7 +674,7 @@ def ppo_recovery_routing(flows: list[dict], nodes: list[dict], edges: list[dict]
                 continue
             effs = [min(1.0, risk[pool[i]] + load_step * loads[i])
                     for i in range(len(pool))]
-            if method == "ppo":
+            if method == "pg":
                 feats, _ = slot_feats(pool, base_rel, valid[t], loads, ok)
                 probs = masked_softmax(feats, ok)
                 a = max(probs, key=probs.get)
@@ -637,7 +688,7 @@ def ppo_recovery_routing(flows: list[dict], nodes: list[dict], edges: list[dict]
         return total, risks, unserved
 
     eval_rng = random.Random(seed + 1)
-    methods = ("ppo", "dijkstra", "risk_greedy", "random")
+    methods = ("pg", "dijkstra", "risk_greedy", "random")
     totals = {m: [] for m in methods}
     risks_by = {m: [] for m in methods}
     unserved = {m: 0 for m in methods}
@@ -651,14 +702,14 @@ def ppo_recovery_routing(flows: list[dict], nodes: list[dict], edges: list[dict]
     avg_risk = {m: round(statistics.mean(risks_by[m]), 4) if risks_by[m] else None
                 for m in methods}
     beats_g = 100.0 * statistics.mean(
-        [1.0 if p > g else 0.0 for p, g in zip(totals["ppo"], totals["risk_greedy"])])
+        [1.0 if p > g else 0.0 for p, g in zip(totals["pg"], totals["risk_greedy"])])
     g_beats = 100.0 * statistics.mean(
-        [1.0 if g > p else 0.0 for p, g in zip(totals["ppo"], totals["risk_greedy"])])
+        [1.0 if g > p else 0.0 for p, g in zip(totals["pg"], totals["risk_greedy"])])
     beats_d = 100.0 * statistics.mean(
-        [1.0 if p > d else 0.0 for p, d in zip(totals["ppo"], totals["dijkstra"])])
-    if avg_total["ppo"] > avg_total["risk_greedy"]:
+        [1.0 if p > d else 0.0 for p, d in zip(totals["pg"], totals["dijkstra"])])
+    if avg_total["pg"] > avg_total["risk_greedy"]:
         note = "PPO beats myopic risk-greedy — multi-step planning pays on this graph"
-    elif avg_total["ppo"] >= avg_total["random"]:
+    elif avg_total["pg"] >= avg_total["random"]:
         note = ("greedy edges PPO: the load_step feedback makes effective-risk "
                 "greedy implicitly load-balancing (a finding about the heuristic)")
     else:
@@ -689,7 +740,7 @@ STAGES = {
 # tables lazily, only when a dataset's capabilities actually enable them.
 GRAPH_STAGES = {
     "graph_risk_routing":   graph_risk_routing,
-    "ppo_recovery_routing": ppo_recovery_routing,
+    "policy_gradient_routing": policy_gradient_routing,
 }
 
 

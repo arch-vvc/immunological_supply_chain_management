@@ -10,7 +10,7 @@ METHOD (event study with placebo inference)
 For each documented crisis with a public start date inside the indicator
 coverage (2017-2026):
   * event window : start .. start + 8 weeks   (the composite is built from
-    monthly-interpolated indicators with a 4-week rolling mean, so the
+    monthly indicators carried forward weekly with a 4-week rolling mean, so the
     response is lagged and smeared — 8 weeks absorbs that)
   * pre window   : the 12 weeks before the start
   * delta        : mean(event window) - mean(pre window)
@@ -168,14 +168,7 @@ def main():
         "",
         f"Summary: {len(detected)}/{len(rows)} DETECTED, {len(partial)} PARTIAL.",
         "",
-        "Reading the nulls honestly: the composite is five US-AGGREGATE",
-        "indicators (diesel, truck spot rates, containerships at berth, TSI,",
-        "inventory-to-sales), monthly-interpolated and 4-week smoothed. A",
-        "short foreign chokepoint event that global schedules absorbed (Suez,",
-        "6 days) or a rerouting crisis whose cost landed on Asia-Europe lanes",
-        "(Red Sea) SHOULD look muted in US macro data. Detections and nulls",
-        "together say what a US-macro innate-immunity lens can and cannot",
-        "see — which is the claim the paper needs, made precisely.",
+        *_reading(rows),
         "",
         "Caveat: with 5 events this is external validity evidence, not a",
         "powered statistical test. Placebo percentiles quantify how unusual",
@@ -185,6 +178,44 @@ def main():
     with open(OUT_TXT, "w") as f:
         f.write("\n".join(lines))
     print(f"\n  Report saved -> {OUT_TXT}")
+
+
+# What each crisis should do to a US-aggregate freight composite, used to
+# phrase the reading of whichever verdicts the data actually produced.
+_MECHANISM = {
+    "COVID-19 pandemic onset": "US freight demand collapsed in Mar-Apr 2020: diesel and truck spot rates FELL while inventory-to-sales spiked, so a US freight-cost composite can read the onset as LOWER stress",
+    "Suez Canal blockage": "a 6-day foreign chokepoint that global schedules largely absorbed; a US signal here is container/spot-rate spillover",
+    "US port congestion peak": "a domestic port event; containerships-at-anchor is the direct indicator, but that series only enters the causal composite from mid-2022",
+    "Russia invades Ukraine": "an energy-price shock atop already-elevated 2021-22 congestion, so the rise sits on a high base",
+    "Red Sea shipping attacks": "an Asia-Europe rerouting crisis whose cost landed mostly outside US lanes",
+}
+
+
+def _reading(rows):
+    """Verdict-driven interpretation: says what was and was not seen, why the
+    mechanism makes that plausible, and never claims a null was expected only
+    after seeing it was a null."""
+    det = [r for r in rows if r["verdict"] == "DETECTED"]
+    par = [r for r in rows if r["verdict"] == "PARTIAL"]
+    nul = [r for r in rows if r["verdict"] not in ("DETECTED", "PARTIAL")]
+    out = ["Reading the verdicts: the composite is five US-AGGREGATE indicators",
+           "(diesel, truck spot rates, containerships at anchor, TSI,",
+           "inventory-to-sales), each scored CAUSALLY as a percentile rank of its",
+           "own history to that week (no full-series scaling), carried forward",
+           "weekly and 4-week smoothed. Every window is compared with placebo",
+           "windows from the same series."]
+    for r in det:
+        out.append(f"  DETECTED  {r['event']}: +{r['delta']:.3f} (placebo p{r['placebo_percentile']:.0f}), "
+                   f"top driver {r['top_driver']} — {_MECHANISM.get(r['event'], 'mechanism not annotated')}.")
+    for r in par:
+        out.append(f"  PARTIAL   {r['event']}: +{r['delta']:.3f} (placebo p{r['placebo_percentile']:.0f}) — "
+                   f"{_MECHANISM.get(r['event'], 'mechanism not annotated')}.")
+    for r in nul:
+        out.append(f"  NOT SEEN  {r['event']}: {r['delta']:+.3f} (placebo p{r['placebo_percentile']:.0f}) — "
+                   f"{_MECHANISM.get(r['event'], 'mechanism not annotated')}.")
+    out.append("A US-macro lens sees what moves US freight prices and capacity; it is")
+    out.append("not a global crisis detector, and the nulls above are reported as such.")
+    return out
     print(f"  CSV saved    -> {OUT_CSV}")
 
     # ── figure ─────────────────────────────────────────────────────────────

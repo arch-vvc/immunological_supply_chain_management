@@ -5,26 +5,31 @@ Question: does the Stage-9 stress composite rise at documented
 real-world crises it was never told about? Event-study deltas
 (mean of 8-week event window minus mean of the prior
 12 weeks) are ranked against a placebo distribution of
-313 non-event windows. DETECTED >= p90, PARTIAL >= p75.
+168 non-event windows. DETECTED >= p90, PARTIAL >= p75.
 
 Event                           pre   peak    delta   plc%   verdict  top driver
 --------------------------------------------------------------------------------------------
-COVID-19 pandemic onset       0.274  0.425  +0.0763 100.0%  DETECTED  Inventory_to_Sales_R (+0.406)
-Suez Canal blockage           0.330  0.384  +0.0354  98.1%  DETECTED  Truck_Spot_Rates (+0.158)
-US port congestion peak       0.421  0.496  +0.0611 100.0%  DETECTED  Containerships_Await (+0.264)
-Russia invades Ukraine        0.526  0.575  +0.0149  79.2%   PARTIAL  Diesel_Sales_Prices (+0.323)
-Red Sea shipping attacks      0.286  0.327  +0.0093  69.3%  NOT SEEN  Freight_Transportati (+0.124)
+COVID-19 pandemic onset       0.552  0.526  -0.0873   6.5%  NOT SEEN  Inventory_to_Sales_R (+0.220)
+Suez Canal blockage           0.561  0.717  +0.1349 100.0%  DETECTED  Diesel_Sales_Prices (+0.380)
+US port congestion peak       0.765  0.790  +0.0105  72.0%  NOT SEEN  Inventory_to_Sales_R (+0.077)
+Russia invades Ukraine        0.706  0.683  -0.0488  18.5%  NOT SEEN  Inventory_to_Sales_R (+0.054)
+Red Sea shipping attacks      0.406  0.517  +0.0394  91.7%  DETECTED  Freight_Transportati (+0.254)
 
-Summary: 3/5 DETECTED, 1 PARTIAL.
+Summary: 2/5 DETECTED, 0 PARTIAL.
 
-Reading the nulls honestly: the composite is five US-AGGREGATE
-indicators (diesel, truck spot rates, containerships at berth, TSI,
-inventory-to-sales), monthly-interpolated and 4-week smoothed. A
-short foreign chokepoint event that global schedules absorbed (Suez,
-6 days) or a rerouting crisis whose cost landed on Asia-Europe lanes
-(Red Sea) SHOULD look muted in US macro data. Detections and nulls
-together say what a US-macro innate-immunity lens can and cannot
-see — which is the claim the paper needs, made precisely.
+Reading the verdicts: the composite is five US-AGGREGATE indicators
+(diesel, truck spot rates, containerships at anchor, TSI,
+inventory-to-sales), each scored CAUSALLY as a percentile rank of its
+own history to that week (no full-series scaling), carried forward
+weekly and 4-week smoothed. Every window is compared with placebo
+windows from the same series.
+  DETECTED  Suez Canal blockage: +0.135 (placebo p100), top driver Diesel_Sales_Prices — a 6-day foreign chokepoint that global schedules largely absorbed; a US signal here is container/spot-rate spillover.
+  DETECTED  Red Sea shipping attacks: +0.039 (placebo p92), top driver Freight_Transportati — an Asia-Europe rerouting crisis whose cost landed mostly outside US lanes.
+  NOT SEEN  COVID-19 pandemic onset: -0.087 (placebo p6) — US freight demand collapsed in Mar-Apr 2020: diesel and truck spot rates FELL while inventory-to-sales spiked, so a US freight-cost composite can read the onset as LOWER stress.
+  NOT SEEN  US port congestion peak: +0.011 (placebo p72) — a domestic port event; containerships-at-anchor is the direct indicator, but that series only enters the causal composite from mid-2022.
+  NOT SEEN  Russia invades Ukraine: -0.049 (placebo p18) — an energy-price shock atop already-elevated 2021-22 congestion, so the rise sits on a high base.
+A US-macro lens sees what moves US freight prices and capacity; it is
+not a global crisis detector, and the nulls above are reported as such.
 
 Caveat: with 5 events this is external validity evidence, not a
 powered statistical test. Placebo percentiles quantify how unusual

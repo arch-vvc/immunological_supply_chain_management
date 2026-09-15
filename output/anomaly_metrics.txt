@@ -2,19 +2,19 @@ STAGE 3 — ANOMALY DETECTION METRICS
 ==================================================
 
 Dataset size         : 50,000 transactions
-Macro stress         : per-week λ (λ=1.2:50,000); 0% of rows in indicator coverage, fallback λ=1.2
+Macro stress         : per-week λ (λ=1:50,000); 0% of rows in indicator coverage, fallback λ=1
 Base Z thresholds    : vol=3.0·λ  freq=2.5·λ  surge=2.5·λ
 
 Signal counts:
-  [1] Volume Anomaly       : 5598
-  [2] Frequency Anomaly    : 470
-  [3] Temporal Surge       : 2751
+  [1] Volume Anomaly       : 6598
+  [2] Frequency Anomaly    : 932
+  [3] Temporal Surge       : 4386
   [4] Concentration Risk   : 142
   [5] Isolation Forest     : 2500
 
 Decision rule        : calibrated ensemble (thr=0.90, held-out F1=0.386)
 High-confidence anomalies              : 1664
-Suspect transactions (unflagged signal): 6956
+Suspect transactions (unflagged signal): 9533
 
 Detection quality (Precision/Recall/F1) is evaluated against an
 INDEPENDENT ground truth in Stage 3b (anomaly_eval_injection.py):

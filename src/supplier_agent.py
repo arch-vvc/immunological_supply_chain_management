@@ -29,6 +29,7 @@ import shutil
 import tempfile
 import pandas as pd
 import numpy as np
+from isc_common import SUPPLIER_WEIGHTS   # shared with the live engine
 import networkx as nx
 
 ROOT         = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -166,9 +167,9 @@ for _, drow in disrupted_candidates.iterrows():
         scored_df[f"{col}_norm"] = (scored_df[col] - mn) / (mx - mn + 1e-9)
 
     scored_df["backup_score"] = (
-        0.50 * scored_df["safety_score"]
-      + 0.30 * scored_df["out_volume_norm"]
-      + 0.20 * scored_df["efficiency_norm"]
+        SUPPLIER_WEIGHTS["safety"]     * scored_df["safety_score"]
+      + SUPPLIER_WEIGHTS["volume"]     * scored_df["out_volume_norm"]
+      + SUPPLIER_WEIGHTS["efficiency"] * scored_df["efficiency_norm"]
     ).round(4)
 
     top = scored_df.sort_values("backup_score", ascending=False).head(TOP_N_BACKUPS)

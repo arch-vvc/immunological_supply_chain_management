@@ -66,6 +66,10 @@ STRESS_INDICATORS = [
     ("Inventory to Sales Ratio",                   +1, 0.15),
 ]
 
+# Weeks of history an indicator needs before its running min/max is stable
+# enough to scale against. Weeks before this are dropped (no stress score).
+BURN_IN_WEEKS = 52
+
 def get_indicator(df, keyword):
     mask = df["INDICATOR"].str.contains(keyword, case=False, na=False)
     sub  = df[mask][["DATE", "VALUE1"]].copy()
@@ -87,12 +91,28 @@ for keyword, direction, weight in STRESS_INDICATORS:
         print(f"    ⚠ Skipped (insufficient data): {keyword}")
         continue
 
-    vmin, vmax = s["value"].min(), s["value"].max()
-    if vmax == vmin:
-        s["stress"] = 0.5
-    else:
-        normalized = (s["value"] - vmin) / (vmax - vmin)
-        s["stress"] = normalized if direction == +1 else (1 - normalized)
+    # CAUSAL normalisation: each week's score is the PERCENTILE RANK of this
+    # week's value within the indicator's own history up to the previous
+    # week — never the full series, so a 2019 week cannot know about a 2022
+    # spike. (The previous full-series min/max was a look-ahead that leaked
+    # future extremes into every historical score.) A rank is used rather
+    # than a running min/max because with only a year of history the running
+    # range is tiny and min/max scaling saturates; a rank stays bounded and
+    # scale-free. Weeks with fewer than BURN_IN_WEEKS of history get no score.
+    # Rank over actual OBSERVATIONS (the weekly resample leaves NaN weeks
+    # between monthly readings); burn-in is time-based so a monthly series
+    # needs a year of readings, not 52 of them.
+    s = s.dropna(subset=["value"]).reset_index(drop=True)
+    vals  = s["value"].to_numpy(dtype=float)
+    dates = s["date"].to_numpy()
+    ranks = np.full(len(vals), np.nan)
+    for t in range(len(vals)):
+        if (dates[t] - dates[0]) < np.timedelta64(7 * BURN_IN_WEEKS, "D") or t < 12:
+            continue
+        hist = vals[:t]
+        ranks[t] = (np.sum(hist < vals[t]) + 0.5 * np.sum(hist == vals[t])) / len(hist)
+    s["stress"] = ranks if direction == +1 else (1 - ranks)
+    s = s.dropna(subset=["stress"]).reset_index(drop=True)
 
     series_list.append(s)
     col_names.append(keyword[:20].replace(" ", "_"))  # plain string
@@ -104,6 +124,12 @@ if not series_list:
     sys.exit(1)
 
 # ── Combine into weekly stress score ─────────────────────────
+# The grid starts as soon as ANY indicator has a causal score; an indicator
+# that has not started yet (or is past its last observation) is NaN for that
+# week and the composite is re-weighted over the indicators that exist. This
+# is causal (nothing is back-filled from the future) without discarding the
+# years before the latest-starting indicator.
+MIN_INDICATORS = 3
 all_dates = pd.date_range(
     start=min(s["date"].min() for s in series_list),
     end  =max(s["date"].max() for s in series_list),
@@ -117,17 +143,29 @@ target_ts = stress_df["date"].values.astype(np.int64)   # nanoseconds
 for s, col in zip(series_list, col_names):
     src_ts = s["date"].values.astype(np.int64)
     src_v  = s["stress"].values.astype(float)
-    # Interpolate source series onto target date grid
-    interp_vals = np.interp(target_ts, src_ts, src_v)
+    # CARRY FORWARD the latest observation (step function), never interpolate
+    # toward the next one — linear interpolation between a month's reading and
+    # the next would let each week see up to a month into the future. Outside
+    # the observed span the value is unknown (NaN), never clamped.
+    pos = np.searchsorted(src_ts, target_ts, side="right") - 1
+    interp_vals = np.where(pos >= 0, src_v[np.clip(pos, 0, len(src_v) - 1)], np.nan)
+    interp_vals[target_ts > src_ts.max() + np.int64(45 * 24 * 3600 * 1e9)] = np.nan   # >45 d stale
     stress_df[col] = interp_vals
+    print(f"    {col:<22} scored from {s['date'].min().date()} (after {BURN_IN_WEEKS}-week burn-in)")
 
-# Weighted average
+# Weighted average over the indicators available that week
 stress_cols = col_names                                 # plain list of strings
-weights     = np.array(weights_list)
-weights     = weights / weights.sum()   # normalise to sum to 1
+weights     = np.array(weights_list, dtype=float)
 
-stress_matrix         = stress_df[stress_cols].values
-stress_df["stress_score"] = stress_matrix @ weights
+stress_matrix = stress_df[stress_cols].values
+avail         = ~np.isnan(stress_matrix)
+w_avail       = avail * weights
+w_sum         = w_avail.sum(axis=1)
+composite     = np.where(w_sum > 0, np.nansum(stress_matrix * weights, axis=1) / np.where(w_sum > 0, w_sum, 1), np.nan)
+composite[avail.sum(axis=1) < MIN_INDICATORS] = np.nan
+stress_df["stress_score"] = composite
+stress_df["n_indicators"] = avail.sum(axis=1)
+stress_df = stress_df.dropna(subset=["stress_score"]).reset_index(drop=True)
 
 # Smooth with 4-week rolling average
 stress_df["stress_score"] = stress_df["stress_score"].rolling(4, min_periods=1).mean()
@@ -143,9 +181,11 @@ stress_df["stress_level"] = stress_df["stress_score"].apply(classify)
 # ── Save ──────────────────────────────────────────────────────
 # Component columns are exported too: the LSTM forecaster (Stage 10) uses the
 # raw indicators as multivariate input instead of only the smoothed composite.
-stress_df[["date", "stress_score", "stress_level"] + stress_cols].to_csv(OUT_CSV, index=False)
+stress_df[["date", "stress_score", "stress_level", "n_indicators"] + stress_cols].to_csv(OUT_CSV, index=False)
 print(f"\n  Stress scores saved → {OUT_CSV}")
-print(f"  Weeks computed : {len(stress_df):,}")
+print(f"  Weeks computed : {len(stress_df):,}  ({stress_df['date'].min().date()} → "
+      f"{stress_df['date'].max().date()}; first {BURN_IN_WEEKS} weeks of each indicator "
+      "are burn-in for the causal percentile rank and carry no score)")
 print(f"  Score range    : {stress_df['stress_score'].min():.3f} → {stress_df['stress_score'].max():.3f}")
 print(f"  HIGH stress weeks  : {(stress_df['stress_level']=='HIGH').sum()}")
 print(f"  MEDIUM stress weeks: {(stress_df['stress_level']=='MEDIUM').sum()}")

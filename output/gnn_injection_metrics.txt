@@ -1,0 +1,22 @@
+STAGE 7 — GNN SCORE: NODE-LEVEL INJECTION BENCHMARK
+==========================================================
+
+Held-out seeds [43, 44, 45, 46]; 40 structural anomalies planted
+per seed into a copy of the real graph (equal mix of starved x0.05, flooded x20.0, rewired +6 edges); the GCN autoencoder is retrained
+from scratch on each copy and its score is asked to rank the planted
+nodes. Baselines are |z| of log volume, |z| of degree, and their max —
+the obvious non-learned detectors for the same three perturbations.
+
+detector                 AUC       precision@k
+----------------------------------------------
+GNN score      0.902 ± 0.017     0.431 ± 0.013
+|z| volume     0.801 ± 0.008     0.056 ± 0.043
+|z| degree     0.452 ± 0.069     0.000 ± 0.000
+max of both    0.729 ± 0.012     0.056 ± 0.043
+
+GNN recall@k by perturbation: starve 0.661 ± 0.090, flood 0.577 ± 0.044, rewire 0.038 ± 0.044
+
+Reading: the learned score ranks planted structural anomalies better than
+the degree/volume z-score baselines; the GNN adds signal beyond simple stats.
+This is the only ground truth behind the 'structurally anomalous' label;
+the 60/40 blend into enhanced_risk should be read with it in mind.

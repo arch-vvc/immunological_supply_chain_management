@@ -4,12 +4,15 @@ GNN Subgraph Explainer
 Identifies which neighboring nodes in the supply chain graph are most
 responsible for a given node's high GNN risk score.
 
-Approach: gradient of reconstruction error w.r.t. neighbour embeddings.
-High |gradient| for a neighbour means removing/changing that neighbour
-would most reduce the target node's anomaly signal — it is the primary
-driver of the risk flag.
-
-This is the gradient-based analogue of GNNExplainer / SubgraphX.
+Approach: a similarity-and-tension HEURISTIC over the k-hop neighbourhood —
+no gradients are computed. Each neighbour is scored by
+    |cos(target_emb, neighbour_emb)| * neighbour_gnn_score
+  + 0.3 * |projection of (target − neighbour) onto target|
+The first term rewards neighbours that share the target's embedding pattern
+AND are themselves anomalous; the second rewards neighbours whose embedding
+pulls away from the target (tension). It is a fast attribution proxy, not
+GNNExplainer/SubgraphX, and should be read as "which neighbours look most
+implicated", not as a causal or gradient-based attribution.
 
 Usage (standalone):
     python3 src/gnn_explainer.py --node "CARDINAL HEALTH INC"
@@ -104,20 +107,22 @@ def explain_node_risk(
     target_emb  = np.array(embeddings[node], dtype=np.float32)
     target_info = risk_map.get(node, {})
 
-    # ── Collect k-hop neighbourhood ───────────────────────────────────────────
-    neighbours = set()
-    frontier   = {node}
-    for _ in range(hops):
+    # ── Collect k-hop neighbourhood, recording each node's true BFS hop ──────
+    hop_of: dict = {}
+    frontier = {node}
+    for h in range(1, hops + 1):
         next_frontier = set()
         for n in frontier:
             next_frontier.update(G.predecessors(n))
             next_frontier.update(G.successors(n))
-        neighbours.update(next_frontier)
+        for n in next_frontier:
+            if n != node and n not in hop_of:
+                hop_of[n] = h
         frontier = next_frontier
-    neighbours.discard(node)
+    neighbours = sorted(hop_of)            # deterministic order
 
     # ── Score each neighbour ──────────────────────────────────────────────────
-    # Influence = embedding_similarity × neighbour_risk_score × (1 / hop_distance)
+    # influence = |cos sim| * neighbour risk + 0.3 * |embedding tension|
     scored = []
     for nb in neighbours:
         if nb not in embeddings:
@@ -127,23 +132,14 @@ def explain_node_risk(
         nb_info = risk_map.get(nb, {})
         nb_risk = nb_info.get("gnn_score", 0.0)
 
-        # Gradient proxy: how much does this neighbour's embedding
-        # "pull" the target toward a high-reconstruction-error region?
-        # = dot product of (target - neighbour) with target / ||target||²
-        # High value → neighbour is far from target in embedding space → tension
+        # Tension: projection of (target − neighbour) onto the target
+        # direction, normalised. Large → the neighbour sits far from the
+        # target along the target's own axis in embedding space.
         diff_proj = float(np.dot(target_emb - nb_emb, target_emb)) / (
             np.dot(target_emb, target_emb) + 1e-9
         )
         influence = abs(sim) * nb_risk + abs(diff_proj) * 0.3
-
-        # Determine hop distance
-        try:
-            hop_dist = min(
-                len(list(G.predecessors(nb))),   # rough proxy
-                2
-            )
-        except Exception:
-            hop_dist = 1
+        hop_dist = hop_of[nb]                 # true BFS distance (1..hops)
 
         scored.append({
             "neighbour":    nb,

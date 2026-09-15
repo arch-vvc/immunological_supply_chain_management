@@ -82,9 +82,11 @@ feature_cols = [c for c in df.columns if c not in ("date", "stress_score", "stre
 value_cols   = ["stress_score"] + feature_cols
 for c in value_cols:
     nan_before = int(df[c].isna().sum())
-    df[c] = df[c].interpolate(method="linear").ffill().bfill()
+    # ffill only; an indicator's pre-start weeks get the neutral rank 0.5 rather
+    # than a back-fill from its first future reading (that would be look-ahead).
+    df[c] = df[c].ffill().fillna(0.5)
     if nan_before:
-        print(f"  ⚠  Filled {nan_before} NaNs in {c} via linear interpolation")
+        print(f"  ⚠  Filled {nan_before} NaNs in {c} (carry-forward; pre-start weeks = 0.5)")
 
 scores = df["stress_score"].values.astype(np.float32)
 feats  = df[value_cols].values.astype(np.float32)     # (weeks, features), all ~0-1

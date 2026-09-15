@@ -1,0 +1,101 @@
+{
+  "4": {
+    "pool_size": 4,
+    "capacity_total": 8,
+    "demands": 6,
+    "capacity_binds": true,
+    "avg_total_reward": {
+      "PPO": 37.17788774399174,
+      "Random": 34.29223070955006,
+      "Dijkstra": 34.64125856083591,
+      "Risk-greedy": 36.56072557540036
+    },
+    "unserved": {
+      "PPO": 28,
+      "Random": 60,
+      "Dijkstra": 56,
+      "Risk-greedy": 35
+    },
+    "ppo_minus_greedy": {
+      "mean": 0.6171621685913824,
+      "ci95": [
+        -0.3552336964431202,
+        1.5921363323369042
+      ]
+    },
+    "ppo_minus_dijkstra": {
+      "mean": 2.5366291831558305,
+      "ci95": [
+        1.3785008014528966,
+        3.692621245556392
+      ]
+    },
+    "ppo_safer_than_dijkstra_pct": 39.0
+  },
+  "6": {
+    "pool_size": 6,
+    "capacity_total": 12,
+    "demands": 6,
+    "capacity_binds": false,
+    "avg_total_reward": {
+      "PPO": 40.0502863110402,
+      "Random": 38.79984368626465,
+      "Dijkstra": 38.530241601872916,
+      "Risk-greedy": 39.96128791011504
+    },
+    "unserved": {
+      "PPO": 0,
+      "Random": 11,
+      "Dijkstra": 14,
+      "Risk-greedy": 1
+    },
+    "ppo_minus_greedy": {
+      "mean": 0.08899840092516882,
+      "ci95": [
+        -4.7369515717340015e-17,
+        0.26633013518367105
+      ]
+    },
+    "ppo_minus_dijkstra": {
+      "mean": 1.5200447091672902,
+      "ci95": [
+        0.9738356064910973,
+        2.1536781783541334
+      ]
+    },
+    "ppo_safer_than_dijkstra_pct": 92.0
+  },
+  "8": {
+    "pool_size": 8,
+    "capacity_total": 16,
+    "demands": 6,
+    "capacity_binds": false,
+    "avg_total_reward": {
+      "PPO": 40.26683914500588,
+      "Random": 39.715688147781336,
+      "Dijkstra": 39.2612160569597,
+      "Risk-greedy": 40.2664290906494
+    },
+    "unserved": {
+      "PPO": 0,
+      "Random": 2,
+      "Dijkstra": 7,
+      "Risk-greedy": 0
+    },
+    "ppo_minus_greedy": {
+      "mean": 0.00041005435647631334,
+      "ci95": [
+        -0.001552724760264515,
+        0.0023761179356780898
+      ]
+    },
+    "ppo_minus_dijkstra": {
+      "mean": 1.0056230880461885,
+      "ci95": [
+        0.555936668121792,
+        1.553720034622334
+      ]
+    },
+    "ppo_safer_than_dijkstra_pct": 96.33333333333334
+  }
+}

@@ -34,8 +34,8 @@
       "HAS_LEAD_TIMES"
     ],
     "n_lanes_sized": 2259,
-    "total_buffer_usd": 389793.0,
-    "holding_usd_per_yr": 97448.0,
+    "total_buffer_usd": 394653.0,
+    "holding_usd_per_yr": 98663.0,
     "service_level": "95%"
   },
   "event_replay": {
@@ -43,14 +43,31 @@
     "requires": [
       "HAS_DISRUPTIONS"
     ],
-    "windows_tested": 826,
-    "n_alerts": 46,
+    "windows_tested": 283,
+    "n_alerts": 12,
     "base_late_rate": 0.547,
     "top_alerts": [
-      "Nueva Zelanda 2016-04: 306/440 late (z=6.26)",
-      "Ghana 2016-12: 45/51 late (z=4.81)",
-      "Brasil 2015-06: 345/530 late (z=4.81)"
-    ]
+      "El Salvador 2017-04: 710/1196 late vs 53.5% prior (p=2.6e-05)",
+      "Guatemala 2017-06: 487/819 late vs 52.4% prior (p=2.6e-05)",
+      "Italia 2017-09: 985/1789 late vs 50.4% prior (p=4.2e-05)",
+      "El Salvador 2017-05: 693/1177 late vs 53.6% prior (p=1.6e-04)",
+      "Finlandia 2017-09: 60/100 late vs 42.6% prior (p=3.4e-04)"
+    ],
+    "alerts": [
+      "El Salvador 2017-04: 710/1196 late vs 53.5% prior (p=2.6e-05)",
+      "Guatemala 2017-06: 487/819 late vs 52.4% prior (p=2.6e-05)",
+      "Italia 2017-09: 985/1789 late vs 50.4% prior (p=4.2e-05)",
+      "El Salvador 2017-05: 693/1177 late vs 53.6% prior (p=1.6e-04)",
+      "Finlandia 2017-09: 60/100 late vs 42.6% prior (p=3.4e-04)",
+      "Guatemala 2017-05: 497/864 late vs 51.8% prior (p=4.0e-04)",
+      "Uruguay 2017-05: 24/31 late vs 46.4% prior (p=4.3e-04)",
+      "Martinica 2017-03: 20/27 late vs 40.6% prior (p=4.4e-04)",
+      "Martinica 2017-05: 32/48 late vs 41.9% prior (p=4.6e-04)",
+      "Cuba 2017-06: 450/828 late vs 48.6% prior (p=4.9e-04)",
+      "Italia 2017-11: 550/976 late vs 51.2% prior (p=6.8e-04)",
+      "Finlandia 2017-08: 39/61 late vs 43.1% prior (p=8.4e-04)"
+    ],
+    "protocol": "walk-forward: 3-month window vs the destination's own prior late rate (>= 12 prior months, >= 30 prior shipments), exact binomial tail, alpha=0.001"
   },
   "value_at_risk": {
     "status": "ran",
@@ -69,7 +86,7 @@
       "HAS_TOPOLOGY"
     ]
   },
-  "ppo_recovery_routing": {
+  "policy_gradient_routing": {
     "status": "skipped",
     "missing": [
       "HAS_TOPOLOGY"

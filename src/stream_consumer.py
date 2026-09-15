@@ -28,6 +28,7 @@ import numpy as np
 from pathlib import Path
 from datetime import datetime
 from collections import deque
+import random
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -233,15 +234,23 @@ def dijkstra_reroute(G, manufacturer, disrupted_dist, retailer):
 
 # ── Rolling Z-score ───────────────────────────────────────────────────────
 def check_anomaly(quantity: float, window: deque):
-    window.append(quantity)
+    """Rolling z-score of `quantity` against the window of PRIOR quantities.
+
+    The row is scored before it is appended, so it never scores against
+    itself. Non-positive quantities are scored but not appended: a missing
+    shipment is not part of the normal-volume baseline, and letting it in
+    would inflate the window's spread and hide the next real spike.
+    """
     if len(window) < 5:
+        if quantity > 0:
+            window.append(quantity)
         return False, 0.0
     arr  = list(window)
     mean = float(np.mean(arr))
     std  = float(np.std(arr))
-    if std == 0:
-        return False, 0.0
-    z = abs((quantity - mean) / std)
+    z = abs((quantity - mean) / std) if std > 0 else 0.0
+    if quantity > 0:
+        window.append(quantity)
     return z > EFFECTIVE_ZTHRESH, round(z, 3)
 
 # ── Results writer ────────────────────────────────────────────────────────
@@ -372,9 +381,6 @@ def emit_cytokine_storm(storm_events: list, decisions_path: Path):
 
 # ── Main loop ─────────────────────────────────────────────────────────────
 def run(domain: str = "pharma"):
-    import random as _random
-    global random
-    import random
     global EFFECTIVE_ZTHRESH
 
     print("[CON] Stream consumer starting (Full Immune Response)...")
@@ -418,6 +424,9 @@ def run(domain: str = "pharma"):
     quantity_window = deque(maxlen=WINDOW_SIZE)
     rows_seen       = 0
     anomalies_found = 0
+    injected_seen   = 0      # rows the simulator flagged (evaluation only)
+    injected_caught = 0      # ...of which the detector actually flagged
+    engine_failures = 0      # consecutive engine errors; engine is disabled after 3
     header_written  = False
     # Cytokine storm: sliding list of recent anomaly events with unix timestamps
     storm_window: list = []   # each entry: dict with timestamp + event info
@@ -444,6 +453,13 @@ def run(domain: str = "pharma"):
         with open(LIVE_FEED, newline="", encoding="utf-8") as f:
             reader = list(csv.DictReader(f))
 
+        if len(reader) < rows_seen:
+            # The simulator unlinks and recreates the feed on restart; a
+            # monotonic offset against a shorter file would read nothing forever.
+            print(f"[CON] Feed shrank ({len(reader)} < {rows_seen}) — simulator restarted, "
+                  "resetting reader and rolling window")
+            rows_seen = 0
+            quantity_window.clear()
         new_rows = reader[rows_seen:]
         if not new_rows:
             time.sleep(0.3)
@@ -458,13 +474,23 @@ def run(domain: str = "pharma"):
             except (ValueError, TypeError):
                 qty = 0.0
 
+            # The simulator's injection flag is carried through for EVALUATION
+            # only (did the detector catch what was injected?). It is never
+            # used as evidence: every row gets the real rolling z-score. A
+            # non-positive quantity (a missing shipment) is a rule-based
+            # anomaly on its own — it has no meaningful z against a window of
+            # positive volumes — and is labelled as such in the routing note.
             is_disruption = str(row.get("disruption_injected", "0")) == "1"
-
-            if is_disruption or qty == 0:
+            is_anomaly, z_score = check_anomaly(qty, quantity_window)
+            zero_rule = qty <= 0
+            if zero_rule:
                 is_anomaly = True
-                z_score    = 99.0
-            else:
-                is_anomaly, z_score = check_anomaly(qty, quantity_window)
+            if is_disruption:
+                injected_seen += 1
+                injected_caught += int(is_anomaly)
+                print(f"[CON] injected row {'CAUGHT' if is_anomaly else 'MISSED'} — "
+                      f"{'zero-quantity rule' if zero_rule else f'z={z_score:.2f} vs {EFFECTIVE_ZTHRESH}'}"
+                      f" (detector recall so far {injected_caught}/{injected_seen})")
 
             manufacturer = row.get("manufacturer", "")
             distributor  = row.get("distributor", "")
@@ -472,7 +498,7 @@ def run(domain: str = "pharma"):
             state        = row.get("retailer_state", "")
 
             alternate_route = ""
-            routing_note    = "Normal flow"
+            routing_note    = "ZERO-QUANTITY (rule-based flag)" if zero_rule else "Normal flow"
             routing_method  = "none"
 
             if is_anomaly:
@@ -493,6 +519,7 @@ def run(domain: str = "pharma"):
                     }
                     try:
                         decision = engine.respond(event_dict)
+                        engine_failures = 0
                         engine.print_response(decision)
                         verdict = decision.get("verdict", {})
                         top_action = verdict.get("actions_ranked", [{}])[0]
@@ -521,8 +548,12 @@ def run(domain: str = "pharma"):
                             storm_window.clear()
 
                     except Exception as _eng_e:
-                        print(f"[CON][WARN] Engine response failed: {_eng_e} — using legacy routing")
-                        engine = None   # disable for subsequent rows, fall through below
+                        engine_failures += 1
+                        print(f"[CON][WARN] Engine response failed ({engine_failures}/3): {_eng_e} "
+                              "— legacy routing for this row")
+                        if engine_failures >= 3:
+                            print("[CON][WARN] Engine disabled after 3 consecutive failures")
+                            engine = None
 
                 if engine is None:
                     # ── Legacy fallback: PPO / Dijkstra only ──────────────────

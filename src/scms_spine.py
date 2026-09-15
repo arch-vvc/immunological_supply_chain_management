@@ -58,7 +58,7 @@ RPT_OUT  = os.path.join(ROOT, "output", "scms_spine_report.txt")
 
 # candidate score for choosing among alternate vendors: capacity-first,
 # then how established the vendor is on this molecule (shipment count).
-W_CAP, W_ESTAB = 0.6, 0.4
+from isc_common import W_CAP, W_ESTAB     # planner rule — one definition for Stages 19/20/28
 
 print("=" * 55)
 print("  SCMS SPINE — REAL UNIFIED NO-BACKUP / RECOVERY")

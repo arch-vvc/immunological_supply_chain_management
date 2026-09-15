@@ -9,7 +9,7 @@ The system models a supply chain the way the immune system works. Innate immunit
 
 ```bash
 python3 -m venv myenv && source myenv/bin/activate
-pip install -e ".[test]"          # installs requirements.txt and exposes src/ modules
+pip install -e ".[test]"          # installs pinned requirements.txt and exposes the import-safe src/ modules
 python3 main.py                   # full 28-stage pipeline (~10 min, trains 3 models)
 streamlit run app.py              # dashboard on http://localhost:8501
 ```
@@ -111,6 +111,20 @@ ISC_SMOKE=1 pytest tests/test_pipeline_smoke.py -s   # stages 1-6 end to end in 
 - `test_harnesses.py`: wraps the two validation harnesses in `src/` (IR stages, vendor scorecard).
 - `test_pipeline_smoke.py`: real end-to-end run of the batch stages, opt-in.
 - `test_results_manifest.py`: the headline numbers currently in `output/` match the committed `output/RESULTS_MANIFEST.json` within tolerance, and the input datasets are unchanged.
+
+## Methodology notes
+
+These are the choices an evaluator will ask about, and the code enforces them:
+
+- **No look-ahead in the macro stress layer.** Each freight indicator is scored as the percentile rank of that week's value within the indicator's own history up to that week, after a one-year burn-in, and carried forward weekly. Nothing is scaled by the full series. The crisis validation (Stage 27) is therefore an honest out-of-sample event study, and its verdicts changed when this was fixed: under the causal composite it sees Suez and the Red Sea attacks and does not see the COVID onset, because US diesel and spot rates fell in spring 2020.
+- **PPO is evaluated on held-out disruption sites.** 30% of eligible distributors are held out; the policy trains on episodes anchored at the rest and is evaluated only on episodes anchored at the held-out ones. A pool-size sweep (4, 6, 8, each retrained) is reported alongside, so the setting where capacity binds is not the only one shown. Under this protocol PPO clearly beats Dijkstra and random, and its edge over the load-aware greedy heuristic is not statistically significant.
+- **The GNN score has its own ground truth.** Stage 7 plants structural anomalies (starved, flooded, rewired nodes) into copies of the graph on held-out seeds, retrains from scratch, and reports AUC and precision@k against degree and volume baselines. It beats them overall and largely misses rewired nodes; the report says so.
+- **The live detector detects.** The stream consumer scores every row with a real rolling z-score against prior quantities; a zero quantity (a missing shipment) is flagged by an explicit rule and labelled as such. The simulator's injection flag is never used as evidence; it only scores recall, which the Live Response tab shows.
+- **The live engine really uses the trained PPO policy.** Its actor mirrors the Stage 11 checkpoint's architecture and builds the same six per-candidate features. Before this, the class definitions had drifted apart, the checkpoint never loaded, and every live reroute was the Dijkstra fallback behind a warning.
+- **The IR event replay is walk-forward.** The generic detector tests each window against the destination's own prior-only late rate with an exact binomial tail, exactly like Stage 21, and reproduces its alerts.
+- **One definition per shared constant.** Fuel-cost multipliers (illustrative, from the domain YAML), supplier and inventory scoring weights, the SCMS planner rule, and King's safety-stock formula live in `isc_common.py` and are imported everywhere they are used.
+- **Training stages train from scratch.** GNN, LSTM, and PPO are seeded and reproduce bit for bit; warm-starting is opt-in with `ISC_CONTINUAL=1`.
+- **The IR layer's routing stage is clipped policy gradient**, not PPO (no critic), and is named `policy_gradient_routing`.
 
 ## Results manifest
 

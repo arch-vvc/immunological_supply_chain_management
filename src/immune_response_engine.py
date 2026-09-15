@@ -45,6 +45,7 @@ from datetime import datetime
 from typing import Optional
 
 import numpy as np
+from isc_common import SUPPLIER_WEIGHTS, INVENTORY_WEIGHTS   # same rules as Stages 14/15
 import pandas as pd
 import networkx as nx
 
@@ -62,10 +63,12 @@ DECISIONS_OUT = ROOT / "data"    / "stream" / "immune_decisions.jsonl"
 DECISIONS_OUT.parent.mkdir(parents=True, exist_ok=True)
 
 # ── Fixed architecture constants (must match saved PPO checkpoint) ──────────
-K         = 10      # PPO candidate pool size
-F_DIM     = 5       # PPO feature dimensions per candidate
+K         = 10      # PPO candidate slots (ppo_routing_agent.K)
+F_DIM     = 6       # features per slot   (ppo_routing_agent.F_DIM)
 STATE_DIM = K * F_DIM
 ACTION_DIM= K
+PPO_CAP   = 2       # per-candidate capacity within an episode (ppo_routing_agent.CAP)
+PPO_LOAD_STEP = 0.15  # effective-risk increase per use (ppo_routing_agent.LOAD_STEP)
 
 # ── Domain config (loaded once; replaced when engine is constructed) ─────────
 try:
@@ -82,18 +85,32 @@ try:
     import torch.nn as nn
     import torch.nn.functional as TF
 
+    def _masked_ctx(x, mask):
+        """(B,K,F), (B,K) -> (B,F) mean over real (unmasked) slots."""
+        denom = mask.sum(dim=1, keepdim=True).clamp(min=1.0)
+        return (x * mask.unsqueeze(-1)).sum(dim=1) / denom
+
     class _Actor(nn.Module):
+        """Exact mirror of ppo_routing_agent.Actor — a slot-equivariant scorer
+        (shared network per candidate slot + masked pool context). The
+        state-dict keys ('score.*') must match the Stage-11 checkpoint; the
+        previous dense-MLP definition here never matched it, so the engine
+        had been silently falling back to Dijkstra on every event."""
         def __init__(self):
             super().__init__()
-            self.net = nn.Sequential(
-                nn.Linear(STATE_DIM, 128), nn.ReLU(),
-                nn.Linear(128, 64),        nn.ReLU(),
-                nn.Linear(64, ACTION_DIM),
+            self.score = nn.Sequential(
+                nn.Linear(F_DIM * 2, 64), nn.ReLU(),
+                nn.Linear(64, 32),        nn.ReLU(),
+                nn.Linear(32, 1),
             )
+
         def forward(self, state, mask=None):
-            logits = self.net(state)
+            x = state.view(-1, K, F_DIM)
+            m = mask if mask is not None else torch.ones(x.shape[0], K)
+            ctx = _masked_ctx(x, m).unsqueeze(1).expand(-1, K, -1)
+            logits = self.score(torch.cat([x, ctx], dim=-1)).squeeze(-1)
             if mask is not None:
-                logits = logits + (1.0 - mask) * (-1e9)
+                logits = logits + (1.0 - m) * (-1e9)
             return TF.softmax(logits, dim=-1)
 
     TORCH_OK = True
@@ -276,7 +293,7 @@ class ImmuneResponseEngine:
         # ── STEP 5: Final Verdict ──────────────────────────────────────────
         verdict = self._synthesise(
             memory_result, route_result, supplier_result, inventory_result,
-            mfr, dist, ret, z, thinking, actions
+            mfr, dist, ret, z, thinking, actions, thr=thr
         )
 
         decision = {
@@ -438,10 +455,18 @@ class ImmuneResponseEngine:
             }])
             meta["outcomes"] = pd.concat([outcomes, new_row], ignore_index=True)
 
-            # Atomic persist: write index then metadata
-            _faiss.write_index(self.faiss_idx, str(FAISS_INDEX))
-            with open(FAISS_META, "wb") as fh:
+            # Atomic persist: each file is written to a temp path and moved
+            # into place with os.replace (atomic on POSIX), index first, then
+            # metadata. A crash between the two leaves an index one vector
+            # ahead of its metadata, which the loader tolerates by trimming
+            # to the shorter of the two; it never leaves a half-written file.
+            _tmp_idx = str(FAISS_INDEX) + ".tmp"
+            _tmp_meta = str(FAISS_META) + ".tmp"
+            _faiss.write_index(self.faiss_idx, _tmp_idx)
+            with open(_tmp_meta, "wb") as fh:
                 pickle.dump(meta, fh)
+            os.replace(_tmp_idx, str(FAISS_INDEX))
+            os.replace(_tmp_meta, str(FAISS_META))
 
             self._log(
                 f"[ENGINE] Clonal selection: outcome learned "
@@ -524,26 +549,39 @@ class ImmuneResponseEngine:
         if self.actor is not None and TORCH_OK:
             pool = candidates[:K]
             random.shuffle(pool)
-            # Feature layout must mirror ppo_routing_agent.py: risk and GNN
-            # are min-max normalised WITHIN the candidate pool (the policy is
-            # trained on pool-relative contrast, not absolute levels)
-            feats = []
-            for cand in pool:
-                r   = self.risk_map.get(cand, 0.5)
-                g   = self.gnn_map.get(cand, 0.5)
-                ind  = self.in_deg.get(cand, 0) / self.max_in
-                outd = self.out_deg.get(cand, 0) / self.max_out
-                hp   = 1.0 if nx.has_path(self.G, cand, ret) else 0.0
-                feats.append([r, g, ind, outd, hp])
-            for col in (0, 1):
-                vals = [f[col] for f in feats]
+            # Feature layout mirrors ppo_routing_agent.CascadeEnv.build_state
+            # exactly (6 per slot): [base risk (pool-rel), gnn (pool-rel),
+            # valid edge, capacity left, effective risk (pool-rel), out-degree].
+            # "Load" = how often this candidate was already used as a reroute
+            # inside the decay window (the live analogue of the cascade's
+            # per-episode capacity), so the policy sees the same clonal-
+            # exhaustion signal it was trained on.
+            win = (self.cfg.decay_window_minutes if self.cfg else 30.0) * 60
+            cutoff = time.time() - win
+            loads = [min(PPO_CAP, sum(1 for t in self._reroute_usage.get(c, []) if t >= cutoff))
+                     for c in pool]
+            base = [self.risk_map.get(c, 0.5) for c in pool]
+            gnn  = [self.gnn_map.get(c, 0.5) for c in pool]
+            def _rel(vals):
                 lo, span = min(vals), (max(vals) - min(vals)) or 1.0
-                for f in feats:
-                    f[col] = (f[col] - lo) / span
+                return [(v - lo) / span for v in vals]
+            base_rel = _rel(base)
+            gnn_rel  = _rel(gnn)
+            effs     = [min(1.0, base[i] + PPO_LOAD_STEP * loads[i]) for i in range(len(pool))]
+            eff_rel  = _rel(effs)
+            valid    = [1.0 if self.G.has_edge(c, ret) else 0.0 for c in pool]
+            ok       = {i for i, c in enumerate(pool) if valid[i] and loads[i] < PPO_CAP}
+            feats = []
+            for i, c in enumerate(pool):
+                feats.append([base_rel[i], gnn_rel[i], 1.0 if i in ok else 0.0,
+                              (PPO_CAP - loads[i]) / PPO_CAP, eff_rel[i],
+                              self.out_deg.get(c, 0) / self.max_out])
             state_vec = [v for f in feats for v in f]
             while len(state_vec) < STATE_DIM:
                 state_vec.extend([0.0] * F_DIM)
-            mask = [1.0] * len(pool) + [0.0] * (K - len(pool))
+            mask = [1.0 if i in ok else 0.0 for i in range(len(pool))] + [0.0] * (K - len(pool))
+            if not ok:
+                mask = [1.0] * len(pool) + [0.0] * (K - len(pool))   # nothing usable: let the policy pick, capacity is advisory live
 
             st_t  = torch.FloatTensor(state_vec).unsqueeze(0)
             msk_t = torch.FloatTensor([mask])
@@ -583,8 +621,8 @@ class ImmuneResponseEngine:
                         k_used   = min(len(pool), K)
                         sal_grid = saliency[: k_used * F_DIM].reshape(k_used, F_DIM)
                         feat_imp = sal_grid.mean(axis=0)   # mean across candidate slots
-                        feat_names = ["Risk Score", "GNN Score", "In-Degree",
-                                      "Out-Degree", "Has Path"]
+                        feat_names = ["Risk (pool-rel)", "GNN (pool-rel)", "Valid edge",
+                                      "Capacity left", "Eff. risk (pool-rel)", "Out-degree"]
                         shap_attribution = {
                             name: round(float(val), 6)
                             for name, val in zip(feat_names, feat_imp)
@@ -704,9 +742,9 @@ class ImmuneResponseEngine:
                 sdf[f"{col}_norm"] = (sdf[col] - mn) / (mx - mn + 1e-9)
 
             sdf["backup_score"] = (
-                0.50 * sdf["safety_score"]
-              + 0.30 * sdf["out_volume_norm"]
-              + 0.20 * sdf["efficiency_norm"]
+                SUPPLIER_WEIGHTS["safety"]     * sdf["safety_score"]
+              + SUPPLIER_WEIGHTS["volume"]     * sdf["out_volume_norm"]
+              + SUPPLIER_WEIGHTS["efficiency"] * sdf["efficiency_norm"]
             ).round(4)
 
             top3 = sdf.sort_values("backup_score", ascending=False).head(3)
@@ -782,9 +820,9 @@ class ImmuneResponseEngine:
                     continue
                 fuel_score = max(0.0, min(1.0, 1.0 - (fuel_to_ret - 1.0) / 2.0))
                 tscore = (
-                    0.40 * float(row["capacity_norm"])
-                  + 0.35 * float(row["safety_norm"])
-                  + 0.25 * fuel_score
+                    INVENTORY_WEIGHTS["capacity"] * float(row["capacity_norm"])
+                  + INVENTORY_WEIGHTS["safety"]   * float(row["safety_norm"])
+                  + INVENTORY_WEIGHTS["fuel"]     * fuel_score
                 )
                 est_days = round(fuel_to_ret * 1.5, 1)
                 candidates.append({
@@ -835,14 +873,18 @@ class ImmuneResponseEngine:
     # ── Step 5: Synthesise Final Verdict ───────────────────────────────────
 
     def _synthesise(self, memory, route, supplier, inventory,
-                    mfr, dist, ret, z, thinking, actions) -> dict:
+                    mfr, dist, ret, z, thinking, actions, thr: float = 2.5) -> dict:
         step = {
             "step": 5,
             "phase": "FINAL VERDICT",
             "title": "Synthesising all signals into a ranked action plan",
         }
 
-        severity = "CRITICAL" if z > 5 else "HIGH" if z > 3 else "MODERATE"
+        # Severity bands scale with the macro-adjusted threshold the caller
+        # passed (thr): 2x thr = CRITICAL, 1.2x thr = HIGH. At the default
+        # thr=2.5 these are the previous fixed cutoffs (5 / 3); under a HIGH
+        # stress regime (thr 1.875) the same z is judged more severe.
+        severity = "CRITICAL" if z > 2.0 * thr else "HIGH" if z > 1.2 * thr else "MODERATE"
         est_recovery = memory.get("avg_recovery_days", None)
 
         # Build ranked actions list

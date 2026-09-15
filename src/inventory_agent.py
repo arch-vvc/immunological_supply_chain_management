@@ -45,20 +45,7 @@ TOP_N_RETAILERS  = 15   # at-risk retailers to analyse
 TOP_N_TRANSFERS  = 3    # transfer options per retailer
 
 # Re-use fuel cost map from routing.py
-REGION_FUEL_COST = {
-    "ME":1.8,"NH":1.8,"VT":1.8,"MA":1.7,"RI":1.7,"CT":1.7,
-    "NY":1.5,"NJ":1.5,"PA":1.4,"DE":1.5,"MD":1.4,
-    "VA":1.3,"WV":1.2,"NC":1.3,"SC":1.4,"GA":1.4,"FL":1.6,
-    "AL":1.3,"MS":1.3,"TN":1.2,"KY":1.2,
-    "OH":1.0,"IN":1.0,"IL":1.0,"MI":1.1,"WI":1.1,
-    "MN":1.2,"IA":1.1,"MO":1.1,"ND":1.3,"SD":1.3,
-    "NE":1.2,"KS":1.2,
-    "TX":1.3,"OK":1.2,"AR":1.2,"LA":1.3,
-    "MT":1.6,"ID":1.6,"WY":1.5,"CO":1.4,"NM":1.5,
-    "AZ":1.5,"UT":1.5,"NV":1.6,
-    "CA":1.8,"OR":1.8,"WA":1.8,"AK":2.5,"HI":3.0,
-}
-DEFAULT_FUEL = 1.3
+from isc_common import REGION_FUEL_COST, DEFAULT_FUEL_COST as DEFAULT_FUEL, INVENTORY_WEIGHTS   # single source
 
 print("=" * 55)
 print("  STAGE 15 — INVENTORY AGENT (Digital Antibody #4)")
@@ -164,9 +151,9 @@ for _, rrow in at_risk.iterrows():
         fuel_score = max(0.0, min(1.0, fuel_score))
 
         transfer_score = (
-            0.40 * capacity_n
-          + 0.35 * safety_n
-          + 0.25 * fuel_score
+            INVENTORY_WEIGHTS["capacity"] * capacity_n
+          + INVENTORY_WEIGHTS["safety"]   * safety_n
+          + INVENTORY_WEIGHTS["fuel"]     * fuel_score
         )
 
         candidates.append({

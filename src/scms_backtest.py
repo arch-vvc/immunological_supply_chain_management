@@ -54,7 +54,7 @@ SCMS_IN = os.path.join(ROOT, "data", "raw", "SCMS_Delivery_History_Dataset.csv")
 CSV_OUT = os.path.join(ROOT, "output", "scms_backtest.csv")
 RPT_OUT = os.path.join(ROOT, "output", "scms_backtest_report.txt")
 
-W_CAP, W_ESTAB = 0.6, 0.4          # same rule as scms_spine.py — not re-tuned here
+from isc_common import W_CAP, W_ESTAB     # planner rule — one definition for Stages 19/20/28
 DATE_FMTS = ("%d-%b-%y", "%m/%d/%y", "%m/%d/%Y", "%d-%b-%Y")
 
 print("=" * 60)

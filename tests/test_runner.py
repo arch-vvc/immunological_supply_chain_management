@@ -60,12 +60,39 @@ def test_missing_outputs_reports_absent_files(tmp_path=None):
         runner.EXPECTED_OUTPUTS[1] = saved
 
 
-def test_pyproject_lists_every_src_module():
-    """`pip install -e .` only exposes modules named in [tool.setuptools] py-modules."""
+def test_pyproject_modules_are_import_safe():
+    """Every module `pip install -e .` exposes must be safe to import: it has a
+    `__main__` guard, or it is a pure library (no stage work at module scope).
+    Stage scripts that run at import time must NOT be listed."""
+    import re
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    text = open(os.path.join(root, "pyproject.toml")).read()
+    listed = re.findall(r'"([A-Za-z_0-9]+)"', text.split("py-modules")[1].split("]")[0])
+    pure_libraries = {"domain_config", "ir_schema", "ir_stages", "isc_common",
+                      "arcos_adapter", "scms_adapter", "dataco_adapter", "ai_agent"}
+    bad = []
+    for m in listed:
+        path = os.path.join(root, "src", m + ".py")
+        if not os.path.exists(path):
+            bad.append(f"{m}: file missing"); continue
+        src = open(path).read()
+        if m not in pure_libraries and '__name__ == "__main__"' not in src \
+                and "__name__ == '__main__'" not in src:
+            bad.append(f"{m}: no __main__ guard (importing it would run the stage)")
+    assert not bad, "\n".join(bad)
+
+
+def test_stage_scripts_are_not_exposed_as_modules():
+    """Modules with module-scope pipeline work must stay out of py-modules."""
     import re, glob
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     text = open(os.path.join(root, "pyproject.toml")).read()
     listed = set(re.findall(r'"([A-Za-z_0-9]+)"', text.split("py-modules")[1].split("]")[0]))
-    on_disk = {os.path.basename(p)[:-3] for p in glob.glob(os.path.join(root, "src", "*.py"))
-               if not os.path.basename(p).startswith("test_")}
-    assert on_disk <= listed, f"add to pyproject py-modules: {sorted(on_disk - listed)}"
+    pure_libraries = {"domain_config", "ir_schema", "ir_stages", "isc_common",
+                      "arcos_adapter", "scms_adapter", "dataco_adapter", "ai_agent"}
+    leaking = []
+    for p in glob.glob(os.path.join(root, "src", "*.py")):
+        m = os.path.basename(p)[:-3]
+        if m in listed and m not in pure_libraries and "__name__ ==" not in open(p).read():
+            leaking.append(m)
+    assert not leaking, f"exposed but run at import time: {leaking}"

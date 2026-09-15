@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-15T16:46:15+00:00",
-  "git_commit": "2872a6ee62e470a3c7ebdc3ecf5f69e95a032501",
+  "generated_at": "2026-09-15T17:32:54+00:00",
+  "git_commit": "a7bd8d6cf51167781c1c73b0dbaef139afe17004",
   "dataset_sha256": {
     "data/raw/arcos_sampled_50k.csv": "afe00318cef46c1c3b287209bd538f13e1e72280f97e0aff366f86e973e888cc",
     "data/raw/SCMS_Delivery_History_Dataset.csv": "918b992dd3e8d4b64d2a727b2c4ea607603d0c58f19484e73f7b78528c6a8673",
@@ -23,6 +23,13 @@
     "multi_domain_xgboost": 42,
     "immunological_memory_split": 42,
     "ppo_routing_agent": 42,
+    "ppo_entity_split": "30% of eligible distributors held out (seed 42); evaluation only on held-out",
+    "gnn_injection_benchmark_seeds": [
+      43,
+      44,
+      45,
+      46
+    ],
     "scms_counterfactual_bootstrap": 42,
     "ir_stages_betweenness": 42
   },
@@ -45,8 +52,8 @@
       "baseline_mae_days": 42.51
     },
     "lstm_stress_forecaster": {
-      "mae": 0.0188,
-      "persistence_mae": 0.0055,
+      "mae": 0.026,
+      "persistence_mae": 0.0169,
       "beats_persistence": false
     },
     "immunological_memory": {
@@ -58,39 +65,81 @@
     "ppo_cascade": {
       "n_eval_episodes": 300,
       "avg_total_reward": {
-        "PPO": 36.997492031485784,
-        "Random": 33.22309183917759,
-        "Dijkstra": 33.22115764609779,
-        "Risk-greedy": 35.93749203148578
+        "PPO": 37.17788774399174,
+        "Random": 34.29223070955006,
+        "Dijkstra": 34.64125856083591,
+        "Risk-greedy": 36.56072557540036
       },
       "sd_total_reward": {
-        "PPO": 8.25888867366625,
-        "Random": 12.170001014848312,
-        "Dijkstra": 11.771708276342313,
-        "Risk-greedy": 9.710574460968294
+        "PPO": 7.7359182889142755,
+        "Random": 10.866924620823138,
+        "Dijkstra": 11.050358579041223,
+        "Risk-greedy": 8.529008819015855
       },
       "unserved": {
-        "PPO": 30,
-        "Random": 72,
-        "Dijkstra": 72,
-        "Risk-greedy": 42
+        "PPO": 28,
+        "Random": 60,
+        "Dijkstra": 56,
+        "Risk-greedy": 35
       },
-      "ppo_safer_than_dijkstra_pct": 42.0,
+      "ppo_safer_than_dijkstra_pct": 39.0,
       "paired_delta_reward": {
         "ppo_minus_greedy": {
-          "mean": 1.06,
+          "mean": 0.6171621685913824,
           "ci95": [
-            0.17666666666666667,
-            1.9433333333333334
+            -0.3552336964431202,
+            1.5921363323369042
           ]
         },
         "ppo_minus_dijkstra": {
-          "mean": 3.776334385387989,
+          "mean": 2.5366291831558305,
           "ci95": [
-            2.534526478731215,
-            5.022589746133999
+            1.3785008014528966,
+            3.692621245556392
           ]
         }
+      }
+    },
+    "gnn_injection_benchmark": {
+      "seeds": [
+        43,
+        44,
+        45,
+        46
+      ],
+      "gnn_auc": 0.9018,
+      "gnn_auc_std": 0.0166,
+      "gnn_precision_at_k": 0.4313,
+      "best_baseline_auc": 0.8015,
+      "gnn_recall_rewire": 0.0384
+    },
+    "ppo_pool_sweep": {
+      "4": {
+        "ppo_minus_greedy_mean": 0.6171621685913824,
+        "ppo_minus_greedy_ci95": [
+          -0.3552336964431202,
+          1.5921363323369042
+        ],
+        "unserved_ppo": 28,
+        "capacity_binds": true
+      },
+      "6": {
+        "ppo_minus_greedy_mean": 0.08899840092516882,
+        "ppo_minus_greedy_ci95": [
+          -4.7369515717340015e-17,
+          0.26633013518367105
+        ],
+        "unserved_ppo": 0,
+        "capacity_binds": false
+      },
+      "8": {
+        "ppo_minus_greedy_mean": 0.00041005435647631334,
+        "ppo_minus_greedy_ci95": [
+          -0.001552724760264515,
+          0.0023761179356780898
+        ],
+        "unserved_ppo": 0,
+        "capacity_binds": false
       }
     },
     "multi_domain_risk": {
@@ -101,33 +150,33 @@
     },
     "macro_crisis_validation": {
       "COVID-19 pandemic onset": {
-        "delta": 0.0763,
-        "placebo_percentile": 100.0,
-        "verdict": "DETECTED",
+        "delta": -0.0873,
+        "placebo_percentile": 6.5,
+        "verdict": "NOT SEEN",
         "top_driver": "Inventory_to_Sales_R"
       },
       "Suez Canal blockage": {
-        "delta": 0.0354,
-        "placebo_percentile": 98.1,
-        "verdict": "DETECTED",
-        "top_driver": "Truck_Spot_Rates"
-      },
-      "US port congestion peak": {
-        "delta": 0.0611,
+        "delta": 0.1349,
         "placebo_percentile": 100.0,
         "verdict": "DETECTED",
-        "top_driver": "Containerships_Await"
-      },
-      "Russia invades Ukraine": {
-        "delta": 0.0149,
-        "placebo_percentile": 79.2,
-        "verdict": "PARTIAL",
         "top_driver": "Diesel_Sales_Prices"
       },
-      "Red Sea shipping attacks": {
-        "delta": 0.0093,
-        "placebo_percentile": 69.3,
+      "US port congestion peak": {
+        "delta": 0.0105,
+        "placebo_percentile": 72.0,
         "verdict": "NOT SEEN",
+        "top_driver": "Inventory_to_Sales_R"
+      },
+      "Russia invades Ukraine": {
+        "delta": -0.0488,
+        "placebo_percentile": 18.5,
+        "verdict": "NOT SEEN",
+        "top_driver": "Inventory_to_Sales_R"
+      },
+      "Red Sea shipping attacks": {
+        "delta": 0.0394,
+        "placebo_percentile": 91.7,
+        "verdict": "DETECTED",
         "top_driver": "Freight_Transportati"
       }
     },

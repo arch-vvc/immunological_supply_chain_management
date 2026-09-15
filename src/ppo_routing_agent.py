@@ -34,7 +34,7 @@ PPO with clipped surrogate (ε=0.2), Monte-Carlo returns (γ=0.99),
 entropy bonus, and action masking (invalid/exhausted slots blocked).
 """
 
-import sys, os, random, pickle, shutil, tempfile
+import sys, os, random, pickle, shutil, tempfile, subprocess
 import numpy as np
 import pandas as pd
 import torch
@@ -69,10 +69,15 @@ TOTAL_EPS   = 12000    # episodes (x D_STEPS decisions each)
 EVAL_EPS    = 300      # evaluation episodes (each replayed by every method)
 MIN_SPREAD  = 0.05     # episodes need real risk contrast across the pool
 D_STEPS     = 6        # reroute demands per episode (the cascade)
-POOL_SIZE   = 4        # candidates per episode — kept TIGHT so capacity binds:
-                       # 4x2=8 capacity vs 6 demands. With ARCOS's dense
-                       # validity (~11/19 distributors serve any retailer),
-                       # larger pools never corner anyone and every policy ties
+# Candidates per episode. The headline run uses 4 (4x2=8 capacity vs 6
+# demands, so capacity binds). Because that choice determines whether a
+# learned policy can matter at all, the script also SWEEPS pool sizes 4/6/8
+# (retraining each) and reports where PPO's advantage disappears, instead of
+# asserting the setting that favours it. ISC_PPO_POOL selects the size for a
+# sweep child; ISC_PPO_SWEEP_CHILD=1 makes a run write only its sweep JSON.
+POOL_SIZE   = int(os.environ.get("ISC_PPO_POOL", "4"))
+SWEEP_CHILD = os.environ.get("ISC_PPO_SWEEP_CHILD") == "1"
+SWEEP_POOLS = (4, 6, 8)
 CAP         = 2        # max uses per candidate within an episode
 LOAD_STEP   = 0.15     # effective-risk increase per use (config decay_per_use)
 SEED        = 42
@@ -126,6 +131,21 @@ print(f"  Manufacturers: {len(manufacturers)}  "
 eligible_disrupted = [d for d in sorted(distributors)
                       if sum(1 for r in G.successors(d) if r in retailers) >= D_STEPS]
 
+# ── Entity-level train / test split ─────────────────────────────────────────
+# The policy trains on episodes anchored at TRAIN distributors and is
+# evaluated ONLY on episodes anchored at held-out TEST distributors it never
+# saw, so the reported numbers measure generalisation to unseen disruption
+# sites rather than recall of training scenarios. (Earlier versions drew
+# training and evaluation episodes from the same population.)
+_split_rng = random.Random(SEED)
+_anchors = eligible_disrupted[:]
+_split_rng.shuffle(_anchors)
+_n_test = max(1, int(round(0.3 * len(_anchors))))
+TEST_ANCHORS  = sorted(_anchors[:_n_test])
+TRAIN_ANCHORS = sorted(_anchors[_n_test:])
+print(f"  Episode anchors: {len(TRAIN_ANCHORS)} train / {len(TEST_ANCHORS)} held-out test distributors "
+      f"(pool size {POOL_SIZE})")
+
 # ── Cascade Environment ────────────────────────────────────────────────────
 # Distributor→retailer paths in this graph are direct edges only (there are
 # no distributor→distributor links), so validity is G.has_edge and hops is
@@ -135,16 +155,21 @@ FAIL_REWARD = -20.0     # a demand no usable candidate can serve
 
 class CascadeEnv:
     """One episode = D_STEPS reroute demands against a fixed candidate pool
-    with per-candidate capacity CAP and load-dependent effective risk."""
+    with per-candidate capacity CAP and load-dependent effective risk.
+    `anchors` = the disrupted distributors this env may sample episodes from
+    (train or held-out test set)."""
+
+    def __init__(self, anchors):
+        self.anchors = list(anchors)
 
     def reset(self):
         """Sample an episode spec. Returns True if usable, False to resample.
         The pool is drawn from the union of the sampled demands' OWN suppliers
         (not one manufacturer's distributor list) — this is what makes validity
         sparse enough for capacity to bind, matching the IR cascade stage."""
-        if not eligible_disrupted:
+        if not self.anchors:
             return False
-        disrupted = random.choice(eligible_disrupted)
+        disrupted = random.choice(self.anchors)
         dis_retailers = [r for r in G.successors(disrupted) if r in retailers]
         demands = random.sample(dis_retailers, D_STEPS)
 
@@ -334,7 +359,8 @@ def ppo_update(states, actions, old_log_probs, returns, advantages, masks):
         opt_c.zero_grad(); c_loss.backward(); opt_c.step()
 
 # ── Training loop ──────────────────────────────────────────────────────────
-env = CascadeEnv()
+env      = CascadeEnv(TRAIN_ANCHORS)   # training episodes
+eval_env = CascadeEnv(TEST_ANCHORS)    # held-out evaluation episodes
 
 # Pre-generate a fixed pool of episode specs and CYCLE it (each spec is seen
 # ~TOTAL_EPS/SPEC_POOL_N times). Fresh-every-time scenarios gave the policy
@@ -415,7 +441,8 @@ while ep < TOTAL_EPS:
         ppo_update(buf_s, buf_a, buf_lp, returns, advantages, buf_m)
         buf_s, buf_a, buf_lp, buf_ret, buf_m = [], [], [], [], []
 
-torch.save({"actor": actor.state_dict(), "critic": critic.state_dict()}, OUT_MDL)
+if not SWEEP_CHILD:
+    torch.save({"actor": actor.state_dict(), "critic": critic.state_dict()}, OUT_MDL)
 print(f"\n  Model saved → {OUT_MDL}")
 
 # ── Evaluation: PPO vs baselines on IDENTICAL episode replays ──────────────
@@ -466,10 +493,10 @@ fails_by = {m: 0  for m in METHODS}
 
 eval_done = 0
 while eval_done < EVAL_EPS:
-    if not env.reset():
+    if not eval_env.reset():
         continue
     for m in METHODS:
-        total, risks, fails = replay(env, m)
+        total, risks, fails = replay(eval_env, m)
         total_by[m].append(total)
         risk_by[m].extend(risks)
         fails_by[m] += fails
@@ -503,6 +530,67 @@ def _paired_bootstrap(a, b, n_boot=5000, seed=SEED):
 delta_vs_greedy   = _paired_bootstrap(total_by["PPO"], total_by["Risk-greedy"])
 delta_vs_dijkstra = _paired_bootstrap(total_by["PPO"], total_by["Dijkstra"])
 
+import json as _json
+_sweep_record = {
+    "pool_size": POOL_SIZE, "capacity_total": POOL_SIZE * CAP, "demands": D_STEPS,
+    "capacity_binds": POOL_SIZE * CAP < 2 * D_STEPS,
+    "avg_total_reward": avg_total, "unserved": {m: int(fails_by[m]) for m in METHODS},
+    "ppo_minus_greedy": {"mean": delta_vs_greedy[0], "ci95": [delta_vs_greedy[1], delta_vs_greedy[2]]},
+    "ppo_minus_dijkstra": {"mean": delta_vs_dijkstra[0], "ci95": [delta_vs_dijkstra[1], delta_vs_dijkstra[2]]},
+    "ppo_safer_than_dijkstra_pct": ppo_safer_pct,
+}
+if SWEEP_CHILD:
+    _sp = os.path.join(BASE, "output", f"ppo_sweep_pool{POOL_SIZE}.json")
+    with open(_sp, "w") as _f:
+        _json.dump(_sweep_record, _f, indent=2)
+    print(f"  [sweep child] pool={POOL_SIZE}: PPO {avg_total['PPO']:.2f} vs greedy "
+          f"{avg_total['Risk-greedy']:.2f}, unserved {fails_by['PPO']}/{fails_by['Risk-greedy']} -> {_sp}")
+    sys.exit(0)
+
+# ── Pool-size sweep: retrain at each size in a child process ───────────────
+_sweep = {POOL_SIZE: _sweep_record}
+for _k in SWEEP_POOLS:
+    if _k == POOL_SIZE:
+        continue
+    _env = dict(os.environ, ISC_PPO_POOL=str(_k), ISC_PPO_SWEEP_CHILD="1")
+    print(f"\n  Sweep: retraining with pool size {_k} ...")
+    _r = subprocess.run([sys.executable, os.path.abspath(__file__)], env=_env,
+                        cwd=BASE, capture_output=True, text=True)
+    _sp = os.path.join(BASE, "output", f"ppo_sweep_pool{_k}.json")
+    if _r.returncode == 0 and os.path.exists(_sp):
+        with open(_sp) as _f:
+            _sweep[_k] = _json.load(_f)
+        os.remove(_sp)
+    else:
+        print(f"  [WARN] sweep child for pool {_k} failed:\n{_r.stdout[-600:]}{_r.stderr[-600:]}")
+SWEEP_OUT = os.path.join(BASE, "output", "ppo_pool_sweep.json")
+with open(SWEEP_OUT, "w") as _f:
+    _json.dump({str(k): v for k, v in sorted(_sweep.items())}, _f, indent=2)
+print(f"  Pool sweep saved → {SWEEP_OUT}")
+
+def _sweep_lines():
+    out = ["Pool-size sweep (each size retrained from scratch; same seed, same held-out anchors):",
+           f"  {'pool':>4} {'capacity':>9} {'binds?':>7} {'PPO':>7} {'greedy':>7} {'dijkstra':>9} "
+           f"{'unserved P/G/D':>15}  {'PPO−greedy [95% CI]':>24}"]
+    for k in sorted(_sweep):
+        r = _sweep[k]; a = r["avg_total_reward"]; u = r["unserved"]; d = r["ppo_minus_greedy"]
+        out.append(f"  {k:>4} {r['capacity_total']:>9} {'yes' if r['capacity_binds'] else 'no':>7} "
+                   f"{a['PPO']:>7.2f} {a['Risk-greedy']:>7.2f} {a['Dijkstra']:>9.2f} "
+                   f"{u['PPO']:>4}/{u['Risk-greedy']:>3}/{u['Dijkstra']:>3}      "
+                   f"{d['mean']:+.2f} [{d['ci95'][0]:+.2f}, {d['ci95'][1]:+.2f}]")
+    wins = [k for k in sorted(_sweep) if _sweep[k]["ppo_minus_greedy"]["ci95"][0] > 0]
+    ties = [k for k in sorted(_sweep) if k not in wins]
+    if wins and ties:
+        out.append(f"  Reading: PPO's edge over the myopic heuristic is significant only at pool "
+                   f"size(s) {wins}, where capacity binds; at {ties} the CI includes zero — the "
+                   "advantage is a property of the capacity-constrained regime, not of routing in general.")
+    elif wins:
+        out.append(f"  Reading: PPO beats the myopic heuristic at every pool size tested {wins}.")
+    else:
+        out.append(f"  Reading: PPO does not significantly beat the myopic heuristic at any pool size "
+                   f"tested {ties}; the learned policy adds nothing the load-aware heuristic lacks here.")
+    return out
+
 header = (f"  {'Method':<14} {'Avg Total Reward':>17} {'SD':>6}  "
           f"{'Avg Eff. Risk':>13}  {'Unserved':>9}")
 rows   = [f"  {m:<14} {avg_total[m]:>17.2f} {std_total[m]:>6.2f}  "
@@ -521,8 +609,10 @@ print(f"  PPO strictly safer than Dijkstra: {ppo_safer_pct:.1f}% of episodes")
 results_text = "\n".join([
     "PPO Routing Agent — Evaluation Report (multi-step cascade)",
     "===========================================================",
-    f"Evaluated on {eval_done} episodes of {D_STEPS} sequential reroute demands",
-    "served from one candidate pool under capacity (CAP={} uses) and".format(CAP),
+    f"Evaluated on {eval_done} HELD-OUT episodes of {D_STEPS} sequential reroute demands",
+    f"(anchored at {len(TEST_ANCHORS)} test distributors the policy never trained on;",
+    f"trained on {len(TRAIN_ANCHORS)} others), served from one candidate pool of",
+    "{} under capacity (CAP={} uses) and".format(POOL_SIZE, CAP),
     f"load-dependent effective risk (+{LOAD_STEP}/use — config decay_per_use).",
     "All methods replay the SAME episodes (same pool, same demand order)",
     "and evolve their own load state; pools require risk spread >= 0.05.",
@@ -550,18 +640,14 @@ results_text = "\n".join([
     "                 early and get cornered by later demands.",
     "",
     "How to read this:",
-    "  'Unserved' counts demands no usable candidate could serve (-20 each) —",
-    "  the cost of burning capacity without foresight. If PPO beats greedy on",
-    "  total reward, the learned policy is doing genuine multi-step planning;",
-    "  if greedy stays ahead, note WHY before concluding RL adds nothing:",
-    "  effective-risk greedy is not truly myopic here. The decay_per_use",
-    "  load step feeds back into its objective — every use raises a",
-    "  candidate's effective risk above the pool's base-risk spread, so",
-    "  greedy automatically rotates candidates. The immune-style confidence",
-    "  decay is itself a strong load balancer; that heuristic surviving a",
-    "  trained PPO policy is a finding about the heuristic, not a bug in",
-    "  the agent. PPO clearing Random AND Dijkstra confirms it learned the",
-    "  risk/capacity structure.",
+    "  'Unserved' counts demands no usable candidate could serve (-20 each).",
+    "  The paired CI on PPO − Risk-greedy is the test: an interval above zero",
+    "  means the learned policy plans across steps better than the load-aware",
+    "  heuristic; an interval containing zero means it does not. The pool-size",
+    "  sweep below shows in which regime that holds, so the headline setting",
+    "  is not the only one reported.",
+    "",
+    *_sweep_lines(),
 ])
 try:
     with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False) as tmp:
