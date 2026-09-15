@@ -152,13 +152,18 @@ class StressLSTM(nn.Module):
 
 model     = StressLSTM(N_FEAT, HIDDEN, LAYERS, PRED_STEPS)
 
-# ── Continual learning: load previous weights if they exist ───
-if os.path.exists(OUT_MDL):
+# ── Warm start is OPT-IN (ISC_CONTINUAL=1). Default trains from scratch so
+#    every number is reproducible from a fresh clone and the results manifest
+#    means something; fine-tuning from a prior checkpoint makes the result
+#    depend on how many times the stage was run before on that machine.
+if os.environ.get("ISC_CONTINUAL") == "1" and os.path.exists(OUT_MDL):
     try:
         model.load_state_dict(torch.load(OUT_MDL, weights_only=True))
-        print("  [CONTINUAL] Loaded previous LSTM weights — fine-tuning on new data")
+        print("  [CONTINUAL] ISC_CONTINUAL=1 — loaded previous LSTM weights, fine-tuning")
     except Exception:
         print("  [CONTINUAL] Previous weights incompatible — training from scratch")
+else:
+    print("  Training from scratch (seed 42). Set ISC_CONTINUAL=1 to fine-tune a prior checkpoint.")
 
 criterion = nn.MSELoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=LR)

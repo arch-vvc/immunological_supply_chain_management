@@ -20,6 +20,7 @@ Useful runner flags:
 python3 main.py --check                   # which artifacts are missing, without running anything
 python3 main.py --stages 1-6,19-25        # run a subset or ranges
 python3 main.py --skip-training           # skip GNN / LSTM / PPO training if models already exist
+ISC_CONTINUAL=1 python3 main.py           # fine-tune GNN / LSTM / PPO from existing checkpoints instead of from scratch
 python3 main.py --only 27                 # one stage
 python3 main.py --onboard path/to.csv     # auto-detect columns of a new dataset, then run
 python3 main.py --metrics                 # print the project metrics audit at the end
@@ -114,6 +115,8 @@ ISC_SMOKE=1 pytest tests/test_pipeline_smoke.py -s   # stages 1-6 end to end in 
 ## Results manifest
 
 `output/RESULTS_MANIFEST.json` is the single source of truth for every headline number: anomaly F1 and adjusted precision, PPO reward and unserved demands with paired CIs, LSTM vs persistence, FAISS k-NN MAE, macro crisis placebo percentiles, the counterfactual late-rate gap with bootstrap CIs, plus the git commit, dataset hashes and seeds that produced them. A full `python3 main.py` run rewrites it. If a rerun moves a number, the manifest test fails and names the key, so drift is caught in CI instead of discovered in the paper.
+
+The three training stages (GNN, LSTM, PPO) are seeded and train from scratch by default, so a fresh clone reproduces every manifest number bit for bit. Warm-starting from the previous checkpoint ("continual learning") is opt-in with `ISC_CONTINUAL=1`; numbers produced that way depend on run history and are not what the manifest records.
 
 ```bash
 python3 src/results_manifest.py           # rebuild from output/

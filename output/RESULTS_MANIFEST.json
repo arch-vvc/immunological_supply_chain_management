@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-15T16:25:24+00:00",
-  "git_commit": "1c5454990f62a6545ad8d4418b4b0846ea3e1961",
+  "generated_at": "2026-09-15T16:46:15+00:00",
+  "git_commit": "2872a6ee62e470a3c7ebdc3ecf5f69e95a032501",
   "dataset_sha256": {
     "data/raw/arcos_sampled_50k.csv": "afe00318cef46c1c3b287209bd538f13e1e72280f97e0aff366f86e973e888cc",
     "data/raw/SCMS_Delivery_History_Dataset.csv": "918b992dd3e8d4b64d2a727b2c4ea607603d0c58f19484e73f7b78528c6a8673",
@@ -17,6 +17,8 @@
       45,
       46
     ],
+    "gnn_encoder": 42,
+    "lstm_forecaster": 42,
     "recovery_xgboost": 42,
     "multi_domain_xgboost": 42,
     "immunological_memory_split": 42,
@@ -43,7 +45,7 @@
       "baseline_mae_days": 42.51
     },
     "lstm_stress_forecaster": {
-      "mae": 0.0064,
+      "mae": 0.0188,
       "persistence_mae": 0.0055,
       "beats_persistence": false
     },
@@ -56,37 +58,37 @@
     "ppo_cascade": {
       "n_eval_episodes": 300,
       "avg_total_reward": {
-        "PPO": 37.350825364819116,
+        "PPO": 36.997492031485784,
         "Random": 33.22309183917759,
         "Dijkstra": 33.22115764609779,
         "Risk-greedy": 35.93749203148578
       },
       "sd_total_reward": {
-        "PPO": 7.782748218343746,
+        "PPO": 8.25888867366625,
         "Random": 12.170001014848312,
         "Dijkstra": 11.771708276342313,
         "Risk-greedy": 9.710574460968294
       },
       "unserved": {
-        "PPO": 26,
+        "PPO": 30,
         "Random": 72,
         "Dijkstra": 72,
         "Risk-greedy": 42
       },
-      "ppo_safer_than_dijkstra_pct": 42.66666666666667,
+      "ppo_safer_than_dijkstra_pct": 42.0,
       "paired_delta_reward": {
         "ppo_minus_greedy": {
-          "mean": 1.4133333333333333,
+          "mean": 1.06,
           "ci95": [
-            0.6161250000000007,
-            2.296666666666667
+            0.17666666666666667,
+            1.9433333333333334
           ]
         },
         "ppo_minus_dijkstra": {
-          "mean": 4.129667718721322,
+          "mean": 3.776334385387989,
           "ci95": [
-            2.8069338059837015,
-            5.447776051876085
+            2.534526478731215,
+            5.022589746133999
           ]
         }
       }

@@ -41,8 +41,16 @@ if os.path.exists(MODEL) and os.path.exists(RISK):
         G = pickle.load(f)
 
     risk_df = pd.read_csv(RISK)
-    top_nodes = set(risk_df.head(40)["entity"].tolist())
-    subG = G.subgraph(top_nodes)
+    # Build the drawn subgraph in a FIXED node order. G.subgraph(set) iterates
+    # the set, whose order changes with Python's per-process hash seed, and
+    # spring_layout's seeded initial positions follow node order — so the
+    # same seed gave a different picture every run.
+    top_list  = risk_df.head(40)["entity"].tolist()
+    top_nodes = set(top_list)
+    subG = nx.DiGraph()
+    subG.add_nodes_from((n, dict(G.nodes[n])) for n in top_list if n in G)
+    subG.add_edges_from((u, v, dict(d)) for u, v, d in G.edges(top_list, data=True)
+                        if v in top_nodes)
 
     fig, ax = plt.subplots(figsize=(14, 9))
     fig.patch.set_facecolor("#0f0f1a")

@@ -42,6 +42,8 @@ DATASETS = [
     "data/supplementary/Supply_Chain_and_Freight_Indicators.csv",
 ]
 
+# Training stages run from scratch unless ISC_CONTINUAL=1 (see README); the
+# manifest records from-scratch numbers only.
 # Seeds as set in the stage modules (kept here so they are visible in one place;
 # the modules remain the source — this is documentation that travels with the numbers).
 SEEDS = {

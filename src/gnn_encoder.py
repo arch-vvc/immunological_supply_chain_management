@@ -174,14 +174,19 @@ LR     = 0.01
 
 model     = GCNAutoencoder(in_dim=7, hidden_dim=32, embed_dim=16)
 
-# ── Continual learning: load previous weights if they exist ───
+# ── Warm start is OPT-IN (ISC_CONTINUAL=1). Default trains from scratch so
+#    every number is reproducible from a fresh clone and the results manifest
+#    means something; fine-tuning from a prior checkpoint makes the result
+#    depend on how many times the stage was run before on that machine.
 GNN_CKPT = os.path.join(ROOT, "models", "gnn_autoencoder.pth")
-if os.path.exists(GNN_CKPT):
+if os.environ.get("ISC_CONTINUAL") == "1" and os.path.exists(GNN_CKPT):
     try:
         model.load_state_dict(torch.load(GNN_CKPT, weights_only=True))
-        print("  [CONTINUAL] Loaded previous GNN weights — fine-tuning on new data")
+        print("  [CONTINUAL] ISC_CONTINUAL=1 — loaded previous GNN weights, fine-tuning")
     except Exception:
         print("  [CONTINUAL] Previous weights incompatible — training from scratch")
+else:
+    print("  Training from scratch (seed 42). Set ISC_CONTINUAL=1 to fine-tune a prior checkpoint.")
 
 optimizer = torch.optim.Adam(model.parameters(), lr=LR)
 criterion = nn.MSELoss()
