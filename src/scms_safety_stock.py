@@ -166,7 +166,7 @@ for lane in sorted(exposed):
     price  = statistics.median(prices) if prices else 0.0
 
     span_years = max((ships[-1][0] - ships[0][0]).days, DAYS_PER_QTR) / 365.25
-    annual_flow_value = sum(v for _, _, v in ships) / span_years
+    annual_flow_value = sum(v for _, _, v in ships if v is not None) / span_years   # unpriced shipments add no value
 
     rows.append({
         "molecule": mol, "country": cty,

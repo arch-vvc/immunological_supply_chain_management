@@ -24,8 +24,14 @@ def read_text(path: Path) -> str:
 
 
 def find_float(text: str, pattern: str) -> float | None:
+    """First capture group as float, or None. A miss on a NON-empty text is
+    printed: it means a report's wording changed and this parser is stale —
+    silently rendering 'n/a' hid exactly that before. (results_manifest.py
+    also flags any headline value that goes from a number to None as drift.)"""
     match = re.search(pattern, text, re.IGNORECASE | re.MULTILINE)
     if not match:
+        if text.strip():
+            print(f"[project_metrics][WARN] pattern not found in report — parser may be stale: {pattern!r}")
         return None
     return float(match.group(1).replace(",", ""))
 
@@ -126,7 +132,7 @@ def parse_response_plan(path: Path) -> dict:
     return {
         "planned": find_float(text, r"Anomalies planned\s*:\s*([0-9,]+)"),
         "resolved_pct": find_float(text, r"resolved to a PROVEN supplier \(T1/T2\)\s*:\s*[0-9,]+\s*\(([0-9.]+)%\)"),
-        "days_saved": find_float(text, r"mean expected days saved per case\s*:\s*([0-9.]+)"),
+        "days_saved": find_float(text, r"days saved per case\s*:\s*([0-9.]+)"),   # report says "mean full-recovery days saved per case"
     }
 
 

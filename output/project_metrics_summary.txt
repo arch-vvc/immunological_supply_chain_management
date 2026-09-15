@@ -22,9 +22,9 @@ Recovery predictor:
   strategy spread          17.100 days
 
 LSTM stress forecaster:
-  MAE                      0.019
-  RMSE                     0.021
-  persistence MAE          0.005
+  MAE                      0.026
+  RMSE                     0.031
+  persistence MAE          0.017
 
 Immunological memory:
   k-NN MAE                 36.300 days
@@ -33,19 +33,19 @@ Immunological memory:
   baseline accuracy        44.500%
 
 PPO routing:
-  safer than Dijkstra      42.000%
+  safer than Dijkstra      39.000%
 
 Supplier and inventory support:
   supplier entities        10.000
-  supplier top-1 score     0.612
+  supplier top-1 score     0.656
   inventory retailers      15.000
-  inventory top-1 score    0.556
-  delivery days            2.400 days
+  inventory top-1 score    0.571
+  delivery days            2.200 days
 
 Response planner and routing:
   planned anomalies        1664.000
   proven supplier rate     40.100%
-  days saved per case      n/a
+  days saved per case      25.900 days
   routing status           SUCCESS
   routing recovery days    3.800 days
   routing baseline days    3.800 days
