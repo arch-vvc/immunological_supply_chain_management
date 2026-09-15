@@ -49,6 +49,8 @@ SEEDS = {
     "isolation_forest": 42,
     "anomaly_benchmark_tune_seed": 42,
     "anomaly_benchmark_holdout_seeds": [43, 44, 45, 46],
+    "gnn_encoder": 42,
+    "lstm_forecaster": 42,
     "recovery_xgboost": 42,
     "multi_domain_xgboost": 42,
     "immunological_memory_split": 42,

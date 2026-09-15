@@ -54,6 +54,15 @@ print("=" * 55)
 # ── Check dependencies ────────────────────────────────────────
 try:
     import torch
+    # Reproducibility — seed every RNG the training loop touches (Python, NumPy,
+    # torch). Without this, two runs of this stage produce different weights and
+    # different absolute scores (rankings agree, values do not), which the results
+    # manifest would flag as drift.
+    import random as _random
+    SEED = 42
+    _random.seed(SEED)
+    np.random.seed(SEED)
+    torch.manual_seed(SEED)
     import torch.nn as nn
     import torch.nn.functional as F
 except ImportError:
