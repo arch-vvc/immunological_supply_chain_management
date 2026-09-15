@@ -30,6 +30,19 @@
         3.692621245556392
       ]
     },
+    "ppo_minus_greedy_cluster": {
+      "ci95": [
+        -1.5451163549513647,
+        1.9623231100640448
+      ]
+    },
+    "ppo_minus_dijkstra_cluster": {
+      "ci95": [
+        1.239992105703313,
+        3.7293842688173164
+      ]
+    },
+    "n_eval_anchors": 5,
     "ppo_safer_than_dijkstra_pct": 39.0
   },
   "6": {
@@ -63,6 +76,19 @@
         2.1536781783541334
       ]
     },
+    "ppo_minus_greedy_cluster": {
+      "ci95": [
+        -7.129191328696658e-17,
+        0.2634821080021446
+      ]
+    },
+    "ppo_minus_dijkstra_cluster": {
+      "ci95": [
+        0.6164164581608851,
+        2.5915344220059464
+      ]
+    },
+    "n_eval_anchors": 5,
     "ppo_safer_than_dijkstra_pct": 92.0
   },
   "8": {
@@ -96,6 +122,19 @@
         1.553720034622334
       ]
     },
+    "ppo_minus_greedy_cluster": {
+      "ci95": [
+        -0.0014802076712865813,
+        0.002266102193060787
+      ]
+    },
+    "ppo_minus_dijkstra_cluster": {
+      "ci95": [
+        0.4483816614739481,
+        1.7085886209720567
+      ]
+    },
+    "n_eval_anchors": 5,
     "ppo_safer_than_dijkstra_pct": 96.33333333333334
   }
 }

@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-15T17:43:42+00:00",
-  "git_commit": "94625fc31e41187f44dbb47134432838dbca4b7d",
+  "generated_at": "2026-09-15T19:02:13+00:00",
+  "git_commit": "9b296b6abb13df0bc58a0dd1ec26a4d6d09e4241",
   "dataset_sha256": {
     "data/raw/arcos_sampled_50k.csv": "afe00318cef46c1c3b287209bd538f13e1e72280f97e0aff366f86e973e888cc",
     "data/raw/SCMS_Delivery_History_Dataset.csv": "918b992dd3e8d4b64d2a727b2c4ea607603d0c58f19484e73f7b78528c6a8673",
@@ -98,6 +98,17 @@
             3.692621245556392
           ]
         }
+      },
+      "paired_delta_reward_cluster": {
+        "n_anchors": 5,
+        "ppo_minus_greedy_ci95": [
+          -1.5451163549513647,
+          1.9623231100640448
+        ],
+        "ppo_minus_dijkstra_ci95": [
+          1.239992105703313,
+          3.7293842688173164
+        ]
       }
     },
     "gnn_injection_benchmark": {

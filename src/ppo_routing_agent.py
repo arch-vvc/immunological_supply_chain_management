@@ -170,6 +170,7 @@ class CascadeEnv:
         if not self.anchors:
             return False
         disrupted = random.choice(self.anchors)
+        self.disrupted = disrupted            # remembered so evaluation can cluster by anchor
         dis_retailers = [r for r in G.successors(disrupted) if r in retailers]
         demands = random.sample(dis_retailers, D_STEPS)
 
@@ -492,9 +493,11 @@ risk_by  = {m: [] for m in METHODS}
 fails_by = {m: 0  for m in METHODS}
 
 eval_done = 0
+anchor_by = []                       # which held-out distributor each episode came from
 while eval_done < EVAL_EPS:
     if not eval_env.reset():
         continue
+    anchor_by.append(eval_env.disrupted)
     for m in METHODS:
         total, risks, fails = replay(eval_env, m)
         total_by[m].append(total)
@@ -530,6 +533,33 @@ def _paired_bootstrap(a, b, n_boot=5000, seed=SEED):
 delta_vs_greedy   = _paired_bootstrap(total_by["PPO"], total_by["Risk-greedy"])
 delta_vs_dijkstra = _paired_bootstrap(total_by["PPO"], total_by["Dijkstra"])
 
+
+def _cluster_bootstrap(a, b, clusters, n_boot=5000, seed=SEED):
+    """Mean of (a - b) with a 95% CI from resampling ANCHORS with replacement.
+
+    Every evaluation episode is anchored at one of the held-out distributors,
+    and episodes from the same anchor share its retailer set and candidate
+    pools — they are not independent draws. Resampling episodes (above)
+    therefore understates uncertainty; resampling the anchors themselves is
+    the honest interval, and with few anchors it is wide by construction.
+    Returns (mean, lo, hi, {anchor: (mean_delta, n_episodes)})."""
+    rng = np.random.default_rng(seed)
+    d = np.asarray(a, dtype=float) - np.asarray(b, dtype=float)
+    cl = np.asarray(clusters)
+    uniq = sorted(set(cl.tolist()))
+    groups = [d[cl == u] for u in uniq]
+    means = np.empty(n_boot)
+    for i in range(n_boot):
+        pick = rng.integers(0, len(uniq), size=len(uniq))
+        means[i] = np.concatenate([groups[j] for j in pick]).mean()
+    per_anchor = {u: (float(g.mean()), int(len(g))) for u, g in zip(uniq, groups)}
+    return float(d.mean()), float(np.percentile(means, 2.5)), float(np.percentile(means, 97.5)), per_anchor
+
+
+cl_vs_greedy   = _cluster_bootstrap(total_by["PPO"], total_by["Risk-greedy"], anchor_by)
+cl_vs_dijkstra = _cluster_bootstrap(total_by["PPO"], total_by["Dijkstra"],    anchor_by)
+n_anchors_eval = len(set(anchor_by))
+
 import json as _json
 _sweep_record = {
     "pool_size": POOL_SIZE, "capacity_total": POOL_SIZE * CAP, "demands": D_STEPS,
@@ -537,6 +567,9 @@ _sweep_record = {
     "avg_total_reward": avg_total, "unserved": {m: int(fails_by[m]) for m in METHODS},
     "ppo_minus_greedy": {"mean": delta_vs_greedy[0], "ci95": [delta_vs_greedy[1], delta_vs_greedy[2]]},
     "ppo_minus_dijkstra": {"mean": delta_vs_dijkstra[0], "ci95": [delta_vs_dijkstra[1], delta_vs_dijkstra[2]]},
+    "ppo_minus_greedy_cluster":   {"ci95": [cl_vs_greedy[1], cl_vs_greedy[2]]},
+    "ppo_minus_dijkstra_cluster": {"ci95": [cl_vs_dijkstra[1], cl_vs_dijkstra[2]]},
+    "n_eval_anchors": n_anchors_eval,
     "ppo_safer_than_dijkstra_pct": ppo_safer_pct,
 }
 if SWEEP_CHILD:
@@ -571,14 +604,16 @@ print(f"  Pool sweep saved → {SWEEP_OUT}")
 def _sweep_lines():
     out = ["Pool-size sweep (each size retrained from scratch; same seed, same held-out anchors):",
            f"  {'pool':>4} {'capacity':>9} {'binds?':>7} {'PPO':>7} {'greedy':>7} {'dijkstra':>9} "
-           f"{'unserved P/G/D':>15}  {'PPO−greedy [95% CI]':>24}"]
+           f"{'unserved P/G/D':>15}  {'PPO−greedy [episode CI]':>26}  {'[anchor-cluster CI]':>20}"]
     for k in sorted(_sweep):
         r = _sweep[k]; a = r["avg_total_reward"]; u = r["unserved"]; d = r["ppo_minus_greedy"]
+        c = r.get("ppo_minus_greedy_cluster", {}).get("ci95", [float("nan"), float("nan")])
         out.append(f"  {k:>4} {r['capacity_total']:>9} {'yes' if r['capacity_binds'] else 'no':>7} "
                    f"{a['PPO']:>7.2f} {a['Risk-greedy']:>7.2f} {a['Dijkstra']:>9.2f} "
                    f"{u['PPO']:>4}/{u['Risk-greedy']:>3}/{u['Dijkstra']:>3}      "
-                   f"{d['mean']:+.2f} [{d['ci95'][0]:+.2f}, {d['ci95'][1]:+.2f}]")
-    wins = [k for k in sorted(_sweep) if _sweep[k]["ppo_minus_greedy"]["ci95"][0] > 0]
+                   f"{d['mean']:+.2f} [{d['ci95'][0]:+.2f}, {d['ci95'][1]:+.2f}]   "
+                   f"[{c[0]:+.2f}, {c[1]:+.2f}]")
+    wins = [k for k in sorted(_sweep) if _sweep[k].get("ppo_minus_greedy_cluster", _sweep[k]["ppo_minus_greedy"])["ci95"][0] > 0]
     ties = [k for k in sorted(_sweep) if k not in wins]
     if wins and ties:
         out.append(f"  Reading: PPO's edge over the myopic heuristic is significant only at pool "
@@ -610,7 +645,8 @@ results_text = "\n".join([
     "PPO Routing Agent — Evaluation Report (multi-step cascade)",
     "===========================================================",
     f"Evaluated on {eval_done} HELD-OUT episodes of {D_STEPS} sequential reroute demands",
-    f"(anchored at {len(TEST_ANCHORS)} test distributors the policy never trained on;",
+    f"(anchored at {n_anchors_eval} of the {len(TEST_ANCHORS)} held-out test distributors the policy never",
+    f"trained on — the rest never yielded a usable pool under the episode filters;",
     f"trained on {len(TRAIN_ANCHORS)} others), served from one candidate pool of",
     "{} under capacity (CAP={} uses) and".format(POOL_SIZE, CAP),
     f"load-dependent effective risk (+{LOAD_STEP}/use — config decay_per_use).",
@@ -629,6 +665,18 @@ results_text = "\n".join([
     f"  PPO − Risk-greedy : {delta_vs_greedy[0]:+.2f}  [{delta_vs_greedy[1]:+.2f}, {delta_vs_greedy[2]:+.2f}]",
     f"  PPO − Dijkstra    : {delta_vs_dijkstra[0]:+.2f}  [{delta_vs_dijkstra[1]:+.2f}, {delta_vs_dijkstra[2]:+.2f}]",
     f"  (SD column above is across episodes; SEM for PPO = {sem_total['PPO']:.2f})",
+    "",
+    f"Cluster bootstrap 95% CI — resampling the {n_anchors_eval} held-out ANCHOR distributors that produced episodes, not episodes:",
+    f"  PPO − Risk-greedy : {cl_vs_greedy[0]:+.2f}  [{cl_vs_greedy[1]:+.2f}, {cl_vs_greedy[2]:+.2f}]",
+    f"  PPO − Dijkstra    : {cl_vs_dijkstra[0]:+.2f}  [{cl_vs_dijkstra[1]:+.2f}, {cl_vs_dijkstra[2]:+.2f}]",
+    "  Episodes from the same anchor share its retailers and pools, so the",
+    "  episode-level CI above overstates independence. The cluster CI is the",
+    f"  honest one; with only {n_anchors_eval} clusters it is wide by construction.",
+    "",
+    "Per-anchor mean reward delta (held-out distributors):",
+    f"  {'anchor':<40} {'episodes':>8} {'PPO−greedy':>11} {'PPO−dijkstra':>13}",
+    *[f"  {str(a)[:39]:<40} {cl_vs_greedy[3][a][1]:>8} {cl_vs_greedy[3][a][0]:>+11.2f} {cl_vs_dijkstra[3][a][0]:>+13.2f}"
+      for a in sorted(cl_vs_greedy[3])],
     "",
     "Baselines:",
     "  Random       — uniform among usable candidates (sanity floor).",
@@ -679,6 +727,15 @@ _stats = {
     "paired_delta_reward": {
         "ppo_minus_greedy":   {"mean": delta_vs_greedy[0],   "ci95": [delta_vs_greedy[1],   delta_vs_greedy[2]]},
         "ppo_minus_dijkstra": {"mean": delta_vs_dijkstra[0], "ci95": [delta_vs_dijkstra[1], delta_vs_dijkstra[2]]},
+    },
+    "paired_delta_reward_cluster": {
+        "method": "anchor (held-out distributor) cluster bootstrap, 5000 resamples",
+        "n_anchors": n_anchors_eval,
+        "ppo_minus_greedy":   {"ci95": [cl_vs_greedy[1],   cl_vs_greedy[2]]},
+        "ppo_minus_dijkstra": {"ci95": [cl_vs_dijkstra[1], cl_vs_dijkstra[2]]},
+        "per_anchor": {str(a): {"n_episodes": cl_vs_greedy[3][a][1],
+                                "ppo_minus_greedy": cl_vs_greedy[3][a][0],
+                                "ppo_minus_dijkstra": cl_vs_dijkstra[3][a][0]} for a in sorted(cl_vs_greedy[3])},
     },
 }
 with open(OUT_STATS, "w") as _f:

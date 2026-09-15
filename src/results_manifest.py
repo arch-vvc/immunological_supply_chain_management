@@ -158,6 +158,11 @@ def build() -> dict:
             "ppo_safer_than_dijkstra_pct": ppo.get("ppo_safer_than_dijkstra_pct",
                                                     m["ppo"].get("safer_pct")),
             "paired_delta_reward": ppo.get("paired_delta_reward"),
+            "paired_delta_reward_cluster": (lambda c: {
+                "n_anchors": c.get("n_anchors"),
+                "ppo_minus_greedy_ci95": c.get("ppo_minus_greedy", {}).get("ci95"),
+                "ppo_minus_dijkstra_ci95": c.get("ppo_minus_dijkstra", {}).get("ci95"),
+            } if c else None)(ppo.get("paired_delta_reward_cluster")),
         },
         "gnn_injection_benchmark": (lambda g: {
             "seeds": g.get("seeds"),

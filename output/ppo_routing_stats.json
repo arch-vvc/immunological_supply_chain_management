@@ -57,5 +57,48 @@
         3.692621245556392
       ]
     }
+  },
+  "paired_delta_reward_cluster": {
+    "method": "anchor (held-out distributor) cluster bootstrap, 5000 resamples",
+    "n_anchors": 5,
+    "ppo_minus_greedy": {
+      "ci95": [
+        -1.5451163549513647,
+        1.9623231100640448
+      ]
+    },
+    "ppo_minus_dijkstra": {
+      "ci95": [
+        1.239992105703313,
+        3.7293842688173164
+      ]
+    },
+    "per_anchor": {
+      "CARDINAL HEALTH INC": {
+        "n_episodes": 65,
+        "ppo_minus_greedy": 1.2230769230769232,
+        "ppo_minus_dijkstra": 3.7389407493896836
+      },
+      "DAKOTA DRUG INC": {
+        "n_episodes": 57,
+        "ppo_minus_greedy": 1.3947368421052626,
+        "ppo_minus_dijkstra": 3.314560869229881
+      },
+      "HENRY SCHEIN INC": {
+        "n_episodes": 67,
+        "ppo_minus_greedy": 1.5792531893883779,
+        "ppo_minus_dijkstra": 0.43171567379938125
+      },
+      "MORRIS & DICKSON CO LLC": {
+        "n_episodes": 55,
+        "ppo_minus_greedy": 2.409090909090909,
+        "ppo_minus_dijkstra": 3.93304418974528
+      },
+      "VALUEDRUGCO": {
+        "n_episodes": 56,
+        "ppo_minus_greedy": -3.788594876992975,
+        "ppo_minus_dijkstra": 1.4961652876744214
+      }
+    }
   }
 }

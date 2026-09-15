@@ -1,7 +1,8 @@
 PPO Routing Agent — Evaluation Report (multi-step cascade)
 ===========================================================
 Evaluated on 300 HELD-OUT episodes of 6 sequential reroute demands
-(anchored at 6 test distributors the policy never trained on;
+(anchored at 5 of the 6 held-out test distributors the policy never
+trained on — the rest never yielded a usable pool under the episode filters;
 trained on 14 others), served from one candidate pool of
 4 under capacity (CAP=2 uses) and
 load-dependent effective risk (+0.15/use — config decay_per_use).
@@ -23,6 +24,21 @@ Paired bootstrap 95% CI on total reward (5,000 resamples over 300 episodes):
   PPO − Dijkstra    : +2.54  [+1.38, +3.69]
   (SD column above is across episodes; SEM for PPO = 0.45)
 
+Cluster bootstrap 95% CI — resampling the 5 held-out ANCHOR distributors that produced episodes, not episodes:
+  PPO − Risk-greedy : +0.62  [-1.55, +1.96]
+  PPO − Dijkstra    : +2.54  [+1.24, +3.73]
+  Episodes from the same anchor share its retailers and pools, so the
+  episode-level CI above overstates independence. The cluster CI is the
+  honest one; with only 5 clusters it is wide by construction.
+
+Per-anchor mean reward delta (held-out distributors):
+  anchor                                   episodes  PPO−greedy  PPO−dijkstra
+  CARDINAL HEALTH INC                            65       +1.22         +3.74
+  DAKOTA DRUG INC                                57       +1.39         +3.31
+  HENRY SCHEIN INC                               67       +1.58         +0.43
+  MORRIS & DICKSON CO LLC                        55       +2.41         +3.93
+  VALUEDRUGCO                                    56       -3.79         +1.50
+
 Baselines:
   Random       — uniform among usable candidates (sanity floor).
   Dijkstra     — min hops among usable; hops are all 1 on this graph, so
@@ -41,8 +57,8 @@ How to read this:
   is not the only one reported.
 
 Pool-size sweep (each size retrained from scratch; same seed, same held-out anchors):
-  pool  capacity  binds?     PPO  greedy  dijkstra  unserved P/G/D       PPO−greedy [95% CI]
-     4         8     yes   37.18   36.56     34.64   28/ 35/ 56      +0.62 [-0.36, +1.59]
-     6        12      no   40.05   39.96     38.53    0/  1/ 14      +0.09 [-0.00, +0.27]
-     8        16      no   40.27   40.27     39.26    0/  0/  7      +0.00 [-0.00, +0.00]
+  pool  capacity  binds?     PPO  greedy  dijkstra  unserved P/G/D     PPO−greedy [episode CI]   [anchor-cluster CI]
+     4         8     yes   37.18   36.56     34.64   28/ 35/ 56      +0.62 [-0.36, +1.59]   [-1.55, +1.96]
+     6        12      no   40.05   39.96     38.53    0/  1/ 14      +0.09 [-0.00, +0.27]   [-0.00, +0.26]
+     8        16      no   40.27   40.27     39.26    0/  0/  7      +0.00 [-0.00, +0.00]   [-0.00, +0.00]
   Reading: PPO does not significantly beat the myopic heuristic at any pool size tested [4, 6, 8]; the learned policy adds nothing the load-aware heuristic lacks here.
