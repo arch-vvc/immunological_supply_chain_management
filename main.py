@@ -13,6 +13,7 @@ Usage:
     python3 main.py --stages 1-6,19-25          # run an explicit set / ranges of stages
     python3 main.py --skip-training             # skip 7/10/11 when their model + output already exist
     python3 main.py --check                     # verify every stage's expected artifacts exist (no run)
+    python3 src/results_manifest.py --check     # compare current outputs against the committed manifest
 
 Stages:
     0 — Dataset Sampling           (optional: needs data/raw/datasetuc.csv)
@@ -312,13 +313,23 @@ def main():
     print(f"  Models   → {os.path.join(ROOT, 'models')}")
     print()
 
-    if args.show_metrics:
+    ran = {num for num, _, _ in stages_to_run}
+    full_run = ran >= {num for num, _, _ in STAGES}
+    if args.show_metrics or full_run:
         metrics_script = os.path.join(ROOT, "src", "project_metrics.py")
         print("  PROJECT METRICS")
         print(f"  {'-' * 56}")
         result = subprocess.run([sys.executable, metrics_script], cwd=ROOT)
         if result.returncode != 0:
             print("[WARN] Project metrics summary failed.")
+
+    # A full run (every default stage) refreshes the results manifest — the
+    # single source of truth for headline numbers; tests/ compares against it.
+    if full_run:
+        manifest_script = os.path.join(ROOT, "src", "results_manifest.py")
+        result = subprocess.run([sys.executable, manifest_script], cwd=ROOT)
+        if result.returncode != 0:
+            print("[WARN] Results manifest not written.")
 
 
 if __name__ == "__main__":

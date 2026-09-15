@@ -25,6 +25,30 @@ tied                                   : 13/76  (17.1%)
 actual choice was better               : 9/76  (11.8%)
 mean lateness saved per shipment       : +2.5 days (median +1.5)
 
+── Uncertainty (bootstrap over lanes, 10,000 resamples, seed 42) ──
+win rate 95% CI                        : [60.5%, 80.3%]
+late-rate gap A−B 95% CI               : +14.0%  [+9.9%, +18.0%]
+lateness saved 95% CI                  : +2.5 d  [+1.0, +3.8]
+exact sign test, wins vs losses        : 54 vs 9 (ties dropped), p = 6.11e-09
+
+── Sensitivity: does the gap survive within strata? ──
+If the gap were an artefact of incumbent scale or lane maturity it should
+collapse when those are held fixed. Tertiles on each; 'gap' = A−B late rate.
+
+  stratum                      n   win%   A late   B late     gap  saved d
+  ------------------------------------------------------------------------
+  incumbent volume low        25    32%     6.3%     8.2%   -1.9%     -1.9
+  incumbent volume mid        24    83%    22.0%     2.5%  +19.4%     +4.3
+  incumbent volume high       27    96%    25.3%     1.3%  +24.0%     +4.9
+  lane tenure low             23    61%    16.2%     3.8%  +12.4%     +1.7
+  lane tenure mid             27    74%    17.6%     3.0%  +14.6%     +2.6
+  lane tenure high            26    77%    20.0%     5.0%  +14.9%     +3.0
+  (volume tertile cuts at a_n = (35, 67); tenure cuts at pre-t0 lane shipments = (3, 13))
+Gap favours the planner's pick in 5/6 strata.
+It reverses for incumbent volume = low (n=25, win 32%, gap -1.9%): when the incumbent's post-alert book is small and mostly on time, the first late shipment looks like noise rather than a regime change — the alert was arguably premature there, and the effect concentrates in mid/high-volume incumbents whose lateness persisted.
+With ~25 lanes per stratum these are robustness checks, not an identification
+strategy; residual selection on unobserved factors (price, contracts) remains.
+
 ── What the random baseline decomposes ──
 planner pick vs random pool vendor     : better 10, tied 33, worse 11  (of 54)
 The planner's pick and a random pool vendor land close together on

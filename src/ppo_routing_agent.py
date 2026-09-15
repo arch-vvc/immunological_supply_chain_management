@@ -479,8 +479,29 @@ greedy_beats_ppo_pct = 100.0 * float(np.mean(
 ppo_safer_pct = 100.0 * float(np.mean(
     [p > d for p, d in zip(total_by["PPO"], total_by["Dijkstra"])]))
 
-header = f"  {'Method':<14} {'Avg Total Reward':>17}  {'Avg Eff. Risk':>13}  {'Unserved':>9}"
-rows   = [f"  {m:<14} {avg_total[m]:>17.2f}  {avg_risk[m]:>13.3f}  {fails_by[m]:>9}"
+# ── Spread + paired uncertainty over the evaluation episodes ───────────────
+# Every method replays the SAME episodes, so method differences are paired:
+# bootstrap the per-episode reward difference, not two independent means.
+std_total = {m: float(np.std(total_by[m], ddof=1)) for m in METHODS}
+sem_total = {m: std_total[m] / float(np.sqrt(len(total_by[m]))) for m in METHODS}
+std_risk  = {m: float(np.std(risk_by[m], ddof=1)) if len(risk_by[m]) > 1 else 0.0
+             for m in METHODS}
+
+def _paired_bootstrap(a, b, n_boot=5000, seed=SEED):
+    """Mean of (a - b) with a 95% percentile bootstrap CI over episodes."""
+    rng = np.random.default_rng(seed)
+    d = np.asarray(a, dtype=float) - np.asarray(b, dtype=float)
+    idx = rng.integers(0, len(d), size=(n_boot, len(d)))
+    means = d[idx].mean(axis=1)
+    return float(d.mean()), float(np.percentile(means, 2.5)), float(np.percentile(means, 97.5))
+
+delta_vs_greedy   = _paired_bootstrap(total_by["PPO"], total_by["Risk-greedy"])
+delta_vs_dijkstra = _paired_bootstrap(total_by["PPO"], total_by["Dijkstra"])
+
+header = (f"  {'Method':<14} {'Avg Total Reward':>17} {'SD':>6}  "
+          f"{'Avg Eff. Risk':>13}  {'Unserved':>9}")
+rows   = [f"  {m:<14} {avg_total[m]:>17.2f} {std_total[m]:>6.2f}  "
+          f"{avg_risk[m]:>13.3f}  {fails_by[m]:>9}"
           for m in METHODS]
 
 print(f"\n  ── Evaluation ({eval_done} episodes, all methods replay identical demands) ──")
@@ -508,6 +529,11 @@ results_text = "\n".join([
     f"PPO beats myopic Risk-greedy      : {ppo_beats_greedy_pct:.1f}% of episodes "
     f"(greedy wins {greedy_beats_ppo_pct:.1f}%)",
     f"PPO strictly safer than Dijkstra : {ppo_safer_pct:.1f}% of episodes",
+    "",
+    f"Paired bootstrap 95% CI on total reward (5,000 resamples over {eval_done} episodes):",
+    f"  PPO − Risk-greedy : {delta_vs_greedy[0]:+.2f}  [{delta_vs_greedy[1]:+.2f}, {delta_vs_greedy[2]:+.2f}]",
+    f"  PPO − Dijkstra    : {delta_vs_dijkstra[0]:+.2f}  [{delta_vs_dijkstra[1]:+.2f}, {delta_vs_dijkstra[2]:+.2f}]",
+    f"  (SD column above is across episodes; SEM for PPO = {sem_total['PPO']:.2f})",
     "",
     "Baselines:",
     "  Random       — uniform among usable candidates (sanity floor).",
@@ -541,6 +567,32 @@ try:
     print(f"  Results saved → {OUT_TXT}")
 except Exception as _e:
     print(f"  [WARN] Could not save PPO results file: {_e}")
+
+# Machine-readable sidecar for the results manifest / dashboard
+import json as _json
+OUT_STATS = os.path.splitext(OUT_TXT)[0].replace("_results", "_stats") + ".json"
+_stats = {
+    "n_eval_episodes": int(eval_done),
+    "demands_per_episode": int(D_STEPS),
+    "training_episodes": int(TOTAL_EPS),
+    "seed": int(SEED),
+    "avg_total_reward": avg_total,
+    "sd_total_reward": std_total,
+    "sem_total_reward": sem_total,
+    "avg_eff_risk": avg_risk,
+    "sd_eff_risk": std_risk,
+    "unserved": {m: int(fails_by[m]) for m in METHODS},
+    "ppo_beats_greedy_pct": ppo_beats_greedy_pct,
+    "greedy_beats_ppo_pct": greedy_beats_ppo_pct,
+    "ppo_safer_than_dijkstra_pct": ppo_safer_pct,
+    "paired_delta_reward": {
+        "ppo_minus_greedy":   {"mean": delta_vs_greedy[0],   "ci95": [delta_vs_greedy[1],   delta_vs_greedy[2]]},
+        "ppo_minus_dijkstra": {"mean": delta_vs_dijkstra[0], "ci95": [delta_vs_dijkstra[1], delta_vs_dijkstra[2]]},
+    },
+}
+with open(OUT_STATS, "w") as _f:
+    _json.dump(_stats, _f, indent=2)
+print(f"  Stats saved   → {OUT_STATS}")
 
 # ── Figure ─────────────────────────────────────────────────────────────────
 BG   = "#0f0f1a"

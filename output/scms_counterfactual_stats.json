@@ -1,0 +1,101 @@
+{
+  "n_comparable": 76,
+  "wins": 54,
+  "ties": 13,
+  "losses": 9,
+  "win_rate": 0.7105263157894737,
+  "win_rate_ci95": [
+    0.6052631578947368,
+    0.8026315789473685
+  ],
+  "a_late_rate": 0.17991447368421054,
+  "b_late_rate": 0.03959078947368421,
+  "r_late_rate": 0.03992962962962963,
+  "n_random": 54,
+  "late_rate_gap": 0.14032368421052632,
+  "late_rate_gap_ci95": [
+    0.09941842105263157,
+    0.18044868421052632
+  ],
+  "lateness_saved_mean": 2.4514473684210527,
+  "lateness_saved_median": 1.455,
+  "lateness_saved_ci95": [
+    0.9661842105263159,
+    3.76
+  ],
+  "sign_test_p": 6.108279451688681e-09,
+  "n_boot": 10000,
+  "seed": 42,
+  "strata": {
+    "incumbent_volume": {
+      "cuts": [
+        35,
+        67
+      ],
+      "rows": [
+        {
+          "stratum": "low",
+          "n": 25,
+          "wins": 8,
+          "win_rate": 0.32,
+          "a_late_rate": 0.063052,
+          "b_late_rate": 0.082268,
+          "lateness_saved": -1.9407999999999999
+        },
+        {
+          "stratum": "mid",
+          "n": 24,
+          "wins": 20,
+          "win_rate": 0.8333333333333334,
+          "a_late_rate": 0.21962916666666665,
+          "b_late_rate": 0.025166666666666667,
+          "lateness_saved": 4.272916666666666
+        },
+        {
+          "stratum": "high",
+          "n": 27,
+          "wins": 26,
+          "win_rate": 0.9629629629629629,
+          "a_late_rate": 0.2528185185185185,
+          "b_late_rate": 0.012896296296296296,
+          "lateness_saved": 4.899259259259259
+        }
+      ]
+    },
+    "lane_tenure": {
+      "cuts": [
+        3,
+        13
+      ],
+      "rows": [
+        {
+          "stratum": "low",
+          "n": 23,
+          "wins": 14,
+          "win_rate": 0.6086956521739131,
+          "a_late_rate": 0.1619782608695652,
+          "b_late_rate": 0.03832608695652174,
+          "lateness_saved": 1.7082608695652173
+        },
+        {
+          "stratum": "mid",
+          "n": 27,
+          "wins": 20,
+          "win_rate": 0.7407407407407407,
+          "a_late_rate": 0.17604074074074075,
+          "b_late_rate": 0.03024074074074074,
+          "lateness_saved": 2.5522222222222224
+        },
+        {
+          "stratum": "high",
+          "n": 26,
+          "wins": 20,
+          "win_rate": 0.7692307692307693,
+          "a_late_rate": 0.19980384615384617,
+          "b_late_rate": 0.050419230769230765,
+          "lateness_saved": 3.004230769230769
+        }
+      ]
+    }
+  }
+}

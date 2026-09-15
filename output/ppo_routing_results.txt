@@ -6,15 +6,20 @@ load-dependent effective risk (+0.15/use — config decay_per_use).
 All methods replay the SAME episodes (same pool, same demand order)
 and evolve their own load state; pools require risk spread >= 0.05.
 
-Method          Avg Total Reward  Avg Eff. Risk   Unserved
+Method          Avg Total Reward     SD  Avg Eff. Risk   Unserved
 ------------------------------------------------------------
-PPO                        36.73          0.964         33
-Random                     33.22          0.966         72
-Dijkstra                   33.22          0.966         72
-Risk-greedy                35.94          0.963         42
+PPO                        37.35   7.78          0.964         26
+Random                     33.22  12.17          0.966         72
+Dijkstra                   33.22  11.77          0.966         72
+Risk-greedy                35.94   9.71          0.963         42
 
-PPO beats myopic Risk-greedy      : 9.7% of episodes (greedy wins 8.3%)
-PPO strictly safer than Dijkstra : 40.7% of episodes
+PPO beats myopic Risk-greedy      : 7.0% of episodes (greedy wins 1.7%)
+PPO strictly safer than Dijkstra : 42.7% of episodes
+
+Paired bootstrap 95% CI on total reward (5,000 resamples over 300 episodes):
+  PPO − Risk-greedy : +1.41  [+0.62, +2.30]
+  PPO − Dijkstra    : +4.13  [+2.81, +5.45]
+  (SD column above is across episodes; SEM for PPO = 0.45)
 
 Baselines:
   Random       — uniform among usable candidates (sanity floor).

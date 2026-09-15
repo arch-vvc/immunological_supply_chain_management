@@ -28,7 +28,7 @@ jobs:
       # test_artifacts.py is excluded: it needs the trained models/ directory,
       # which is gitignored and only exists after a full pipeline run.
       - name: Unit tests and harnesses
-        run: pytest tests/test_runner.py tests/test_harnesses.py -q
+        run: pytest tests/test_runner.py tests/test_harnesses.py tests/test_results_manifest.py -q
 
       # Stages 1-6 end to end in a throwaway copy of the repo (~20 s).
       - name: Pipeline smoke test

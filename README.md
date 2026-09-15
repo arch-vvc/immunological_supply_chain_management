@@ -109,6 +109,16 @@ ISC_SMOKE=1 pytest tests/test_pipeline_smoke.py -s   # stages 1-6 end to end in 
 - `test_artifacts.py`: every stage's expected artifacts exist. Fails on a fresh clone until the pipeline has produced `models/`.
 - `test_harnesses.py`: wraps the two validation harnesses in `src/` (IR stages, vendor scorecard).
 - `test_pipeline_smoke.py`: real end-to-end run of the batch stages, opt-in.
+- `test_results_manifest.py`: the headline numbers currently in `output/` match the committed `output/RESULTS_MANIFEST.json` within tolerance, and the input datasets are unchanged.
+
+## Results manifest
+
+`output/RESULTS_MANIFEST.json` is the single source of truth for every headline number: anomaly F1 and adjusted precision, PPO reward and unserved demands with paired CIs, LSTM vs persistence, FAISS k-NN MAE, macro crisis placebo percentiles, the counterfactual late-rate gap with bootstrap CIs, plus the git commit, dataset hashes and seeds that produced them. A full `python3 main.py` run rewrites it. If a rerun moves a number, the manifest test fails and names the key, so drift is caught in CI instead of discovered in the paper.
+
+```bash
+python3 src/results_manifest.py           # rebuild from output/
+python3 src/results_manifest.py --check   # diff current outputs against the committed manifest
+```
 
 GitHub Actions runs the runner tests, both harnesses and the smoke test on every push.
 

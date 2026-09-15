@@ -14,10 +14,10 @@ This is the gradient-based analogue of GNNExplainer / SubgraphX.
 Usage (standalone):
     python3 src/gnn_explainer.py --node "CARDINAL HEALTH INC"
     python3 src/gnn_explainer.py --node "MIAMI-LUKEN INC" --hops 2
-
-Usage (from engine — called automatically when a disruption is detected):
+Usage (from code — the dashboard's Risk tab does this):
     from gnn_explainer import explain_node_risk
-    result = explain_node_risk("CARDINAL HEALTH INC")
+    result = explain_node_risk("CARDINAL HEALTH INC", silent=True)
+    # pass artifacts=(G, embeddings, risk_map) to reuse already-loaded objects
 """
 
 from __future__ import annotations
@@ -80,6 +80,7 @@ def explain_node_risk(
     hops: int = 1,
     top_n: int = 5,
     silent: bool = False,
+    artifacts: Optional[tuple] = None,
 ) -> dict:
     """
     Explain why `node` has a high GNN risk score.
@@ -91,7 +92,9 @@ def explain_node_risk(
         top_drivers     : list of dicts — the most influential neighbours
         risk_subgraph   : all nodes in the explanation subgraph
     """
-    G, embeddings, risk_map = _load()
+    # `artifacts` may supply a preloaded (G, embeddings, risk_map) triple so a
+    # caller that already holds them (the dashboard) skips the pickle loads.
+    G, embeddings, risk_map = artifacts if artifacts is not None else _load()
 
     if node not in G:
         raise ValueError(f"Node '{node}' not found in graph.")

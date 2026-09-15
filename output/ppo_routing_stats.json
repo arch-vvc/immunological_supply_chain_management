@@ -1,0 +1,61 @@
+{
+  "n_eval_episodes": 300,
+  "demands_per_episode": 6,
+  "training_episodes": 12000,
+  "seed": 42,
+  "avg_total_reward": {
+    "PPO": 37.350825364819116,
+    "Random": 33.22309183917759,
+    "Dijkstra": 33.22115764609779,
+    "Risk-greedy": 35.93749203148578
+  },
+  "sd_total_reward": {
+    "PPO": 7.782748218343746,
+    "Random": 12.170001014848312,
+    "Dijkstra": 11.771708276342313,
+    "Risk-greedy": 9.710574460968294
+  },
+  "sem_total_reward": {
+    "PPO": 0.44933717788958416,
+    "Random": 0.7026353361960691,
+    "Dijkstra": 0.6796398942167979,
+    "Risk-greedy": 0.560640277902595
+  },
+  "avg_eff_risk": {
+    "PPO": 0.9635010128812976,
+    "Random": 0.9662562593068523,
+    "Dijkstra": 0.9663681917767483,
+    "Risk-greedy": 0.9631688264228795
+  },
+  "sd_eff_risk": {
+    "PPO": 0.0370235812307663,
+    "Random": 0.03684459995210936,
+    "Dijkstra": 0.03691500528544078,
+    "Risk-greedy": 0.03702683333838685
+  },
+  "unserved": {
+    "PPO": 26,
+    "Random": 72,
+    "Dijkstra": 72,
+    "Risk-greedy": 42
+  },
+  "ppo_beats_greedy_pct": 7.000000000000001,
+  "greedy_beats_ppo_pct": 1.6666666666666667,
+  "ppo_safer_than_dijkstra_pct": 42.66666666666667,
+  "paired_delta_reward": {
+    "ppo_minus_greedy": {
+      "mean": 1.4133333333333333,
+      "ci95": [
+        0.6161250000000007,
+        2.296666666666667
+      ]
+    },
+    "ppo_minus_dijkstra": {
+      "mean": 4.129667718721322,
+      "ci95": [
+        2.8069338059837015,
+        5.447776051876085
+      ]
+    }
+  }
+}

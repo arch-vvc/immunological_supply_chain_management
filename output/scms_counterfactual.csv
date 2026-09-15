@@ -1,77 +1,77 @@
-molecule,country,t0,actual_vendor,recommended_vendor,a_n,a_late_rate,a_lateness_days,b_n,b_late_rate,b_lateness_days,r_late_rate,r_lateness_days,rec_wins_late_rate,rec_ties_late_rate,lateness_saved_days
-Abacavir,South Africa,2011-03-17,GLAXOSMITHKLINE EXPORT LIMITED,SCMS from RDC,12,0.0,0,39,0.1026,1.92,0.0,0,0,0,-1.92
-Abacavir,Zambia,2010-12-03,SCMS from RDC,ASPEN PHARMACARE,29,0.2414,4.76,3,0.3333,12,0.0,0,0,0,-7.24
-Abacavir/Lamivudine,Zambia,2014-09-03,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),45,0.2444,2.67,3,0.0,0,,,1,0,2.67
-Didanosine,Côte d'Ivoire,2009-12-02,SCMS from RDC,Aurobindo Pharma Limited,17,0.0588,0.41,11,0.0,0,,,1,0,0.41
-Didanosine,South Africa,2008-04-25,S. BUYS WHOLESALER,SCMS from RDC,12,0.0,0,5,0.0,0,0.0,0,0,1,0
-Didanosine,Zimbabwe,2011-05-20,SCMS from RDC,Aurobindo Pharma Limited,11,0.0909,0.18,7,0.0,0,,,1,0,0.18
-Efavirenz,Cameroon,2013-07-31,HETERO LABS LIMITED,Aurobindo Pharma Limited,9,0.0,0,10,0.0,0,0.0,0,0,1,0
-Efavirenz,"Congo, DRC",2012-02-14,SCMS from RDC,Aurobindo Pharma Limited,87,0.069,0.6,16,0.0625,0.19,0.0,0,1,0,0.41
-Efavirenz,Haiti,2010-06-09,SCMS from RDC,HETERO LABS LIMITED,80,0.275,5.56,3,0.0,0,0.0,0,1,0,5.56
-Efavirenz,Mozambique,2010-12-23,SCMS from RDC,HETERO LABS LIMITED,67,0.3134,8.15,8,0.0,0,0.0,0,1,0,8.15
-Efavirenz,South Sudan,2013-04-23,SCMS from RDC,Aurobindo Pharma Limited,60,0.3833,12.4,6,0.0,0,0.0,0,1,0,12.4
-Efavirenz,Zambia,2010-11-08,SCMS from RDC,HETERO LABS LIMITED,69,0.4058,9.96,7,0.0,0,0.0,0,1,0,9.96
-Efavirenz,Zimbabwe,2010-10-04,SCMS from RDC,HETERO LABS LIMITED,69,0.4348,10.13,6,0.0,0,0.0,0,1,0,10.13
-Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Burundi,2014-06-25,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),65,0.1538,1.97,10,0.1,0.3,0.0455,0.32,1,0,1.67
-Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Cameroon,2013-07-31,Aurobindo Pharma Limited,HETERO LABS LIMITED,3,0.0,0,11,0.0,0,,,0,1,0
-Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,"Congo, DRC",2014-02-08,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),67,0.2985,4.31,5,0.0,0,0.0417,0.29,1,0,4.31
-Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Côte d'Ivoire,2013-07-19,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),69,0.3478,6.29,13,0.0,0,,,1,0,6.29
-Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Mozambique,2013-04-16,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),63,0.2857,5.29,17,0.0,0,,,1,0,5.29
-Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Nigeria,2013-11-26,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),65,0.3385,7.03,7,0.0,0,0.0625,0.44,1,0,7.03
-Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Rwanda,2014-02-03,SCMS from RDC,HETERO LABS LIMITED,65,0.3231,6.98,24,0.0417,0.29,,,1,0,6.69
-Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,South Sudan,2014-10-17,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),59,0.1525,1.41,10,0.1,0.3,0.0,0,1,0,1.11
-Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Tanzania,2014-02-19,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),63,0.2698,3.94,4,0.0,0,,,1,0,3.94
-Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Vietnam,2014-09-23,HETERO LABS LIMITED,SCMS from RDC,31,0.0,0,61,0.1803,2.3,,,0,0,-2.3
-Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Zimbabwe,2013-10-09,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),65,0.3538,7.05,7,0.0,0,0.0588,0.41,1,0,7.05
-"HIV 1/2, Determine Complete HIV Kit",Haiti,2012-07-05,REINBOLD EXPORT IMPORT,"Orgenics, Ltd",4,0.0,0,105,0.2762,6.31,,,0,0,-6.31
-Lamivudine,Zambia,2010-11-08,SCMS from RDC,STRIDES ARCOLAB LIMITED,35,0.4286,9.2,17,0.1176,4.76,0.3043,26.57,1,0,4.44
-Lamivudine/Nevirapine/Stavudine,Côte d'Ivoire,2008-02-19,SCMS from RDC,CIPLA LIMITED,55,0.0182,0.69,10,0.0,0,,,1,0,0.69
-Lamivudine/Nevirapine/Stavudine,Mozambique,2008-05-16,SCMS from RDC,CIPLA LIMITED,54,0.0,0,8,0.0,0,,,0,1,0
-Lamivudine/Nevirapine/Zidovudine,"Congo, DRC",2012-02-14,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),71,0.1408,1.39,10,0.0,0,0.0,0,1,0,1.39
-Lamivudine/Nevirapine/Zidovudine,Côte d'Ivoire,2011-06-10,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),77,0.2727,3.16,7,0.0,0,,,1,0,3.16
-Lamivudine/Nevirapine/Zidovudine,Mozambique,2010-10-29,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),40,0.45,8.7,5,0.0,0,,,1,0,8.7
-Lamivudine/Nevirapine/Zidovudine,Nigeria,2008-01-24,SCMS from RDC,Aurobindo Pharma Limited,17,0.0,0,4,0.0,0,,,0,1,0
-Lamivudine/Nevirapine/Zidovudine,Rwanda,2014-02-03,SCMS from RDC,CIPLA LIMITED,114,0.307,10.33,7,0.0,0,0.0,0,1,0,10.33
-Lamivudine/Nevirapine/Zidovudine,South Sudan,2013-04-23,SCMS from RDC,CIPLA LIMITED,104,0.3269,11.09,12,0.0,0,0.0,0,1,0,11.09
-Lamivudine/Nevirapine/Zidovudine,Swaziland,2011-10-06,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),80,0.15,1.38,4,0.0,0,,,1,0,1.38
-Lamivudine/Nevirapine/Zidovudine,Tanzania,2013-09-10,SCMS from RDC,CIPLA LIMITED,115,0.287,7.4,12,0.0,0,0.0,0,1,0,7.4
-Lamivudine/Nevirapine/Zidovudine,Zambia,2014-01-24,SCMS from RDC,CIPLA LIMITED,114,0.3158,10.36,7,0.0,0,0.0,0,1,0,10.36
-Lamivudine/Nevirapine/Zidovudine,Zimbabwe,2011-05-20,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),72,0.2778,3.56,7,0.0,0,,,1,0,3.56
-Lamivudine/Tenofovir Disoproxil Fumarate,Nigeria,2010-05-18,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),11,0.0909,1.73,4,0.0,0,,,1,0,1.73
-Lamivudine/Zidovudine,"Congo, DRC",2012-01-03,SCMS from RDC,Aurobindo Pharma Limited,84,0.0714,0.67,7,0.2857,2,0.0,0,0,0,-1.33
-Lamivudine/Zidovudine,Ghana,2011-07-15,SCMS from RDC,HETERO LABS LIMITED,68,0.2353,2.5,4,0.0,0,0.0,0,1,0,2.5
-Lamivudine/Zidovudine,Rwanda,2014-02-25,SCMS from RDC,HETERO LABS LIMITED,72,0.2778,6.47,4,0.0,0,0.0,0,1,0,6.47
-Lamivudine/Zidovudine,Tanzania,2008-04-23,SCMS from RDC,Aurobindo Pharma Limited,48,0.0,0,9,0.0,0,0.0,0,0,1,0
-Lopinavir/Ritonavir,Dominican Republic,2010-12-14,Aurobindo Pharma Limited,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),4,0.0,0,22,0.0,0,0.0,0,0,1,0
-Lopinavir/Ritonavir,Ethiopia,2010-12-09,Aurobindo Pharma Limited,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),4,0.0,0,22,0.0,0,0.0,0,0,1,0
-Lopinavir/Ritonavir,Mozambique,2014-01-30,SCMS from RDC,Aurobindo Pharma Limited,47,0.383,12.09,4,0.0,0,0.0,0,1,0,12.09
-Lopinavir/Ritonavir,Nigeria,2014-04-17,SCMS from RDC,Aurobindo Pharma Limited,49,0.3469,7.88,7,0.0,0,0.0,0,1,0,7.88
-Lopinavir/Ritonavir,South Africa,2009-08-05,S. BUYS WHOLESALER,SCMS from RDC,12,0.0833,0.17,5,0.0,0,0.0,0,1,0,0.17
-Lopinavir/Ritonavir,Tanzania,2011-08-16,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),Aurobindo Pharma Limited,30,0.0,0,5,0.2,1,,,0,0,-1
-Lopinavir/Ritonavir,Vietnam,2008-03-07,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),SCMS from RDC,10,0.0,0,16,0.0,0,,,0,1,0
-Lopinavir/Ritonavir,Zambia,2014-06-04,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),Aurobindo Pharma Limited,51,0.0,0,7,0.0,0,0.0,0,0,1,0
-Nevirapine,Cameroon,2013-10-26,HETERO LABS LIMITED,STRIDES ARCOLAB LIMITED,6,0.0,0,3,0.0,0,0.0,0,0,1,0
-Nevirapine,Ghana,2011-07-20,SCMS from RDC,STRIDES ARCOLAB LIMITED,111,0.1712,2.23,3,0.0,0,0.1429,14.71,1,0,2.23
-Nevirapine,Haiti,2010-01-27,SCMS from RDC,STRIDES ARCOLAB LIMITED,78,0.2179,2.12,8,0.0,0,0.0,0,1,0,2.12
-Nevirapine,Nigeria,2009-08-04,SCMS from RDC,STRIDES ARCOLAB LIMITED,87,0.092,0.86,3,0.0,0,0.0,0,1,0,0.86
-Nevirapine,Rwanda,2013-10-15,SCMS from RDC,STRIDES ARCOLAB LIMITED,73,0.2877,8.59,3,0.0,0,0.0,0,1,0,8.59
-Nevirapine,South Africa,2010-06-10,Aurobindo Pharma Limited,STRIDES ARCOLAB LIMITED,24,0.25,7.21,10,0.0,0,0.3906,4.95,1,0,7.21
-Nevirapine,South Sudan,2014-02-11,Aurobindo Pharma Limited,STRIDES ARCOLAB LIMITED,28,0.0714,0.07,3,0.0,0,0.0,0,1,0,0.07
-Nevirapine,Tanzania,2010-08-09,SCMS from RDC,HETERO LABS LIMITED,73,0.5068,8.75,6,0.0,0,0.0,0,1,0,8.75
-Nevirapine,Uganda,2009-12-02,SCMS from RDC,HETERO LABS LIMITED,73,0.137,0.7,3,0.0,0,0.4545,3.09,1,0,0.7
-Nevirapine,Zambia,2010-03-05,SCMS from RDC,STRIDES ARCOLAB LIMITED,69,0.2609,2.49,8,0.0,0,0.0,0,1,0,2.49
-Nevirapine,Zimbabwe,2011-06-09,SCMS from RDC,STRIDES ARCOLAB LIMITED,111,0.2613,4.98,3,0.0,0,0.2,20.6,1,0,4.98
-Stavudine,Ethiopia,2007-12-24,SCMS from RDC,STRIDES ARCOLAB LIMITED,40,0.0,0,4,0.0,0,0.0,0,0,1,0
-Tenofovir Disoproxil Fumarate,Côte d'Ivoire,2010-06-07,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),15,0.1333,2.73,5,0.0,0,0.3125,10,1,0,2.73
-Tenofovir Disoproxil Fumarate,Ghana,2011-07-15,SCMS from RDC,CIPLA LIMITED,18,0.1667,7.72,6,0.3333,42.33,0.0,0,0,0,-34.61
-Tenofovir Disoproxil Fumarate,Nigeria,2010-11-10,SCMS from RDC,CIPLA LIMITED,21,0.2381,5.76,21,0.381,14.95,0.0,0,0,0,-9.19
-Tenofovir Disoproxil Fumarate,South Africa,2009-08-12,S. BUYS WHOLESALER,SCMS from RDC,8,0.0,0,8,0.25,1,0.0,0,0,0,-1
-Zidovudine,Burundi,2013-05-10,SCMS from RDC,Aurobindo Pharma Limited,37,0.4324,16.24,16,0.0,0,0.0,0,1,0,16.24
-Zidovudine,"Congo, DRC",2012-03-23,SCMS from RDC,Aurobindo Pharma Limited,33,0.1515,2.55,6,0.0,0,,,1,0,2.55
-Zidovudine,Côte d'Ivoire,2009-12-02,SCMS from RDC,S. BUYS WHOLESALER,59,0.1017,1.03,6,0.0,0,0.0,0,1,0,1.03
-Zidovudine,Haiti,2010-01-27,SCMS from RDC,S. BUYS WHOLESALER,53,0.0943,1.38,4,0.0,0,0.0,0,1,0,1.38
-Zidovudine,Mozambique,2010-01-26,SCMS from RDC,S. BUYS WHOLESALER,54,0.1111,1.52,4,0.0,0,0.1429,12.14,1,0,1.52
-Zidovudine,Nigeria,2009-08-04,SCMS from RDC,S. BUYS WHOLESALER,71,0.0845,0.44,14,0.0,0,0.0,0,1,0,0.44
-Zidovudine,South Africa,2008-07-14,S. BUYS WHOLESALER,SCMS from RDC,29,0.0,0,32,0.0,0,,,0,1,0
-Zidovudine,Uganda,2011-03-22,SCMS from RDC,Aurobindo Pharma Limited,45,0.2,4.18,13,0.1538,3.85,0.0,0,1,0,0.33
-Zidovudine,Zambia,2011-06-10,SCMS from RDC,Aurobindo Pharma Limited,50,0.2,3.22,11,0.0909,2.82,0.0,0,1,0,0.4
+molecule,country,t0,actual_vendor,recommended_vendor,a_n,a_late_rate,a_lateness_days,b_n,b_late_rate,b_lateness_days,r_late_rate,r_lateness_days,rec_wins_late_rate,rec_ties_late_rate,lateness_saved_days,lane_pre_shipments,stratum_incumbent_volume,stratum_lane_tenure
+Abacavir,South Africa,2011-03-17,GLAXOSMITHKLINE EXPORT LIMITED,SCMS from RDC,12,0.0,0,39,0.1026,1.92,0.0,0,0,0,-1.92,17,low,high
+Abacavir,Zambia,2010-12-03,SCMS from RDC,ASPEN PHARMACARE,29,0.2414,4.76,3,0.3333,12,0.0,0,0,0,-7.24,20,low,high
+Abacavir/Lamivudine,Zambia,2014-09-03,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),45,0.2444,2.67,3,0.0,0,,,1,0,2.67,1,mid,low
+Didanosine,Côte d'Ivoire,2009-12-02,SCMS from RDC,Aurobindo Pharma Limited,17,0.0588,0.41,11,0.0,0,,,1,0,0.41,9,low,mid
+Didanosine,South Africa,2008-04-25,S. BUYS WHOLESALER,SCMS from RDC,12,0.0,0,5,0.0,0,0.0,0,0,1,0,2,low,low
+Didanosine,Zimbabwe,2011-05-20,SCMS from RDC,Aurobindo Pharma Limited,11,0.0909,0.18,7,0.0,0,,,1,0,0.18,3,low,mid
+Efavirenz,Cameroon,2013-07-31,HETERO LABS LIMITED,Aurobindo Pharma Limited,9,0.0,0,10,0.0,0,0.0,0,0,1,0,1,low,low
+Efavirenz,"Congo, DRC",2012-02-14,SCMS from RDC,Aurobindo Pharma Limited,87,0.069,0.6,16,0.0625,0.19,0.0,0,1,0,0.41,0,high,low
+Efavirenz,Haiti,2010-06-09,SCMS from RDC,HETERO LABS LIMITED,80,0.275,5.56,3,0.0,0,0.0,0,1,0,5.56,43,high,high
+Efavirenz,Mozambique,2010-12-23,SCMS from RDC,HETERO LABS LIMITED,67,0.3134,8.15,8,0.0,0,0.0,0,1,0,8.15,29,high,high
+Efavirenz,South Sudan,2013-04-23,SCMS from RDC,Aurobindo Pharma Limited,60,0.3833,12.4,6,0.0,0,0.0,0,1,0,12.4,0,mid,low
+Efavirenz,Zambia,2010-11-08,SCMS from RDC,HETERO LABS LIMITED,69,0.4058,9.96,7,0.0,0,0.0,0,1,0,9.96,76,high,high
+Efavirenz,Zimbabwe,2010-10-04,SCMS from RDC,HETERO LABS LIMITED,69,0.4348,10.13,6,0.0,0,0.0,0,1,0,10.13,32,high,high
+Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Burundi,2014-06-25,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),65,0.1538,1.97,10,0.1,0.3,0.0455,0.32,1,0,1.67,1,mid,low
+Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Cameroon,2013-07-31,Aurobindo Pharma Limited,HETERO LABS LIMITED,3,0.0,0,11,0.0,0,,,0,1,0,2,low,low
+Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,"Congo, DRC",2014-02-08,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),67,0.2985,4.31,5,0.0,0,0.0417,0.29,1,0,4.31,1,high,low
+Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Côte d'Ivoire,2013-07-19,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),69,0.3478,6.29,13,0.0,0,,,1,0,6.29,4,high,mid
+Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Mozambique,2013-04-16,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),63,0.2857,5.29,17,0.0,0,,,1,0,5.29,0,mid,low
+Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Nigeria,2013-11-26,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),65,0.3385,7.03,7,0.0,0,0.0625,0.44,1,0,7.03,10,mid,mid
+Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Rwanda,2014-02-03,SCMS from RDC,HETERO LABS LIMITED,65,0.3231,6.98,24,0.0417,0.29,,,1,0,6.69,11,mid,mid
+Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,South Sudan,2014-10-17,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),59,0.1525,1.41,10,0.1,0.3,0.0,0,1,0,1.11,2,mid,low
+Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Tanzania,2014-02-19,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),63,0.2698,3.94,4,0.0,0,,,1,0,3.94,5,mid,mid
+Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Vietnam,2014-09-23,HETERO LABS LIMITED,SCMS from RDC,31,0.0,0,61,0.1803,2.3,,,0,0,-2.3,34,low,high
+Efavirenz/Lamivudine/Tenofovir Disoproxil Fumarate,Zimbabwe,2013-10-09,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),65,0.3538,7.05,7,0.0,0,0.0588,0.41,1,0,7.05,6,mid,mid
+"HIV 1/2, Determine Complete HIV Kit",Haiti,2012-07-05,REINBOLD EXPORT IMPORT,"Orgenics, Ltd",4,0.0,0,105,0.2762,6.31,,,0,0,-6.31,10,low,mid
+Lamivudine,Zambia,2010-11-08,SCMS from RDC,STRIDES ARCOLAB LIMITED,35,0.4286,9.2,17,0.1176,4.76,0.3043,26.57,1,0,4.44,8,mid,mid
+Lamivudine/Nevirapine/Stavudine,Côte d'Ivoire,2008-02-19,SCMS from RDC,CIPLA LIMITED,55,0.0182,0.69,10,0.0,0,,,1,0,0.69,14,mid,high
+Lamivudine/Nevirapine/Stavudine,Mozambique,2008-05-16,SCMS from RDC,CIPLA LIMITED,54,0.0,0,8,0.0,0,,,0,1,0,2,mid,low
+Lamivudine/Nevirapine/Zidovudine,"Congo, DRC",2012-02-14,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),71,0.1408,1.39,10,0.0,0,0.0,0,1,0,1.39,0,high,low
+Lamivudine/Nevirapine/Zidovudine,Côte d'Ivoire,2011-06-10,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),77,0.2727,3.16,7,0.0,0,,,1,0,3.16,12,high,mid
+Lamivudine/Nevirapine/Zidovudine,Mozambique,2010-10-29,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),40,0.45,8.7,5,0.0,0,,,1,0,8.7,18,mid,high
+Lamivudine/Nevirapine/Zidovudine,Nigeria,2008-01-24,SCMS from RDC,Aurobindo Pharma Limited,17,0.0,0,4,0.0,0,,,0,1,0,2,low,low
+Lamivudine/Nevirapine/Zidovudine,Rwanda,2014-02-03,SCMS from RDC,CIPLA LIMITED,114,0.307,10.33,7,0.0,0,0.0,0,1,0,10.33,9,high,mid
+Lamivudine/Nevirapine/Zidovudine,South Sudan,2013-04-23,SCMS from RDC,CIPLA LIMITED,104,0.3269,11.09,12,0.0,0,0.0,0,1,0,11.09,0,high,low
+Lamivudine/Nevirapine/Zidovudine,Swaziland,2011-10-06,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),80,0.15,1.38,4,0.0,0,,,1,0,1.38,3,high,mid
+Lamivudine/Nevirapine/Zidovudine,Tanzania,2013-09-10,SCMS from RDC,CIPLA LIMITED,115,0.287,7.4,12,0.0,0,0.0,0,1,0,7.4,7,high,mid
+Lamivudine/Nevirapine/Zidovudine,Zambia,2014-01-24,SCMS from RDC,CIPLA LIMITED,114,0.3158,10.36,7,0.0,0,0.0,0,1,0,10.36,1,high,low
+Lamivudine/Nevirapine/Zidovudine,Zimbabwe,2011-05-20,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),72,0.2778,3.56,7,0.0,0,,,1,0,3.56,0,high,low
+Lamivudine/Tenofovir Disoproxil Fumarate,Nigeria,2010-05-18,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),11,0.0909,1.73,4,0.0,0,,,1,0,1.73,4,low,mid
+Lamivudine/Zidovudine,"Congo, DRC",2012-01-03,SCMS from RDC,Aurobindo Pharma Limited,84,0.0714,0.67,7,0.2857,2,0.0,0,0,0,-1.33,0,high,low
+Lamivudine/Zidovudine,Ghana,2011-07-15,SCMS from RDC,HETERO LABS LIMITED,68,0.2353,2.5,4,0.0,0,0.0,0,1,0,2.5,0,high,low
+Lamivudine/Zidovudine,Rwanda,2014-02-25,SCMS from RDC,HETERO LABS LIMITED,72,0.2778,6.47,4,0.0,0,0.0,0,1,0,6.47,14,high,high
+Lamivudine/Zidovudine,Tanzania,2008-04-23,SCMS from RDC,Aurobindo Pharma Limited,48,0.0,0,9,0.0,0,0.0,0,0,1,0,6,mid,mid
+Lopinavir/Ritonavir,Dominican Republic,2010-12-14,Aurobindo Pharma Limited,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),4,0.0,0,22,0.0,0,0.0,0,0,1,0,0,low,low
+Lopinavir/Ritonavir,Ethiopia,2010-12-09,Aurobindo Pharma Limited,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),4,0.0,0,22,0.0,0,0.0,0,0,1,0,0,low,low
+Lopinavir/Ritonavir,Mozambique,2014-01-30,SCMS from RDC,Aurobindo Pharma Limited,47,0.383,12.09,4,0.0,0,0.0,0,1,0,12.09,7,mid,mid
+Lopinavir/Ritonavir,Nigeria,2014-04-17,SCMS from RDC,Aurobindo Pharma Limited,49,0.3469,7.88,7,0.0,0,0.0,0,1,0,7.88,26,mid,high
+Lopinavir/Ritonavir,South Africa,2009-08-05,S. BUYS WHOLESALER,SCMS from RDC,12,0.0833,0.17,5,0.0,0,0.0,0,1,0,0.17,25,low,high
+Lopinavir/Ritonavir,Tanzania,2011-08-16,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),Aurobindo Pharma Limited,30,0.0,0,5,0.2,1,,,0,0,-1,18,low,high
+Lopinavir/Ritonavir,Vietnam,2008-03-07,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),SCMS from RDC,10,0.0,0,16,0.0,0,,,0,1,0,8,low,mid
+Lopinavir/Ritonavir,Zambia,2014-06-04,ABBVIE LOGISTICS (FORMERLY ABBOTT LOGISTICS BV),Aurobindo Pharma Limited,51,0.0,0,7,0.0,0,0.0,0,0,1,0,22,mid,high
+Nevirapine,Cameroon,2013-10-26,HETERO LABS LIMITED,STRIDES ARCOLAB LIMITED,6,0.0,0,3,0.0,0,0.0,0,0,1,0,4,low,mid
+Nevirapine,Ghana,2011-07-20,SCMS from RDC,STRIDES ARCOLAB LIMITED,111,0.1712,2.23,3,0.0,0,0.1429,14.71,1,0,2.23,0,high,low
+Nevirapine,Haiti,2010-01-27,SCMS from RDC,STRIDES ARCOLAB LIMITED,78,0.2179,2.12,8,0.0,0,0.0,0,1,0,2.12,15,high,high
+Nevirapine,Nigeria,2009-08-04,SCMS from RDC,STRIDES ARCOLAB LIMITED,87,0.092,0.86,3,0.0,0,0.0,0,1,0,0.86,26,high,high
+Nevirapine,Rwanda,2013-10-15,SCMS from RDC,STRIDES ARCOLAB LIMITED,73,0.2877,8.59,3,0.0,0,0.0,0,1,0,8.59,27,high,high
+Nevirapine,South Africa,2010-06-10,Aurobindo Pharma Limited,STRIDES ARCOLAB LIMITED,24,0.25,7.21,10,0.0,0,0.3906,4.95,1,0,7.21,41,low,high
+Nevirapine,South Sudan,2014-02-11,Aurobindo Pharma Limited,STRIDES ARCOLAB LIMITED,28,0.0714,0.07,3,0.0,0,0.0,0,1,0,0.07,9,low,mid
+Nevirapine,Tanzania,2010-08-09,SCMS from RDC,HETERO LABS LIMITED,73,0.5068,8.75,6,0.0,0,0.0,0,1,0,8.75,15,high,high
+Nevirapine,Uganda,2009-12-02,SCMS from RDC,HETERO LABS LIMITED,73,0.137,0.7,3,0.0,0,0.4545,3.09,1,0,0.7,13,high,high
+Nevirapine,Zambia,2010-03-05,SCMS from RDC,STRIDES ARCOLAB LIMITED,69,0.2609,2.49,8,0.0,0,0.0,0,1,0,2.49,36,high,high
+Nevirapine,Zimbabwe,2011-06-09,SCMS from RDC,STRIDES ARCOLAB LIMITED,111,0.2613,4.98,3,0.0,0,0.2,20.6,1,0,4.98,4,high,mid
+Stavudine,Ethiopia,2007-12-24,SCMS from RDC,STRIDES ARCOLAB LIMITED,40,0.0,0,4,0.0,0,0.0,0,0,1,0,3,mid,mid
+Tenofovir Disoproxil Fumarate,Côte d'Ivoire,2010-06-07,SCMS from RDC,MYLAN LABORATORIES LTD (FORMERLY MATRIX LABORATORIES),15,0.1333,2.73,5,0.0,0,0.3125,10,1,0,2.73,10,low,mid
+Tenofovir Disoproxil Fumarate,Ghana,2011-07-15,SCMS from RDC,CIPLA LIMITED,18,0.1667,7.72,6,0.3333,42.33,0.0,0,0,0,-34.61,1,low,low
+Tenofovir Disoproxil Fumarate,Nigeria,2010-11-10,SCMS from RDC,CIPLA LIMITED,21,0.2381,5.76,21,0.381,14.95,0.0,0,0,0,-9.19,4,low,mid
+Tenofovir Disoproxil Fumarate,South Africa,2009-08-12,S. BUYS WHOLESALER,SCMS from RDC,8,0.0,0,8,0.25,1,0.0,0,0,0,-1,13,low,high
+Zidovudine,Burundi,2013-05-10,SCMS from RDC,Aurobindo Pharma Limited,37,0.4324,16.24,16,0.0,0,0.0,0,1,0,16.24,1,mid,low
+Zidovudine,"Congo, DRC",2012-03-23,SCMS from RDC,Aurobindo Pharma Limited,33,0.1515,2.55,6,0.0,0,,,1,0,2.55,5,low,mid
+Zidovudine,Côte d'Ivoire,2009-12-02,SCMS from RDC,S. BUYS WHOLESALER,59,0.1017,1.03,6,0.0,0,0.0,0,1,0,1.03,22,mid,high
+Zidovudine,Haiti,2010-01-27,SCMS from RDC,S. BUYS WHOLESALER,53,0.0943,1.38,4,0.0,0,0.0,0,1,0,1.38,20,mid,high
+Zidovudine,Mozambique,2010-01-26,SCMS from RDC,S. BUYS WHOLESALER,54,0.1111,1.52,4,0.0,0,0.1429,12.14,1,0,1.52,9,mid,mid
+Zidovudine,Nigeria,2009-08-04,SCMS from RDC,S. BUYS WHOLESALER,71,0.0845,0.44,14,0.0,0,0.0,0,1,0,0.44,12,high,mid
+Zidovudine,South Africa,2008-07-14,S. BUYS WHOLESALER,SCMS from RDC,29,0.0,0,32,0.0,0,,,0,1,0,8,low,mid
+Zidovudine,Uganda,2011-03-22,SCMS from RDC,Aurobindo Pharma Limited,45,0.2,4.18,13,0.1538,3.85,0.0,0,1,0,0.33,16,mid,high
+Zidovudine,Zambia,2011-06-10,SCMS from RDC,Aurobindo Pharma Limited,50,0.2,3.22,11,0.0909,2.82,0.0,0,1,0,0.4,14,mid,high

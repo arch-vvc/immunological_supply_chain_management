@@ -170,6 +170,26 @@ def fmt(value, suffix: str = "") -> str:
     return f"{value}{suffix}"
 
 
+def collect() -> dict:
+    """Parse every metric artifact under output/ into one dict.
+
+    Shared by the text summary below and by results_manifest.py, so both
+    read the same numbers through the same parsers.
+    """
+    return {
+        "anomaly": parse_anomaly_injection(OUT / "anomaly_injection_results.csv"),
+        "multi": parse_multi_risk(OUT / "multi_domain_f1.csv"),
+        "recovery": parse_recovery_metrics(OUT / "recovery_metrics.txt"),
+        "lstm": parse_lstm_metrics(OUT / "lstm_metrics.txt"),
+        "memory": parse_memory_report(OUT / "memory_report.txt"),
+        "ppo": parse_ppo_results(OUT / "ppo_routing_results.txt"),
+        "supplier": parse_supplier_report(OUT / "supplier_agent_report.txt"),
+        "inventory": parse_inventory_report(OUT / "inventory_agent_report.txt"),
+        "response_plan": parse_response_plan(OUT / "response_plan_report.txt"),
+        "routing": parse_routing_report(OUT / "routing_results.txt"),
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Summarise project-wide metrics")
     parser.add_argument("--refresh", action="store_true", help="rerun benchmark-producing stages first")
@@ -178,16 +198,10 @@ def main() -> None:
     if args.refresh:
         refresh_benchmarks()
 
-    anomaly = parse_anomaly_injection(OUT / "anomaly_injection_results.csv")
-    multi = parse_multi_risk(OUT / "multi_domain_f1.csv")
-    recovery = parse_recovery_metrics(OUT / "recovery_metrics.txt")
-    lstm = parse_lstm_metrics(OUT / "lstm_metrics.txt")
-    memory = parse_memory_report(OUT / "memory_report.txt")
-    ppo = parse_ppo_results(OUT / "ppo_routing_results.txt")
-    supplier = parse_supplier_report(OUT / "supplier_agent_report.txt")
-    inventory = parse_inventory_report(OUT / "inventory_agent_report.txt")
-    response_plan = parse_response_plan(OUT / "response_plan_report.txt")
-    routing = parse_routing_report(OUT / "routing_results.txt")
+    data = collect()
+    anomaly, multi, recovery, lstm, memory = (data[k] for k in ("anomaly", "multi", "recovery", "lstm", "memory"))
+    ppo, supplier, inventory, response_plan, routing = (
+        data[k] for k in ("ppo", "supplier", "inventory", "response_plan", "routing"))
 
     lines = [
         "PROJECT METRICS AUDIT",

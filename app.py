@@ -772,6 +772,94 @@ with tab_risk:
             if os.path.exists(fig_path):
                 st.image(fig_path, use_column_width=True)
 
+        # ── GNN explainer — why is this node risky? ────────────────────
+        st.markdown("#### Why is this node risky? — GNN neighbourhood explainer")
+        st.caption(
+            "Gradient-style attribution over the node's k-hop neighbourhood: "
+            "each neighbour is scored by how strongly its embedding pulls the "
+            "target toward the high-reconstruction-error region the autoencoder "
+            "flags as anomalous (embedding similarity × neighbour risk, plus an "
+            "embedding-tension term). Top drivers are the nodes to monitor or "
+            "isolate first to reduce cascade risk."
+        )
+        _G_x   = load_graph()
+        _emb_x = load_embeddings()
+        if gnn.empty or _G_x is None or _emb_x is None:
+            st.info("Needs Stage 2 (graph) and Stage 7 (GNN embeddings + risk scores).")
+        else:
+            from gnn_explainer import explain_node_risk
+
+            @st.cache_data
+            def _gnn_risk_map(_n_rows: int):
+                return {
+                    r["entity"]: {
+                        "gnn_score":   float(r.get("gnn_score", 0.0)),
+                        "recon_error": float(r.get("recon_error", 0.0)),
+                        "node_type":   str(r.get("node_type", "?")),
+                        "rank":        int(r.get("rank", 9999)),
+                    } for _, r in gnn.iterrows()
+                }
+            _rmap = _gnn_risk_map(len(gnn))
+            _cands = (gnn.sort_values("enhanced_risk", ascending=False)["entity"]
+                      .head(60).tolist())
+            xc1, xc2, xc3 = st.columns([3, 1, 1])
+            with xc1:
+                _xnode = st.selectbox("Entity (top 60 by GNN-enhanced risk)", _cands, index=0,
+                                      key="gnn_explain_node")
+            with xc2:
+                _xhops = st.slider("Hops", 1, 2, 1, key="gnn_explain_hops")
+            with xc3:
+                _xtop = st.slider("Top drivers", 3, 12, 6, key="gnn_explain_top")
+            try:
+                _xr = explain_node_risk(_xnode, hops=_xhops, top_n=_xtop, silent=True,
+                                        artifacts=(_G_x, _emb_x, _rmap))
+            except Exception as _xe:
+                st.warning(f"Could not explain `{_xnode}`: {_xe}")
+                _xr = None
+            if _xr:
+                xk1, xk2, xk3, xk4 = st.columns(4)
+                with xk1: metric_card("Target", _xnode[:22], _xr["node_type"])
+                with xk2: metric_card("GNN Risk", f"{_xr['node_risk']:.4f}", f"rank #{_xr['rank']}")
+                with xk3: metric_card("Recon. Error", f"{_xr['recon_error']:.2e}", "autoencoder signal")
+                with xk4: metric_card("Neighbours Scored", f"{len(_xr['top_drivers'])}",
+                                      f"{_xhops}-hop neighbourhood")
+                _xd = pd.DataFrame(_xr["top_drivers"])
+                if not _xd.empty:
+                    xg1, xg2 = st.columns([3, 2])
+                    with xg1:
+                        fig_x = px.bar(
+                            _xd.sort_values("influence"), x="influence", y="neighbour",
+                            orientation="h", color="type", template="plotly_dark",
+                            color_discrete_map={"manufacturer": "#ab47bc",
+                                                "distributor": "#4fc3f7",
+                                                "retailer": "#ffb300"},
+                            hover_data={"gnn_risk": ":.4f", "similarity": ":.3f"},
+                            labels={"influence": "Influence on target's risk",
+                                    "neighbour": "", "type": ""},
+                        )
+                        fig_x.update_layout(paper_bgcolor="#0f0f1a", plot_bgcolor="#0f0f1a",
+                                            height=max(240, 34 * len(_xd) + 80),
+                                            margin=dict(l=10, r=20, t=30, b=40),
+                                            legend=dict(orientation="h", y=1.12, x=0))
+                        st.plotly_chart(fig_x, use_container_width=True)
+                    with xg2:
+                        st.dataframe(
+                            _xd[["neighbour", "type", "gnn_risk", "similarity", "influence"]]
+                              .rename(columns={"neighbour": "Neighbour", "type": "Type",
+                                               "gnn_risk": "GNN risk", "similarity": "Cos. sim.",
+                                               "influence": "Influence"}),
+                            use_container_width=True, hide_index=True,
+                            height=max(240, 36 * len(_xd) + 40))
+                        _top = _xr["top_drivers"][0]
+                        st.markdown(
+                            f"**Primary driver:** `{_top['neighbour']}` ({_top['type']}, "
+                            f"GNN risk {_top['gnn_risk']:.3f}). Its embedding is "
+                            f"{'closely' if _top['similarity'] > 0.3 else 'weakly'} aligned "
+                            f"with the target (cos {_top['similarity']:.2f}), so the two nodes "
+                            "share the anomalous neighbourhood pattern the autoencoder "
+                            "fails to reconstruct."
+                        )
+
         # ── PPO vs Dijkstra ───────────────────────────────────────────
         st.markdown("#### PPO vs Dijkstra — Risk-Aware Routing (Stage 11)")
         ppo_fig = os.path.join(FIGS, "fig9_ppo_training.png")
@@ -1359,6 +1447,7 @@ with tab_recovery:
         st.info("Run Stage 28 (`python3 src/scms_counterfactual.py`) to generate the counterfactual.")
     else:
         cf = pd.read_csv(_cf_path)
+        _cfs = load_json("scms_counterfactual_stats.json") or {}
         _n = len(cf)
         _wins = int(cf["rec_wins_late_rate"].sum())
         _ties = int(cf["rec_ties_late_rate"].sum())
@@ -1366,18 +1455,30 @@ with tab_recovery:
         _a_lr, _b_lr = cf["a_late_rate"].mean(), cf["b_late_rate"].mean()
         _r_lr = cf["r_late_rate"].dropna().mean()
         _saved = cf["lateness_saved_days"]
+        _ci = lambda k, f: (f"95% CI [{f(_cfs[k][0])}, {f(_cfs[k][1])}]" if k in _cfs else "")
         f1, f2, f3, f4 = st.columns(4)
         with f1:
             metric_card("Comparable Lanes", f"{_n}", "both vendors observed post-t0")
         with f2:
             metric_card("Planner Pick Was Better", f"{_wins}/{_n}",
-                        f"{_wins/_n*100:.0f}% · tied {_ties} · worse {_worse}")
+                        _ci("win_rate_ci95", lambda v: f"{v*100:.0f}%")
+                        or f"{_wins/_n*100:.0f}% · tied {_ties} · worse {_worse}")
         with f3:
             metric_card("Mean Late Rate A → B", f"{_a_lr*100:.1f}% → {_b_lr*100:.1f}%",
-                        f"random pool vendor {_r_lr*100:.1f}%")
+                        (f"gap {_cfs['late_rate_gap']*100:+.1f} pts, "
+                         + _ci("late_rate_gap_ci95", lambda v: f"{v*100:+.1f}"))
+                        if "late_rate_gap" in _cfs else f"random pool vendor {_r_lr*100:.1f}%")
         with f4:
             metric_card("Lateness Saved / Shipment", f"{_saved.mean():+.1f} d",
-                        f"median {_saved.median():+.1f} d")
+                        _ci("lateness_saved_ci95", lambda v: f"{v:+.1f}")
+                        or f"median {_saved.median():+.1f} d")
+        if _cfs:
+            st.caption(
+                f"Bootstrap over lanes, {_cfs.get('n_boot', 0):,} resamples. Exact sign test on "
+                f"wins vs losses (ties dropped): {_cfs.get('wins')} vs {_cfs.get('losses')}, "
+                f"p = {_cfs.get('sign_test_p', float('nan')):.1e}. Random pool vendor late rate "
+                f"{_r_lr*100:.1f}% · tied {_ties} · actual better {_worse}."
+            )
         g1, g2 = st.columns([2, 3])
         with g1:
             _bar = pd.DataFrame({
@@ -1406,6 +1507,27 @@ with tab_recovery:
             fig_sv.update_layout(paper_bgcolor="#0f0f1a", plot_bgcolor="#0f0f1a", height=280,
                                  yaxis_title="Lanes", margin=dict(l=40, r=20, t=30, b=40))
             st.plotly_chart(fig_sv, use_container_width=True)
+        if _cfs.get("strata"):
+            st.markdown("**Sensitivity — does the gap survive within strata?**")
+            st.caption(
+                "Selection concern: the incumbent is scored while its book is in trouble. "
+                "Tertiles on incumbent post-alert volume and on lane maturity at t0 hold "
+                "those fixed. Where a stratum reverses, the report says so."
+            )
+            _srows = []
+            for _grp, _lab in (("incumbent_volume", "Incumbent volume"), ("lane_tenure", "Lane tenure")):
+                for s in _cfs["strata"][_grp]["rows"]:
+                    _srows.append({
+                        "Stratum": f"{_lab} · {s['stratum']}", "Lanes": s["n"],
+                        "Win rate": f"{s['win_rate']*100:.0f}%",
+                        "A late": f"{s['a_late_rate']*100:.1f}%",
+                        "B late": f"{s['b_late_rate']*100:.1f}%",
+                        "Gap A−B": f"{(s['a_late_rate']-s['b_late_rate'])*100:+.1f} pts",
+                        "Saved d/ship": f"{s['lateness_saved']:+.1f}",
+                        "Holds?": "yes" if s["a_late_rate"] > s["b_late_rate"] else "REVERSES",
+                    })
+            st.dataframe(pd.DataFrame(_srows), use_container_width=True, hide_index=True,
+                         height=36 * len(_srows) + 40)
         with st.expander("Per-lane outcomes + full protocol report"):
             _cf_rpt = os.path.join(OUT, "scms_counterfactual_report.txt")
             if os.path.exists(_cf_rpt):

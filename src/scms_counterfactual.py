@@ -167,6 +167,8 @@ for (mol, cty), hist in sorted(lanes.items()):
         key=lambda t: (-t[0], t[1]))
     B = scored[0][1]
 
+    lane_pre_shipments = sum(1 for x in hist if x["date"] < t0)   # lane maturity at t0
+
     if A == B:
         n_agree += 1
         continue
@@ -197,11 +199,77 @@ for (mol, cty), hist in sorted(lanes.items()):
         "rec_wins_late_rate": int(b_stats["late_rate"] < a_stats["late_rate"]),
         "rec_ties_late_rate": int(b_stats["late_rate"] == a_stats["late_rate"]),
         "lateness_saved_days": round(a_stats["lateness"] - b_stats["lateness"], 2),
+        "lane_pre_shipments": lane_pre_shipments,
     })
 
 if not rows:
     print("[ERROR] No comparable lanes found.")
     raise SystemExit(1)
+
+# ── 2b. Sensitivity strata (tertiles) — labels go into the CSV too ────────────
+# Selection concern: the incumbent is scored while its book is in trouble. If
+# the A-vs-B gap were an artefact of incumbent scale or lane maturity it should
+# collapse inside strata that hold those fixed.
+import math
+
+def _tertile_labels(values):
+    s = sorted(values)
+    lo, hi = s[len(s) // 3], s[(2 * len(s)) // 3]
+    return [("low" if v < lo else "high" if v >= hi else "mid") for v in values], (lo, hi)
+
+_vol_labels, _vol_cuts = _tertile_labels([r["a_n"] for r in rows])
+_ten_labels, _ten_cuts = _tertile_labels([r["lane_pre_shipments"] for r in rows])
+for r, lv, lt in zip(rows, _vol_labels, _ten_labels):
+    r["stratum_incumbent_volume"] = lv
+    r["stratum_lane_tenure"] = lt
+
+
+def _stratum_summary(key):
+    out = []
+    for label in ("low", "mid", "high"):
+        sub = [r for r in rows if r[key] == label]
+        if not sub:
+            continue
+        w = sum(r["rec_wins_late_rate"] for r in sub)
+        out.append({
+            "stratum": label, "n": len(sub), "wins": w,
+            "win_rate": w / len(sub),
+            "a_late_rate": statistics.mean(r["a_late_rate"] for r in sub),
+            "b_late_rate": statistics.mean(r["b_late_rate"] for r in sub),
+            "lateness_saved": statistics.mean(r["lateness_saved_days"] for r in sub),
+        })
+    return out
+
+strata = {
+    "incumbent_volume": {"cuts": _vol_cuts, "rows": _stratum_summary("stratum_incumbent_volume")},
+    "lane_tenure":      {"cuts": _ten_cuts, "rows": _stratum_summary("stratum_lane_tenure")},
+}
+_all_strata = strata["incumbent_volume"]["rows"] + strata["lane_tenure"]["rows"]
+_pos = [s for s in _all_strata if s["a_late_rate"] > s["b_late_rate"]]
+_neg = [s for s in _all_strata if s["a_late_rate"] <= s["b_late_rate"]]
+
+
+def _strata_reading():
+    """Report lines that describe what the strata actually show — never a
+    canned 'holds everywhere' claim."""
+    out = [f"Gap favours the planner's pick in {len(_pos)}/{len(_all_strata)} strata."]
+    for s in _neg:
+        which = ("incumbent volume" if s in strata["incumbent_volume"]["rows"]
+                 else "lane tenure")
+        out.append(
+            f"It reverses for {which} = {s['stratum']} (n={s['n']}, win {100*s['win_rate']:.0f}%, "
+            f"gap {s['a_late_rate']-s['b_late_rate']:+.1%}): "
+            + ("when the incumbent's post-alert book is small and mostly on time, the first "
+               "late shipment looks like noise rather than a regime change — the alert was "
+               "arguably premature there, and the effect concentrates in mid/high-volume "
+               "incumbents whose lateness persisted."
+               if which == "incumbent volume" else
+               "the association is weaker for these lanes; treat it as not established."))
+    out += [
+        "With ~25 lanes per stratum these are robustness checks, not an identification",
+        "strategy; residual selection on unobserved factors (price, contracts) remains.",
+    ]
+    return out
 
 # ── 3. Aggregate + outputs ───────────────────────────────────────────────────
 os.makedirs(os.path.dirname(CSV_OUT), exist_ok=True)
@@ -223,6 +291,26 @@ med_saved = statistics.median(r["lateness_saved_days"] for r in rows)
 r_rows = [r for r in rows if r["r_late_rate"] != ""]
 r_lr = statistics.mean(r["r_late_rate"] for r in r_rows) if r_rows else None
 r_ld = statistics.mean(r["r_lateness_days"] for r in r_rows) if r_rows else None
+
+# ── 3b. Uncertainty: bootstrap over lanes + exact sign test ──────────────────
+N_BOOT = 10_000
+
+def _bootstrap_ci(values, n_boot=N_BOOT, seed=SEED):
+    """95% percentile CI of the mean, resampling lanes with replacement."""
+    rng = random.Random(seed)
+    n = len(values)
+    means = sorted(statistics.fmean(values[rng.randrange(n)] for _ in range(n))
+                   for _ in range(n_boot))
+    return means[int(0.025 * n_boot)], means[int(0.975 * n_boot)]
+
+ci_win   = _bootstrap_ci([r["rec_wins_late_rate"] for r in rows])
+ci_gap   = _bootstrap_ci([r["a_late_rate"] - r["b_late_rate"] for r in rows])
+ci_saved = _bootstrap_ci([r["lateness_saved_days"] for r in rows])
+gap_lr   = a_lr - b_lr
+
+# exact two-sided sign test on wins vs losses (ties carry no information)
+_k, _m = wins, wins + loses
+sign_p = min(1.0, 2 * sum(math.comb(_m, j) for j in range(max(_k, _m - _k), _m + 1)) / 2 ** _m) if _m else 1.0
 
 lines = [
     "SCMS OUTCOME COUNTERFACTUAL — REPORT",
@@ -257,6 +345,28 @@ lines += [
     f"actual choice was better               : {loses}/{n}  ({100*loses/n:.1f}%)",
     f"mean lateness saved per shipment       : {saved:+.1f} days (median {med_saved:+.1f})",
     "",
+    f"── Uncertainty (bootstrap over lanes, {N_BOOT:,} resamples, seed {SEED}) ──",
+    f"win rate 95% CI                        : [{ci_win[0]:.1%}, {ci_win[1]:.1%}]",
+    f"late-rate gap A−B 95% CI               : {gap_lr:+.1%}  [{ci_gap[0]:+.1%}, {ci_gap[1]:+.1%}]",
+    f"lateness saved 95% CI                  : {saved:+.1f} d  [{ci_saved[0]:+.1f}, {ci_saved[1]:+.1f}]",
+    f"exact sign test, wins vs losses        : {wins} vs {loses} (ties dropped), p = {sign_p:.2e}",
+    "",
+    "── Sensitivity: does the gap survive within strata? ──",
+    "If the gap were an artefact of incumbent scale or lane maturity it should",
+    "collapse when those are held fixed. Tertiles on each; 'gap' = A−B late rate.",
+    "",
+    f"  {'stratum':<26}{'n':>4}{'win%':>7}{'A late':>9}{'B late':>9}{'gap':>8}{'saved d':>9}",
+    f"  {'-'*72}",
+    *[f"  {'incumbent volume ' + s['stratum']:<26}{s['n']:>4}{100*s['win_rate']:>6.0f}%"
+      f"{s['a_late_rate']:>9.1%}{s['b_late_rate']:>9.1%}{s['a_late_rate']-s['b_late_rate']:>+8.1%}"
+      f"{s['lateness_saved']:>+9.1f}" for s in strata["incumbent_volume"]["rows"]],
+    *[f"  {'lane tenure ' + s['stratum']:<26}{s['n']:>4}{100*s['win_rate']:>6.0f}%"
+      f"{s['a_late_rate']:>9.1%}{s['b_late_rate']:>9.1%}{s['a_late_rate']-s['b_late_rate']:>+8.1%}"
+      f"{s['lateness_saved']:>+9.1f}" for s in strata["lane_tenure"]["rows"]],
+    f"  (volume tertile cuts at a_n = {strata['incumbent_volume']['cuts']}; "
+    f"tenure cuts at pre-t0 lane shipments = {strata['lane_tenure']['cuts']})",
+    *_strata_reading(),
+    "",
     "── What the random baseline decomposes ──",
     f"planner pick vs random pool vendor     : better {b_vs_r_wins}, tied {b_vs_r_ties}, "
     f"worse {len(r_rows) - b_vs_r_wins - b_vs_r_ties}  (of {len(r_rows)})",
@@ -286,6 +396,23 @@ lines += [
 with open(RPT_OUT, "w") as f:
     f.write("\n".join(lines))
 print("\n".join(lines))
+
+# Machine-readable sidecar for the results manifest / dashboard
+import json
+STATS_OUT = CSV_OUT.replace(".csv", "_stats.json")
+with open(STATS_OUT, "w") as f:
+    json.dump({
+        "n_comparable": n, "wins": wins, "ties": ties, "losses": loses,
+        "win_rate": wins / n, "win_rate_ci95": list(ci_win),
+        "a_late_rate": a_lr, "b_late_rate": b_lr,
+        "r_late_rate": r_lr, "n_random": len(r_rows),
+        "late_rate_gap": gap_lr, "late_rate_gap_ci95": list(ci_gap),
+        "lateness_saved_mean": saved, "lateness_saved_median": med_saved,
+        "lateness_saved_ci95": list(ci_saved),
+        "sign_test_p": sign_p, "n_boot": N_BOOT, "seed": SEED,
+        "strata": strata,
+    }, f, indent=2)
+print(f"  Stats            -> {STATS_OUT}")
 
 # ── 4. Figure ────────────────────────────────────────────────────────────────
 import matplotlib

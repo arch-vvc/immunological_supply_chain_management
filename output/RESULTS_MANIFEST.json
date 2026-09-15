@@ -1,0 +1,162 @@
+{
+  "generated_at": "2026-09-15T16:25:24+00:00",
+  "git_commit": "1c5454990f62a6545ad8d4418b4b0846ea3e1961",
+  "dataset_sha256": {
+    "data/raw/arcos_sampled_50k.csv": "afe00318cef46c1c3b287209bd538f13e1e72280f97e0aff366f86e973e888cc",
+    "data/raw/SCMS_Delivery_History_Dataset.csv": "918b992dd3e8d4b64d2a727b2c4ea607603d0c58f19484e73f7b78528c6a8673",
+    "data/supplementary/disruption_processed.csv": "1a066c3932dcdecf984456a0198f2c7fa98a2e02644152822d68a6b9f726b39b",
+    "data/supplementary/Supply_Chain_and_Freight_Indicators.csv": "dac942d0b4b205fbdd0f25b345a3f8ece573862127b859910f36bcf5c0eca67f"
+  },
+  "seeds": {
+    "generate_arcos": 18,
+    "isolation_forest": 42,
+    "anomaly_benchmark_tune_seed": 42,
+    "anomaly_benchmark_holdout_seeds": [
+      43,
+      44,
+      45,
+      46
+    ],
+    "recovery_xgboost": 42,
+    "multi_domain_xgboost": 42,
+    "immunological_memory_split": 42,
+    "ppo_routing_agent": 42,
+    "scms_counterfactual_bootstrap": 42,
+    "ir_stages_betweenness": 42
+  },
+  "headline": {
+    "anomaly_detection": {
+      "n_high_confidence": 1664,
+      "calibrated_ensemble": {
+        "f1": 0.3864,
+        "precision": 0.2852,
+        "precision_adjusted": 0.8585,
+        "recall": 0.603,
+        "threshold": 0.8999999999999999
+      },
+      "isolation_forest_f1": 0.3403962617491354,
+      "zscore_2plus_f1": 0.1221131974090206
+    },
+    "recovery_predictor": {
+      "mae_days": 31.23,
+      "r2": 0.3896,
+      "baseline_mae_days": 42.51
+    },
+    "lstm_stress_forecaster": {
+      "mae": 0.0064,
+      "persistence_mae": 0.0055,
+      "beats_persistence": false
+    },
+    "immunological_memory": {
+      "knn_mae_days": 36.3,
+      "baseline_mae_days": 42.3,
+      "knn_response_accuracy_pct": 49.5,
+      "majority_accuracy_pct": 44.5
+    },
+    "ppo_cascade": {
+      "n_eval_episodes": 300,
+      "avg_total_reward": {
+        "PPO": 37.350825364819116,
+        "Random": 33.22309183917759,
+        "Dijkstra": 33.22115764609779,
+        "Risk-greedy": 35.93749203148578
+      },
+      "sd_total_reward": {
+        "PPO": 7.782748218343746,
+        "Random": 12.170001014848312,
+        "Dijkstra": 11.771708276342313,
+        "Risk-greedy": 9.710574460968294
+      },
+      "unserved": {
+        "PPO": 26,
+        "Random": 72,
+        "Dijkstra": 72,
+        "Risk-greedy": 42
+      },
+      "ppo_safer_than_dijkstra_pct": 42.66666666666667,
+      "paired_delta_reward": {
+        "ppo_minus_greedy": {
+          "mean": 1.4133333333333333,
+          "ci95": [
+            0.6161250000000007,
+            2.296666666666667
+          ]
+        },
+        "ppo_minus_dijkstra": {
+          "mean": 4.129667718721322,
+          "ci95": [
+            2.8069338059837015,
+            5.447776051876085
+          ]
+        }
+      }
+    },
+    "multi_domain_risk": {
+      "best_industry": "Automotive",
+      "f1": 0.34377358041645445,
+      "baseline": 0.15109777875594396,
+      "lift": 0.1926758016605105
+    },
+    "macro_crisis_validation": {
+      "COVID-19 pandemic onset": {
+        "delta": 0.0763,
+        "placebo_percentile": 100.0,
+        "verdict": "DETECTED",
+        "top_driver": "Inventory_to_Sales_R"
+      },
+      "Suez Canal blockage": {
+        "delta": 0.0354,
+        "placebo_percentile": 98.1,
+        "verdict": "DETECTED",
+        "top_driver": "Truck_Spot_Rates"
+      },
+      "US port congestion peak": {
+        "delta": 0.0611,
+        "placebo_percentile": 100.0,
+        "verdict": "DETECTED",
+        "top_driver": "Containerships_Await"
+      },
+      "Russia invades Ukraine": {
+        "delta": 0.0149,
+        "placebo_percentile": 79.2,
+        "verdict": "PARTIAL",
+        "top_driver": "Diesel_Sales_Prices"
+      },
+      "Red Sea shipping attacks": {
+        "delta": 0.0093,
+        "placebo_percentile": 69.3,
+        "verdict": "NOT SEEN",
+        "top_driver": "Freight_Transportati"
+      }
+    },
+    "scms_counterfactual": {
+      "n_comparable": 76,
+      "wins": 54,
+      "ties": 13,
+      "losses": 9,
+      "win_rate": 0.7105263157894737,
+      "win_rate_ci95": [
+        0.6052631578947368,
+        0.8026315789473685
+      ],
+      "a_late_rate": 0.17991447368421054,
+      "b_late_rate": 0.03959078947368421,
+      "r_late_rate": 0.03992962962962963,
+      "late_rate_gap": 0.14032368421052632,
+      "late_rate_gap_ci95": [
+        0.09941842105263157,
+        0.18044868421052632
+      ],
+      "lateness_saved_mean": 2.4514473684210527,
+      "lateness_saved_ci95": [
+        0.9661842105263159,
+        3.76
+      ],
+      "sign_test_p": 6.108279451688681e-09
+    },
+    "response_planner": {
+      "anomalies_planned": 1664.0,
+      "proven_supplier_pct": 40.1
+    }
+  }
+}
