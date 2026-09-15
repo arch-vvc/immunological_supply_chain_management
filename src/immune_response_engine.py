@@ -49,7 +49,6 @@ import pandas as pd
 import networkx as nx
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
 
 # ── Paths ──────────────────────────────────────────────────────────────────
 GRAPH_PATH    = ROOT / "models"  / "supplychain_graph.pkl"

@@ -36,7 +36,6 @@ import sys
 from collections import defaultdict
 from datetime import datetime
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import scms_vendor_scorecard as sc          # reuse the real response logic
 
 ROOT     = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

@@ -48,7 +48,6 @@ import streamlit as st
 import plotly.graph_objects as go
 
 BASE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(BASE, "src"))
 
 from ai_agent import ImmuneAIAgent
 

@@ -6,7 +6,7 @@ PES University Capstone  PW26_RGP_01
 Run:  streamlit run app.py
 """
 
-import os, pickle, warnings, time, json
+import os, sys, pickle, warnings, time, json
 warnings.filterwarnings("ignore")
 
 import numpy as np
@@ -113,6 +113,18 @@ def load_supplier_results():
     p = os.path.join(OUT, "supplier_agent_results.csv")
     return pd.read_csv(p) if os.path.exists(p) else pd.DataFrame()
 
+@st.cache_data
+def load_json(name):
+    """Small JSON artifact from output/ (None if absent or unreadable)."""
+    p = os.path.join(OUT, name)
+    if not os.path.exists(p):
+        return None
+    try:
+        with open(p) as f:
+            return json.load(f)
+    except Exception:
+        return None
+
 @st.cache_resource
 def load_graph():
     p = os.path.join(MODELS, "supplychain_graph.pkl")
@@ -127,17 +139,6 @@ def load_graph():
 @st.cache_resource
 def load_rf_regressor():
     p = os.path.join(MODELS, "recovery_regressor.pkl")
-    if not os.path.exists(p):
-        return None
-    try:
-        with open(p, "rb") as f:
-            return pickle.load(f)
-    except Exception:
-        return None
-
-@st.cache_resource
-def load_rf_classifier():
-    p = os.path.join(MODELS, "recovery_classifier.pkl")
     if not os.path.exists(p):
         return None
     try:
@@ -288,8 +289,6 @@ with tab_ir:
             "Takes ~2 min (the PPO routing agent trains from scratch per dataset)."
         )
         if st.button("▶ Run gated analytics"):
-            if os.path.join(BASE, "src") not in _sys.path:
-                _sys.path.insert(0, os.path.join(BASE, "src"))
             import ir_stages
             import importlib
             importlib.reload(ir_stages)
@@ -627,6 +626,56 @@ with tab_anomaly:
             "signals corroborate each, not into confident vs. unconfident."
         )
 
+        # ── Calibrated ensemble (Stage 17 held-out benchmark) ──────────────
+        cal = load_json("anomaly_ensemble_calibration.json")
+        if cal:
+            st.markdown("#### Calibrated Ensemble — held-out benchmark (Stage 17)")
+            st.caption(
+                "A logistic model over the five detection signals, tuned on one "
+                "injection realization (seed 42) and scored on four unseen seeds. "
+                "Raw precision is capped by ~2,500 unlabeled organic anomalies in "
+                "the base data; adjusted precision excludes rows the same rule "
+                "already flags pre-injection."
+            )
+            k1, k2, k3, k4 = st.columns(4)
+            with k1:
+                metric_card("Held-out F1", f"{cal.get('held_out_f1', float('nan')):.3f}",
+                            "mean over 4 unseen seeds")
+            with k2:
+                metric_card("Precision (raw)", f"{cal.get('held_out_precision', float('nan')):.3f}",
+                            f"adjusted {cal.get('held_out_precision_adjusted', float('nan')):.2f} excl. organic")
+            with k3:
+                metric_card("Recall", f"{cal.get('held_out_recall', float('nan')):.3f}")
+            with k4:
+                metric_card("Decision threshold", f"{cal.get('threshold', float('nan')):.2f}",
+                            f"tuned on seed {cal.get('tuned_on_seed', '—')}")
+            _feat = cal.get("features") or []
+            _coef = cal.get("coef") or []
+            if _feat and len(_feat) == len(_coef):
+                cw1, cw2 = st.columns([3, 2])
+                with cw1:
+                    coef_df = pd.DataFrame({"signal": _feat, "weight": _coef})
+                    fig_c = px.bar(
+                        coef_df, x="weight", y="signal", orientation="h",
+                        color="weight", color_continuous_scale="RdBu",
+                        template="plotly_dark",
+                        labels={"weight": "Logistic weight (per raw unit)", "signal": ""},
+                    )
+                    fig_c.update_layout(paper_bgcolor="#0f0f1a", plot_bgcolor="#0f0f1a",
+                                        coloraxis_showscale=False, height=240,
+                                        margin=dict(l=10, r=10, t=10, b=30))
+                    st.plotly_chart(fig_c, use_container_width=True)
+                with cw2:
+                    st.markdown(
+                        f"**Intercept** `{cal.get('intercept', float('nan')):.2f}`  \n"
+                        "Weights are per raw feature unit, so magnitudes are not "
+                        "directly comparable across signals: the Isolation Forest "
+                        "score lives on a narrow scale and carries a large weight, "
+                        "while z-scores span several units each. Negative weights "
+                        "on surge/concentration act as *vetoes* that trade recall "
+                        "for precision."
+                    )
+
         st.markdown("#### Anomaly Score Distribution")
         score_counts = anom["anomaly_score"].value_counts().sort_index()
         fig = px.bar(
@@ -764,6 +813,92 @@ with tab_risk:
                 pass
         if not os.path.exists(mem_txt) and not os.path.exists(mem_csv):
             st.info("Run Stage 13 (Immunological Memory) to see FAISS retrieval results.")
+
+    # ── Macro-Stress Crisis Validation (Stage 27) ─────────────────────────
+    st.divider()
+    st.markdown("### Macro-Stress Crisis Validation — Stage 27")
+    st.caption(
+        "Does the Stage-9 stress composite rise at documented global crises it "
+        "was never told about? Event study: mean of the 8-week event window "
+        "minus the prior 12 weeks, ranked against a placebo distribution of "
+        "non-event windows. DETECTED ≥ p90, PARTIAL ≥ p75. Nulls are shown, "
+        "not hidden — they say what a US-macro lens cannot see."
+    )
+    _mv_path = os.path.join(OUT, "macro_event_validation.csv")
+    if not os.path.exists(_mv_path):
+        st.info("Run Stage 27 (`python3 src/macro_event_validation.py`) to generate the crisis validation.")
+    else:
+        mv = pd.read_csv(_mv_path, parse_dates=["start"])
+        _n_det = int((mv["verdict"] == "DETECTED").sum())
+        _n_par = int((mv["verdict"] == "PARTIAL").sum())
+        _n_not = int(len(mv) - _n_det - _n_par)
+        _mv_rpt = os.path.join(OUT, "macro_event_validation_report.txt")
+        _n_placebo = "—"
+        if os.path.exists(_mv_rpt):
+            import re as _re
+            _m = _re.search(r"(\d+)\s+non-event windows", open(_mv_rpt).read())
+            if _m:
+                _n_placebo = _m.group(1)
+        m1, m2, m3, m4 = st.columns(4)
+        with m1:
+            metric_card("Crises Tested", f"{len(mv)}", f"{mv['start'].min().year}–{mv['start'].max().year}")
+        with m2:
+            metric_card("Detected (≥ p90)", f"{_n_det}", f"{_n_par} partial · {_n_not} not seen")
+        with m3:
+            _best = mv.loc[mv["delta"].idxmax()]
+            metric_card("Largest Rise", f"+{_best['delta']:.3f}", str(_best["event"])[:26])
+        with m4:
+            metric_card("Placebo Windows", _n_placebo, "non-event 8-week windows")
+
+        _vcol = {"DETECTED": "#4caf50", "PARTIAL": "#ffb300", "NOT SEEN": "#ef5350"}
+        vc1, vc2 = st.columns([3, 2])
+        with vc1:
+            stress = load_stress()
+            if not stress.empty and "stress_score" in stress.columns:
+                fig_ms = go.Figure()
+                fig_ms.add_trace(go.Scatter(
+                    x=stress["date"], y=stress["stress_score"], mode="lines",
+                    name="Macro stress", line=dict(color="#4fc3f7", width=1.6)))
+                for _, r in mv.iterrows():
+                    _c = _vcol.get(r["verdict"], "#999")
+                    fig_ms.add_vrect(x0=r["start"], x1=r["start"] + pd.Timedelta(weeks=8),
+                                     fillcolor=_c, opacity=0.18, line_width=0)
+                    fig_ms.add_vline(x=r["start"], line=dict(color=_c, width=1, dash="dot"))
+                    fig_ms.add_annotation(x=r["start"], y=1.0, yref="paper", showarrow=False,
+                                          text=str(r["event"]).split(" ")[0], font=dict(size=10, color=_c),
+                                          yanchor="bottom")
+                fig_ms.update_layout(
+                    template="plotly_dark", paper_bgcolor="#0f0f1a", plot_bgcolor="#0f0f1a",
+                    height=300, margin=dict(l=40, r=20, t=30, b=40),
+                    xaxis_title="Week", yaxis_title="Composite stress",
+                )
+                st.plotly_chart(fig_ms, use_container_width=True)
+        with vc2:
+            fig_dv = px.bar(
+                mv.sort_values("delta"), x="delta", y="event", orientation="h",
+                color="verdict", color_discrete_map=_vcol, template="plotly_dark",
+                text=mv.sort_values("delta")["placebo_percentile"].map(lambda v: f"p{v:.0f}"),
+                labels={"delta": "Δ stress (event − prior 12 wk)", "event": "", "verdict": ""},
+            )
+            fig_dv.update_traces(textposition="outside")
+            fig_dv.update_layout(paper_bgcolor="#0f0f1a", plot_bgcolor="#0f0f1a",
+                                 height=300, margin=dict(l=10, r=40, t=30, b=40),
+                                 legend=dict(orientation="h", y=1.15, x=0))
+            st.plotly_chart(fig_dv, use_container_width=True)
+
+        st.dataframe(
+            mv[["event", "start", "pre_mean", "window_peak", "delta", "placebo_percentile",
+                "verdict", "top_driver", "driver_delta"]].rename(columns={
+                "event": "Crisis", "start": "Onset", "pre_mean": "Pre (12 wk)",
+                "window_peak": "Peak (8 wk)", "delta": "Δ", "placebo_percentile": "Placebo %ile",
+                "verdict": "Verdict", "top_driver": "Top Driver", "driver_delta": "Driver Δ"}),
+            use_container_width=True, height=230, hide_index=True)
+        with st.expander("Full Stage 27 report + figure"):
+            if os.path.exists(_mv_rpt):
+                st.code(open(_mv_rpt).read(), language=None)
+            _f11 = os.path.join(FIGS, "fig11_macro_event_validation.png")
+            if os.path.exists(_f11):
+                st.image(_f11, use_container_width=True)
 
 # ══════════════════════════════════════════════════════════════════════════
 # (Macro Stress & LSTM tab removed 2026-07-16 — LSTM did not beat naive
@@ -1208,6 +1343,84 @@ with tab_recovery:
             if os.path.exists(_ct_rpt):
                 st.code(open(_ct_rpt).read(), language=None)
             st.dataframe(ct, use_container_width=True, height=300)
+
+    # ── SCMS Validation 4 — Outcome Counterfactual (Stage 28) ──────────────
+    st.markdown("#### ⚖️ Validation 4 — Outcome Counterfactual: planner's pick vs procurement's real choice")
+    st.caption(
+        "At each lane's first late shipment, realized delivery performance over "
+        "the following year for the vendor procurement actually used (A) vs the "
+        "walk-forward planner's top pick (B), both scored at the same molecule "
+        "scope. A random-pool vendor lands close to the planner's pick, so the "
+        "gap vs the incumbent is evidence for *switching at all*, not for the "
+        "exact ranking (that is Validation 1's job). Observational, not causal."
+    )
+    _cf_path = os.path.join(OUT, "scms_counterfactual.csv")
+    if not os.path.exists(_cf_path):
+        st.info("Run Stage 28 (`python3 src/scms_counterfactual.py`) to generate the counterfactual.")
+    else:
+        cf = pd.read_csv(_cf_path)
+        _n = len(cf)
+        _wins = int(cf["rec_wins_late_rate"].sum())
+        _ties = int(cf["rec_ties_late_rate"].sum())
+        _worse = _n - _wins - _ties
+        _a_lr, _b_lr = cf["a_late_rate"].mean(), cf["b_late_rate"].mean()
+        _r_lr = cf["r_late_rate"].dropna().mean()
+        _saved = cf["lateness_saved_days"]
+        f1, f2, f3, f4 = st.columns(4)
+        with f1:
+            metric_card("Comparable Lanes", f"{_n}", "both vendors observed post-t0")
+        with f2:
+            metric_card("Planner Pick Was Better", f"{_wins}/{_n}",
+                        f"{_wins/_n*100:.0f}% · tied {_ties} · worse {_worse}")
+        with f3:
+            metric_card("Mean Late Rate A → B", f"{_a_lr*100:.1f}% → {_b_lr*100:.1f}%",
+                        f"random pool vendor {_r_lr*100:.1f}%")
+        with f4:
+            metric_card("Lateness Saved / Shipment", f"{_saved.mean():+.1f} d",
+                        f"median {_saved.median():+.1f} d")
+        g1, g2 = st.columns([2, 3])
+        with g1:
+            _bar = pd.DataFrame({
+                "vendor": ["Actual choice (A)", "Planner pick (B)", "Random pool"],
+                "late_rate": [_a_lr * 100, _b_lr * 100, _r_lr * 100],
+                "lateness": [cf["a_lateness_days"].mean(), cf["b_lateness_days"].mean(),
+                             cf["r_lateness_days"].dropna().mean()],
+            })
+            fig_cf = go.Figure()
+            fig_cf.add_trace(go.Bar(x=_bar["vendor"], y=_bar["late_rate"], name="Late rate (%)",
+                                    marker_color=["#ef5350", "#4caf50", "#78909c"],
+                                    text=_bar["late_rate"].map(lambda v: f"{v:.1f}%"),
+                                    textposition="outside"))
+            fig_cf.update_layout(template="plotly_dark", paper_bgcolor="#0f0f1a",
+                                 plot_bgcolor="#0f0f1a", height=280, showlegend=False,
+                                 yaxis_title="Late rate, year after t0 (%)",
+                                 margin=dict(l=40, r=20, t=30, b=40))
+            st.plotly_chart(fig_cf, use_container_width=True)
+        with g2:
+            fig_sv = px.histogram(
+                cf, x="lateness_saved_days", nbins=25, template="plotly_dark",
+                color_discrete_sequence=["#4fc3f7"],
+                labels={"lateness_saved_days": "Lateness-days saved per shipment (B vs A)"},
+            )
+            fig_sv.add_vline(x=0, line=dict(color="#ef5350", dash="dash"))
+            fig_sv.update_layout(paper_bgcolor="#0f0f1a", plot_bgcolor="#0f0f1a", height=280,
+                                 yaxis_title="Lanes", margin=dict(l=40, r=20, t=30, b=40))
+            st.plotly_chart(fig_sv, use_container_width=True)
+        with st.expander("Per-lane outcomes + full protocol report"):
+            _cf_rpt = os.path.join(OUT, "scms_counterfactual_report.txt")
+            if os.path.exists(_cf_rpt):
+                st.code(open(_cf_rpt).read(), language=None)
+            st.dataframe(
+                cf[["molecule", "country", "t0", "actual_vendor", "recommended_vendor",
+                    "a_n", "a_late_rate", "b_n", "b_late_rate", "lateness_saved_days"]].rename(columns={
+                    "molecule": "Molecule", "country": "Country", "t0": "First Late",
+                    "actual_vendor": "Actual Vendor (A)", "recommended_vendor": "Planner Pick (B)",
+                    "a_n": "A ships", "a_late_rate": "A late", "b_n": "B ships",
+                    "b_late_rate": "B late", "lateness_saved_days": "Days saved/ship"}),
+                use_container_width=True, height=300, hide_index=True)
+            _f12 = os.path.join(FIGS, "fig12_scms_counterfactual.png")
+            if os.path.exists(_f12):
+                st.image(_f12, use_container_width=True)
 
     # ── Network-Grounded Response Plan (Stage 18) ──────────────────────────
     st.divider()
@@ -1846,11 +2059,133 @@ with tab_memory:
 # meant every button click anywhere in the app (e.g. Recovery Predictor's
 # "Rank Strategies") got wiped by the next auto-refresh before its result
 # could ever be seen. Must be defined before tab_live calls it.
+# ── Stream process management ─────────────────────────────────────────────
+# The simulator and consumer are long-running scripts. They are launched here
+# as detached subprocesses so a demo needs no extra terminals. PIDs are kept in
+# a small file (not session_state) so a page reload or a second browser tab
+# still sees — and can stop — processes started earlier.
+import subprocess as _sp
+import signal as _signal
+
+STREAM_DIR      = os.path.join(BASE, "data", "stream")
+STREAM_PID_FILE = os.path.join(STREAM_DIR, ".stream_pids.json")
+STREAM_LOGS     = {"simulator": os.path.join(STREAM_DIR, "simulator.log"),
+                   "consumer":  os.path.join(STREAM_DIR, "consumer.log")}
+
+def _pid_alive(pid):
+    """True only for a process that is still running.
+
+    Children we spawned become zombies after they exit until someone waits on
+    them, and a signal-0 probe still succeeds on a zombie — so reap first.
+    waitpid raises ChildProcessError for processes that are not our children
+    (e.g. after a server restart); fall back to the signal probe for those.
+    """
+    try:
+        pid = int(pid)
+    except (ValueError, TypeError):
+        return False
+    try:
+        done_pid, _ = os.waitpid(pid, os.WNOHANG)
+        if done_pid == pid:
+            return False          # exited — reaped just now
+        return True               # still running (our child)
+    except ChildProcessError:
+        pass                      # not our child: probe instead
+    except OSError:
+        return False
+    try:
+        os.kill(pid, 0)
+        return True
+    except OSError:
+        return False
+
+def _stream_pids():
+    """{'simulator': pid, 'consumer': pid} for processes that are still alive."""
+    if not os.path.exists(STREAM_PID_FILE):
+        return {}
+    try:
+        with open(STREAM_PID_FILE) as f:
+            pids = json.load(f)
+    except Exception:
+        return {}
+    return {k: v for k, v in pids.items() if _pid_alive(v)}
+
+def _stop_stream():
+    pids = _stream_pids()
+    for name, pid in pids.items():
+        try:
+            os.kill(int(pid), _signal.SIGTERM)
+        except OSError:
+            pass
+    # Reap so the children do not linger as zombies under the dashboard
+    # process. Give them a moment to honour SIGTERM before checking.
+    deadline = time.time() + 3.0
+    remaining = dict(pids)
+    while remaining and time.time() < deadline:
+        for name, pid in list(remaining.items()):
+            if not _pid_alive(pid):
+                remaining.pop(name)
+        if remaining:
+            time.sleep(0.1)
+    for name, pid in remaining.items():           # stubborn: escalate
+        try:
+            os.kill(int(pid), _signal.SIGKILL)
+            _pid_alive(pid)
+        except OSError:
+            pass
+    if os.path.exists(STREAM_PID_FILE):
+        os.remove(STREAM_PID_FILE)
+    return list(pids)
+
+def _start_stream(interval, disruption_at, multi, domain):
+    """Start consumer first (it waits for the feed), then the simulator."""
+    _stop_stream()
+    os.makedirs(STREAM_DIR, exist_ok=True)
+    py = sys.executable
+    # -u: unbuffered stdout so the log tails in the UI update line by line
+    consumer_cmd = [py, "-u", os.path.join(BASE, "src", "stream_consumer.py"), "--domain", domain]
+    sim_cmd = [py, "-u", os.path.join(BASE, "src", "stream_simulator.py"), "--interval", str(interval)]
+    if disruption_at is not None:
+        sim_cmd += ["--disruption", str(disruption_at)]
+    if multi:
+        sim_cmd.append("--multi")
+    procs = {}
+    for name, cmd in (("consumer", consumer_cmd), ("simulator", sim_cmd)):
+        log = open(STREAM_LOGS[name], "w")
+        procs[name] = _sp.Popen(cmd, cwd=BASE, stdout=log, stderr=_sp.STDOUT,
+                                start_new_session=True).pid
+    with open(STREAM_PID_FILE, "w") as f:
+        json.dump(procs, f)
+    return procs
+
+def _tail(path, n=25):
+    if not os.path.exists(path):
+        return ""
+    try:
+        with open(path, errors="replace") as f:
+            return "".join(f.readlines()[-n:])
+    except Exception:
+        return ""
+
+
 @st.fragment(run_every=3)
 def _live_stream_fragment(live_results_path, disruption_flag_path):
     st.caption("Auto-refreshes every 3 seconds. Keep this tab open during your demo.")
 
-    df_live = pd.read_csv(live_results_path)
+    _running = _stream_pids()
+    if not os.path.exists(live_results_path):
+        if _running:
+            st.info("Stream is starting — the consumer is loading the immune engine and "
+                    "waiting for its first rows. This usually takes a few seconds.")
+        else:
+            st.info("No stream results yet. Click **Start simulation** above.")
+        return
+
+    try:
+        df_live = pd.read_csv(live_results_path)
+    except Exception:
+        st.info("Results file is being written — retrying on the next refresh.")
+        return
 
     total_rows      = len(df_live)
     anomaly_rows    = int(df_live["is_anomaly"].sum()) if "is_anomaly" in df_live.columns else 0
@@ -1913,24 +2248,67 @@ def _live_stream_fragment(live_results_path, disruption_flag_path):
 with tab_live:
     st.subheader("Live Stream Monitor — Real-Time Sensor Feed")
     st.caption(
-        "Simulates real-time IoT/sensor data arriving row by row. "
-        "Run stream_simulator.py and stream_consumer.py in two terminals to activate."
+        "Simulates real-time IoT/sensor data arriving row by row. The simulator "
+        "and the immune-response consumer run as background processes started "
+        "from this page — no extra terminals needed."
     )
 
-    LIVE_RESULTS_PATH    = "data/stream/live_results.csv"
-    DISRUPTION_FLAG_PATH = "data/stream/disruption_active.flag"
+    LIVE_RESULTS_PATH    = os.path.join(STREAM_DIR, "live_results.csv")
+    DISRUPTION_FLAG_PATH = os.path.join(STREAM_DIR, "disruption_active.flag")
 
-    if not os.path.exists(LIVE_RESULTS_PATH):
-        st.info("Stream is not running yet. Start it with these two commands in separate terminals:")
-        st.code(
-            "# Terminal 1 — emit rows every 2s, inject disruption at t=30s\n"
-            "python3 src/stream_simulator.py --interval 2 --disruption 30 --multi\n\n"
-            "# Terminal 2 — consume and detect anomalies\n"
-            "python3 src/stream_consumer.py",
-            language="bash"
-        )
-    else:
-        _live_stream_fragment(LIVE_RESULTS_PATH, DISRUPTION_FLAG_PATH)
+    # ── Controls ──────────────────────────────────────────────────────────
+    _running = _stream_pids()
+    _domains = sorted(
+        os.path.splitext(f)[0] for f in os.listdir(os.path.join(BASE, "config"))
+        if f.endswith(".yaml")
+    ) if os.path.isdir(os.path.join(BASE, "config")) else ["pharma"]
+    with st.container(border=True):
+        cc1, cc2, cc3, cc4, cc5 = st.columns([1.1, 1.1, 1.1, 1.3, 1.6])
+        with cc1:
+            _interval = st.number_input("Row interval (s)", 0.5, 10.0, 2.0, 0.5,
+                                        disabled=bool(_running))
+        with cc2:
+            _dis_at = st.number_input("Disruption at (s)", 0, 300, 30, 5,
+                                      disabled=bool(_running),
+                                      help="Seconds after start to inject the first disruption. 0 = never.")
+        with cc3:
+            _multi = st.checkbox("Repeat every 60s", value=True, disabled=bool(_running),
+                                 help="Keep injecting disruptions (needed to trigger a cytokine storm).")
+        with cc4:
+            _domain = st.selectbox("Domain config", _domains,
+                                   index=_domains.index("pharma") if "pharma" in _domains else 0,
+                                   disabled=bool(_running))
+        with cc5:
+            st.markdown("<div style='height:1.7rem'></div>", unsafe_allow_html=True)
+            if _running:
+                if st.button("⏹ Stop simulation", type="primary", use_container_width=True):
+                    _stop_stream()
+                    st.rerun()
+            else:
+                if st.button("▶ Start simulation", type="primary", use_container_width=True):
+                    _start_stream(_interval, _dis_at if _dis_at > 0 else None, _multi, _domain)
+                    st.rerun()
+        if _running:
+            st.success(
+                "Running — " + " · ".join(f"{k} pid {v}" for k, v in sorted(_running.items()))
+                + ". Results below refresh every 3 s."
+            )
+        else:
+            st.caption(
+                "Or run by hand in two terminals: "
+                "`python3 src/stream_simulator.py --interval 2 --disruption 30 --multi` "
+                "and `python3 src/stream_consumer.py`."
+            )
+        with st.expander("Process logs (last 25 lines each)"):
+            lc1, lc2 = st.columns(2)
+            with lc1:
+                st.markdown("**simulator**")
+                st.code(_tail(STREAM_LOGS["simulator"]) or "(no output yet)", language=None)
+            with lc2:
+                st.markdown("**consumer**")
+                st.code(_tail(STREAM_LOGS["consumer"]) or "(no output yet)", language=None)
+
+    _live_stream_fragment(LIVE_RESULTS_PATH, DISRUPTION_FLAG_PATH)
 
 
 # ══════════════════════════════════════════════════════════════════════════
@@ -1945,20 +2323,13 @@ with tab_live:
         "activation, and inventory transfer. Each anomaly shows its full reasoning trace here."
     )
 
-    IMMUNE_DECISIONS_PATH = "data/stream/immune_decisions.jsonl"
+    IMMUNE_DECISIONS_PATH = os.path.join(STREAM_DIR, "immune_decisions.jsonl")
 
     if not os.path.exists(IMMUNE_DECISIONS_PATH):
         st.info(
-            "No immune response decisions yet. Start the stream and consumer to generate responses:"
+            "No immune response decisions yet. Click **Start simulation** above — "
+            "decisions appear here once the first disruption is injected."
         )
-        st.code(
-            "# Terminal 1 — emit rows every 2s, inject disruption at t=30s, repeat every 60s\n"
-            "python3 src/stream_simulator.py --interval 2 --disruption 30 --multi\n\n"
-            "# Terminal 2 — consume with full immune response\n"
-            "python3 src/stream_consumer.py",
-            language="bash"
-        )
-        st.markdown("---")
         st.markdown("**Or run a one-shot test of the engine directly:**")
         st.code("python3 src/immune_response_engine.py", language="bash")
     else:

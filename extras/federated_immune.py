@@ -35,7 +35,6 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
 
 FAISS_INDEX  = ROOT / "models" / "faiss_memory.index"
 FAISS_META   = ROOT / "models" / "faiss_memory_meta.pkl"

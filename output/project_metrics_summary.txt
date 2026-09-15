@@ -18,14 +18,8 @@ Multi-domain risk modelling:
 Recovery predictor:
   MAE                      31.230 days
   R²                       0.390
-  baseline MAE             n/a
-  accuracy                 n/a
-  macro F1                 n/a
-  weighted precision       n/a
-  weighted recall          n/a
-  weighted F1              n/a
-  baseline accuracy        n/a
-  baseline macro F1        n/a
+  baseline MAE             42.510 days
+  strategy spread          17.100 days
 
 LSTM stress forecaster:
   MAE                      0.006

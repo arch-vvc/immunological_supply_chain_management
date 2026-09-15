@@ -30,7 +30,6 @@ from datetime import datetime
 from collections import deque
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
 
 # ── Immune Response Engine ─────────────────────────────────────────────────
 try:
@@ -594,8 +593,6 @@ if __name__ == "__main__":
 
     # Patch module-level thresholds from domain config before run()
     try:
-        import sys as _sys
-        _sys.path.insert(0, str(ROOT / "src"))
         from domain_config import load_domain_config as _lcfg
         _dc = _lcfg(args.domain)
         ZSCORE_THRESH        = _dc.z_score_threshold

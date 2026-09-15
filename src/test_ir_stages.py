@@ -36,8 +36,6 @@ from __future__ import annotations
 import os
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
 import ir_stages
 from ir_stages import (_prf, anomaly_detection, disruption_detection,
                        event_replay, load_flows, run, safety_stock,

@@ -73,14 +73,8 @@ def parse_recovery_metrics(path: Path) -> dict:
     return {
         "mae": find_float(text, r"MAE\s*:\s*([0-9.]+)\s*days"),
         "r2": find_float(text, r"R²\s*:\s*([0-9.]+)"),
-        "baseline_mae": find_float(text, r"Baseline \(predict train mean\) MAE\s*:\s*([0-9.]+)\s*days"),
-        "accuracy": find_float(text, r"Accuracy\s*:\s*([0-9.]+)"),
-        "macro_f1": find_float(text, r"Macro F1\s*:\s*([0-9.]+)"),
-        "baseline_accuracy": find_float(text, r"Baseline \(majority class\) Accuracy\s*:\s*([0-9.]+)"),
-        "baseline_macro_f1": find_float(text, r"Baseline \(majority class\) Accuracy\s*:\s*[0-9.]+\s*Macro F1\s*:\s*([0-9.]+)"),
-        "weighted_precision": find_float(text, r"weighted avg\s+([0-9.]+)\s+[0-9.]+\s+[0-9.]+"),
-        "weighted_recall": find_float(text, r"weighted avg\s+[0-9.]+\s+([0-9.]+)\s+[0-9.]+"),
-        "weighted_f1": find_float(text, r"weighted avg\s+[0-9.]+\s+[0-9.]+\s+([0-9.]+)"),
+        "baseline_mae": find_float(text, r"predict-the-mean baseline:\s*([0-9.]+)\s*days"),
+        "strategy_spread": find_float(text, r"model spread across strategies:\s*([0-9.]+)\s*days"),
     }
 
 
@@ -221,13 +215,7 @@ def main() -> None:
         f"  MAE                      {fmt(recovery.get('mae'), ' days')}",
         f"  R²                       {fmt(recovery.get('r2'))}",
         f"  baseline MAE             {fmt(recovery.get('baseline_mae'), ' days')}",
-        f"  accuracy                 {fmt(recovery.get('accuracy'))}",
-        f"  macro F1                 {fmt(recovery.get('macro_f1'))}",
-        f"  weighted precision       {fmt(recovery.get('weighted_precision'))}",
-        f"  weighted recall          {fmt(recovery.get('weighted_recall'))}",
-        f"  weighted F1              {fmt(recovery.get('weighted_f1'))}",
-        f"  baseline accuracy        {fmt(recovery.get('baseline_accuracy'))}",
-        f"  baseline macro F1        {fmt(recovery.get('baseline_macro_f1'))}",
+        f"  strategy spread          {fmt(recovery.get('strategy_spread'), ' days')}",
         "",
         "LSTM stress forecaster:",
         f"  MAE                      {fmt(lstm.get('mae'))}",

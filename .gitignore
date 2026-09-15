@@ -9,3 +9,12 @@ extra data/
 * [0-9].csv
 * [0-9].txt
 * [0-9].flag
+data/stream/.stream_pids.json
+data/stream/*.log
+
+# Large raw datasets are not tracked — see README "Data" for where to get them.
+# The DataCo file is only needed to rebuild output/ir/dataco (Stage 26); the
+# committed IR under output/ir/dataco/ already covers the dashboard and tests.
+data/raw/DataCoSupplyChainDataset.csv
+data/raw/superstore_dataset.csv
+*.egg-info/

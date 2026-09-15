@@ -1,0 +1,37 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      # CPU-only torch wheel is far smaller than the default CUDA build.
+      - name: Install torch (CPU)
+        run: pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Install project
+        run: pip install -e ".[test]"
+
+      # Runner + pyproject guards, and the two validation harnesses in src/.
+      # test_artifacts.py is excluded: it needs the trained models/ directory,
+      # which is gitignored and only exists after a full pipeline run.
+      - name: Unit tests and harnesses
+        run: pytest tests/test_runner.py tests/test_harnesses.py -q
+
+      # Stages 1-6 end to end in a throwaway copy of the repo (~20 s).
+      - name: Pipeline smoke test
+        env:
+          ISC_SMOKE: "1"
+        run: pytest tests/test_pipeline_smoke.py -q -s

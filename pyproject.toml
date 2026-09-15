@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "immunological-supply-chain"
+version = "1.0.0"
+description = "Self-healing supply chains with AI digital antibodies — PES University capstone PW26_RGP_01"
+requires-python = ">=3.10"
+dynamic = ["dependencies"]
+
+[project.optional-dependencies]
+test = ["pytest>=8.0"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+# src/ is a flat directory of stage modules (no package). Installing in
+# editable mode (pip install -e .) makes each one importable from anywhere —
+# the dashboard, tests/ and extras/ — without sys.path manipulation.
+# tests/test_runner.py fails if a new src/ module is missing from this list.
+[tool.setuptools]
+package-dir = { "" = "src" }
+py-modules = [
+    "ai_agent",
+    "anomaly_detection",
+    "anomaly_eval_injection",
+    "arcos_adapter",
+    "auto_onboard",
+    "build_chain",
+    "case_table",
+    "dataco_adapter",
+    "domain_config",
+    "generate_arcos",
+    "gnn_encoder",
+    "immune_response_engine",
+    "immunological_memory",
+    "inventory_agent",
+    "ir_pipeline",
+    "ir_schema",
+    "ir_stages",
+    "lstm_forecaster",
+    "macro_event_validation",
+    "macro_risk",
+    "multi_risk",
+    "ppo_routing_agent",
+    "preprocess",
+    "project_metrics",
+    "recovery_predictor",
+    "response_planner",
+    "risk_analysis",
+    "routing",
+    "sample_dataset",
+    "scms_adapter",
+    "scms_backtest",
+    "scms_counterfactual",
+    "scms_event_harness",
+    "scms_event_replay",
+    "scms_safety_stock",
+    "scms_spine",
+    "scms_vendor_scorecard",
+    "stream_consumer",
+    "stream_simulator",
+    "supplier_agent",
+    "visualize",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

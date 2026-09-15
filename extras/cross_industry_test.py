@@ -19,7 +19,6 @@ import sys, json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
 
 from domain_config import load_domain_config
 from immune_response_engine import ImmuneResponseEngine
