@@ -95,6 +95,46 @@ INVENTORY_WEIGHTS = {"capacity": 0.40, "safety": 0.35, "fuel": 0.25}
 W_CAP, W_ESTAB = 0.6, 0.4
 
 
+# ── SCMS raw-file parsing (Stages 19-28 and the SCMS adapter) ────────────────
+# Seven scripts used to carry their own copies; two of the date parsers even
+# tried different format lists. One definition each, here.
+DATE_FMTS = ("%d-%b-%y", "%m/%d/%y", "%m/%d/%Y", "%d-%b-%Y")
+
+
+def parse_date(s):
+    """datetime for any of DATE_FMTS, else None."""
+    from datetime import datetime
+    s = (s or "").strip()
+    for fmt in DATE_FMTS:
+        try:
+            return datetime.strptime(s, fmt)
+        except ValueError:
+            continue
+    return None
+
+
+def clean(s) -> str:
+    """Collapse internal whitespace; '' for None."""
+    return " ".join((s or "").split())
+
+
+def to_float(s):
+    """float, or None when the field is missing or malformed.
+
+    Callers must SKIP a None row (and say how many they skipped) — never treat
+    it as 0.0. The previous copies zero-filled, which silently drags medians
+    and capacity terms down on a dirty file. (On the shipped SCMS extract
+    every quantity/value field parses, so this changes no committed number.)
+    """
+    s = (s or "").replace(",", "").strip()
+    if not s:
+        return None
+    try:
+        return float(s)
+    except ValueError:
+        return None
+
+
 # ── King's safety-stock formula ──────────────────────────────────────────────
 Z_95, Z_99 = 1.65, 2.33
 

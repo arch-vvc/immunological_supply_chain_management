@@ -12,6 +12,11 @@ COPIES = {
     "supplier weights literal":     re.compile(r"0\.50\s*\*\s*\w+\[\"safety_score\"\]"),
     "inventory weights literal":    re.compile(r"0\.40\s*\*\s*(capacity_n|float\(row\[\"capacity_norm\"\]\))"),
     "King's formula inline":        re.compile(r"sqrt\(\s*\w+\s*\*\s*\w+\s*\*\*\s*2\s*\+\s*\w+\s*\*\*\s*2\s*\*\s*\w+\s*\*\*\s*2"),
+    "SCMS date-format list":        re.compile(r"^DATE_FMTS\s*=", re.M),
+    "SCMS parse_date copy":         re.compile(r"^def parse_date\(", re.M),
+    "SCMS clean copy":              re.compile(r"^def clean\(", re.M),
+    "SCMS to_float copy":           re.compile(r"^def to_float\(", re.M),
+    "quantity zero-fill":           re.compile(r"except ValueError:\s*\n\s*qty\s*=\s*0\.0", re.M),
 }
 
 
@@ -46,3 +51,18 @@ def test_former_copies_import_from_isc_common():
     missing = [f for f, imp in expects.items()
                if imp not in open(os.path.join(ROOT, "src", f)).read()]
     assert not missing, f"no longer importing from isc_common: {missing}"
+
+
+def test_scms_parsing_helpers_behave():
+    """The shipped SCMS file never trips these paths, so exercise them directly."""
+    import sys
+    sys.path.insert(0, os.path.join(ROOT, "src"))
+    from isc_common import to_float, parse_date, clean
+    assert to_float("1,234.5") == 1234.5
+    assert to_float(" 7 ") == 7.0
+    assert to_float("") is None and to_float(None) is None and to_float("n/a") is None
+    assert parse_date("11/13/06").year == 2006          # the %m/%d/%y form only the 4-format list handled
+    assert parse_date("13-Nov-06").year == 2006
+    assert parse_date("11/13/2006").year == 2006
+    assert parse_date("") is None and parse_date("garbage") is None
+    assert clean("  a   b\tc ") == "a b c" and clean(None) == ""

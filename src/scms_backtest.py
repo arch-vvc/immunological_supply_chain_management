@@ -47,6 +47,7 @@ import math
 import os
 import statistics
 from collections import defaultdict
+from isc_common import parse_date, clean, to_float   # shared SCMS parsing helpers (one definition)
 from datetime import datetime
 
 ROOT    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -55,7 +56,6 @@ CSV_OUT = os.path.join(ROOT, "output", "scms_backtest.csv")
 RPT_OUT = os.path.join(ROOT, "output", "scms_backtest_report.txt")
 
 from isc_common import W_CAP, W_ESTAB     # planner rule — one definition for Stages 19/20/28
-DATE_FMTS = ("%d-%b-%y", "%m/%d/%y", "%m/%d/%Y", "%d-%b-%Y")
 
 print("=" * 60)
 print("  SCMS REVEALED-PREFERENCE BACKTEST (walk-forward)")
@@ -64,20 +64,6 @@ print("=" * 60)
 if not os.path.exists(SCMS_IN):
     print(f"[ERROR] Missing input: {SCMS_IN}")
     raise SystemExit(1)
-
-
-def parse_date(s):
-    s = (s or "").strip()
-    for f in DATE_FMTS:
-        try:
-            return datetime.strptime(s, f)
-        except ValueError:
-            continue
-    return None
-
-
-def clean(s):
-    return " ".join((s or "").split())
 
 
 # ─────────────────────────────────────────────────────────────
@@ -93,10 +79,9 @@ with open(SCMS_IN, encoding="utf-8", errors="replace") as f:
         cty = clean(r.get("Country"))
         if not (d and s and ven and mol and cty):
             continue
-        try:
-            qty = float(str(r.get("Line Item Quantity", 0)).replace(",", "") or 0)
-        except ValueError:
-            qty = 0.0
+        qty = to_float(r.get("Line Item Quantity"))
+        if qty is None:                   # malformed quantity: skip, never zero-fill
+            continue
         recs.append({"date": d, "delay": (d - s).days,
                      "ven": ven, "mol": mol, "cty": cty, "qty": qty})
 recs.sort(key=lambda x: x["date"])

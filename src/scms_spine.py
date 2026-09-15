@@ -49,6 +49,8 @@ import csv
 import os
 import statistics
 from collections import defaultdict
+from isc_common import parse_date, to_float   # shared SCMS parsing helpers (one definition)
+N_MALFORMED_QTY = [0]                            # rows skipped for an unparseable quantity
 from datetime import datetime
 
 ROOT     = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -67,23 +69,6 @@ print("=" * 55)
 if not os.path.exists(SCMS_IN):
     print(f"[ERROR] Missing input: {SCMS_IN}")
     raise SystemExit(1)
-
-
-def parse_date(s):
-    s = (s or "").strip()
-    for fmt in ("%d-%b-%y", "%m/%d/%Y", "%d-%b-%Y"):
-        try:
-            return datetime.strptime(s, fmt)
-        except ValueError:
-            continue
-    return None
-
-
-def to_float(s):
-    try:
-        return float((s or "0").replace(",", "").strip() or 0)
-    except ValueError:
-        return 0.0
 
 
 def severity(delay_days):
@@ -114,6 +99,9 @@ for r in rows:
     ven = r.get("Vendor", "").strip()
     qty = to_float(r.get("Line Item Quantity"))
     if not (mol and cty and ven):
+        continue
+    if qty is None:                       # malformed quantity: skip, never zero-fill
+        N_MALFORMED_QTY[0] += 1
         continue
     lane_vendors[(mol, cty)].add(ven)
     mol_vendors_any[mol].add(ven)
@@ -168,6 +156,9 @@ for r in rows:
     ven = r.get("Vendor", "").strip()
     qty = to_float(r.get("Line Item Quantity"))
     if not (mol and cty and ven):
+        continue
+    if qty is None:                       # malformed quantity: skip, never zero-fill
+        N_MALFORMED_QTY[0] += 1
         continue
 
     sev  = severity(delay)
@@ -281,3 +272,4 @@ print("\n".join(lines))
 print(f"\n  Plan saved   -> {PLAN_OUT}")
 print(f"  Report saved -> {RPT_OUT}")
 print("\n  SCMS spine complete.")
+print(f"  Rows skipped for an unparseable quantity: {N_MALFORMED_QTY[0]} (never zero-filled)")

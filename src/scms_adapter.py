@@ -31,6 +31,7 @@ from __future__ import annotations
 
 import csv
 import os
+from isc_common import parse_date, to_float   # shared SCMS parsing helpers
 from datetime import datetime
 
 from ir_schema import IR, Node, Edge, Flow
@@ -39,28 +40,12 @@ ROOT    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCMS_IN = os.path.join(ROOT, "data", "raw", "SCMS_Delivery_History_Dataset.csv")
 
 
-def parse_date(s):
-    """Mirror scms_spine.parse_date, plus the %m/%d/%y form used by PO dates."""
-    s = (s or "").strip()
-    if not s or s.lower().startswith(("date not captured", "n/a")):
-        return None
-    for fmt in ("%d-%b-%y", "%m/%d/%Y", "%m/%d/%y", "%d-%b-%Y"):
-        try:
-            return datetime.strptime(s, fmt)
-        except ValueError:
-            continue
-    return None
-
-
 def _iso(dt):
     return dt.date().isoformat() if dt else None
 
 
 def _to_float(s):
-    try:
-        return float((s or "0").replace(",", "").strip() or 0)
-    except ValueError:
-        return None
+    return to_float(s)              # isc_common: None for malformed, never 0.0
 
 
 def build(path: str = SCMS_IN, max_rows: int | None = None) -> IR:

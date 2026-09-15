@@ -45,6 +45,7 @@ import math
 import os
 import statistics
 from collections import defaultdict
+from isc_common import parse_date, clean, to_float   # shared SCMS parsing helpers (one definition)
 from datetime import datetime
 
 ROOT     = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -58,28 +59,6 @@ RPT_OUT  = os.path.join(ROOT, "output", "scms_vendor_scorecard_report.txt")
 W_REL, W_CAP, W_EXP = 0.35, 0.35, 0.30
 SHRINK_K = 5.0
 Z_95     = 1.65
-DATE_FMTS = ("%d-%b-%y", "%m/%d/%y", "%m/%d/%Y", "%d-%b-%Y")
-
-
-def parse_date(s):
-    s = (s or "").strip()
-    for f in DATE_FMTS:
-        try:
-            return datetime.strptime(s, f)
-        except ValueError:
-            continue
-    return None
-
-
-def clean(s):
-    return " ".join((s or "").split())
-
-
-def to_float(s):
-    try:
-        return float(str(s).replace(",", "").strip() or 0)
-    except ValueError:
-        return 0.0
 
 
 def load_shipments(path=SCMS_IN):
@@ -96,8 +75,11 @@ def load_shipments(path=SCMS_IN):
                 continue
             po = parse_date(r.get("PO Sent to Vendor Date"))
             lead = (d - po).days if po and 0 < (d - po).days < 1000 else None
+            qty = to_float(r.get("Line Item Quantity"))
+            if qty is None:                          # malformed quantity: skip, never zero-fill
+                continue
             recs.append({"date": d, "delay": (d - s).days, "ven": ven, "mol": mol,
-                         "cty": cty, "qty": to_float(r.get("Line Item Quantity")),
+                         "cty": cty, "qty": qty,
                          "val": to_float(r.get("Line Item Value")), "lead": lead})
     recs.sort(key=lambda x: x["date"])
     return recs
@@ -118,7 +100,7 @@ def build_stats(recs, before=None):
         ven, mol = x["ven"], x["mol"]
         st = v_raw[ven]
         st["n"] += 1
-        st["value"] += x["val"]
+        st["value"] += x["val"] or 0.0        # unpriced shipment adds no value
         st["mols"].add(mol)
         tot_n += 1
         if x["delay"] <= 0:

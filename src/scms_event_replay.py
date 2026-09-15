@@ -35,6 +35,7 @@ import math
 import os
 import statistics
 from collections import defaultdict
+from isc_common import parse_date   # shared SCMS parsing helpers (one definition)
 from datetime import datetime
 
 ROOT    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -47,7 +48,6 @@ ALPHA           = 1e-3
 MIN_WINDOW_N    = 10      # shipments inside the window
 MIN_PRIOR_N     = 30      # shipments before the window (baseline stability)
 MIN_PRIOR_MONTHS = 12
-DATE_FMTS = ("%d-%b-%y", "%m/%d/%y", "%m/%d/%Y", "%d-%b-%Y")
 
 print("=" * 60)
 print("  SCMS REAL-EVENT REPLAY (blind walk-forward detection)")
@@ -56,16 +56,6 @@ print("=" * 60)
 if not os.path.exists(SCMS_IN):
     print(f"[ERROR] Missing input: {SCMS_IN}")
     raise SystemExit(1)
-
-
-def parse_date(s):
-    s = (s or "").strip()
-    for f in DATE_FMTS:
-        try:
-            return datetime.strptime(s, f)
-        except ValueError:
-            continue
-    return None
 
 
 def month_index(d):

@@ -47,6 +47,7 @@ import math
 import os
 import statistics
 from collections import defaultdict
+from isc_common import parse_date, clean, to_float   # shared SCMS parsing helpers (one definition)
 from datetime import datetime
 
 ROOT    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -60,7 +61,6 @@ HOLDING_RATE   = 0.25          # annual holding cost as share of buffer value
 DAYS_PER_QTR   = 91.31
 MIN_SHIPMENTS  = 3             # to size a lane at all
 MIN_QUARTERS   = 4             # active-span quarters incl. zeros
-DATE_FMTS = ("%d-%b-%y", "%m/%d/%y", "%m/%d/%Y", "%d-%b-%Y")
 
 print("=" * 60)
 print("  SCMS SAFETY-STOCK SIZING (exposed lanes, real inputs)")
@@ -70,27 +70,6 @@ for p in (SCMS_IN, PLAN_IN):
     if not os.path.exists(p):
         print(f"[ERROR] Missing input: {p} (run src/scms_spine.py first)")
         raise SystemExit(1)
-
-
-def parse_date(s):
-    s = (s or "").strip()
-    for f in DATE_FMTS:
-        try:
-            return datetime.strptime(s, f)
-        except ValueError:
-            continue
-    return None
-
-
-def clean(s):
-    return " ".join((s or "").split())
-
-
-def to_float(s):
-    try:
-        return float(str(s).replace(",", "").strip() or 0)
-    except ValueError:
-        return 0.0
 
 
 # ─────────────────────────────────────────────────────────────
@@ -119,7 +98,9 @@ with open(SCMS_IN, encoding="utf-8", errors="replace") as f:
         if not (d and mol and cty):
             continue
         qty = to_float(r.get("Line Item Quantity"))
-        val = to_float(r.get("Line Item Value"))
+        val = to_float(r.get("Line Item Value"))     # None = unpriced shipment (kept for demand, excluded from price)
+        if qty is None:                              # malformed quantity: skip, never zero-fill
+            continue
         lane_ship[(mol, cty)].append((d, qty, val))
         po = parse_date(r.get("PO Sent to Vendor Date"))
         if po:
@@ -181,7 +162,7 @@ for lane in sorted(exposed):
     ss99 = kings_safety_stock(lt_mean, lt_std, d_mean, d_std, Z_99)
 
     # pack price = per-shipment value/qty, lane median (matches Pack Price col)
-    prices = [v / q for _, q, v in ships if q > 0 and v > 0]
+    prices = [v / q for _, q, v in ships if q > 0 and v is not None and v > 0]
     price  = statistics.median(prices) if prices else 0.0
 
     span_years = max((ships[-1][0] - ships[0][0]).days, DAYS_PER_QTR) / 365.25
