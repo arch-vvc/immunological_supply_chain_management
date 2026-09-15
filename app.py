@@ -2741,7 +2741,7 @@ with tab_live:
                     "Event":       i + 1,
                     "Timestamp":   dec.get("timestamp","")[:19],
                     "Severity":    v.get("severity","?"),
-                    "Z-Score":     dec.get("z_score","?"),
+                    "Z-Score":     ("—" if dec.get("z_score") is None else dec.get("z_score")),
                     "Signals":     f"{v.get('signals_activated',0)}/4",
                     "Top Action":  acts[0].get("action","?") if acts else "?",
                     "Recovery (d)":v.get("recovery_estimate_days","?"),

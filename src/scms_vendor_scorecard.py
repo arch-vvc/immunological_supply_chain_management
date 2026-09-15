@@ -190,7 +190,10 @@ def candidate_lead(cand, cty, S):
 
 
 def king_ss(z, lt_mean, d_std, d_mean, lt_std):
-    return z * math.sqrt(lt_mean * d_std ** 2 + d_mean ** 2 * lt_std ** 2)
+    """Thin wrapper kept for this module's call sites/tests; the formula
+    lives in isc_common.kings_safety_stock."""
+    from isc_common import kings_safety_stock
+    return kings_safety_stock(lt_mean, lt_std, d_mean, d_std, z)
 
 
 def main():

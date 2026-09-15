@@ -55,7 +55,7 @@ PLAN_IN = os.path.join(ROOT, "output", "scms_response_plan.csv")
 CSV_OUT = os.path.join(ROOT, "output", "scms_safety_stock.csv")
 RPT_OUT = os.path.join(ROOT, "output", "scms_safety_stock_report.txt")
 
-Z_95, Z_99     = 1.65, 2.33
+from isc_common import kings_safety_stock, Z_95, Z_99   # one implementation (Stages 22/23/26)
 HOLDING_RATE   = 0.25          # annual holding cost as share of buffer value
 DAYS_PER_QTR   = 91.31
 MIN_SHIPMENTS  = 3             # to size a lane at all
@@ -177,9 +177,8 @@ for lane in sorted(exposed):
 
     lt_mean, lt_std, lt_src = lead_stats(lane)
 
-    var = lt_mean * d_std ** 2 + d_mean ** 2 * lt_std ** 2
-    ss95 = Z_95 * math.sqrt(var)
-    ss99 = Z_99 * math.sqrt(var)
+    ss95 = kings_safety_stock(lt_mean, lt_std, d_mean, d_std, Z_95)
+    ss99 = kings_safety_stock(lt_mean, lt_std, d_mean, d_std, Z_99)
 
     # pack price = per-shipment value/qty, lane median (matches Pack Price col)
     prices = [v / q for _, q, v in ships if q > 0 and v > 0]

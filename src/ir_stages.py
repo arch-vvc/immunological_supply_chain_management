@@ -41,6 +41,7 @@ from __future__ import annotations
 import csv
 import json
 import math
+from isc_common import kings_safety_stock as _kings   # single King's implementation
 import os
 import random
 import statistics
@@ -244,7 +245,7 @@ def safety_stock(flows: list[dict]) -> dict:
         l_std  = statistics.stdev(leads) if len(leads) > 1 else 0.0
         if d_mean <= 0:
             continue
-        ss95   = Z_95 * math.sqrt(l_mean * d_std ** 2 + d_mean ** 2 * l_std ** 2)
+        ss95   = _kings(l_mean, l_std, d_mean, d_std, Z_95)                  # isc_common.kings_safety_stock
         prices = [v / q for _, q, v, _ in ships if v and q > 0]
         total_buffer += ss95 * (statistics.median(prices) if prices else 0.0)
         sized += 1

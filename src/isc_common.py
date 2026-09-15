@@ -3,9 +3,11 @@ isc_common — the ONE place for constants that several stages share.
 ====================================================================
 Everything here used to be copy-pasted (fuel-cost table in two files and a
 YAML, scoring weights in two files, the planner rule in three, King's
-safety-stock formula with two different variance estimators). Drift between
-copies was found by review; this module is the single source and the tests
-check the copies are gone.
+safety-stock formula in three places with two different variance
+estimators). Drift between copies was found by review. This module is the
+single source, every former copy now imports from it, and
+tests/test_shared_constants.py greps src/ for a reintroduced literal copy
+so the claim stays true.
 
 Nothing here runs anything at import time.
 """
@@ -36,7 +38,9 @@ def load_region_fuel_cost(domain: str = "pharma") -> dict[str, float]:
         import yaml
         with open(path) as f:
             cfg = yaml.safe_load(f) or {}
-    except Exception:
+    except Exception as e:                       # loud, never silent: a broken
+        print(f"[isc_common][WARN] could not read {path}: {e} — every state "
+              f"falls back to the default multiplier")
         return {}
 
     def _find(d, key):
@@ -62,7 +66,8 @@ def load_default_fuel_cost(domain: str = "pharma", fallback: float = DEFAULT_FUE
         with open(path) as f:
             cfg = yaml.safe_load(f) or {}
         return float(((cfg.get("shipping_costs") or {}).get("default", fallback)))
-    except Exception:
+    except Exception as e:
+        print(f"[isc_common][WARN] could not read shipping default from {path}: {e} — using {fallback}")
         return fallback
 
 

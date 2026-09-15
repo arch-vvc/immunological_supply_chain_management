@@ -86,7 +86,8 @@ def get_weekly_multipliers(date_series):
             lambda s: fallback if pd.isna(s) else _stress_lambda(s))
         lam.index = merged["index"]
         return lam.sort_index(), in_cov, fallback
-    except Exception:
+    except Exception as e:
+        print(f"[WARN] macro-stress merge failed ({e}); thresholds NOT stress-adjusted (lambda=1.0)")
         return pd.Series(1.0, index=date_series.index), 0.0, 1.0
 
 print("=" * 55)
@@ -235,7 +236,9 @@ X_if = df[IF_FEATURES].fillna(0).values
 scaler   = StandardScaler()
 X_scaled = scaler.fit_transform(X_if)
 
-# contamination: ~5% expected anomaly rate based on synthetic dataset design
+# contamination=0.05 is the Isolation Forest's flagging BUDGET (a prior), not a
+# rate measured on this data. Stage 17 calibrates the ensemble threshold on
+# injected ground truth, so this only sets how many rows IF nominates.
 iforest = IsolationForest(n_estimators=100, contamination=0.05, random_state=42)
 preds   = iforest.fit_predict(X_scaled)   # -1 = anomaly, 1 = normal
 scores  = iforest.score_samples(X_scaled) # lower raw score = more anomalous

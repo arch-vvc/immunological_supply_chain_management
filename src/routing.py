@@ -32,9 +32,10 @@ RISK   = os.path.join(ROOT, "output", "risk_scores.csv")
 OUTPUT = os.path.join(ROOT, "output", "routing_results.txt")
 
 # ── FUEL COST CONFIGURATION ────────────────────────────────────────────────────
-# Regional shipping cost multipliers (relative to Midwest baseline = 1.0).
-# Represents avg freight cost per unit shipped to/from each US state.
-# Source: industry proxy based on distance from central distribution hubs.
+# Regional shipping cost multipliers (relative to Midwest baseline = 1.0),
+# loaded from config/<domain>.yaml via isc_common. They are ILLUSTRATIVE
+# distance-from-hub multipliers, not a sourced dataset (see isc_common.py);
+# they only break ties between otherwise similar reroute options.
 MAX_DELIVERY_DAYS = 7   # time window constraint — trigger Inventory Agent if exceeded
 BASE_DELIVERY_DAYS_PER_HOP = 1.5  # baseline days per supply chain hop
 

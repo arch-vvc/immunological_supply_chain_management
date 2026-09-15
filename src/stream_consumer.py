@@ -331,7 +331,7 @@ def emit_cytokine_storm(storm_events: list, decisions_path: Path):
         "retailer":           "MULTIPLE",
         "retailer_state":     "",
         "quantity":           0,
-        "z_score":            99.0,
+        "z_score":            None,     # a cascade has no per-row z; the UI shows a dash
         "disruption_flagged": True,
         "thinking":           thinking,
         "actions": [
