@@ -31,6 +31,16 @@ windows from the same series.
 A US-macro lens sees what moves US freight prices and capacity; it is
 not a global crisis detector, and the nulls above are reported as such.
 
+Burn-in sensitivity (same event study, stress table recomputed per warm-up):
+   burn-in  series from  weeks  placebo      COVID       Suez      Ports    Ukraine    Red Sea
+  -----------------------------------------------------------------------------------------------
+      26wk   2019-07-07    350      182   NOT SEEN   DETECTED   NOT SEEN   NOT SEEN    PARTIAL
+      39wk   2019-10-06    337      169   NOT SEEN   DETECTED   NOT SEEN   NOT SEEN   DETECTED
+      52wk   2020-01-05    324      168   NOT SEEN   DETECTED   NOT SEEN   NOT SEEN   DETECTED
+
+  Stable across burn-ins: COVID, Suez, Ports, Ukraine.
+  Sensitive to burn-in: Red Sea — the verdict changes with the warm-up length, so it should be read as 'depends on the setting', not as a detection or a null. The headline row is 52 weeks (chosen before the data was seen).
+
 Caveat: with 5 events this is external validity evidence, not a
 powered statistical test. Placebo percentiles quantify how unusual
 each rise is within THIS series; they are not p-values from an

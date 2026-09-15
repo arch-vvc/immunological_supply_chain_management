@@ -38,234 +38,260 @@ CONFIG    = os.path.join(ROOT, "config.yaml")
 
 os.makedirs(os.path.join(ROOT, "output", "figures"), exist_ok=True)
 
-print("=" * 55)
-print("  STAGE 9 — MACRO FREIGHT RISK SCORER")
-print("=" * 55)
-
-if not os.path.exists(DATA_PATH):
-    print(f"[ERROR] Supply_Chain_and_Freight_Indicators.csv not found at:\n  {DATA_PATH}")
-    sys.exit(1)
-
-# ── Load data ─────────────────────────────────────────────────
-print("  Loading freight indicators...")
-df = pd.read_csv(DATA_PATH)
-df["DATE"] = pd.to_datetime(df["DATE"], errors="coerce")
-df = df.dropna(subset=["DATE", "VALUE1"])
-df["VALUE1"] = pd.to_numeric(df["VALUE1"], errors="coerce")
-df = df.dropna(subset=["VALUE1"])
-print(f"  Loaded {len(df):,} records  |  {df['INDICATOR'].nunique()} indicators")
-print(f"  Date range: {df['DATE'].min().date()} → {df['DATE'].max().date()}")
-
-# ── Define stress indicators ──────────────────────────────────
-# (indicator substring, direction: +1=higher is worse, -1=lower is worse, weight)
-STRESS_INDICATORS = [
-    ("Diesel Sales Prices",                        +1, 0.25),
-    ("Truck Spot Rates",                           +1, 0.25),
-    ("Containerships Awaiting Berths",             +1, 0.20),
-    ("Freight Transportation Services Index",      -1, 0.15),
-    ("Inventory to Sales Ratio",                   +1, 0.15),
-]
-
-# Weeks of history an indicator needs before its running min/max is stable
-# enough to scale against. Weeks before this are dropped (no stress score).
+# Weeks of history an indicator needs before its causal percentile rank is
+# meaningful. Weeks before this carry no score. 52 is the headline setting;
+# Stage 27 reports a burn-in SENSITIVITY table (26 / 39 / 52) so the choice
+# is visible rather than tuned.
 BURN_IN_WEEKS = 52
 
-def get_indicator(df, keyword):
-    mask = df["INDICATOR"].str.contains(keyword, case=False, na=False)
-    sub  = df[mask][["DATE", "VALUE1"]].copy()
-    sub  = sub.dropna().sort_values("DATE")
-    # Aggregate to weekly mean
-    sub  = sub.set_index("DATE").resample("W")["VALUE1"].mean().reset_index()
-    sub.columns = ["date", "value"]
-    return sub
 
-# ── Build per-indicator stress scores (0-1) ───────────────────
-print("\n  Computing stress signals:")
-series_list = []   # list of DataFrames
-col_names   = []   # parallel list of plain Python strings (column names)
-weights_list = []  # parallel list of weights
+def build_stress(burn_in_weeks: int = BURN_IN_WEEKS, verbose: bool = True) -> pd.DataFrame:
+    """Compute the weekly causal macro-stress table for a given burn-in.
+    Returns a DataFrame (date, stress_score, stress_level, n_indicators,
+    one column per indicator). Pure function of the inputs: writes nothing."""
+    BURN_IN_WEEKS = burn_in_weeks
+    _print = print if verbose else (lambda *a, **k: None)
 
-for keyword, direction, weight in STRESS_INDICATORS:
-    s = get_indicator(df, keyword)
-    if len(s) < 5:
-        print(f"    ⚠ Skipped (insufficient data): {keyword}")
-        continue
+    if not os.path.exists(DATA_PATH):
+        _print(f"[ERROR] Supply_Chain_and_Freight_Indicators.csv not found at:\n  {DATA_PATH}")
+        sys.exit(1)
 
-    # CAUSAL normalisation: each week's score is the PERCENTILE RANK of this
-    # week's value within the indicator's own history up to the previous
-    # week — never the full series, so a 2019 week cannot know about a 2022
-    # spike. (The previous full-series min/max was a look-ahead that leaked
-    # future extremes into every historical score.) A rank is used rather
-    # than a running min/max because with only a year of history the running
-    # range is tiny and min/max scaling saturates; a rank stays bounded and
-    # scale-free. Weeks with fewer than BURN_IN_WEEKS of history get no score.
-    # Rank over actual OBSERVATIONS (the weekly resample leaves NaN weeks
-    # between monthly readings); burn-in is time-based so a monthly series
-    # needs a year of readings, not 52 of them.
-    s = s.dropna(subset=["value"]).reset_index(drop=True)
-    vals  = s["value"].to_numpy(dtype=float)
-    dates = s["date"].to_numpy()
-    ranks = np.full(len(vals), np.nan)
-    for t in range(len(vals)):
-        if (dates[t] - dates[0]) < np.timedelta64(7 * BURN_IN_WEEKS, "D") or t < 12:
+    # ── Load data ─────────────────────────────────────────────────
+    _print("  Loading freight indicators...")
+    df = pd.read_csv(DATA_PATH)
+    df["DATE"] = pd.to_datetime(df["DATE"], errors="coerce")
+    df = df.dropna(subset=["DATE", "VALUE1"])
+    df["VALUE1"] = pd.to_numeric(df["VALUE1"], errors="coerce")
+    df = df.dropna(subset=["VALUE1"])
+    _print(f"  Loaded {len(df):,} records  |  {df['INDICATOR'].nunique()} indicators")
+    _print(f"  Date range: {df['DATE'].min().date()} → {df['DATE'].max().date()}")
+
+    # ── Define stress indicators ──────────────────────────────────
+    # (indicator substring, direction: +1=higher is worse, -1=lower is worse, weight)
+    STRESS_INDICATORS = [
+        ("Diesel Sales Prices",                        +1, 0.25),
+        ("Truck Spot Rates",                           +1, 0.25),
+        ("Containerships Awaiting Berths",             +1, 0.20),
+        ("Freight Transportation Services Index",      -1, 0.15),
+        ("Inventory to Sales Ratio",                   +1, 0.15),
+    ]
+
+    def get_indicator(df, keyword):
+        mask = df["INDICATOR"].str.contains(keyword, case=False, na=False)
+        sub  = df[mask][["DATE", "VALUE1"]].copy()
+        sub  = sub.dropna().sort_values("DATE")
+        # Aggregate to weekly mean
+        sub  = sub.set_index("DATE").resample("W")["VALUE1"].mean().reset_index()
+        sub.columns = ["date", "value"]
+        return sub
+
+    # ── Build per-indicator stress scores (0-1) ───────────────────
+    _print("\n  Computing stress signals:")
+    series_list = []   # list of DataFrames
+    col_names   = []   # parallel list of plain Python strings (column names)
+    weights_list = []  # parallel list of weights
+
+    for keyword, direction, weight in STRESS_INDICATORS:
+        s = get_indicator(df, keyword)
+        if len(s) < 5:
+            _print(f"    ⚠ Skipped (insufficient data): {keyword}")
             continue
-        hist = vals[:t]
-        ranks[t] = (np.sum(hist < vals[t]) + 0.5 * np.sum(hist == vals[t])) / len(hist)
-    s["stress"] = ranks if direction == +1 else (1 - ranks)
-    s = s.dropna(subset=["stress"]).reset_index(drop=True)
 
-    series_list.append(s)
-    col_names.append(keyword[:20].replace(" ", "_"))  # plain string
-    weights_list.append(weight)
-    print(f"    ✓ {keyword[:50]:<50}  weight={weight}")
+        # CAUSAL normalisation: each week's score is the PERCENTILE RANK of this
+        # week's value within the indicator's own history up to the previous
+        # week — never the full series, so a 2019 week cannot know about a 2022
+        # spike. (The previous full-series min/max was a look-ahead that leaked
+        # future extremes into every historical score.) A rank is used rather
+        # than a running min/max because with only a year of history the running
+        # range is tiny and min/max scaling saturates; a rank stays bounded and
+        # scale-free. Weeks with fewer than BURN_IN_WEEKS of history get no score.
+        # Rank over actual OBSERVATIONS (the weekly resample leaves NaN weeks
+        # between monthly readings); burn-in is time-based so a monthly series
+        # needs a year of readings, not 52 of them.
+        s = s.dropna(subset=["value"]).reset_index(drop=True)
+        vals  = s["value"].to_numpy(dtype=float)
+        dates = s["date"].to_numpy()
+        ranks = np.full(len(vals), np.nan)
+        # Observation floor scales with the burn-in (12 readings at 52 weeks,
+        # i.e. a year of a monthly series); otherwise a fixed floor silently
+        # overrides shorter burn-ins and the sensitivity run compares nothing.
+        min_obs = max(6, round(12 * BURN_IN_WEEKS / 52))
+        for t in range(len(vals)):
+            if (dates[t] - dates[0]) < np.timedelta64(7 * BURN_IN_WEEKS, "D") or t < min_obs:
+                continue
+            hist = vals[:t]
+            ranks[t] = (np.sum(hist < vals[t]) + 0.5 * np.sum(hist == vals[t])) / len(hist)
+        s["stress"] = ranks if direction == +1 else (1 - ranks)
+        s = s.dropna(subset=["stress"]).reset_index(drop=True)
 
-if not series_list:
-    print("[ERROR] No valid stress indicators found.")
-    sys.exit(1)
+        series_list.append(s)
+        col_names.append(keyword[:20].replace(" ", "_"))  # plain string
+        weights_list.append(weight)
+        _print(f"    ✓ {keyword[:50]:<50}  weight={weight}")
 
-# ── Combine into weekly stress score ─────────────────────────
-# The grid starts as soon as ANY indicator has a causal score; an indicator
-# that has not started yet (or is past its last observation) is NaN for that
-# week and the composite is re-weighted over the indicators that exist. This
-# is causal (nothing is back-filled from the future) without discarding the
-# years before the latest-starting indicator.
-MIN_INDICATORS = 3
-all_dates = pd.date_range(
-    start=min(s["date"].min() for s in series_list),
-    end  =max(s["date"].max() for s in series_list),
-    freq ="W"
-)
+    if not series_list:
+        _print("[ERROR] No valid stress indicators found.")
+        sys.exit(1)
 
-stress_df = pd.DataFrame({"date": all_dates})
+    # ── Combine into weekly stress score ─────────────────────────
+    # The grid starts as soon as ANY indicator has a causal score; an indicator
+    # that has not started yet (or is past its last observation) is NaN for that
+    # week and the composite is re-weighted over the indicators that exist. This
+    # is causal (nothing is back-filled from the future) without discarding the
+    # years before the latest-starting indicator.
+    MIN_INDICATORS = 3
+    all_dates = pd.date_range(
+        start=min(s["date"].min() for s in series_list),
+        end  =max(s["date"].max() for s in series_list),
+        freq ="W"
+    )
 
-target_ts = stress_df["date"].values.astype(np.int64)   # nanoseconds
+    stress_df = pd.DataFrame({"date": all_dates})
 
-for s, col in zip(series_list, col_names):
-    src_ts = s["date"].values.astype(np.int64)
-    src_v  = s["stress"].values.astype(float)
-    # CARRY FORWARD the latest observation (step function), never interpolate
-    # toward the next one — linear interpolation between a month's reading and
-    # the next would let each week see up to a month into the future. Outside
-    # the observed span the value is unknown (NaN), never clamped.
-    pos = np.searchsorted(src_ts, target_ts, side="right") - 1
-    interp_vals = np.where(pos >= 0, src_v[np.clip(pos, 0, len(src_v) - 1)], np.nan)
-    interp_vals[target_ts > src_ts.max() + np.int64(45 * 24 * 3600 * 1e9)] = np.nan   # >45 d stale
-    stress_df[col] = interp_vals
-    print(f"    {col:<22} scored from {s['date'].min().date()} (after {BURN_IN_WEEKS}-week burn-in)")
+    target_ts = stress_df["date"].values.astype(np.int64)   # nanoseconds
 
-# Weighted average over the indicators available that week
-stress_cols = col_names                                 # plain list of strings
-weights     = np.array(weights_list, dtype=float)
+    for s, col in zip(series_list, col_names):
+        src_ts = s["date"].values.astype(np.int64)
+        src_v  = s["stress"].values.astype(float)
+        # CARRY FORWARD the latest observation (step function), never interpolate
+        # toward the next one — linear interpolation between a month's reading and
+        # the next would let each week see up to a month into the future. Outside
+        # the observed span the value is unknown (NaN), never clamped.
+        pos = np.searchsorted(src_ts, target_ts, side="right") - 1
+        interp_vals = np.where(pos >= 0, src_v[np.clip(pos, 0, len(src_v) - 1)], np.nan)
+        interp_vals[target_ts > src_ts.max() + np.int64(45 * 24 * 3600 * 1e9)] = np.nan   # >45 d stale
+        stress_df[col] = interp_vals
+        _print(f"    {col:<22} scored from {s['date'].min().date()} (after {BURN_IN_WEEKS}-week burn-in)")
 
-stress_matrix = stress_df[stress_cols].values
-avail         = ~np.isnan(stress_matrix)
-w_avail       = avail * weights
-w_sum         = w_avail.sum(axis=1)
-composite     = np.where(w_sum > 0, np.nansum(stress_matrix * weights, axis=1) / np.where(w_sum > 0, w_sum, 1), np.nan)
-composite[avail.sum(axis=1) < MIN_INDICATORS] = np.nan
-stress_df["stress_score"] = composite
-stress_df["n_indicators"] = avail.sum(axis=1)
-stress_df = stress_df.dropna(subset=["stress_score"]).reset_index(drop=True)
+    # Weighted average over the indicators available that week
+    stress_cols = col_names                                 # plain list of strings
+    weights     = np.array(weights_list, dtype=float)
 
-# Smooth with 4-week rolling average
-stress_df["stress_score"] = stress_df["stress_score"].rolling(4, min_periods=1).mean()
+    stress_matrix = stress_df[stress_cols].values
+    avail         = ~np.isnan(stress_matrix)
+    w_avail       = avail * weights
+    w_sum         = w_avail.sum(axis=1)
+    composite     = np.where(w_sum > 0, np.nansum(stress_matrix * weights, axis=1) / np.where(w_sum > 0, w_sum, 1), np.nan)
+    composite[avail.sum(axis=1) < MIN_INDICATORS] = np.nan
+    stress_df["stress_score"] = composite
+    stress_df["n_indicators"] = avail.sum(axis=1)
+    stress_df = stress_df.dropna(subset=["stress_score"]).reset_index(drop=True)
 
-# Classify stress level
-def classify(v):
-    if v >= 0.65: return "HIGH"
-    if v >= 0.40: return "MEDIUM"
-    return "LOW"
+    # Smooth with 4-week rolling average
+    stress_df["stress_score"] = stress_df["stress_score"].rolling(4, min_periods=1).mean()
 
-stress_df["stress_level"] = stress_df["stress_score"].apply(classify)
+    # Classify stress level
+    def classify(v):
+        if v >= 0.65: return "HIGH"
+        if v >= 0.40: return "MEDIUM"
+        return "LOW"
 
-# ── Save ──────────────────────────────────────────────────────
-# Component columns are exported too: the LSTM forecaster (Stage 10) uses the
-# raw indicators as multivariate input instead of only the smoothed composite.
-stress_df[["date", "stress_score", "stress_level", "n_indicators"] + stress_cols].to_csv(OUT_CSV, index=False)
-print(f"\n  Stress scores saved → {OUT_CSV}")
-print(f"  Weeks computed : {len(stress_df):,}  ({stress_df['date'].min().date()} → "
-      f"{stress_df['date'].max().date()}; first {BURN_IN_WEEKS} weeks of each indicator "
-      "are burn-in for the causal percentile rank and carry no score)")
-print(f"  Score range    : {stress_df['stress_score'].min():.3f} → {stress_df['stress_score'].max():.3f}")
-print(f"  HIGH stress weeks  : {(stress_df['stress_level']=='HIGH').sum()}")
-print(f"  MEDIUM stress weeks: {(stress_df['stress_level']=='MEDIUM').sum()}")
-print(f"  LOW stress weeks   : {(stress_df['stress_level']=='LOW').sum()}")
+    stress_df["stress_level"] = stress_df["stress_score"].apply(classify)
 
-# ── Threshold impact preview ──────────────────────────────────
-print("\n  Dynamic threshold preview (how anomaly Z-scores adjust):")
-print(f"  {'Stress Level':<12} {'Multiplier':<12} {'Volume Z':<10} {'Freq Z':<10}")
-print("  " + "─" * 44)
-for level, mult in [("LOW", 1.20), ("MEDIUM", 1.0), ("HIGH", 0.75)]:
-    print(f"  {level:<12} {mult:<12.2f} {3.0 * mult:<10.2f} {2.5 * mult:<10.2f}")
 
-# ── Visualisation ─────────────────────────────────────────────
-print("\n  Generating Fig 7: Macro Stress Timeline...")
+    return stress_df
 
-fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(14, 8), gridspec_kw={"height_ratios": [3, 1]})
-fig.patch.set_facecolor("#0f0f1a")
-for ax in [ax1, ax2]:
-    ax.set_facecolor("#0f0f1a")
 
-dates  = stress_df["date"]
-scores = stress_df["stress_score"]
+def main():
+    print("=" * 55)
+    print("  STAGE 9 — MACRO FREIGHT RISK SCORER")
+    print("=" * 55)
 
-# Colour bands by stress level
-ax1.fill_between(dates, scores, where=scores >= 0.65,
-                 color="#e74c3c", alpha=0.4, label="HIGH stress")
-ax1.fill_between(dates, scores, where=(scores >= 0.40) & (scores < 0.65),
-                 color="#f39c12", alpha=0.4, label="MEDIUM stress")
-ax1.fill_between(dates, scores, where=scores < 0.40,
-                 color="#2ecc71", alpha=0.4, label="LOW stress")
+    stress_df = build_stress()
+    stress_cols = [c for c in stress_df.columns
+                   if c not in ("date", "stress_score", "stress_level", "n_indicators")]
+    # ── Save ──────────────────────────────────────────────────────
+    # Component columns are exported too: the LSTM forecaster (Stage 10) uses the
+    # raw indicators as multivariate input instead of only the smoothed composite.
+    stress_df[["date", "stress_score", "stress_level", "n_indicators"] + stress_cols].to_csv(OUT_CSV, index=False)
+    print(f"\n  Stress scores saved → {OUT_CSV}")
+    print(f"  Weeks computed : {len(stress_df):,}  ({stress_df['date'].min().date()} → "
+          f"{stress_df['date'].max().date()}; first {BURN_IN_WEEKS} weeks of each indicator "
+          "are burn-in for the causal percentile rank and carry no score)")
+    print(f"  Score range    : {stress_df['stress_score'].min():.3f} → {stress_df['stress_score'].max():.3f}")
+    print(f"  HIGH stress weeks  : {(stress_df['stress_level']=='HIGH').sum()}")
+    print(f"  MEDIUM stress weeks: {(stress_df['stress_level']=='MEDIUM').sum()}")
+    print(f"  LOW stress weeks   : {(stress_df['stress_level']=='LOW').sum()}")
 
-ax1.plot(dates, scores, color="white", linewidth=1.2, alpha=0.9)
-ax1.axhline(0.65, color="#e74c3c", linewidth=0.8, linestyle="--", alpha=0.6)
-ax1.axhline(0.40, color="#f39c12", linewidth=0.8, linestyle="--", alpha=0.6)
+    # ── Threshold impact preview ──────────────────────────────────
+    print("\n  Dynamic threshold preview (how anomaly Z-scores adjust):")
+    print(f"  {'Stress Level':<12} {'Multiplier':<12} {'Volume Z':<10} {'Freq Z':<10}")
+    print("  " + "─" * 44)
+    for level, mult in [("LOW", 1.20), ("MEDIUM", 1.0), ("HIGH", 0.75)]:
+        print(f"  {level:<12} {mult:<12.2f} {3.0 * mult:<10.2f} {2.5 * mult:<10.2f}")
 
-# Annotate known events
-events = [
-    ("2020-03-01", "COVID-19", "#e74c3c"),
-    ("2021-03-01", "Suez Canal", "#f39c12"),
-    ("2021-11-01", "Port Congestion", "#f39c12"),
-    ("2022-03-01", "Ukraine War", "#e74c3c"),
-]
-for date_str, label, color in events:
-    try:
-        dt = pd.Timestamp(date_str)
-        if dates.min() <= dt <= dates.max():
-            ax1.axvline(dt, color=color, linewidth=1.2, linestyle=":", alpha=0.8)
-            ax1.text(dt, scores.max() * 0.92, label,
-                     color=color, fontsize=7, rotation=90, va="top", ha="right")
-    except Exception:
-        pass
+    # ── Visualisation ─────────────────────────────────────────────
+    print("\n  Generating Fig 7: Macro Stress Timeline...")
 
-ax1.set_ylabel("Macro Stress Score (0–1)", color="white")
-ax1.set_title("Supply Chain Macro Stress Score — Weekly (2019–2026)\n"
-              "Derived from US DoT Freight Indicators",
-              color="white", fontsize=11, pad=10)
-ax1.tick_params(colors="white")
-ax1.legend(facecolor="#1a1a2e", labelcolor="white", fontsize=8, loc="upper left")
-for spine in ax1.spines.values():
-    spine.set_color("#4a4a6a")
-ax1.set_ylim(0, 1)
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(14, 8), gridspec_kw={"height_ratios": [3, 1]})
+    fig.patch.set_facecolor("#0f0f1a")
+    for ax in [ax1, ax2]:
+        ax.set_facecolor("#0f0f1a")
 
-# Bottom panel: stress level bar
-level_colors = {"HIGH": "#e74c3c", "MEDIUM": "#f39c12", "LOW": "#2ecc71"}
-bar_colors   = [level_colors[l] for l in stress_df["stress_level"]]
-ax2.bar(dates, [1] * len(dates), color=bar_colors, width=7, alpha=0.85)
-ax2.set_yticks([])
-ax2.set_xlabel("Date", color="white")
-ax2.set_title("Stress Level", color="white", fontsize=8)
-ax2.tick_params(colors="white")
-for spine in ax2.spines.values():
-    spine.set_color("#4a4a6a")
+    dates  = stress_df["date"]
+    scores = stress_df["stress_score"]
 
-patches = [mpatches.Patch(color=v, label=k) for k, v in level_colors.items()]
-ax2.legend(handles=patches, facecolor="#1a1a2e", labelcolor="white",
-           fontsize=7, loc="upper right")
+    # Colour bands by stress level
+    ax1.fill_between(dates, scores, where=scores >= 0.65,
+                     color="#e74c3c", alpha=0.4, label="HIGH stress")
+    ax1.fill_between(dates, scores, where=(scores >= 0.40) & (scores < 0.65),
+                     color="#f39c12", alpha=0.4, label="MEDIUM stress")
+    ax1.fill_between(dates, scores, where=scores < 0.40,
+                     color="#2ecc71", alpha=0.4, label="LOW stress")
 
-plt.tight_layout()
-plt.savefig(FIG_OUT, dpi=150, bbox_inches="tight", facecolor=fig.get_facecolor())
-plt.close()
-print(f"  Saved → {FIG_OUT}")
-print("\n  Stage 9 complete.")
-print("  anomaly_detection.py will now auto-adjust thresholds using these scores.")
+    ax1.plot(dates, scores, color="white", linewidth=1.2, alpha=0.9)
+    ax1.axhline(0.65, color="#e74c3c", linewidth=0.8, linestyle="--", alpha=0.6)
+    ax1.axhline(0.40, color="#f39c12", linewidth=0.8, linestyle="--", alpha=0.6)
+
+    # Annotate known events
+    events = [
+        ("2020-03-01", "COVID-19", "#e74c3c"),
+        ("2021-03-01", "Suez Canal", "#f39c12"),
+        ("2021-11-01", "Port Congestion", "#f39c12"),
+        ("2022-03-01", "Ukraine War", "#e74c3c"),
+    ]
+    for date_str, label, color in events:
+        try:
+            dt = pd.Timestamp(date_str)
+            if dates.min() <= dt <= dates.max():
+                ax1.axvline(dt, color=color, linewidth=1.2, linestyle=":", alpha=0.8)
+                ax1.text(dt, scores.max() * 0.92, label,
+                         color=color, fontsize=7, rotation=90, va="top", ha="right")
+        except Exception:
+            pass
+
+    ax1.set_ylabel("Macro Stress Score (0–1)", color="white")
+    ax1.set_title("Supply Chain Macro Stress Score — Weekly (2019–2026)\n"
+                  "Derived from US DoT Freight Indicators",
+                  color="white", fontsize=11, pad=10)
+    ax1.tick_params(colors="white")
+    ax1.legend(facecolor="#1a1a2e", labelcolor="white", fontsize=8, loc="upper left")
+    for spine in ax1.spines.values():
+        spine.set_color("#4a4a6a")
+    ax1.set_ylim(0, 1)
+
+    # Bottom panel: stress level bar
+    level_colors = {"HIGH": "#e74c3c", "MEDIUM": "#f39c12", "LOW": "#2ecc71"}
+    bar_colors   = [level_colors[l] for l in stress_df["stress_level"]]
+    ax2.bar(dates, [1] * len(dates), color=bar_colors, width=7, alpha=0.85)
+    ax2.set_yticks([])
+    ax2.set_xlabel("Date", color="white")
+    ax2.set_title("Stress Level", color="white", fontsize=8)
+    ax2.tick_params(colors="white")
+    for spine in ax2.spines.values():
+        spine.set_color("#4a4a6a")
+
+    patches = [mpatches.Patch(color=v, label=k) for k, v in level_colors.items()]
+    ax2.legend(handles=patches, facecolor="#1a1a2e", labelcolor="white",
+               fontsize=7, loc="upper right")
+
+    plt.tight_layout()
+    plt.savefig(FIG_OUT, dpi=150, bbox_inches="tight", facecolor=fig.get_facecolor())
+    plt.close()
+    print(f"  Saved → {FIG_OUT}")
+    print("\n  Stage 9 complete.")
+    print("  anomaly_detection.py will now auto-adjust thresholds using these scores.")
+
+
+if __name__ == "__main__":
+    main()

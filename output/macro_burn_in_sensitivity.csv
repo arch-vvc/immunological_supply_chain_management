@@ -1,0 +1,4 @@
+burn_in_weeks,series_start,n_weeks,n_placebo,COVID-19 pandemic onset::verdict,COVID-19 pandemic onset::delta,COVID-19 pandemic onset::placebo_pct,Suez Canal blockage::verdict,Suez Canal blockage::delta,Suez Canal blockage::placebo_pct,US port congestion peak::verdict,US port congestion peak::delta,US port congestion peak::placebo_pct,Russia invades Ukraine::verdict,Russia invades Ukraine::delta,Russia invades Ukraine::placebo_pct,Red Sea shipping attacks::verdict,Red Sea shipping attacks::delta,Red Sea shipping attacks::placebo_pct
+26,2019-07-07,350,182,NOT SEEN,-0.0998,1.1,DETECTED,0.1349,97.3,NOT SEEN,0.0105,67.0,NOT SEEN,-0.0791,3.8,PARTIAL,0.0394,86.8
+39,2019-10-06,337,169,NOT SEEN,-0.0998,1.2,DETECTED,0.1349,100.0,NOT SEEN,0.0105,69.2,NOT SEEN,-0.0488,16.0,DETECTED,0.0394,90.5
+52,2020-01-05,324,168,NOT SEEN,-0.0873,6.5,DETECTED,0.1349,100.0,NOT SEEN,0.0105,72.0,NOT SEEN,-0.0488,18.5,DETECTED,0.0394,91.7

@@ -28,10 +28,12 @@ result.
 
 Outputs:
     output/macro_event_validation.csv
+    output/macro_burn_in_sensitivity.csv / .json  (verdicts at 26/39/52-week burn-in)
     output/macro_event_validation_report.txt
     output/figures/fig11_macro_event_validation.png
 """
 
+import json
 import os
 import numpy as np
 import pandas as pd
@@ -44,6 +46,8 @@ IN_CSV  = os.path.join(BASE, "output", "macro_stress_scores.csv")
 OUT_CSV = os.path.join(BASE, "output", "macro_event_validation.csv")
 OUT_TXT = os.path.join(BASE, "output", "macro_event_validation_report.txt")
 OUT_FIG = os.path.join(BASE, "output", "figures", "fig11_macro_event_validation.png")
+SENS_CSV  = os.path.join(BASE, "output", "macro_burn_in_sensitivity.csv")
+SENS_JSON = os.path.join(BASE, "output", "macro_burn_in_sensitivity.json")
 
 EVENT_WEEKS = 8      # event window length
 PRE_WEEKS   = 12     # baseline window length
@@ -73,19 +77,11 @@ def window_delta(series, dates, start, event_weeks, pre_weeks):
     return float(ev.mean() - pre.mean()), float(ev.max()), float(pre.mean())
 
 
-def main():
-    print("=" * 55)
-    print("  STAGE 27 — MACRO-STRESS CRISIS VALIDATION")
-    print("=" * 55)
-
-    if not os.path.exists(IN_CSV):
-        print(f"[ERROR] {IN_CSV} not found. Run Stage 9 first.")
-        raise SystemExit(1)
-
-    df = pd.read_csv(IN_CSV, parse_dates=["date"]).sort_values("date").reset_index(drop=True)
-    comp_cols = [c for c in df.columns if c not in ("date", "stress_score", "stress_level")]
+def run_event_study(df: pd.DataFrame):
+    """Event study + placebo inference on one stress table. Returns (rows, placebo)."""
+    comp_cols = [c for c in df.columns
+                 if c not in ("date", "stress_score", "stress_level", "n_indicators")]
     dates, stress = df["date"], df["stress_score"]
-    print(f"  Stress series: {len(df)} weeks  {dates.min().date()} -> {dates.max().date()}")
 
     # ── placebo null distribution ──────────────────────────────────────────
     event_starts = [pd.Timestamp(d) for _, d, _ in EVENTS]
@@ -98,7 +94,6 @@ def main():
             placebo.append(d)
     placebo = np.array(placebo)
     p90, p75 = np.percentile(placebo, 90), np.percentile(placebo, 75)
-    print(f"  Placebo windows: {len(placebo)}  (delta p75={p75:+.4f}  p90={p90:+.4f})")
 
     # ── event studies ──────────────────────────────────────────────────────
     rows = []
@@ -127,6 +122,87 @@ def main():
             "verdict": verdict, "note": note,
         })
 
+    return rows, placebo
+
+
+def burn_in_sensitivity(burn_ins=(26, 39, 52)):
+    """Recompute the stress table for each burn-in (in memory, nothing written)
+    and rerun the identical event study. Shows whether a verdict depends on the
+    warm-up length rather than on the data."""
+    from macro_risk import build_stress
+    out = []
+    for b in burn_ins:
+        sdf = build_stress(burn_in_weeks=b, verbose=False).sort_values("date").reset_index(drop=True)
+        rows_b, plc_b = run_event_study(sdf)
+        rec = {"burn_in_weeks": b, "series_start": str(sdf["date"].min().date()),
+               "n_weeks": int(len(sdf)), "n_placebo": int(len(plc_b))}
+        for r in rows_b:
+            rec[f"{r['event']}::verdict"] = r["verdict"]
+            rec[f"{r['event']}::delta"] = r.get("delta")
+            rec[f"{r['event']}::placebo_pct"] = r.get("placebo_percentile")
+        out.append(rec)
+    return out
+
+
+def _sensitivity_lines(sens, events):
+    names = [e[0] for e in events]
+    short = {"COVID-19 pandemic onset": "COVID", "Suez Canal blockage": "Suez",
+             "US port congestion peak": "Ports", "Russia invades Ukraine": "Ukraine",
+             "Red Sea shipping attacks": "Red Sea"}
+    lines = ["Burn-in sensitivity (same event study, stress table recomputed per warm-up):",
+             f"  {'burn-in':>8} {'series from':>12} {'weeks':>6} {'placebo':>8}  " +
+             "  ".join(f"{short.get(n, n)[:8]:>9}" for n in names),
+             "  " + "-" * (40 + 11 * len(names))]
+    for rec in sens:
+        cells = []
+        for n in names:
+            v = rec.get(f"{n}::verdict", "—")
+            d = rec.get(f"{n}::delta")
+            cells.append(f"{(v[:8] if isinstance(v, str) else '—'):>9}")
+        lines.append(f"  {rec['burn_in_weeks']:>6}wk {rec['series_start']:>12} {rec['n_weeks']:>6} "
+                     f"{rec['n_placebo']:>8}  " + "  ".join(cells))
+    stable, sensitive = [], []
+    for n in names:
+        vs = {rec.get(f"{n}::verdict") for rec in sens}
+        (stable if len(vs) == 1 else sensitive).append(short.get(n, n))
+    lines.append("")
+    if stable:
+        lines.append(f"  Stable across burn-ins: {', '.join(stable)}.")
+    if sensitive:
+        lines.append(f"  Sensitive to burn-in: {', '.join(sensitive)} — the verdict changes with the "
+                     "warm-up length, so it should be read as 'depends on the setting', not as a "
+                     "detection or a null. The headline row is 52 weeks (chosen before the data was seen).")
+    else:
+        lines.append("  No verdict changes with the burn-in; the choice does not drive the result.")
+    return lines
+
+
+def main():
+    print("=" * 55)
+    print("  STAGE 27 — MACRO-STRESS CRISIS VALIDATION")
+    print("=" * 55)
+
+    if not os.path.exists(IN_CSV):
+        print(f"[ERROR] {IN_CSV} not found. Run Stage 9 first.")
+        raise SystemExit(1)
+
+    df = pd.read_csv(IN_CSV, parse_dates=["date"]).sort_values("date").reset_index(drop=True)
+    dates, stress = df["date"], df["stress_score"]
+    print(f"  Stress series: {len(df)} weeks  {dates.min().date()} -> {dates.max().date()}")
+    rows, placebo = run_event_study(df)
+    p90, p75 = np.percentile(placebo, 90), np.percentile(placebo, 75)
+    print(f"  Placebo windows: {len(placebo)}  (delta p75={p75:+.4f}  p90={p90:+.4f})")
+
+    # ── burn-in sensitivity (headline = 52 weeks; others recomputed in memory) ──
+    print("\n  Burn-in sensitivity: recomputing the stress table for 26 / 39 / 52 weeks ...")
+    sens = burn_in_sensitivity()
+    pd.DataFrame(sens).to_csv(SENS_CSV, index=False)
+    with open(SENS_JSON, "w") as _f:
+        json.dump(sens, _f, indent=2)
+    _row52 = next(r for r in sens if r["burn_in_weeks"] == 52)
+    for r in rows:
+        if r.get("verdict") not in ("OUT OF RANGE",) and _row52.get(f"{r['event']}::verdict") != r["verdict"]:
+            print(f"  [WARN] 52-week sensitivity row disagrees with the canonical run for {r['event']}")
     res = pd.DataFrame(rows)
     os.makedirs(os.path.dirname(OUT_CSV), exist_ok=True)
     res.to_csv(OUT_CSV, index=False)
@@ -169,6 +245,8 @@ def main():
         f"Summary: {len(detected)}/{len(rows)} DETECTED, {len(partial)} PARTIAL.",
         "",
         *_reading(rows),
+        "",
+        *_sensitivity_lines(sens, EVENTS),
         "",
         "Caveat: with 5 events this is external validity evidence, not a",
         "powered statistical test. Placebo percentiles quantify how unusual",

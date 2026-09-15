@@ -176,6 +176,9 @@ def build() -> dict:
             for k, v in sw.items()} if sw else {})(_json("ppo_pool_sweep.json")),
         "multi_domain_risk": dict(m["multi"]),
         "macro_crisis_validation": _macro_events(),
+        "macro_burn_in_sensitivity": (lambda sens: {
+            str(r["burn_in_weeks"]): {k.split("::")[0]: v for k, v in r.items() if k.endswith("::verdict")}
+            for r in sens} if sens else {})(_json("macro_burn_in_sensitivity.json")),
         "scms_counterfactual": {
             k: cf.get(k) for k in (
                 "n_comparable", "wins", "ties", "losses", "win_rate", "win_rate_ci95",

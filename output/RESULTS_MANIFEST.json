@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-15T17:32:54+00:00",
-  "git_commit": "a7bd8d6cf51167781c1c73b0dbaef139afe17004",
+  "generated_at": "2026-09-15T17:43:42+00:00",
+  "git_commit": "94625fc31e41187f44dbb47134432838dbca4b7d",
   "dataset_sha256": {
     "data/raw/arcos_sampled_50k.csv": "afe00318cef46c1c3b287209bd538f13e1e72280f97e0aff366f86e973e888cc",
     "data/raw/SCMS_Delivery_History_Dataset.csv": "918b992dd3e8d4b64d2a727b2c4ea607603d0c58f19484e73f7b78528c6a8673",
@@ -178,6 +178,29 @@
         "placebo_percentile": 91.7,
         "verdict": "DETECTED",
         "top_driver": "Freight_Transportati"
+      }
+    },
+    "macro_burn_in_sensitivity": {
+      "26": {
+        "COVID-19 pandemic onset": "NOT SEEN",
+        "Suez Canal blockage": "DETECTED",
+        "US port congestion peak": "NOT SEEN",
+        "Russia invades Ukraine": "NOT SEEN",
+        "Red Sea shipping attacks": "PARTIAL"
+      },
+      "39": {
+        "COVID-19 pandemic onset": "NOT SEEN",
+        "Suez Canal blockage": "DETECTED",
+        "US port congestion peak": "NOT SEEN",
+        "Russia invades Ukraine": "NOT SEEN",
+        "Red Sea shipping attacks": "DETECTED"
+      },
+      "52": {
+        "COVID-19 pandemic onset": "NOT SEEN",
+        "Suez Canal blockage": "DETECTED",
+        "US port congestion peak": "NOT SEEN",
+        "Russia invades Ukraine": "NOT SEEN",
+        "Red Sea shipping attacks": "DETECTED"
       }
     },
     "scms_counterfactual": {

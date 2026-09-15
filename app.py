@@ -1013,6 +1013,17 @@ with tab_risk:
                 "window_peak": "Peak (8 wk)", "delta": "Δ", "placebo_percentile": "Placebo %ile",
                 "verdict": "Verdict", "top_driver": "Top Driver", "driver_delta": "Driver Δ"}),
             use_container_width=True, height=230, hide_index=True)
+        _sens_p = os.path.join(OUT, "macro_burn_in_sensitivity.csv")
+        if os.path.exists(_sens_p):
+            st.markdown("**Burn-in sensitivity** — the same event study with the stress table "
+                        "recomputed for a 26, 39 and 52-week warm-up. 52 is the headline; a verdict "
+                        "that changes across rows depends on the setting, not the data.")
+            _sd = pd.read_csv(_sens_p)
+            _vcols = [c for c in _sd.columns if c.endswith("::verdict")]
+            _show = _sd[["burn_in_weeks", "series_start", "n_placebo"] + _vcols].rename(
+                columns={"burn_in_weeks": "Burn-in (wk)", "series_start": "Series from", "n_placebo": "Placebo windows",
+                         **{c: c.split("::")[0] for c in _vcols}})
+            st.dataframe(_show, use_container_width=True, hide_index=True, height=36 * len(_show) + 40)
         with st.expander("Full Stage 27 report + figure"):
             if os.path.exists(_mv_rpt):
                 st.code(open(_mv_rpt).read(), language=None)

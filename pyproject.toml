@@ -40,6 +40,7 @@ py-modules = [
     "ir_stages",
     "isc_common",
     "macro_event_validation",
+    "macro_risk",
     "project_metrics",
     "results_manifest",
     "scms_adapter",

@@ -133,7 +133,7 @@ EXPECTED_OUTPUTS = {
          "output/ir/scms/manifest.json", "output/ir/scms/stage_results.json",
          "output/ir/dataco/manifest.json", "output/ir/dataco/stage_results.json"],
     27: ["output/macro_event_validation.csv", "output/macro_event_validation_report.txt",
-         "output/figures/fig11_macro_event_validation.png"],
+         "output/macro_burn_in_sensitivity.csv", "output/figures/fig11_macro_event_validation.png"],
     28: ["output/scms_counterfactual.csv", "output/scms_counterfactual_report.txt",
          "output/figures/fig12_scms_counterfactual.png"],
 }
