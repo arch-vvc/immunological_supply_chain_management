@@ -78,7 +78,11 @@ df     = df.sort_values("date").reset_index(drop=True)
 # composite. The composite is a 4-week-smoothed weighted average, so on its
 # own it is nearly a random walk — the un-smoothed components carry the
 # leading-indicator signal the composite throws away.
-feature_cols = [c for c in df.columns if c not in ("date", "stress_score", "stress_level")]
+# Only 0-1 SCORE channels: the composite + one column per indicator. Stage 9
+# also exports n_indicators (an integer count, 3-5), which previously slipped
+# in here as an unscaled seventh channel.
+NON_FEATURE_COLS = ("date", "stress_score", "stress_level", "n_indicators")
+feature_cols = [c for c in df.columns if c not in NON_FEATURE_COLS]
 value_cols   = ["stress_score"] + feature_cols
 for c in value_cols:
     nan_before = int(df[c].isna().sum())
@@ -89,7 +93,11 @@ for c in value_cols:
         print(f"  ⚠  Filled {nan_before} NaNs in {c} (carry-forward; pre-start weeks = 0.5)")
 
 scores = df["stress_score"].values.astype(np.float32)
-feats  = df[value_cols].values.astype(np.float32)     # (weeks, features), all ~0-1
+feats  = df[value_cols].values.astype(np.float32)     # (weeks, features), all 0-1
+_bad = [c for c in value_cols if df[c].min() < 0.0 or df[c].max() > 1.0]
+if _bad:
+    raise ValueError(f"LSTM input channels must be 0-1 scores; out of range: {_bad} "
+                     f"(add non-score columns to NON_FEATURE_COLS)")
 N_FEAT = feats.shape[1]
 
 print(f"  Loaded {len(scores)} weekly stress scores")
@@ -175,6 +183,7 @@ print(f"\n  Training LSTM (max {EPOCHS} epochs, hidden={HIDDEN}, "
       f"early stopping patience=200) ...")
 train_losses = []
 best_val, best_state, best_epoch, patience = float("inf"), None, 0, 200
+stop_epoch = EPOCHS
 for epoch in range(1, EPOCHS + 1):
     model.train()
     optimizer.zero_grad()
@@ -193,6 +202,7 @@ for epoch in range(1, EPOCHS + 1):
     if epoch % 500 == 0:
         print(f"    Epoch {epoch:4d}/{EPOCHS}  train={loss.item():.6f}  val={val_loss:.6f}")
     if epoch - best_epoch >= patience:
+        stop_epoch = epoch
         print(f"    Early stop at epoch {epoch} (best val at {best_epoch})")
         break
 
@@ -238,17 +248,26 @@ print(f"\n  Per-horizon MAE (weeks ahead):")
 print(f"  {'Horizon':<12}" + "".join(f"t+{h+1:>6}" for h in range(PRED_STEPS)))
 print(f"  {'LSTM':<12}" + "".join(f"{v:>8.4f}" for v in lstm_h))
 print(f"  {'Persistence':<12}" + "".join(f"{v:>8.4f}" for v in persist_h))
-wins = [h + 1 for h in range(PRED_STEPS) if lstm_h[h] < persist_h[h]]
-if mae > persist_mae and not wins:
-    print(f"\n  [FINDING] LSTM does NOT beat persistence at any horizon "
-          f"({mae:.4f} vs {persist_mae:.4f} MAE overall) — report this honestly")
-    print(f"            rather than presenting the LSTM as an improvement.")
-elif wins and mae > persist_mae:
-    print(f"\n  [FINDING] LSTM beats persistence at horizon(s) {wins} but not overall")
-    print(f"            ({mae:.4f} vs {persist_mae:.4f} MAE) — its value is the longer view.")
+# A "win" must clear a practical margin: differences under 2% of the
+# persistence error are ties (a 0.0001 MAE gap is rounding, not skill).
+TIE_REL = 0.02
+wins = [h + 1 for h in range(PRED_STEPS) if lstm_h[h] < persist_h[h] * (1 - TIE_REL)]
+losses = [h + 1 for h in range(PRED_STEPS) if lstm_h[h] > persist_h[h] * (1 + TIE_REL)]
+# Collapse diagnostic: how big are the predicted changes vs the real ones?
+pred_move = float(np.mean(np.abs(pred_deltas)))
+true_move = float(np.mean(np.abs(y_te)))
+collapsed = pred_move < 0.1 * true_move
+if abs(mae - persist_mae) <= TIE_REL * persist_mae:
+    verdict = (f"LSTM ties persistence (MAE {mae:.4f} vs {persist_mae:.4f}, within {TIE_REL:.0%})"
+               + ("; it has collapsed to predicting almost no change" if collapsed else "") + ".")
+elif mae > persist_mae:
+    verdict = (f"LSTM does not beat persistence (MAE {mae:.4f} vs {persist_mae:.4f})"
+               + (f"; better beyond the {TIE_REL:.0%} margin only at horizon(s) {wins}" if wins else "") + ".")
 else:
-    print(f"\n  LSTM beats persistence overall by {persist_mae - mae:.4f} MAE "
-          f"(wins at horizons {wins}).")
+    verdict = f"LSTM beats persistence beyond the {TIE_REL:.0%} margin (MAE {mae:.4f} vs {persist_mae:.4f}; horizons {wins})."
+print(f"\n  [FINDING] {verdict}")
+print(f"  Mean |predicted change| {pred_move:.4f} vs mean |actual change| {true_move:.4f}; "
+      f"best validation at step {best_epoch} of {stop_epoch}.")
 
 # ── Persist metrics so the report/dashboard can cite the comparison ────────
 LSTM_METRICS = os.path.join(BASE, "output", "lstm_metrics.txt")
@@ -268,11 +287,11 @@ with open(LSTM_METRICS, "w") as _f:
         "  horizon    " + "".join(f"t+{h+1:>6}" for h in range(PRED_STEPS)),
         "  LSTM       " + "".join(f"{v:>8.4f}" for v in lstm_h),
         "  Persistence" + "".join(f"{v:>8.4f}" for v in persist_h), "",
-        ("LSTM does not beat persistence at any horizon."
-         if mae > persist_mae and not wins else
-         (f"LSTM beats persistence at horizon(s) {wins} but not overall."
-          if wins and mae > persist_mae else
-          f"LSTM beats persistence overall (wins at horizons {wins}).")),
+        f"Training: best validation loss at step {best_epoch}, stopped at step {stop_epoch} (patience 200).",
+        f"Mean |predicted weekly change| : {pred_move:.4f}",
+        f"Mean |actual weekly change|    : {true_move:.4f}",
+        "",
+        verdict,
     ]))
 print(f"  Metrics saved → {LSTM_METRICS}")
 

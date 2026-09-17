@@ -11,6 +11,10 @@ columns:
   quantity: QUANTITY
 settings:
   retailer_combine: null
+  # Synthetic ARCOS only: move the generated 2006-2014 calendar onto the macro
+  # indicators' calendar so per-week stress thresholds apply (see preprocess.py).
+  # Set to null for any real dataset.
+  calendar_offset_years: 12
 thresholds:
   volume_zscore: 3.0
   frequency_zscore: 2.5
