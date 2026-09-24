@@ -1,0 +1,40 @@
+{
+  "draws": 200,
+  "spread": 0.2,
+  "seed": 42,
+  "graph_risk_top20_tau": {
+    "mean": 0.992,
+    "sd": 0.0083,
+    "min": 0.9789,
+    "max": 1.0
+  },
+  "graph_risk_draws_tau_above_0.8": 200,
+  "supplier_pool_size": 40,
+  "supplier_top20_tau": {
+    "mean": 1.0,
+    "sd": 0.0,
+    "min": 1.0,
+    "max": 1.0
+  },
+  "supplier_full_pool_tau": {
+    "mean": 0.9918,
+    "sd": 0.009,
+    "min": 0.9692,
+    "max": 1.0
+  },
+  "crisis_default_verdicts": {
+    "COVID-19 pandemic onset": "NOT SEEN",
+    "Suez Canal blockage": "DETECTED",
+    "US port congestion peak": "NOT SEEN",
+    "Russia invades Ukraine": "NOT SEEN",
+    "Red Sea shipping attacks": "DETECTED"
+  },
+  "crisis_all_verdicts_unchanged": 116,
+  "crisis_flips": {
+    "COVID-19 pandemic onset": 0,
+    "Suez Canal blockage": 0,
+    "US port congestion peak": 7,
+    "Russia invades Ukraine": 0,
+    "Red Sea shipping attacks": 78
+  }
+}

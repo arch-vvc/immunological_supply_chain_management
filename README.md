@@ -26,6 +26,13 @@ python3 main.py --onboard path/to.csv     # auto-detect columns of a new dataset
 python3 main.py --metrics                 # print the project metrics audit at the end
 ```
 
+Paper extras, run after `main.py`:
+
+```bash
+python3 src/weight_sensitivity.py         # Section 8.1.7: ±20% weight perturbation, 200 draws
+python3 src/fig_anomalycounts.py          # anomaly signal-count figure (PDF)
+```
+
 ## Layout
 
 ```

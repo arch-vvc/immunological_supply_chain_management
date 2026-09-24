@@ -3,7 +3,7 @@ STAGE 14 — SUPPLIER AGENT REPORT
 
 Disrupted entities analysed : 10
 Backup recommendations      : 30
-Avg backup score (rank #1)  : 0.710
+Avg backup score (rank #1)  : 0.656
 
 Scoring weights:
   Safety (1-composite_risk) : 50%
@@ -11,13 +11,13 @@ Scoring weights:
   Efficiency (vol/degree)   : 20%
 
 Top-1 backup per disrupted entity:
-  RHODES TECHNOLOGIES                      → JANSSEN PHARMACEUTICALS INC              (score=1.000)
-  HIKMA PHARMACEUTICALS                    → JANSSEN PHARMACEUTICALS INC              (score=1.000)
-  MIAMI-LUKEN INC                          → CARDINAL HEALTH INC                      (score=0.555)
   ABBOTT LABORATORIES                      → JANSSEN PHARMACEUTICALS INC              (score=1.000)
-  HENRY SCHEIN INC                         → MIAMI-LUKEN INC                          (score=0.509)
+  VINTAGE PHARMACEUTICALS LLC              → JANSSEN PHARMACEUTICALS INC              (score=1.000)
   ACTAVIS PHARMA INC                       → JANSSEN PHARMACEUTICALS INC              (score=1.000)
   ANDA INC                                 → MIAMI-LUKEN INC                          (score=0.509)
   CARDINAL HEALTH INC                      → MIAMI-LUKEN INC                          (score=0.509)
+  DAKOTA DRUG INC                          → MIAMI-LUKEN INC                          (score=0.509)
+  DIRECT RX                                → MIAMI-LUKEN INC                          (score=0.509)
   GULF COAST MEDICAL SUPPLY                → MIAMI-LUKEN INC                          (score=0.509)
   HD SMITH WHOLESALE DRUG CO               → MIAMI-LUKEN INC                          (score=0.509)
+  HENRY SCHEIN INC                         → MIAMI-LUKEN INC                          (score=0.509)

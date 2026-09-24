@@ -335,84 +335,56 @@ for _, row in forecast_df.iterrows():
     badge = {"HIGH": "🔴", "MEDIUM": "🟡", "LOW": "🟢"}.get(lbl, "")
     print(f"    {row['date'].date()}  score={row['stress_score']:.3f}  {badge} {lbl}")
 
-# ── Figure ─────────────────────────────────────────────────────────────────
-BG      = "#0f0f1a"
-BLUE    = "#4fc3f7"
-RED     = "#ff6b6b"
-ORANGE  = "#ffaa44"
-GREEN   = "#44dd88"
-GREY    = "#aaaaaa"
+# ── Figure: held-out comparison against persistence ─────────────────────────
+# Panel (a): the held-out test period, actual series vs the 4-week-ahead
+# forecasts of the LSTM and of persistence. Panel (b): MAE by horizon.
+ACTUAL = "#0b0b0b"
+LSTM_C = "#2a78d6"
+PERS_C = "#eb6834"
+INK_2  = "#52514e"
+AXIS   = "#b5b4ae"
 
-fig, axes = plt.subplots(2, 1, figsize=(15, 10))
-fig.patch.set_facecolor(BG)
-fig.suptitle("LSTM Macro Freight Stress Forecaster — Stage 10",
-             color="white", fontsize=14, y=0.98)
+plt.rcParams.update({"font.family": "serif", "font.size": 9})
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 3.4),
+                               gridspec_kw={"width_ratios": [2.2, 1]})
 
-for ax in axes:
-    ax.set_facecolor(BG)
-    for sp in ax.spines.values():
-        sp.set_edgecolor("#333355")
-    ax.tick_params(colors=GREY)
-    ax.yaxis.label.set_color(GREY)
+H = PRED_STEPS - 1                                   # plot the t+4 forecasts
+te_idx = split + np.arange(len(X_te)) + SEQ_LEN + H  # row index of each t+4 target
+te_dates = df["date"].values[te_idx]
+ctx = slice(max(0, te_idx[0] - 26), te_idx[-1] + 1)  # half a year of context
+ax1.plot(df["date"].values[ctx], scores[ctx], color=ACTUAL, lw=1.4, label="Actual")
+ax1.plot(te_dates, val_pred[:, H], color=LSTM_C, lw=2, label=f"LSTM, t+{H+1}")
+ax1.plot(te_dates, persist_pred[:, H], color=PERS_C, lw=2, ls=(0, (4, 2)),
+         label=f"Persistence, t+{H+1}")
+ax1.axvline(te_dates[0], color=AXIS, lw=0.8, ls=":")
+ax1.text(te_dates[0], 1.0, " held-out test period", transform=ax1.get_xaxis_transform(),
+         va="top", ha="left", color=INK_2, fontsize=7.5, style="italic")
+ax1.set_ylabel("Stress index $S$", color=INK_2)
+ax1.set_title(f"(a) {PRED_STEPS}-week-ahead forecasts on held-out weeks", fontsize=9.5)
+ax1.legend(frameon=False, fontsize=8, loc="lower left")
 
-# ── Panel 1: Full history ──────────────────────────────────────────────────
-ax1 = axes[0]
-ax1.plot(hist_out["date"], hist_out["stress_score"],
-         color=BLUE, lw=1.1, alpha=0.85, label="Historical stress")
-ax1.axhspan(0.65, 1.0,  alpha=0.07, color="red")
-ax1.axhspan(0.40, 0.65, alpha=0.07, color="orange")
-ax1.axhspan(0.0,  0.40, alpha=0.07, color="green")
-ax1.axhline(0.65, color="red",    ls="--", lw=0.7, alpha=0.5, label="HIGH threshold")
-ax1.axhline(0.40, color="orange", ls="--", lw=0.7, alpha=0.5, label="MEDIUM threshold")
+hs = np.arange(1, PRED_STEPS + 1)
+w = 0.38
+b1 = ax2.bar(hs - w / 2, lstm_h, w, color=LSTM_C, edgecolor="white", lw=1.5, label="LSTM")
+b2 = ax2.bar(hs + w / 2, persist_h, w, color=PERS_C, edgecolor="white", lw=1.5, label="Persistence")
+ax2.set_xticks(hs)
+ax2.set_xticklabels([f"t+{h}" for h in hs])
+ax2.set_ylabel("MAE", color=INK_2)
+ax2.set_ylim(0, max(lstm_h.max(), persist_h.max()) * 1.2)
+ax2.set_title("(b) Test MAE by horizon", fontsize=9.5)
+ax2.legend(frameon=False, fontsize=8, loc="upper left")
 
-# Forecast points
-ax1.axvspan(hist_out["date"].max(), forecast_df["date"].max(),
-            alpha=0.10, color=RED, label="Forecast window")
-ax1.plot(forecast_df["date"], forecast_df["stress_score"],
-         "o--", color=RED, lw=2, ms=9, zorder=6, label="4-week LSTM forecast")
+for ax in (ax1, ax2):
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+    for side in ("left", "bottom"):
+        ax.spines[side].set_color(AXIS)
+    ax.tick_params(colors=INK_2, labelsize=8)
 
-ax1.set_title("Full Stress History + Forward Forecast", color="white", fontsize=11, pad=8)
-ax1.set_ylabel("Stress Score (0-1)", color=GREY)
-ax1.set_ylim(0, 1)
-ax1.legend(facecolor="#1a1a2e", labelcolor="white", fontsize=8.5,
-           loc="upper left", framealpha=0.8)
-
-# ── Panel 2: Zoom last 52 weeks + annotated forecast ──────────────────────
-ax2  = axes[1]
-cutoff = hist_out["date"].max() - pd.Timedelta(weeks=52)
-recent = hist_out[hist_out["date"] >= cutoff]
-
-ax2.plot(recent["date"], recent["stress_score"],
-         color=BLUE, lw=1.6, label="Last 52 weeks")
-ax2.axhline(0.65, color="red",    ls="--", lw=0.8, alpha=0.5)
-ax2.axhline(0.40, color="orange", ls="--", lw=0.8, alpha=0.5)
-
-ax2.plot(forecast_df["date"], forecast_df["stress_score"],
-         "o--", color=RED, lw=2.2, ms=10, zorder=6, label="LSTM Forecast")
-
-colour_map = {"HIGH": "#ff4444", "MEDIUM": "#ffaa00", "LOW": "#44ff88"}
-for _, row in forecast_df.iterrows():
-    c = colour_map[row["stress_level"]]
-    ax2.annotate(
-        f"{row['stress_level']}\n{row['stress_score']:.3f}",
-        xy       = (row["date"], row["stress_score"]),
-        xytext   = (0, 18),
-        textcoords = "offset points",
-        ha       = "center",
-        fontsize = 8,
-        color    = c,
-        arrowprops = dict(arrowstyle="-", color=c, lw=0.9),
-    )
-
-ax2.set_title("Zoom: Last 52 Weeks + Annotated 4-Week Forecast", color="white",
-              fontsize=11, pad=8)
-ax2.set_ylabel("Stress Score (0-1)", color=GREY)
-ax2.set_ylim(0, 1)
-ax2.legend(facecolor="#1a1a2e", labelcolor="white", fontsize=8.5, framealpha=0.8)
-
-plt.tight_layout(pad=2.5)
+fig.tight_layout()
 os.makedirs(os.path.dirname(OUT_FIG), exist_ok=True)
-plt.savefig(OUT_FIG, dpi=130, bbox_inches="tight", facecolor=BG)
+plt.savefig(OUT_FIG, dpi=200, bbox_inches="tight", facecolor="white")
+plt.savefig(OUT_FIG.replace(".png", ".pdf"), bbox_inches="tight", facecolor="white")
 plt.close()
 print(f"\n  Figure saved → {OUT_FIG}")
 

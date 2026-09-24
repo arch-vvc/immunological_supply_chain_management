@@ -11,12 +11,12 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 3,RHODES TECHNOLOGIES,TUG VALLEY PHARMACY #1 (WV),3,1,0.9391,135.0,Production Reroute,Geopolitical,Consumer Goods
 3,RHODES TECHNOLOGIES,TUG VALLEY PHARMACY #1 (WV),3,2,1.1755,151.0,Production Reroute,Cyber Attack,Automotive
 3,RHODES TECHNOLOGIES,TUG VALLEY PHARMACY #1 (WV),3,3,1.1886,89.0,Combined Strategy,Geopolitical,Consumer Goods
-4,HIKMA PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),4,1,0.0876,135.0,Production Reroute,Geopolitical,Consumer Goods
-4,HIKMA PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),4,2,0.3241,151.0,Production Reroute,Cyber Attack,Automotive
-4,HIKMA PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),4,3,0.3372,89.0,Combined Strategy,Geopolitical,Consumer Goods
-5,HIKMA PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),5,1,0.0,157.0,Production Reroute,Geopolitical,Pharmaceuticals
-5,HIKMA PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),5,2,0.0,268.0,Production Reroute,Natural Disaster,Pharmaceuticals
-5,HIKMA PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),5,3,0.0,87.0,Combined Strategy,Natural Disaster,Automotive
+4,HIKMA PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),3,1,0.9391,135.0,Production Reroute,Geopolitical,Consumer Goods
+4,HIKMA PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),3,2,1.1755,151.0,Production Reroute,Cyber Attack,Automotive
+4,HIKMA PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),3,3,1.1886,89.0,Combined Strategy,Geopolitical,Consumer Goods
+5,HIKMA PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),3,1,0.9391,135.0,Production Reroute,Geopolitical,Consumer Goods
+5,HIKMA PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),3,2,1.1755,151.0,Production Reroute,Cyber Attack,Automotive
+5,HIKMA PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),3,3,1.1886,89.0,Combined Strategy,Geopolitical,Consumer Goods
 6,RHODES TECHNOLOGIES,TUG VALLEY PHARMACY #1 (WV),3,1,0.9391,135.0,Production Reroute,Geopolitical,Consumer Goods
 6,RHODES TECHNOLOGIES,TUG VALLEY PHARMACY #1 (WV),3,2,1.1755,151.0,Production Reroute,Cyber Attack,Automotive
 6,RHODES TECHNOLOGIES,TUG VALLEY PHARMACY #1 (WV),3,3,1.1886,89.0,Combined Strategy,Geopolitical,Consumer Goods
@@ -35,12 +35,12 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 11,SANDOZ INC,SUNRISE PHARMACY #7243 (WV),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
 11,SANDOZ INC,SUNRISE PHARMACY #7243 (WV),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
 11,SANDOZ INC,SUNRISE PHARMACY #7243 (WV),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
-12,HIKMA PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),5,1,0.0,157.0,Production Reroute,Geopolitical,Pharmaceuticals
-12,HIKMA PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),5,2,0.0,268.0,Production Reroute,Natural Disaster,Pharmaceuticals
-12,HIKMA PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),5,3,0.0,87.0,Combined Strategy,Natural Disaster,Automotive
-13,RHODES TECHNOLOGIES,TUG VALLEY PHARMACY #1 (WV),5,1,0.0,157.0,Production Reroute,Geopolitical,Pharmaceuticals
-13,RHODES TECHNOLOGIES,TUG VALLEY PHARMACY #1 (WV),5,2,0.0,268.0,Production Reroute,Natural Disaster,Pharmaceuticals
-13,RHODES TECHNOLOGIES,TUG VALLEY PHARMACY #1 (WV),5,3,0.0,87.0,Combined Strategy,Natural Disaster,Automotive
+12,HIKMA PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),4,1,0.0876,135.0,Production Reroute,Geopolitical,Consumer Goods
+12,HIKMA PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),4,2,0.3241,151.0,Production Reroute,Cyber Attack,Automotive
+12,HIKMA PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),4,3,0.3372,89.0,Combined Strategy,Geopolitical,Consumer Goods
+13,RHODES TECHNOLOGIES,TUG VALLEY PHARMACY #1 (WV),4,1,0.0876,135.0,Production Reroute,Geopolitical,Consumer Goods
+13,RHODES TECHNOLOGIES,TUG VALLEY PHARMACY #1 (WV),4,2,0.3241,151.0,Production Reroute,Cyber Attack,Automotive
+13,RHODES TECHNOLOGIES,TUG VALLEY PHARMACY #1 (WV),4,3,0.3372,89.0,Combined Strategy,Geopolitical,Consumer Goods
 14,ENDO PHARMACEUTICALS INC,TUG VALLEY PHARMACY #1 (WV),3,1,0.9391,135.0,Production Reroute,Geopolitical,Consumer Goods
 14,ENDO PHARMACEUTICALS INC,TUG VALLEY PHARMACY #1 (WV),3,2,1.1755,151.0,Production Reroute,Cyber Attack,Automotive
 14,ENDO PHARMACEUTICALS INC,TUG VALLEY PHARMACY #1 (WV),3,3,1.1886,89.0,Combined Strategy,Geopolitical,Consumer Goods
@@ -110,9 +110,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 36,WATSON LABORATORIES INC,TUG VALLEY PHARMACY #1 (WV),3,1,0.9391,135.0,Production Reroute,Geopolitical,Consumer Goods
 36,WATSON LABORATORIES INC,TUG VALLEY PHARMACY #1 (WV),3,2,1.1755,151.0,Production Reroute,Cyber Attack,Automotive
 36,WATSON LABORATORIES INC,TUG VALLEY PHARMACY #1 (WV),3,3,1.1886,89.0,Combined Strategy,Geopolitical,Consumer Goods
-37,WATSON LABORATORIES INC,TUG VALLEY PHARMACY #1 (WV),3,1,0.9391,135.0,Production Reroute,Geopolitical,Consumer Goods
-37,WATSON LABORATORIES INC,TUG VALLEY PHARMACY #1 (WV),3,2,1.1755,151.0,Production Reroute,Cyber Attack,Automotive
-37,WATSON LABORATORIES INC,TUG VALLEY PHARMACY #1 (WV),3,3,1.1886,89.0,Combined Strategy,Geopolitical,Consumer Goods
+37,WATSON LABORATORIES INC,TUG VALLEY PHARMACY #1 (WV),4,1,0.0876,135.0,Production Reroute,Geopolitical,Consumer Goods
+37,WATSON LABORATORIES INC,TUG VALLEY PHARMACY #1 (WV),4,2,0.3241,151.0,Production Reroute,Cyber Attack,Automotive
+37,WATSON LABORATORIES INC,TUG VALLEY PHARMACY #1 (WV),4,3,0.3372,89.0,Combined Strategy,Geopolitical,Consumer Goods
 38,RHODES TECHNOLOGIES,TUG VALLEY PHARMACY #1 (WV),4,1,0.0876,135.0,Production Reroute,Geopolitical,Consumer Goods
 38,RHODES TECHNOLOGIES,TUG VALLEY PHARMACY #1 (WV),4,2,0.3241,151.0,Production Reroute,Cyber Attack,Automotive
 38,RHODES TECHNOLOGIES,TUG VALLEY PHARMACY #1 (WV),4,3,0.3372,89.0,Combined Strategy,Geopolitical,Consumer Goods
@@ -188,18 +188,18 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 62,PAR PHARMACEUTICAL INC,TUG VALLEY PHARMACY #1 (WV),4,1,0.0876,135.0,Production Reroute,Geopolitical,Consumer Goods
 62,PAR PHARMACEUTICAL INC,TUG VALLEY PHARMACY #1 (WV),4,2,0.3241,151.0,Production Reroute,Cyber Attack,Automotive
 62,PAR PHARMACEUTICAL INC,TUG VALLEY PHARMACY #1 (WV),4,3,0.3372,89.0,Combined Strategy,Geopolitical,Consumer Goods
-63,PURDUE PHARMA LP,TUG VALLEY PHARMACY #1 (WV),4,1,0.0876,135.0,Production Reroute,Geopolitical,Consumer Goods
-63,PURDUE PHARMA LP,TUG VALLEY PHARMACY #1 (WV),4,2,0.3241,151.0,Production Reroute,Cyber Attack,Automotive
-63,PURDUE PHARMA LP,TUG VALLEY PHARMACY #1 (WV),4,3,0.3372,89.0,Combined Strategy,Geopolitical,Consumer Goods
+63,PURDUE PHARMA LP,TUG VALLEY PHARMACY #1 (WV),3,1,0.9391,135.0,Production Reroute,Geopolitical,Consumer Goods
+63,PURDUE PHARMA LP,TUG VALLEY PHARMACY #1 (WV),3,2,1.1755,151.0,Production Reroute,Cyber Attack,Automotive
+63,PURDUE PHARMA LP,TUG VALLEY PHARMACY #1 (WV),3,3,1.1886,89.0,Combined Strategy,Geopolitical,Consumer Goods
 64,HIKMA PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),4,1,0.0876,135.0,Production Reroute,Geopolitical,Consumer Goods
 64,HIKMA PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),4,2,0.3241,151.0,Production Reroute,Cyber Attack,Automotive
 64,HIKMA PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),4,3,0.3372,89.0,Combined Strategy,Geopolitical,Consumer Goods
 65,PAR PHARMACEUTICAL INC,TUG VALLEY PHARMACY #1 (WV),3,1,0.9391,135.0,Production Reroute,Geopolitical,Consumer Goods
 65,PAR PHARMACEUTICAL INC,TUG VALLEY PHARMACY #1 (WV),3,2,1.1755,151.0,Production Reroute,Cyber Attack,Automotive
 65,PAR PHARMACEUTICAL INC,TUG VALLEY PHARMACY #1 (WV),3,3,1.1886,89.0,Combined Strategy,Geopolitical,Consumer Goods
-66,QUALITEST PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),3,1,0.9391,135.0,Production Reroute,Geopolitical,Consumer Goods
-66,QUALITEST PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),3,2,1.1755,151.0,Production Reroute,Cyber Attack,Automotive
-66,QUALITEST PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),3,3,1.1886,89.0,Combined Strategy,Geopolitical,Consumer Goods
+66,QUALITEST PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),4,1,0.0876,135.0,Production Reroute,Geopolitical,Consumer Goods
+66,QUALITEST PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),4,2,0.3241,151.0,Production Reroute,Cyber Attack,Automotive
+66,QUALITEST PHARMACEUTICALS,TUG VALLEY PHARMACY #1 (WV),4,3,0.3372,89.0,Combined Strategy,Geopolitical,Consumer Goods
 67,PAR PHARMACEUTICAL INC,PUBLIX PHARMACY #7101 (VA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 67,PAR PHARMACEUTICAL INC,PUBLIX PHARMACY #7101 (VA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 67,PAR PHARMACEUTICAL INC,PUBLIX PHARMACY #7101 (VA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -227,9 +227,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 75,RHODES TECHNOLOGIES,QUALITY CARE PHARMACY #6294 (VA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 75,RHODES TECHNOLOGIES,QUALITY CARE PHARMACY #6294 (VA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 75,RHODES TECHNOLOGIES,QUALITY CARE PHARMACY #6294 (VA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-76,MALLINCKRODT LLC,TUG VALLEY PHARMACY #1 (WV),3,1,0.9391,135.0,Production Reroute,Geopolitical,Consumer Goods
-76,MALLINCKRODT LLC,TUG VALLEY PHARMACY #1 (WV),3,2,1.1755,151.0,Production Reroute,Cyber Attack,Automotive
-76,MALLINCKRODT LLC,TUG VALLEY PHARMACY #1 (WV),3,3,1.1886,89.0,Combined Strategy,Geopolitical,Consumer Goods
+76,MALLINCKRODT LLC,TUG VALLEY PHARMACY #1 (WV),4,1,0.0876,135.0,Production Reroute,Geopolitical,Consumer Goods
+76,MALLINCKRODT LLC,TUG VALLEY PHARMACY #1 (WV),4,2,0.3241,151.0,Production Reroute,Cyber Attack,Automotive
+76,MALLINCKRODT LLC,TUG VALLEY PHARMACY #1 (WV),4,3,0.3372,89.0,Combined Strategy,Geopolitical,Consumer Goods
 77,LANNETT COMPANY INC,TUG VALLEY PHARMACY #1 (WV),4,1,0.0876,135.0,Production Reroute,Geopolitical,Consumer Goods
 77,LANNETT COMPANY INC,TUG VALLEY PHARMACY #1 (WV),4,2,0.3241,151.0,Production Reroute,Cyber Attack,Automotive
 77,LANNETT COMPANY INC,TUG VALLEY PHARMACY #1 (WV),4,3,0.3372,89.0,Combined Strategy,Geopolitical,Consumer Goods
@@ -251,9 +251,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 83,MALLINCKRODT LLC,TUG VALLEY PHARMACY #1 (WV),4,1,0.0876,135.0,Production Reroute,Geopolitical,Consumer Goods
 83,MALLINCKRODT LLC,TUG VALLEY PHARMACY #1 (WV),4,2,0.3241,151.0,Production Reroute,Cyber Attack,Automotive
 83,MALLINCKRODT LLC,TUG VALLEY PHARMACY #1 (WV),4,3,0.3372,89.0,Combined Strategy,Geopolitical,Consumer Goods
-84,WATSON LABORATORIES INC,TUG VALLEY PHARMACY #1 (WV),4,1,0.0876,135.0,Production Reroute,Geopolitical,Consumer Goods
-84,WATSON LABORATORIES INC,TUG VALLEY PHARMACY #1 (WV),4,2,0.3241,151.0,Production Reroute,Cyber Attack,Automotive
-84,WATSON LABORATORIES INC,TUG VALLEY PHARMACY #1 (WV),4,3,0.3372,89.0,Combined Strategy,Geopolitical,Consumer Goods
+84,WATSON LABORATORIES INC,TUG VALLEY PHARMACY #1 (WV),3,1,0.9391,135.0,Production Reroute,Geopolitical,Consumer Goods
+84,WATSON LABORATORIES INC,TUG VALLEY PHARMACY #1 (WV),3,2,1.1755,151.0,Production Reroute,Cyber Attack,Automotive
+84,WATSON LABORATORIES INC,TUG VALLEY PHARMACY #1 (WV),3,3,1.1886,89.0,Combined Strategy,Geopolitical,Consumer Goods
 85,PURDUE PHARMA LP,VILLAGE PHARMACY #9397 (NC),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 85,PURDUE PHARMA LP,VILLAGE PHARMACY #9397 (NC),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 85,PURDUE PHARMA LP,VILLAGE PHARMACY #9397 (NC),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -263,9 +263,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 87,ACTAVIS PHARMA INC,WALGREENS #9211 (LA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 87,ACTAVIS PHARMA INC,WALGREENS #9211 (LA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 87,ACTAVIS PHARMA INC,WALGREENS #9211 (LA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-88,CADISTA PHARMACEUTICALS INC,HARRIS TEETER PHARMACY #6758 (NC),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-88,CADISTA PHARMACEUTICALS INC,HARRIS TEETER PHARMACY #6758 (NC),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-88,CADISTA PHARMACEUTICALS INC,HARRIS TEETER PHARMACY #6758 (NC),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+88,CADISTA PHARMACEUTICALS INC,HARRIS TEETER PHARMACY #6758 (NC),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+88,CADISTA PHARMACEUTICALS INC,HARRIS TEETER PHARMACY #6758 (NC),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+88,CADISTA PHARMACEUTICALS INC,HARRIS TEETER PHARMACY #6758 (NC),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 89,ABBOTT LABORATORIES,RITE AID #2280 (MD),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 89,ABBOTT LABORATORIES,RITE AID #2280 (MD),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 89,ABBOTT LABORATORIES,RITE AID #2280 (MD),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -410,15 +410,15 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 136,AMNEAL PHARMACEUTICALS LLC,TUG VALLEY PHARMACY #1 (WV),4,1,0.0876,135.0,Production Reroute,Geopolitical,Consumer Goods
 136,AMNEAL PHARMACEUTICALS LLC,TUG VALLEY PHARMACY #1 (WV),4,2,0.3241,151.0,Production Reroute,Cyber Attack,Automotive
 136,AMNEAL PHARMACEUTICALS LLC,TUG VALLEY PHARMACY #1 (WV),4,3,0.3372,89.0,Combined Strategy,Geopolitical,Consumer Goods
-137,RHODES TECHNOLOGIES,WALGREENS #3635 (NC),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-137,RHODES TECHNOLOGIES,WALGREENS #3635 (NC),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-137,RHODES TECHNOLOGIES,WALGREENS #3635 (NC),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+137,RHODES TECHNOLOGIES,WALGREENS #3635 (NC),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+137,RHODES TECHNOLOGIES,WALGREENS #3635 (NC),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+137,RHODES TECHNOLOGIES,WALGREENS #3635 (NC),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 138,WATSON LABORATORIES INC,GOOD NEIGHBOR PHARMACY #2219 (NM),4,1,0.0876,135.0,Production Reroute,Geopolitical,Consumer Goods
 138,WATSON LABORATORIES INC,GOOD NEIGHBOR PHARMACY #2219 (NM),4,2,0.3241,151.0,Production Reroute,Cyber Attack,Automotive
 138,WATSON LABORATORIES INC,GOOD NEIGHBOR PHARMACY #2219 (NM),4,3,0.3372,89.0,Combined Strategy,Geopolitical,Consumer Goods
-139,WATSON LABORATORIES INC,HARRIS TEETER PHARMACY #6758 (NC),4,1,0.1972,88.0,Alternative Supplier,Natural Disaster,Automotive
-139,WATSON LABORATORIES INC,HARRIS TEETER PHARMACY #6758 (NC),4,2,0.3113,140.0,Alternative Supplier,Natural Disaster,Electronics
-139,WATSON LABORATORIES INC,HARRIS TEETER PHARMACY #6758 (NC),4,3,0.3641,114.0,Alternative Supplier,Natural Disaster,Pharmaceuticals
+139,WATSON LABORATORIES INC,HARRIS TEETER PHARMACY #6758 (NC),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+139,WATSON LABORATORIES INC,HARRIS TEETER PHARMACY #6758 (NC),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+139,WATSON LABORATORIES INC,HARRIS TEETER PHARMACY #6758 (NC),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 140,RHODES TECHNOLOGIES,WALMART PHARMACY #9312 (PA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 140,RHODES TECHNOLOGIES,WALMART PHARMACY #9312 (PA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 140,RHODES TECHNOLOGIES,WALMART PHARMACY #9312 (PA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -470,9 +470,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 156,AMNEAL PHARMACEUTICALS LLC,KROGER PHARMACY #7324 (ID),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 156,AMNEAL PHARMACEUTICALS LLC,KROGER PHARMACY #7324 (ID),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 156,AMNEAL PHARMACEUTICALS LLC,KROGER PHARMACY #7324 (ID),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-157,MYLAN PHARMACEUTICALS INC,HOMETOWN PHARMACY #6892 (WY),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-157,MYLAN PHARMACEUTICALS INC,HOMETOWN PHARMACY #6892 (WY),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-157,MYLAN PHARMACEUTICALS INC,HOMETOWN PHARMACY #6892 (WY),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+157,MYLAN PHARMACEUTICALS INC,HOMETOWN PHARMACY #6892 (WY),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+157,MYLAN PHARMACEUTICALS INC,HOMETOWN PHARMACY #6892 (WY),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+157,MYLAN PHARMACEUTICALS INC,HOMETOWN PHARMACY #6892 (WY),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 158,VINTAGE PHARMACEUTICALS LLC,PUBLIX PHARMACY #9124 (DE),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 158,VINTAGE PHARMACEUTICALS LLC,PUBLIX PHARMACY #9124 (DE),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 158,VINTAGE PHARMACEUTICALS LLC,PUBLIX PHARMACY #9124 (DE),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -497,9 +497,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 165,RHODES TECHNOLOGIES,WINN-DIXIE PHARMACY #2750 (NM),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 165,RHODES TECHNOLOGIES,WINN-DIXIE PHARMACY #2750 (NM),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 165,RHODES TECHNOLOGIES,WINN-DIXIE PHARMACY #2750 (NM),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-166,ACTAVIS PHARMA INC,QUALITY CARE PHARMACY #3338 (WV),4,1,0.1972,88.0,Alternative Supplier,Natural Disaster,Automotive
-166,ACTAVIS PHARMA INC,QUALITY CARE PHARMACY #3338 (WV),4,2,0.3113,140.0,Alternative Supplier,Natural Disaster,Electronics
-166,ACTAVIS PHARMA INC,QUALITY CARE PHARMACY #3338 (WV),4,3,0.3641,114.0,Alternative Supplier,Natural Disaster,Pharmaceuticals
+166,ACTAVIS PHARMA INC,QUALITY CARE PHARMACY #3338 (WV),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+166,ACTAVIS PHARMA INC,QUALITY CARE PHARMACY #3338 (WV),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+166,ACTAVIS PHARMA INC,QUALITY CARE PHARMACY #3338 (WV),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 167,AMNEAL PHARMACEUTICALS LLC,TUG VALLEY PHARMACY #1 (WV),4,1,0.0876,135.0,Production Reroute,Geopolitical,Consumer Goods
 167,AMNEAL PHARMACEUTICALS LLC,TUG VALLEY PHARMACY #1 (WV),4,2,0.3241,151.0,Production Reroute,Cyber Attack,Automotive
 167,AMNEAL PHARMACEUTICALS LLC,TUG VALLEY PHARMACY #1 (WV),4,3,0.3372,89.0,Combined Strategy,Geopolitical,Consumer Goods
@@ -584,9 +584,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 194,QUALITEST PHARMACEUTICALS,HEALTH MART PHARMACY #7354 (RI),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 194,QUALITEST PHARMACEUTICALS,HEALTH MART PHARMACY #7354 (RI),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 194,QUALITEST PHARMACEUTICALS,HEALTH MART PHARMACY #7354 (RI),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-195,IMPAX LABORATORIES INC,CORNER DRUG STORE #1656 (DE),3,1,0.9391,135.0,Production Reroute,Geopolitical,Consumer Goods
-195,IMPAX LABORATORIES INC,CORNER DRUG STORE #1656 (DE),3,2,1.1755,151.0,Production Reroute,Cyber Attack,Automotive
-195,IMPAX LABORATORIES INC,CORNER DRUG STORE #1656 (DE),3,3,1.1886,89.0,Combined Strategy,Geopolitical,Consumer Goods
+195,IMPAX LABORATORIES INC,CORNER DRUG STORE #1656 (DE),4,1,0.0876,135.0,Production Reroute,Geopolitical,Consumer Goods
+195,IMPAX LABORATORIES INC,CORNER DRUG STORE #1656 (DE),4,2,0.3241,151.0,Production Reroute,Cyber Attack,Automotive
+195,IMPAX LABORATORIES INC,CORNER DRUG STORE #1656 (DE),4,3,0.3372,89.0,Combined Strategy,Geopolitical,Consumer Goods
 196,SUN PHARMA GLOBAL INC,COMMUNITY PHARMACY #5731 (WV),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 196,SUN PHARMA GLOBAL INC,COMMUNITY PHARMACY #5731 (WV),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 196,SUN PHARMA GLOBAL INC,COMMUNITY PHARMACY #5731 (WV),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -650,9 +650,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 216,PURDUE PHARMA LP,HOMETOWN PHARMACY #6366 (WA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 216,PURDUE PHARMA LP,HOMETOWN PHARMACY #6366 (WA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 216,PURDUE PHARMA LP,HOMETOWN PHARMACY #6366 (WA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-217,MALLINCKRODT LLC,QUALITY CARE PHARMACY #2760 (MN),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
-217,MALLINCKRODT LLC,QUALITY CARE PHARMACY #2760 (MN),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
-217,MALLINCKRODT LLC,QUALITY CARE PHARMACY #2760 (MN),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
+217,MALLINCKRODT LLC,QUALITY CARE PHARMACY #2760 (MN),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
+217,MALLINCKRODT LLC,QUALITY CARE PHARMACY #2760 (MN),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
+217,MALLINCKRODT LLC,QUALITY CARE PHARMACY #2760 (MN),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
 218,AMNEAL PHARMACEUTICALS LLC,SUNRISE PHARMACY #5914 (NJ),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 218,AMNEAL PHARMACEUTICALS LLC,SUNRISE PHARMACY #5914 (NJ),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 218,AMNEAL PHARMACEUTICALS LLC,SUNRISE PHARMACY #5914 (NJ),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -719,9 +719,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 239,IMPAX LABORATORIES INC,FAMILY CARE PHARMACY #6977 (NC),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 239,IMPAX LABORATORIES INC,FAMILY CARE PHARMACY #6977 (NC),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 239,IMPAX LABORATORIES INC,FAMILY CARE PHARMACY #6977 (NC),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-240,ACTAVIS PHARMA INC,FAMILY CARE PHARMACY #6977 (NC),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
-240,ACTAVIS PHARMA INC,FAMILY CARE PHARMACY #6977 (NC),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
-240,ACTAVIS PHARMA INC,FAMILY CARE PHARMACY #6977 (NC),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
+240,ACTAVIS PHARMA INC,FAMILY CARE PHARMACY #6977 (NC),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
+240,ACTAVIS PHARMA INC,FAMILY CARE PHARMACY #6977 (NC),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
+240,ACTAVIS PHARMA INC,FAMILY CARE PHARMACY #6977 (NC),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
 241,LANNETT COMPANY INC,PEOPLES PHARMACY #4568 (WA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 241,LANNETT COMPANY INC,PEOPLES PHARMACY #4568 (WA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 241,LANNETT COMPANY INC,PEOPLES PHARMACY #4568 (WA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -734,9 +734,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 244,MALLINCKRODT LLC,PEOPLES PHARMACY #6526 (WA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 244,MALLINCKRODT LLC,PEOPLES PHARMACY #6526 (WA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 244,MALLINCKRODT LLC,PEOPLES PHARMACY #6526 (WA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-245,WATSON LABORATORIES INC,PUBLIX PHARMACY #6189 (IA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
-245,WATSON LABORATORIES INC,PUBLIX PHARMACY #6189 (IA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
-245,WATSON LABORATORIES INC,PUBLIX PHARMACY #6189 (IA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
+245,WATSON LABORATORIES INC,PUBLIX PHARMACY #6189 (IA),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
+245,WATSON LABORATORIES INC,PUBLIX PHARMACY #6189 (IA),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
+245,WATSON LABORATORIES INC,PUBLIX PHARMACY #6189 (IA),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
 246,AMNEAL PHARMACEUTICALS LLC,FAMILY CARE PHARMACY #6878 (OR),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
 246,AMNEAL PHARMACEUTICALS LLC,FAMILY CARE PHARMACY #6878 (OR),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
 246,AMNEAL PHARMACEUTICALS LLC,FAMILY CARE PHARMACY #6878 (OR),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
@@ -791,9 +791,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 263,CADISTA PHARMACEUTICALS INC,GOOD NEIGHBOR PHARMACY #5339 (PA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 263,CADISTA PHARMACEUTICALS INC,GOOD NEIGHBOR PHARMACY #5339 (PA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 263,CADISTA PHARMACEUTICALS INC,GOOD NEIGHBOR PHARMACY #5339 (PA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-264,PURDUE PHARMA LP,RITE AID #9329 (MN),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
-264,PURDUE PHARMA LP,RITE AID #9329 (MN),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
-264,PURDUE PHARMA LP,RITE AID #9329 (MN),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
+264,PURDUE PHARMA LP,RITE AID #9329 (MN),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
+264,PURDUE PHARMA LP,RITE AID #9329 (MN),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
+264,PURDUE PHARMA LP,RITE AID #9329 (MN),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
 265,PAR PHARMACEUTICAL INC,FAMILY CARE PHARMACY #5952 (MI),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
 265,PAR PHARMACEUTICAL INC,FAMILY CARE PHARMACY #5952 (MI),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
 265,PAR PHARMACEUTICAL INC,FAMILY CARE PHARMACY #5952 (MI),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
@@ -803,9 +803,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 267,CADISTA PHARMACEUTICALS INC,HOMETOWN PHARMACY #8919 (KY),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 267,CADISTA PHARMACEUTICALS INC,HOMETOWN PHARMACY #8919 (KY),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 267,CADISTA PHARMACEUTICALS INC,HOMETOWN PHARMACY #8919 (KY),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-268,SUN PHARMA GLOBAL INC,KROGER PHARMACY #8420 (MT),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-268,SUN PHARMA GLOBAL INC,KROGER PHARMACY #8420 (MT),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-268,SUN PHARMA GLOBAL INC,KROGER PHARMACY #8420 (MT),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+268,SUN PHARMA GLOBAL INC,KROGER PHARMACY #8420 (MT),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+268,SUN PHARMA GLOBAL INC,KROGER PHARMACY #8420 (MT),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+268,SUN PHARMA GLOBAL INC,KROGER PHARMACY #8420 (MT),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 269,PAR PHARMACEUTICAL INC,CORNER DRUG STORE #9113 (HI),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
 269,PAR PHARMACEUTICAL INC,CORNER DRUG STORE #9113 (HI),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
 269,PAR PHARMACEUTICAL INC,CORNER DRUG STORE #9113 (HI),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
@@ -911,15 +911,15 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 303,SUN PHARMA GLOBAL INC,GOOD NEIGHBOR PHARMACY #2494 (WV),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 303,SUN PHARMA GLOBAL INC,GOOD NEIGHBOR PHARMACY #2494 (WV),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 303,SUN PHARMA GLOBAL INC,GOOD NEIGHBOR PHARMACY #2494 (WV),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-304,CADISTA PHARMACEUTICALS INC,WALGREENS #4628 (WA),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-304,CADISTA PHARMACEUTICALS INC,WALGREENS #4628 (WA),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-304,CADISTA PHARMACEUTICALS INC,WALGREENS #4628 (WA),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+304,CADISTA PHARMACEUTICALS INC,WALGREENS #4628 (WA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+304,CADISTA PHARMACEUTICALS INC,WALGREENS #4628 (WA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+304,CADISTA PHARMACEUTICALS INC,WALGREENS #4628 (WA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 305,ENDO PHARMACEUTICALS INC,HOMETOWN PHARMACY #1142 (NE),4,1,0.0876,135.0,Production Reroute,Geopolitical,Consumer Goods
 305,ENDO PHARMACEUTICALS INC,HOMETOWN PHARMACY #1142 (NE),4,2,0.3241,151.0,Production Reroute,Cyber Attack,Automotive
 305,ENDO PHARMACEUTICALS INC,HOMETOWN PHARMACY #1142 (NE),4,3,0.3372,89.0,Combined Strategy,Geopolitical,Consumer Goods
-306,LANNETT COMPANY INC,RITE AID #9223 (WV),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-306,LANNETT COMPANY INC,RITE AID #9223 (WV),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-306,LANNETT COMPANY INC,RITE AID #9223 (WV),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+306,LANNETT COMPANY INC,RITE AID #9223 (WV),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+306,LANNETT COMPANY INC,RITE AID #9223 (WV),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+306,LANNETT COMPANY INC,RITE AID #9223 (WV),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 307,QUALITEST PHARMACEUTICALS,COMMUNITY PHARMACY #8090 (LA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 307,QUALITEST PHARMACEUTICALS,COMMUNITY PHARMACY #8090 (LA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 307,QUALITEST PHARMACEUTICALS,COMMUNITY PHARMACY #8090 (LA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -1136,9 +1136,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 378,HIKMA PHARMACEUTICALS,CVS PHARMACY #4509 (LA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 378,HIKMA PHARMACEUTICALS,CVS PHARMACY #4509 (LA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 378,HIKMA PHARMACEUTICALS,CVS PHARMACY #4509 (LA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-379,ACTAVIS PHARMA INC,COMMUNITY PHARMACY #3558 (DE),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
-379,ACTAVIS PHARMA INC,COMMUNITY PHARMACY #3558 (DE),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
-379,ACTAVIS PHARMA INC,COMMUNITY PHARMACY #3558 (DE),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
+379,ACTAVIS PHARMA INC,COMMUNITY PHARMACY #3558 (DE),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
+379,ACTAVIS PHARMA INC,COMMUNITY PHARMACY #3558 (DE),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
+379,ACTAVIS PHARMA INC,COMMUNITY PHARMACY #3558 (DE),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
 380,IMPAX LABORATORIES INC,KROGER PHARMACY #6996 (NM),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 380,IMPAX LABORATORIES INC,KROGER PHARMACY #6996 (NM),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 380,IMPAX LABORATORIES INC,KROGER PHARMACY #6996 (NM),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -1274,9 +1274,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 424,MYLAN PHARMACEUTICALS INC,WINN-DIXIE PHARMACY #8389 (RI),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 424,MYLAN PHARMACEUTICALS INC,WINN-DIXIE PHARMACY #8389 (RI),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 424,MYLAN PHARMACEUTICALS INC,WINN-DIXIE PHARMACY #8389 (RI),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-425,SANDOZ INC,SUNRISE PHARMACY #6637 (LA),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-425,SANDOZ INC,SUNRISE PHARMACY #6637 (LA),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-425,SANDOZ INC,SUNRISE PHARMACY #6637 (LA),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+425,SANDOZ INC,SUNRISE PHARMACY #6637 (LA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+425,SANDOZ INC,SUNRISE PHARMACY #6637 (LA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+425,SANDOZ INC,SUNRISE PHARMACY #6637 (LA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 426,PAR PHARMACEUTICAL INC,WINN-DIXIE PHARMACY #9341 (ND),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
 426,PAR PHARMACEUTICAL INC,WINN-DIXIE PHARMACY #9341 (ND),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
 426,PAR PHARMACEUTICAL INC,WINN-DIXIE PHARMACY #9341 (ND),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
@@ -1313,9 +1313,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 437,AMNEAL PHARMACEUTICALS LLC,HOMETOWN PHARMACY #8469 (NC),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
 437,AMNEAL PHARMACEUTICALS LLC,HOMETOWN PHARMACY #8469 (NC),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
 437,AMNEAL PHARMACEUTICALS LLC,HOMETOWN PHARMACY #8469 (NC),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
-438,WATSON LABORATORIES INC,CVS PHARMACY #2808 (IN),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
-438,WATSON LABORATORIES INC,CVS PHARMACY #2808 (IN),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
-438,WATSON LABORATORIES INC,CVS PHARMACY #2808 (IN),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
+438,WATSON LABORATORIES INC,CVS PHARMACY #2808 (IN),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
+438,WATSON LABORATORIES INC,CVS PHARMACY #2808 (IN),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
+438,WATSON LABORATORIES INC,CVS PHARMACY #2808 (IN),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
 439,VINTAGE PHARMACEUTICALS LLC,CVS PHARMACY #5446 (LA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 439,VINTAGE PHARMACEUTICALS LLC,CVS PHARMACY #5446 (LA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 439,VINTAGE PHARMACEUTICALS LLC,CVS PHARMACY #5446 (LA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -1547,9 +1547,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 515,PURDUE PHARMA LP,MAIN STREET PHARMACY #3220 (NV),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 515,PURDUE PHARMA LP,MAIN STREET PHARMACY #3220 (NV),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 515,PURDUE PHARMA LP,MAIN STREET PHARMACY #3220 (NV),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-516,WATSON LABORATORIES INC,SUNRISE PHARMACY #7649 (PA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
-516,WATSON LABORATORIES INC,SUNRISE PHARMACY #7649 (PA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
-516,WATSON LABORATORIES INC,SUNRISE PHARMACY #7649 (PA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
+516,WATSON LABORATORIES INC,SUNRISE PHARMACY #7649 (PA),4,1,0.1972,88.0,Alternative Supplier,Natural Disaster,Automotive
+516,WATSON LABORATORIES INC,SUNRISE PHARMACY #7649 (PA),4,2,0.3113,140.0,Alternative Supplier,Natural Disaster,Electronics
+516,WATSON LABORATORIES INC,SUNRISE PHARMACY #7649 (PA),4,3,0.3641,114.0,Alternative Supplier,Natural Disaster,Pharmaceuticals
 517,MALLINCKRODT LLC,FAMILY CARE PHARMACY #1327 (ND),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 517,MALLINCKRODT LLC,FAMILY CARE PHARMACY #1327 (ND),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 517,MALLINCKRODT LLC,FAMILY CARE PHARMACY #1327 (ND),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -1799,9 +1799,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 599,JANSSEN PHARMACEUTICALS INC,WALGREENS #3575 (OH),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 599,JANSSEN PHARMACEUTICALS INC,WALGREENS #3575 (OH),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 599,JANSSEN PHARMACEUTICALS INC,WALGREENS #3575 (OH),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-600,TEVA PHARMACEUTICALS USA INC,SUNRISE PHARMACY #6615 (LA),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-600,TEVA PHARMACEUTICALS USA INC,SUNRISE PHARMACY #6615 (LA),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-600,TEVA PHARMACEUTICALS USA INC,SUNRISE PHARMACY #6615 (LA),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+600,TEVA PHARMACEUTICALS USA INC,SUNRISE PHARMACY #6615 (LA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+600,TEVA PHARMACEUTICALS USA INC,SUNRISE PHARMACY #6615 (LA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+600,TEVA PHARMACEUTICALS USA INC,SUNRISE PHARMACY #6615 (LA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 601,ACTAVIS PHARMA INC,WALMART PHARMACY #9460 (CT),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 601,ACTAVIS PHARMA INC,WALMART PHARMACY #9460 (CT),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 601,ACTAVIS PHARMA INC,WALMART PHARMACY #9460 (CT),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -1814,9 +1814,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 604,ABBOTT LABORATORIES,GOOD NEIGHBOR PHARMACY #3769 (AL),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 604,ABBOTT LABORATORIES,GOOD NEIGHBOR PHARMACY #3769 (AL),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 604,ABBOTT LABORATORIES,GOOD NEIGHBOR PHARMACY #3769 (AL),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-605,HIKMA PHARMACEUTICALS,WALGREENS #5846 (PA),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-605,HIKMA PHARMACEUTICALS,WALGREENS #5846 (PA),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-605,HIKMA PHARMACEUTICALS,WALGREENS #5846 (PA),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+605,HIKMA PHARMACEUTICALS,WALGREENS #5846 (PA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+605,HIKMA PHARMACEUTICALS,WALGREENS #5846 (PA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+605,HIKMA PHARMACEUTICALS,WALGREENS #5846 (PA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 606,SUN PHARMA GLOBAL INC,KROGER PHARMACY #9282 (UT),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 606,SUN PHARMA GLOBAL INC,KROGER PHARMACY #9282 (UT),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 606,SUN PHARMA GLOBAL INC,KROGER PHARMACY #9282 (UT),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -1829,9 +1829,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 609,SANDOZ INC,WINN-DIXIE PHARMACY #8378 (VA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 609,SANDOZ INC,WINN-DIXIE PHARMACY #8378 (VA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 609,SANDOZ INC,WINN-DIXIE PHARMACY #8378 (VA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-610,ACTAVIS PHARMA INC,CVS PHARMACY #1671 (OH),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-610,ACTAVIS PHARMA INC,CVS PHARMACY #1671 (OH),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-610,ACTAVIS PHARMA INC,CVS PHARMACY #1671 (OH),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+610,ACTAVIS PHARMA INC,CVS PHARMACY #1671 (OH),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+610,ACTAVIS PHARMA INC,CVS PHARMACY #1671 (OH),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+610,ACTAVIS PHARMA INC,CVS PHARMACY #1671 (OH),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 611,SANDOZ INC,HOMETOWN PHARMACY #6513 (WV),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
 611,SANDOZ INC,HOMETOWN PHARMACY #6513 (WV),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
 611,SANDOZ INC,HOMETOWN PHARMACY #6513 (WV),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
@@ -1850,12 +1850,12 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 616,ACTAVIS PHARMA INC,PUBLIX PHARMACY #4394 (MD),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 616,ACTAVIS PHARMA INC,PUBLIX PHARMACY #4394 (MD),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 616,ACTAVIS PHARMA INC,PUBLIX PHARMACY #4394 (MD),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-617,WATSON LABORATORIES INC,FAMILY CARE PHARMACY #9932 (MI),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
-617,WATSON LABORATORIES INC,FAMILY CARE PHARMACY #9932 (MI),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
-617,WATSON LABORATORIES INC,FAMILY CARE PHARMACY #9932 (MI),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-618,MALLINCKRODT LLC,QUALITY CARE PHARMACY #3706 (PA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
-618,MALLINCKRODT LLC,QUALITY CARE PHARMACY #3706 (PA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
-618,MALLINCKRODT LLC,QUALITY CARE PHARMACY #3706 (PA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
+617,WATSON LABORATORIES INC,FAMILY CARE PHARMACY #9932 (MI),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
+617,WATSON LABORATORIES INC,FAMILY CARE PHARMACY #9932 (MI),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
+617,WATSON LABORATORIES INC,FAMILY CARE PHARMACY #9932 (MI),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+618,MALLINCKRODT LLC,QUALITY CARE PHARMACY #3706 (PA),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
+618,MALLINCKRODT LLC,QUALITY CARE PHARMACY #3706 (PA),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
+618,MALLINCKRODT LLC,QUALITY CARE PHARMACY #3706 (PA),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
 619,ABBOTT LABORATORIES,COMMUNITY PHARMACY #8229 (IN),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 619,ABBOTT LABORATORIES,COMMUNITY PHARMACY #8229 (IN),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 619,ABBOTT LABORATORIES,COMMUNITY PHARMACY #8229 (IN),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -1949,9 +1949,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 649,ABBOTT LABORATORIES,SUNRISE PHARMACY #2882 (KY),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 649,ABBOTT LABORATORIES,SUNRISE PHARMACY #2882 (KY),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 649,ABBOTT LABORATORIES,SUNRISE PHARMACY #2882 (KY),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-650,MALLINCKRODT LLC,KROGER PHARMACY #6683 (OH),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-650,MALLINCKRODT LLC,KROGER PHARMACY #6683 (OH),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-650,MALLINCKRODT LLC,KROGER PHARMACY #6683 (OH),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+650,MALLINCKRODT LLC,KROGER PHARMACY #6683 (OH),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+650,MALLINCKRODT LLC,KROGER PHARMACY #6683 (OH),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+650,MALLINCKRODT LLC,KROGER PHARMACY #6683 (OH),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 651,LANNETT COMPANY INC,CORNER DRUG STORE #4406 (KY),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 651,LANNETT COMPANY INC,CORNER DRUG STORE #4406 (KY),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 651,LANNETT COMPANY INC,CORNER DRUG STORE #4406 (KY),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -2012,9 +2012,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 670,PURDUE PHARMA LP,WALMART PHARMACY #9460 (CT),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 670,PURDUE PHARMA LP,WALMART PHARMACY #9460 (CT),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 670,PURDUE PHARMA LP,WALMART PHARMACY #9460 (CT),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-671,WATSON LABORATORIES INC,CORNER DRUG STORE #1453 (OH),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-671,WATSON LABORATORIES INC,CORNER DRUG STORE #1453 (OH),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-671,WATSON LABORATORIES INC,CORNER DRUG STORE #1453 (OH),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+671,WATSON LABORATORIES INC,CORNER DRUG STORE #1453 (OH),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+671,WATSON LABORATORIES INC,CORNER DRUG STORE #1453 (OH),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+671,WATSON LABORATORIES INC,CORNER DRUG STORE #1453 (OH),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 672,SANDOZ INC,QUALITY CARE PHARMACY #6273 (HI),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 672,SANDOZ INC,QUALITY CARE PHARMACY #6273 (HI),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 672,SANDOZ INC,QUALITY CARE PHARMACY #6273 (HI),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -2045,15 +2045,15 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 681,ACTAVIS PHARMA INC,VILLAGE PHARMACY #9964 (OH),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 681,ACTAVIS PHARMA INC,VILLAGE PHARMACY #9964 (OH),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 681,ACTAVIS PHARMA INC,VILLAGE PHARMACY #9964 (OH),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-682,ACTAVIS PHARMA INC,WALGREENS #5175 (PA),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-682,ACTAVIS PHARMA INC,WALGREENS #5175 (PA),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-682,ACTAVIS PHARMA INC,WALGREENS #5175 (PA),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+682,ACTAVIS PHARMA INC,WALGREENS #5175 (PA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+682,ACTAVIS PHARMA INC,WALGREENS #5175 (PA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+682,ACTAVIS PHARMA INC,WALGREENS #5175 (PA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 683,LANNETT COMPANY INC,MAIN STREET PHARMACY #2648 (MO),2,1,0.0,126.0,Customer Delay,Natural Disaster,Pharmaceuticals
 683,LANNETT COMPANY INC,MAIN STREET PHARMACY #2648 (MO),2,2,0.0,137.0,Customer Delay,Natural Disaster,Electronics
 683,LANNETT COMPANY INC,MAIN STREET PHARMACY #2648 (MO),2,3,0.0,58.0,Inventory Buffer,Port Congestion,Consumer Goods
-684,WATSON LABORATORIES INC,WINN-DIXIE PHARMACY #3112 (LA),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-684,WATSON LABORATORIES INC,WINN-DIXIE PHARMACY #3112 (LA),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-684,WATSON LABORATORIES INC,WINN-DIXIE PHARMACY #3112 (LA),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+684,WATSON LABORATORIES INC,WINN-DIXIE PHARMACY #3112 (LA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+684,WATSON LABORATORIES INC,WINN-DIXIE PHARMACY #3112 (LA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+684,WATSON LABORATORIES INC,WINN-DIXIE PHARMACY #3112 (LA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 685,MALLINCKRODT LLC,HOMETOWN PHARMACY #6387 (NC),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 685,MALLINCKRODT LLC,HOMETOWN PHARMACY #6387 (NC),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 685,MALLINCKRODT LLC,HOMETOWN PHARMACY #6387 (NC),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -2063,15 +2063,15 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 687,IMPAX LABORATORIES INC,PUBLIX PHARMACY #6736 (TN),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 687,IMPAX LABORATORIES INC,PUBLIX PHARMACY #6736 (TN),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 687,IMPAX LABORATORIES INC,PUBLIX PHARMACY #6736 (TN),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-688,ACTAVIS PHARMA INC,QUALITY CARE PHARMACY #6847 (WV),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-688,ACTAVIS PHARMA INC,QUALITY CARE PHARMACY #6847 (WV),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-688,ACTAVIS PHARMA INC,QUALITY CARE PHARMACY #6847 (WV),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+688,ACTAVIS PHARMA INC,QUALITY CARE PHARMACY #6847 (WV),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+688,ACTAVIS PHARMA INC,QUALITY CARE PHARMACY #6847 (WV),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+688,ACTAVIS PHARMA INC,QUALITY CARE PHARMACY #6847 (WV),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 689,SANDOZ INC,VILLAGE PHARMACY #7454 (PA),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
 689,SANDOZ INC,VILLAGE PHARMACY #7454 (PA),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
 689,SANDOZ INC,VILLAGE PHARMACY #7454 (PA),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
-690,JANSSEN PHARMACEUTICALS INC,CORNER DRUG STORE #1213 (TN),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-690,JANSSEN PHARMACEUTICALS INC,CORNER DRUG STORE #1213 (TN),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-690,JANSSEN PHARMACEUTICALS INC,CORNER DRUG STORE #1213 (TN),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+690,JANSSEN PHARMACEUTICALS INC,CORNER DRUG STORE #1213 (TN),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+690,JANSSEN PHARMACEUTICALS INC,CORNER DRUG STORE #1213 (TN),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+690,JANSSEN PHARMACEUTICALS INC,CORNER DRUG STORE #1213 (TN),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 691,AMNEAL PHARMACEUTICALS LLC,MEDICO PHARMACY #9378 (TN),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
 691,AMNEAL PHARMACEUTICALS LLC,MEDICO PHARMACY #9378 (TN),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
 691,AMNEAL PHARMACEUTICALS LLC,MEDICO PHARMACY #9378 (TN),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
@@ -2192,9 +2192,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 730,SANDOZ INC,SUNRISE PHARMACY #7243 (WV),2,1,0.0,66.0,Customer Delay,Factory Incident,Consumer Goods
 730,SANDOZ INC,SUNRISE PHARMACY #7243 (WV),2,2,0.0,62.0,Alternative Supplier,Port Congestion,Aerospace
 730,SANDOZ INC,SUNRISE PHARMACY #7243 (WV),2,3,0.0,30.0,Inventory Buffer,Port Congestion,Consumer Goods
-731,JANSSEN PHARMACEUTICALS INC,QUALITY CARE PHARMACY #8199 (WV),4,1,0.1972,88.0,Alternative Supplier,Natural Disaster,Automotive
-731,JANSSEN PHARMACEUTICALS INC,QUALITY CARE PHARMACY #8199 (WV),4,2,0.3113,140.0,Alternative Supplier,Natural Disaster,Electronics
-731,JANSSEN PHARMACEUTICALS INC,QUALITY CARE PHARMACY #8199 (WV),4,3,0.3641,114.0,Alternative Supplier,Natural Disaster,Pharmaceuticals
+731,JANSSEN PHARMACEUTICALS INC,QUALITY CARE PHARMACY #8199 (WV),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
+731,JANSSEN PHARMACEUTICALS INC,QUALITY CARE PHARMACY #8199 (WV),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
+731,JANSSEN PHARMACEUTICALS INC,QUALITY CARE PHARMACY #8199 (WV),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
 732,ABBOTT LABORATORIES,CVS PHARMACY #6838 (TN),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 732,ABBOTT LABORATORIES,CVS PHARMACY #6838 (TN),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 732,ABBOTT LABORATORIES,CVS PHARMACY #6838 (TN),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -2219,9 +2219,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 739,PAR PHARMACEUTICAL INC,PUBLIX PHARMACY #5706 (MT),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 739,PAR PHARMACEUTICAL INC,PUBLIX PHARMACY #5706 (MT),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 739,PAR PHARMACEUTICAL INC,PUBLIX PHARMACY #5706 (MT),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-740,ACTAVIS PHARMA INC,WINN-DIXIE PHARMACY #8389 (RI),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-740,ACTAVIS PHARMA INC,WINN-DIXIE PHARMACY #8389 (RI),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-740,ACTAVIS PHARMA INC,WINN-DIXIE PHARMACY #8389 (RI),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+740,ACTAVIS PHARMA INC,WINN-DIXIE PHARMACY #8389 (RI),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+740,ACTAVIS PHARMA INC,WINN-DIXIE PHARMACY #8389 (RI),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+740,ACTAVIS PHARMA INC,WINN-DIXIE PHARMACY #8389 (RI),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 741,ABBOTT LABORATORIES,PUBLIX PHARMACY #2234 (VA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 741,ABBOTT LABORATORIES,PUBLIX PHARMACY #2234 (VA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 741,ABBOTT LABORATORIES,PUBLIX PHARMACY #2234 (VA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -2231,9 +2231,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 743,TEVA PHARMACEUTICALS USA INC,SUNRISE PHARMACY #7649 (PA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 743,TEVA PHARMACEUTICALS USA INC,SUNRISE PHARMACY #7649 (PA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 743,TEVA PHARMACEUTICALS USA INC,SUNRISE PHARMACY #7649 (PA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-744,WATSON LABORATORIES INC,WALMART PHARMACY #2539 (MI),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
-744,WATSON LABORATORIES INC,WALMART PHARMACY #2539 (MI),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
-744,WATSON LABORATORIES INC,WALMART PHARMACY #2539 (MI),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
+744,WATSON LABORATORIES INC,WALMART PHARMACY #2539 (MI),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
+744,WATSON LABORATORIES INC,WALMART PHARMACY #2539 (MI),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
+744,WATSON LABORATORIES INC,WALMART PHARMACY #2539 (MI),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
 745,IMPAX LABORATORIES INC,WINN-DIXIE PHARMACY #3643 (MI),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 745,IMPAX LABORATORIES INC,WINN-DIXIE PHARMACY #3643 (MI),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 745,IMPAX LABORATORIES INC,WINN-DIXIE PHARMACY #3643 (MI),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -2243,9 +2243,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 747,IMPAX LABORATORIES INC,WALMART PHARMACY #4214 (AR),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
 747,IMPAX LABORATORIES INC,WALMART PHARMACY #4214 (AR),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
 747,IMPAX LABORATORIES INC,WALMART PHARMACY #4214 (AR),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
-748,LANNETT COMPANY INC,KROGER PHARMACY #5892 (NJ),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
-748,LANNETT COMPANY INC,KROGER PHARMACY #5892 (NJ),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
-748,LANNETT COMPANY INC,KROGER PHARMACY #5892 (NJ),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
+748,LANNETT COMPANY INC,KROGER PHARMACY #5892 (NJ),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
+748,LANNETT COMPANY INC,KROGER PHARMACY #5892 (NJ),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
+748,LANNETT COMPANY INC,KROGER PHARMACY #5892 (NJ),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
 749,IMPAX LABORATORIES INC,HARRIS TEETER PHARMACY #6063 (NC),3,1,0.0,119.0,Alternative Supplier,Natural Disaster,Pharmaceuticals
 749,IMPAX LABORATORIES INC,HARRIS TEETER PHARMACY #6063 (NC),3,2,0.0003,62.0,Inventory Buffer,Geopolitical,Aerospace
 749,IMPAX LABORATORIES INC,HARRIS TEETER PHARMACY #6063 (NC),3,3,0.0003,135.0,Inventory Buffer,Port Congestion,Consumer Goods
@@ -2315,9 +2315,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 771,TEVA PHARMACEUTICALS USA INC,MEDICO PHARMACY #4938 (TN),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 771,TEVA PHARMACEUTICALS USA INC,MEDICO PHARMACY #4938 (TN),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 771,TEVA PHARMACEUTICALS USA INC,MEDICO PHARMACY #4938 (TN),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-772,TEVA PHARMACEUTICALS USA INC,VILLAGE PHARMACY #7086 (IN),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-772,TEVA PHARMACEUTICALS USA INC,VILLAGE PHARMACY #7086 (IN),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-772,TEVA PHARMACEUTICALS USA INC,VILLAGE PHARMACY #7086 (IN),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+772,TEVA PHARMACEUTICALS USA INC,VILLAGE PHARMACY #7086 (IN),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+772,TEVA PHARMACEUTICALS USA INC,VILLAGE PHARMACY #7086 (IN),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+772,TEVA PHARMACEUTICALS USA INC,VILLAGE PHARMACY #7086 (IN),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 773,RHODES TECHNOLOGIES,MEDICO PHARMACY #9378 (TN),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 773,RHODES TECHNOLOGIES,MEDICO PHARMACY #9378 (TN),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 773,RHODES TECHNOLOGIES,MEDICO PHARMACY #9378 (TN),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -2351,9 +2351,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 783,HIKMA PHARMACEUTICALS,HOMETOWN PHARMACY #9385 (MI),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
 783,HIKMA PHARMACEUTICALS,HOMETOWN PHARMACY #9385 (MI),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
 783,HIKMA PHARMACEUTICALS,HOMETOWN PHARMACY #9385 (MI),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
-784,ACTAVIS PHARMA INC,PUBLIX PHARMACY #1697 (MI),2,1,0.0,61.0,Alternative Supplier,Geopolitical,Electronics
-784,ACTAVIS PHARMA INC,PUBLIX PHARMACY #1697 (MI),2,2,0.0,18.0,Production Reroute,Port Congestion,Automotive
-784,ACTAVIS PHARMA INC,PUBLIX PHARMACY #1697 (MI),2,3,0.0,91.0,Customer Delay,Natural Disaster,Automotive
+784,ACTAVIS PHARMA INC,PUBLIX PHARMACY #1697 (MI),3,1,0.0,42.0,Customer Delay,Labor Strike,Aerospace
+784,ACTAVIS PHARMA INC,PUBLIX PHARMACY #1697 (MI),3,2,0.0,68.0,Alternative Supplier,Geopolitical,Pharmaceuticals
+784,ACTAVIS PHARMA INC,PUBLIX PHARMACY #1697 (MI),3,3,0.0,153.0,Alternative Supplier,Cyber Attack,Consumer Goods
 785,MALLINCKRODT LLC,PUBLIX PHARMACY #2055 (NC),3,1,0.4439,74.0,Alternative Supplier,Cyber Attack,Automotive
 785,MALLINCKRODT LLC,PUBLIX PHARMACY #2055 (NC),3,2,0.4748,55.0,Alternative Supplier,Natural Disaster,Electronics
 785,MALLINCKRODT LLC,PUBLIX PHARMACY #2055 (NC),3,3,0.6086,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -2453,9 +2453,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 817,PAR PHARMACEUTICAL INC,MEDICO PHARMACY #9307 (VA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 817,PAR PHARMACEUTICAL INC,MEDICO PHARMACY #9307 (VA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 817,PAR PHARMACEUTICAL INC,MEDICO PHARMACY #9307 (VA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-818,MALLINCKRODT LLC,PUBLIX PHARMACY #2055 (NC),2,1,0.0,61.0,Alternative Supplier,Natural Disaster,Electronics
-818,MALLINCKRODT LLC,PUBLIX PHARMACY #2055 (NC),2,2,0.0,64.0,Production Reroute,Port Congestion,Electronics
-818,MALLINCKRODT LLC,PUBLIX PHARMACY #2055 (NC),2,3,0.0,24.0,Alternative Supplier,Cyber Attack,Consumer Goods
+818,MALLINCKRODT LLC,PUBLIX PHARMACY #2055 (NC),3,1,0.0001,97.0,Alternative Supplier,Labor Strike,Consumer Goods
+818,MALLINCKRODT LLC,PUBLIX PHARMACY #2055 (NC),3,2,0.0001,38.0,Alternative Supplier,Cyber Attack,Consumer Goods
+818,MALLINCKRODT LLC,PUBLIX PHARMACY #2055 (NC),3,3,0.0002,36.0,Alternative Supplier,Natural Disaster,Pharmaceuticals
 819,WATSON LABORATORIES INC,MEDICO PHARMACY #8978 (MI),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 819,WATSON LABORATORIES INC,MEDICO PHARMACY #8978 (MI),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 819,WATSON LABORATORIES INC,MEDICO PHARMACY #8978 (MI),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -2507,9 +2507,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 835,ENDO PHARMACEUTICALS INC,HARRIS TEETER PHARMACY #5008 (MA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 835,ENDO PHARMACEUTICALS INC,HARRIS TEETER PHARMACY #5008 (MA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 835,ENDO PHARMACEUTICALS INC,HARRIS TEETER PHARMACY #5008 (MA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-836,CADISTA PHARMACEUTICALS INC,HEALTH MART PHARMACY #5593 (KY),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-836,CADISTA PHARMACEUTICALS INC,HEALTH MART PHARMACY #5593 (KY),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-836,CADISTA PHARMACEUTICALS INC,HEALTH MART PHARMACY #5593 (KY),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+836,CADISTA PHARMACEUTICALS INC,HEALTH MART PHARMACY #5593 (KY),4,1,0.1972,88.0,Alternative Supplier,Natural Disaster,Automotive
+836,CADISTA PHARMACEUTICALS INC,HEALTH MART PHARMACY #5593 (KY),4,2,0.3113,140.0,Alternative Supplier,Natural Disaster,Electronics
+836,CADISTA PHARMACEUTICALS INC,HEALTH MART PHARMACY #5593 (KY),4,3,0.3641,114.0,Alternative Supplier,Natural Disaster,Pharmaceuticals
 837,PAR PHARMACEUTICAL INC,GOOD NEIGHBOR PHARMACY #4375 (OH),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 837,PAR PHARMACEUTICAL INC,GOOD NEIGHBOR PHARMACY #4375 (OH),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 837,PAR PHARMACEUTICAL INC,GOOD NEIGHBOR PHARMACY #4375 (OH),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -2522,9 +2522,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 840,PAR PHARMACEUTICAL INC,GOOD NEIGHBOR PHARMACY #6272 (NC),2,1,0.0,26.0,Alternative Supplier,Natural Disaster,Consumer Goods
 840,PAR PHARMACEUTICAL INC,GOOD NEIGHBOR PHARMACY #6272 (NC),2,2,0.0,38.0,Alternative Supplier,Geopolitical,Consumer Goods
 840,PAR PHARMACEUTICAL INC,GOOD NEIGHBOR PHARMACY #6272 (NC),2,3,0.0,30.0,Alternative Supplier,Factory Incident,Consumer Goods
-841,MALLINCKRODT LLC,MAIN STREET PHARMACY #2855 (IN),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
-841,MALLINCKRODT LLC,MAIN STREET PHARMACY #2855 (IN),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
-841,MALLINCKRODT LLC,MAIN STREET PHARMACY #2855 (IN),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
+841,MALLINCKRODT LLC,MAIN STREET PHARMACY #2855 (IN),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
+841,MALLINCKRODT LLC,MAIN STREET PHARMACY #2855 (IN),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
+841,MALLINCKRODT LLC,MAIN STREET PHARMACY #2855 (IN),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
 842,SANDOZ INC,SUNRISE PHARMACY #7243 (WV),2,1,0.0,37.0,Alternative Supplier,Port Congestion,Electronics
 842,SANDOZ INC,SUNRISE PHARMACY #7243 (WV),2,2,0.0,71.0,Production Reroute,Port Congestion,Automotive
 842,SANDOZ INC,SUNRISE PHARMACY #7243 (WV),2,3,0.0,13.0,Alternative Supplier,Factory Incident,Electronics
@@ -2534,9 +2534,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 844,MYLAN PHARMACEUTICALS INC,HOMETOWN PHARMACY #4342 (MI),1,1,0.0,21.0,Customer Delay,Geopolitical,Consumer Goods
 844,MYLAN PHARMACEUTICALS INC,HOMETOWN PHARMACY #4342 (MI),1,2,0.0,53.0,Customer Delay,Port Congestion,Consumer Goods
 844,MYLAN PHARMACEUTICALS INC,HOMETOWN PHARMACY #4342 (MI),1,3,0.0,73.0,Customer Delay,Geopolitical,Electronics
-845,MYLAN PHARMACEUTICALS INC,RITE AID #4103 (MS),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-845,MYLAN PHARMACEUTICALS INC,RITE AID #4103 (MS),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-845,MYLAN PHARMACEUTICALS INC,RITE AID #4103 (MS),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+845,MYLAN PHARMACEUTICALS INC,RITE AID #4103 (MS),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+845,MYLAN PHARMACEUTICALS INC,RITE AID #4103 (MS),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+845,MYLAN PHARMACEUTICALS INC,RITE AID #4103 (MS),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 846,JANSSEN PHARMACEUTICALS INC,PUBLIX PHARMACY #6736 (TN),1,1,0.0,17.0,Alternative Supplier,Port Congestion,Automotive
 846,JANSSEN PHARMACEUTICALS INC,PUBLIX PHARMACY #6736 (TN),1,2,0.0,30.0,Customer Delay,Geopolitical,Pharmaceuticals
 846,JANSSEN PHARMACEUTICALS INC,PUBLIX PHARMACY #6736 (TN),1,3,0.0,10.0,Customer Delay,Port Congestion,Electronics
@@ -2549,9 +2549,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 849,HIKMA PHARMACEUTICALS,MAIN STREET PHARMACY #2855 (IN),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
 849,HIKMA PHARMACEUTICALS,MAIN STREET PHARMACY #2855 (IN),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
 849,HIKMA PHARMACEUTICALS,MAIN STREET PHARMACY #2855 (IN),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
-850,SUN PHARMA GLOBAL INC,KROGER PHARMACY #6683 (OH),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-850,SUN PHARMA GLOBAL INC,KROGER PHARMACY #6683 (OH),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-850,SUN PHARMA GLOBAL INC,KROGER PHARMACY #6683 (OH),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+850,SUN PHARMA GLOBAL INC,KROGER PHARMACY #6683 (OH),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+850,SUN PHARMA GLOBAL INC,KROGER PHARMACY #6683 (OH),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+850,SUN PHARMA GLOBAL INC,KROGER PHARMACY #6683 (OH),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 851,IMPAX LABORATORIES INC,QUALITY CARE PHARMACY #2449 (MD),2,1,0.0,92.0,Combined Strategy,Geopolitical,Aerospace
 851,IMPAX LABORATORIES INC,QUALITY CARE PHARMACY #2449 (MD),2,2,0.0,94.0,Alternative Supplier,Labor Strike,Consumer Goods
 851,IMPAX LABORATORIES INC,QUALITY CARE PHARMACY #2449 (MD),2,3,0.0,89.0,Production Reroute,Port Congestion,Automotive
@@ -2621,9 +2621,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 873,SANDOZ INC,HOMETOWN PHARMACY #2774 (SC),1,1,0.0,34.0,Customer Delay,Natural Disaster,Electronics
 873,SANDOZ INC,HOMETOWN PHARMACY #2774 (SC),1,2,0.0,43.0,Customer Delay,Port Congestion,Automotive
 873,SANDOZ INC,HOMETOWN PHARMACY #2774 (SC),1,3,0.0,13.0,Alternative Supplier,Labor Strike,Automotive
-874,ACTAVIS PHARMA INC,WALGREENS #3575 (OH),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-874,ACTAVIS PHARMA INC,WALGREENS #3575 (OH),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-874,ACTAVIS PHARMA INC,WALGREENS #3575 (OH),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+874,ACTAVIS PHARMA INC,WALGREENS #3575 (OH),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+874,ACTAVIS PHARMA INC,WALGREENS #3575 (OH),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+874,ACTAVIS PHARMA INC,WALGREENS #3575 (OH),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 875,MYLAN PHARMACEUTICALS INC,HOMETOWN PHARMACY #6387 (NC),2,1,0.0,58.0,Alternative Supplier,Cyber Attack,Electronics
 875,MYLAN PHARMACEUTICALS INC,HOMETOWN PHARMACY #6387 (NC),2,2,0.0,47.0,Alternative Supplier,Natural Disaster,Pharmaceuticals
 875,MYLAN PHARMACEUTICALS INC,HOMETOWN PHARMACY #6387 (NC),2,3,0.0,27.0,Production Reroute,Natural Disaster,Automotive
@@ -2666,12 +2666,12 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 888,PAR PHARMACEUTICAL INC,RITE AID #1901 (TN),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
 888,PAR PHARMACEUTICAL INC,RITE AID #1901 (TN),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
 888,PAR PHARMACEUTICAL INC,RITE AID #1901 (TN),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
-889,LANNETT COMPANY INC,CVS PHARMACY #5523 (NC),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-889,LANNETT COMPANY INC,CVS PHARMACY #5523 (NC),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-889,LANNETT COMPANY INC,CVS PHARMACY #5523 (NC),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
-890,QUALITEST PHARMACEUTICALS,MEDICO PHARMACY #1621 (MI),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
-890,QUALITEST PHARMACEUTICALS,MEDICO PHARMACY #1621 (MI),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
-890,QUALITEST PHARMACEUTICALS,MEDICO PHARMACY #1621 (MI),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
+889,LANNETT COMPANY INC,CVS PHARMACY #5523 (NC),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+889,LANNETT COMPANY INC,CVS PHARMACY #5523 (NC),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+889,LANNETT COMPANY INC,CVS PHARMACY #5523 (NC),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
+890,QUALITEST PHARMACEUTICALS,MEDICO PHARMACY #1621 (MI),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
+890,QUALITEST PHARMACEUTICALS,MEDICO PHARMACY #1621 (MI),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
+890,QUALITEST PHARMACEUTICALS,MEDICO PHARMACY #1621 (MI),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
 891,SUN PHARMA GLOBAL INC,MAIN STREET PHARMACY #4612 (MS),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 891,SUN PHARMA GLOBAL INC,MAIN STREET PHARMACY #4612 (MS),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 891,SUN PHARMA GLOBAL INC,MAIN STREET PHARMACY #4612 (MS),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -2741,9 +2741,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 913,PAR PHARMACEUTICAL INC,CVS PHARMACY #9746 (TN),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 913,PAR PHARMACEUTICAL INC,CVS PHARMACY #9746 (TN),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 913,PAR PHARMACEUTICAL INC,CVS PHARMACY #9746 (TN),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-914,MALLINCKRODT LLC,WINN-DIXIE PHARMACY #8378 (VA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
-914,MALLINCKRODT LLC,WINN-DIXIE PHARMACY #8378 (VA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
-914,MALLINCKRODT LLC,WINN-DIXIE PHARMACY #8378 (VA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
+914,MALLINCKRODT LLC,WINN-DIXIE PHARMACY #8378 (VA),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
+914,MALLINCKRODT LLC,WINN-DIXIE PHARMACY #8378 (VA),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
+914,MALLINCKRODT LLC,WINN-DIXIE PHARMACY #8378 (VA),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
 915,IMPAX LABORATORIES INC,CVS PHARMACY #4109 (IN),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
 915,IMPAX LABORATORIES INC,CVS PHARMACY #4109 (IN),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
 915,IMPAX LABORATORIES INC,CVS PHARMACY #4109 (IN),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
@@ -2777,9 +2777,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 925,JANSSEN PHARMACEUTICALS INC,WALGREENS #4309 (VT),2,1,0.0,85.0,Customer Delay,Labor Strike,Automotive
 925,JANSSEN PHARMACEUTICALS INC,WALGREENS #4309 (VT),2,2,0.0,98.0,Customer Delay,Cyber Attack,Electronics
 925,JANSSEN PHARMACEUTICALS INC,WALGREENS #4309 (VT),2,3,0.0,92.0,Production Reroute,Port Congestion,Electronics
-926,JANSSEN PHARMACEUTICALS INC,WALGREENS #9697 (VA),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-926,JANSSEN PHARMACEUTICALS INC,WALGREENS #9697 (VA),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-926,JANSSEN PHARMACEUTICALS INC,WALGREENS #9697 (VA),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+926,JANSSEN PHARMACEUTICALS INC,WALGREENS #9697 (VA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+926,JANSSEN PHARMACEUTICALS INC,WALGREENS #9697 (VA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+926,JANSSEN PHARMACEUTICALS INC,WALGREENS #9697 (VA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 927,WATSON LABORATORIES INC,KROGER PHARMACY #3095 (DE),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 927,WATSON LABORATORIES INC,KROGER PHARMACY #3095 (DE),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 927,WATSON LABORATORIES INC,KROGER PHARMACY #3095 (DE),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -2927,9 +2927,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 975,IMPAX LABORATORIES INC,CORNER DRUG STORE #5731 (IN),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
 975,IMPAX LABORATORIES INC,CORNER DRUG STORE #5731 (IN),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
 975,IMPAX LABORATORIES INC,CORNER DRUG STORE #5731 (IN),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
-976,HIKMA PHARMACEUTICALS,QUALITY CARE PHARMACY #6507 (NC),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-976,HIKMA PHARMACEUTICALS,QUALITY CARE PHARMACY #6507 (NC),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-976,HIKMA PHARMACEUTICALS,QUALITY CARE PHARMACY #6507 (NC),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+976,HIKMA PHARMACEUTICALS,QUALITY CARE PHARMACY #6507 (NC),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+976,HIKMA PHARMACEUTICALS,QUALITY CARE PHARMACY #6507 (NC),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+976,HIKMA PHARMACEUTICALS,QUALITY CARE PHARMACY #6507 (NC),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 977,SUN PHARMA GLOBAL INC,HARRIS TEETER PHARMACY #6283 (CA),1,1,0.0,8.0,Alternative Supplier,Natural Disaster,Pharmaceuticals
 977,SUN PHARMA GLOBAL INC,HARRIS TEETER PHARMACY #6283 (CA),1,2,0.0,22.0,Alternative Supplier,Port Congestion,Automotive
 977,SUN PHARMA GLOBAL INC,HARRIS TEETER PHARMACY #6283 (CA),1,3,0.0,45.0,Alternative Supplier,Port Congestion,Pharmaceuticals
@@ -2966,9 +2966,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 988,QUALITEST PHARMACEUTICALS,RITE AID #9223 (WV),2,1,0.0,72.0,Inventory Buffer,Geopolitical,Automotive
 988,QUALITEST PHARMACEUTICALS,RITE AID #9223 (WV),2,2,0.0,39.0,Inventory Buffer,Port Congestion,Automotive
 988,QUALITEST PHARMACEUTICALS,RITE AID #9223 (WV),2,3,0.0,61.0,Alternative Supplier,Port Congestion,Pharmaceuticals
-989,HIKMA PHARMACEUTICALS,SUNRISE PHARMACY #5581 (TN),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-989,HIKMA PHARMACEUTICALS,SUNRISE PHARMACY #5581 (TN),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-989,HIKMA PHARMACEUTICALS,SUNRISE PHARMACY #5581 (TN),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+989,HIKMA PHARMACEUTICALS,SUNRISE PHARMACY #5581 (TN),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+989,HIKMA PHARMACEUTICALS,SUNRISE PHARMACY #5581 (TN),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+989,HIKMA PHARMACEUTICALS,SUNRISE PHARMACY #5581 (TN),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 990,CADISTA PHARMACEUTICALS INC,WALMART PHARMACY #6240 (NC),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
 990,CADISTA PHARMACEUTICALS INC,WALMART PHARMACY #6240 (NC),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
 990,CADISTA PHARMACEUTICALS INC,WALMART PHARMACY #6240 (NC),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
@@ -3143,9 +3143,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1047,ABBOTT LABORATORIES,HARRIS TEETER PHARMACY #6758 (NC),3,1,0.0,16.0,Alternative Supplier,Natural Disaster,Electronics
 1047,ABBOTT LABORATORIES,HARRIS TEETER PHARMACY #6758 (NC),3,2,0.0,25.0,Alternative Supplier,Factory Incident,Pharmaceuticals
 1047,ABBOTT LABORATORIES,HARRIS TEETER PHARMACY #6758 (NC),3,3,0.0,27.0,Alternative Supplier,Geopolitical,Automotive
-1048,MYLAN PHARMACEUTICALS INC,MAIN STREET PHARMACY #2094 (KY),2,1,0.0,41.0,Alternative Supplier,Port Congestion,Pharmaceuticals
-1048,MYLAN PHARMACEUTICALS INC,MAIN STREET PHARMACY #2094 (KY),2,2,0.0,49.0,Alternative Supplier,Port Congestion,Consumer Goods
-1048,MYLAN PHARMACEUTICALS INC,MAIN STREET PHARMACY #2094 (KY),2,3,0.0,44.0,Alternative Supplier,Cyber Attack,Aerospace
+1048,MYLAN PHARMACEUTICALS INC,MAIN STREET PHARMACY #2094 (KY),1,1,0.0,30.0,Alternative Supplier,Port Congestion,Automotive
+1048,MYLAN PHARMACEUTICALS INC,MAIN STREET PHARMACY #2094 (KY),1,2,0.0,24.0,Alternative Supplier,Geopolitical,Electronics
+1048,MYLAN PHARMACEUTICALS INC,MAIN STREET PHARMACY #2094 (KY),1,3,0.0,34.0,Inventory Buffer,Port Congestion,Electronics
 1049,IMPAX LABORATORIES INC,SUNRISE PHARMACY #9718 (HI),1,1,0.0,12.0,Production Reroute,Port Congestion,Automotive
 1049,IMPAX LABORATORIES INC,SUNRISE PHARMACY #9718 (HI),1,2,0.0,40.0,Alternative Supplier,Factory Incident,Aerospace
 1049,IMPAX LABORATORIES INC,SUNRISE PHARMACY #9718 (HI),1,3,0.0,21.0,Alternative Supplier,Port Congestion,Aerospace
@@ -3209,9 +3209,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1069,IMPAX LABORATORIES INC,HARRIS TEETER PHARMACY #4455 (CT),1,1,0.0,38.0,Customer Delay,Port Congestion,Aerospace
 1069,IMPAX LABORATORIES INC,HARRIS TEETER PHARMACY #4455 (CT),1,2,0.0,15.0,Alternative Supplier,Port Congestion,Consumer Goods
 1069,IMPAX LABORATORIES INC,HARRIS TEETER PHARMACY #4455 (CT),1,3,0.0,15.0,Alternative Supplier,Port Congestion,Pharmaceuticals
-1070,SANDOZ INC,PEOPLES PHARMACY #2132 (MO),2,1,0.0,39.0,Alternative Supplier,Labor Strike,Electronics
-1070,SANDOZ INC,PEOPLES PHARMACY #2132 (MO),2,2,0.0,55.0,Customer Delay,Port Congestion,Pharmaceuticals
-1070,SANDOZ INC,PEOPLES PHARMACY #2132 (MO),2,3,0.0,17.0,Production Reroute,Labor Strike,Consumer Goods
+1070,SANDOZ INC,PEOPLES PHARMACY #2132 (MO),1,1,0.0,21.0,Alternative Supplier,Labor Strike,Electronics
+1070,SANDOZ INC,PEOPLES PHARMACY #2132 (MO),1,2,0.0,18.0,Alternative Supplier,Port Congestion,Consumer Goods
+1070,SANDOZ INC,PEOPLES PHARMACY #2132 (MO),1,3,0.0,22.0,Alternative Supplier,Geopolitical,Pharmaceuticals
 1071,HIKMA PHARMACEUTICALS,QUALITY CARE PHARMACY #5311 (NM),1,1,0.0,29.0,Alternative Supplier,Factory Incident,Automotive
 1071,HIKMA PHARMACEUTICALS,QUALITY CARE PHARMACY #5311 (NM),1,2,0.0,9.0,Alternative Supplier,Labor Strike,Consumer Goods
 1071,HIKMA PHARMACEUTICALS,QUALITY CARE PHARMACY #5311 (NM),1,3,0.0,27.0,Production Reroute,Factory Incident,Pharmaceuticals
@@ -3224,9 +3224,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1074,MYLAN PHARMACEUTICALS INC,SUNRISE PHARMACY #8999 (NC),4,1,0.0,133.0,Alternative Supplier,Port Congestion,Consumer Goods
 1074,MYLAN PHARMACEUTICALS INC,SUNRISE PHARMACY #8999 (NC),4,2,0.0,152.0,Production Reroute,Port Congestion,Automotive
 1074,MYLAN PHARMACEUTICALS INC,SUNRISE PHARMACY #8999 (NC),4,3,0.0,75.0,Alternative Supplier,Cyber Attack,Pharmaceuticals
-1075,PURDUE PHARMA LP,HOMETOWN PHARMACY #3804 (KY),3,1,0.001,170.0,Alternative Supplier,Cyber Attack,Pharmaceuticals
-1075,PURDUE PHARMA LP,HOMETOWN PHARMACY #3804 (KY),3,2,0.0018,115.0,Alternative Supplier,Port Congestion,Automotive
-1075,PURDUE PHARMA LP,HOMETOWN PHARMACY #3804 (KY),3,3,0.0043,69.0,Combined Strategy,Geopolitical,Electronics
+1075,PURDUE PHARMA LP,HOMETOWN PHARMACY #3804 (KY),4,1,0.0,169.0,Alternative Supplier,Labor Strike,Automotive
+1075,PURDUE PHARMA LP,HOMETOWN PHARMACY #3804 (KY),4,2,0.0,34.0,Alternative Supplier,Cyber Attack,Electronics
+1075,PURDUE PHARMA LP,HOMETOWN PHARMACY #3804 (KY),4,3,0.0,73.0,Combined Strategy,Factory Incident,Pharmaceuticals
 1076,JANSSEN PHARMACEUTICALS INC,WALMART PHARMACY #1339 (NC),3,1,0.0,113.0,Alternative Supplier,Geopolitical,Aerospace
 1076,JANSSEN PHARMACEUTICALS INC,WALMART PHARMACY #1339 (NC),3,2,0.0,50.0,Alternative Supplier,Port Congestion,Automotive
 1076,JANSSEN PHARMACEUTICALS INC,WALMART PHARMACY #1339 (NC),3,3,0.0,159.0,Customer Delay,Port Congestion,Automotive
@@ -3311,9 +3311,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1103,ENDO PHARMACEUTICALS INC,WINN-DIXIE PHARMACY #2880 (MI),1,1,0.0015,29.0,Alternative Supplier,Natural Disaster,Electronics
 1103,ENDO PHARMACEUTICALS INC,WINN-DIXIE PHARMACY #2880 (MI),1,2,0.0015,36.0,Alternative Supplier,Port Congestion,Pharmaceuticals
 1103,ENDO PHARMACEUTICALS INC,WINN-DIXIE PHARMACY #2880 (MI),1,3,0.0015,22.0,Production Reroute,Port Congestion,Consumer Goods
-1104,LANNETT COMPANY INC,WINN-DIXIE PHARMACY #6825 (IA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
-1104,LANNETT COMPANY INC,WINN-DIXIE PHARMACY #6825 (IA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
-1104,LANNETT COMPANY INC,WINN-DIXIE PHARMACY #6825 (IA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
+1104,LANNETT COMPANY INC,WINN-DIXIE PHARMACY #6825 (IA),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
+1104,LANNETT COMPANY INC,WINN-DIXIE PHARMACY #6825 (IA),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
+1104,LANNETT COMPANY INC,WINN-DIXIE PHARMACY #6825 (IA),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
 1105,ABBOTT LABORATORIES,VILLAGE PHARMACY #6515 (MT),1,1,0.0,30.0,Alternative Supplier,Port Congestion,Automotive
 1105,ABBOTT LABORATORIES,VILLAGE PHARMACY #6515 (MT),1,2,0.0,24.0,Alternative Supplier,Geopolitical,Electronics
 1105,ABBOTT LABORATORIES,VILLAGE PHARMACY #6515 (MT),1,3,0.0,34.0,Inventory Buffer,Port Congestion,Electronics
@@ -3332,9 +3332,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1110,JANSSEN PHARMACEUTICALS INC,WALMART PHARMACY #6240 (NC),2,1,0.0,37.0,Alternative Supplier,Port Congestion,Consumer Goods
 1110,JANSSEN PHARMACEUTICALS INC,WALMART PHARMACY #6240 (NC),2,2,0.0,43.0,Alternative Supplier,Labor Strike,Electronics
 1110,JANSSEN PHARMACEUTICALS INC,WALMART PHARMACY #6240 (NC),2,3,0.0,103.0,Alternative Supplier,Labor Strike,Automotive
-1111,ENDO PHARMACEUTICALS INC,PUBLIX PHARMACY #2769 (WV),3,1,0.0018,29.0,Inventory Buffer,Port Congestion,Consumer Goods
-1111,ENDO PHARMACEUTICALS INC,PUBLIX PHARMACY #2769 (WV),3,2,0.0043,86.0,Alternative Supplier,Port Congestion,Automotive
-1111,ENDO PHARMACEUTICALS INC,PUBLIX PHARMACY #2769 (WV),3,3,0.0077,105.0,Alternative Supplier,Geopolitical,Aerospace
+1111,ENDO PHARMACEUTICALS INC,PUBLIX PHARMACY #2769 (WV),2,1,0.107,23.0,Alternative Supplier,Cyber Attack,Electronics
+1111,ENDO PHARMACEUTICALS INC,PUBLIX PHARMACY #2769 (WV),2,2,0.3015,51.0,Alternative Supplier,Port Congestion,Aerospace
+1111,ENDO PHARMACEUTICALS INC,PUBLIX PHARMACY #2769 (WV),2,3,0.4172,33.0,Inventory Buffer,Port Congestion,Consumer Goods
 1112,JANSSEN PHARMACEUTICALS INC,WALMART PHARMACY #6240 (NC),2,1,0.0,92.0,Combined Strategy,Geopolitical,Electronics
 1112,JANSSEN PHARMACEUTICALS INC,WALMART PHARMACY #6240 (NC),2,2,0.0,33.0,Alternative Supplier,Cyber Attack,Automotive
 1112,JANSSEN PHARMACEUTICALS INC,WALMART PHARMACY #6240 (NC),2,3,0.0,61.0,Alternative Supplier,Geopolitical,Electronics
@@ -3350,9 +3350,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1116,AMNEAL PHARMACEUTICALS LLC,WALMART PHARMACY #5415 (IA),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
 1116,AMNEAL PHARMACEUTICALS LLC,WALMART PHARMACY #5415 (IA),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
 1116,AMNEAL PHARMACEUTICALS LLC,WALMART PHARMACY #5415 (IA),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
-1117,IMPAX LABORATORIES INC,FAMILY CARE PHARMACY #7468 (NE),1,1,0.0,22.0,Alternative Supplier,Port Congestion,Electronics
-1117,IMPAX LABORATORIES INC,FAMILY CARE PHARMACY #7468 (NE),1,2,0.0,21.0,Alternative Supplier,Labor Strike,Pharmaceuticals
-1117,IMPAX LABORATORIES INC,FAMILY CARE PHARMACY #7468 (NE),1,3,0.0,46.0,Alternative Supplier,Port Congestion,Electronics
+1117,IMPAX LABORATORIES INC,FAMILY CARE PHARMACY #7468 (NE),2,1,0.0,30.0,Combined Strategy,Labor Strike,Automotive
+1117,IMPAX LABORATORIES INC,FAMILY CARE PHARMACY #7468 (NE),2,2,0.0,17.0,Alternative Supplier,Natural Disaster,Electronics
+1117,IMPAX LABORATORIES INC,FAMILY CARE PHARMACY #7468 (NE),2,3,0.0,61.0,Alternative Supplier,Labor Strike,Electronics
 1118,WATSON LABORATORIES INC,PEOPLES PHARMACY #6526 (WA),2,1,0.0,22.0,Alternative Supplier,Port Congestion,Pharmaceuticals
 1118,WATSON LABORATORIES INC,PEOPLES PHARMACY #6526 (WA),2,2,0.0,62.0,Alternative Supplier,Natural Disaster,Electronics
 1118,WATSON LABORATORIES INC,PEOPLES PHARMACY #6526 (WA),2,3,0.0,46.0,Alternative Supplier,Port Congestion,Automotive
@@ -3530,15 +3530,15 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1176,RHODES TECHNOLOGIES,HOMETOWN PHARMACY #8152 (WV),3,1,0.0,59.0,Alternative Supplier,Port Congestion,Electronics
 1176,RHODES TECHNOLOGIES,HOMETOWN PHARMACY #8152 (WV),3,2,0.0,64.0,Production Reroute,Natural Disaster,Automotive
 1176,RHODES TECHNOLOGIES,HOMETOWN PHARMACY #8152 (WV),3,3,0.0,91.0,Inventory Buffer,Natural Disaster,Electronics
-1177,JANSSEN PHARMACEUTICALS INC,WALMART PHARMACY #6240 (NC),2,1,0.0,61.0,Alternative Supplier,Geopolitical,Electronics
-1177,JANSSEN PHARMACEUTICALS INC,WALMART PHARMACY #6240 (NC),2,2,0.0,18.0,Production Reroute,Port Congestion,Automotive
-1177,JANSSEN PHARMACEUTICALS INC,WALMART PHARMACY #6240 (NC),2,3,0.0,91.0,Customer Delay,Natural Disaster,Automotive
+1177,JANSSEN PHARMACEUTICALS INC,WALMART PHARMACY #6240 (NC),3,1,0.0,42.0,Customer Delay,Labor Strike,Aerospace
+1177,JANSSEN PHARMACEUTICALS INC,WALMART PHARMACY #6240 (NC),3,2,0.0,68.0,Alternative Supplier,Geopolitical,Pharmaceuticals
+1177,JANSSEN PHARMACEUTICALS INC,WALMART PHARMACY #6240 (NC),3,3,0.0,153.0,Alternative Supplier,Cyber Attack,Consumer Goods
 1178,PURDUE PHARMA LP,HOMETOWN PHARMACY #3804 (KY),2,1,0.0,24.0,Alternative Supplier,Port Congestion,Electronics
 1178,PURDUE PHARMA LP,HOMETOWN PHARMACY #3804 (KY),2,2,0.0,74.0,Combined Strategy,Geopolitical,Automotive
 1178,PURDUE PHARMA LP,HOMETOWN PHARMACY #3804 (KY),2,3,0.0,32.0,Alternative Supplier,Cyber Attack,Electronics
-1179,SUN PHARMA GLOBAL INC,PEOPLES PHARMACY #2912 (WV),2,1,0.0,27.0,Alternative Supplier,Labor Strike,Electronics
-1179,SUN PHARMA GLOBAL INC,PEOPLES PHARMACY #2912 (WV),2,2,0.0,41.0,Alternative Supplier,Natural Disaster,Automotive
-1179,SUN PHARMA GLOBAL INC,PEOPLES PHARMACY #2912 (WV),2,3,0.0,85.0,Alternative Supplier,Factory Incident,Consumer Goods
+1179,SUN PHARMA GLOBAL INC,PEOPLES PHARMACY #2912 (WV),3,1,0.0,103.0,Production Reroute,Port Congestion,Aerospace
+1179,SUN PHARMA GLOBAL INC,PEOPLES PHARMACY #2912 (WV),3,2,0.0,186.0,Alternative Supplier,Port Congestion,Pharmaceuticals
+1179,SUN PHARMA GLOBAL INC,PEOPLES PHARMACY #2912 (WV),3,3,0.0,81.0,Alternative Supplier,Cyber Attack,Consumer Goods
 1180,SUN PHARMA GLOBAL INC,HARRIS TEETER PHARMACY #6352 (IA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 1180,SUN PHARMA GLOBAL INC,HARRIS TEETER PHARMACY #6352 (IA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 1180,SUN PHARMA GLOBAL INC,HARRIS TEETER PHARMACY #6352 (IA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -3731,18 +3731,18 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1243,RHODES TECHNOLOGIES,PEOPLES PHARMACY #9674 (KS),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 1243,RHODES TECHNOLOGIES,PEOPLES PHARMACY #9674 (KS),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 1243,RHODES TECHNOLOGIES,PEOPLES PHARMACY #9674 (KS),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-1244,VINTAGE PHARMACEUTICALS LLC,HEALTH MART PHARMACY #6716 (UT),1,1,0.0,18.0,Alternative Supplier,Labor Strike,Electronics
-1244,VINTAGE PHARMACEUTICALS LLC,HEALTH MART PHARMACY #6716 (UT),1,2,0.0,23.0,Alternative Supplier,Labor Strike,Automotive
-1244,VINTAGE PHARMACEUTICALS LLC,HEALTH MART PHARMACY #6716 (UT),1,3,0.0,47.0,Inventory Buffer,Port Congestion,Automotive
+1244,VINTAGE PHARMACEUTICALS LLC,HEALTH MART PHARMACY #6716 (UT),2,1,0.0,45.0,Alternative Supplier,Natural Disaster,Automotive
+1244,VINTAGE PHARMACEUTICALS LLC,HEALTH MART PHARMACY #6716 (UT),2,2,0.0,82.0,Alternative Supplier,Port Congestion,Automotive
+1244,VINTAGE PHARMACEUTICALS LLC,HEALTH MART PHARMACY #6716 (UT),2,3,0.0,103.0,Alternative Supplier,Labor Strike,Pharmaceuticals
 1245,ABBOTT LABORATORIES,PEOPLES PHARMACY #7683 (AK),2,1,0.0,45.0,Customer Delay,Geopolitical,Electronics
 1245,ABBOTT LABORATORIES,PEOPLES PHARMACY #7683 (AK),2,2,0.0,39.0,Alternative Supplier,Labor Strike,Consumer Goods
 1245,ABBOTT LABORATORIES,PEOPLES PHARMACY #7683 (AK),2,3,0.0001,23.0,Combined Strategy,Factory Incident,Automotive
 1246,VINTAGE PHARMACEUTICALS LLC,MEDICO PHARMACY #9907 (CT),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 1246,VINTAGE PHARMACEUTICALS LLC,MEDICO PHARMACY #9907 (CT),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 1246,VINTAGE PHARMACEUTICALS LLC,MEDICO PHARMACY #9907 (CT),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-1247,QUALITEST PHARMACEUTICALS,PUBLIX PHARMACY #1973 (TN),2,1,0.0003,85.0,Alternative Supplier,Port Congestion,Electronics
-1247,QUALITEST PHARMACEUTICALS,PUBLIX PHARMACY #1973 (TN),2,2,0.0008,43.0,Alternative Supplier,Port Congestion,Aerospace
-1247,QUALITEST PHARMACEUTICALS,PUBLIX PHARMACY #1973 (TN),2,3,0.0008,55.0,Alternative Supplier,Geopolitical,Consumer Goods
+1247,QUALITEST PHARMACEUTICALS,PUBLIX PHARMACY #1973 (TN),3,1,0.0,113.0,Customer Delay,Factory Incident,Pharmaceuticals
+1247,QUALITEST PHARMACEUTICALS,PUBLIX PHARMACY #1973 (TN),3,2,0.0,61.0,Alternative Supplier,Port Congestion,Consumer Goods
+1247,QUALITEST PHARMACEUTICALS,PUBLIX PHARMACY #1973 (TN),3,3,0.0,145.0,Inventory Buffer,Geopolitical,Automotive
 1248,TEVA PHARMACEUTICALS USA INC,PEOPLES PHARMACY #2660 (NC),2,1,0.0,75.0,Inventory Buffer,Factory Incident,Consumer Goods
 1248,TEVA PHARMACEUTICALS USA INC,PEOPLES PHARMACY #2660 (NC),2,2,0.0,51.0,Alternative Supplier,Geopolitical,Consumer Goods
 1248,TEVA PHARMACEUTICALS USA INC,PEOPLES PHARMACY #2660 (NC),2,3,0.0,70.0,Alternative Supplier,Factory Incident,Electronics
@@ -3764,9 +3764,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1254,HIKMA PHARMACEUTICALS,HEALTH MART PHARMACY #5260 (PA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 1254,HIKMA PHARMACEUTICALS,HEALTH MART PHARMACY #5260 (PA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 1254,HIKMA PHARMACEUTICALS,HEALTH MART PHARMACY #5260 (PA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-1255,PAR PHARMACEUTICAL INC,CVS PHARMACY #6803 (KY),2,1,1.2036,74.0,Alternative Supplier,Cyber Attack,Automotive
-1255,PAR PHARMACEUTICAL INC,CVS PHARMACY #6803 (KY),2,2,1.2312,55.0,Alternative Supplier,Natural Disaster,Electronics
-1255,PAR PHARMACEUTICAL INC,CVS PHARMACY #6803 (KY),2,3,1.3517,28.0,Alternative Supplier,Natural Disaster,Electronics
+1255,PAR PHARMACEUTICAL INC,CVS PHARMACY #6803 (KY),3,1,0.3522,74.0,Alternative Supplier,Cyber Attack,Automotive
+1255,PAR PHARMACEUTICAL INC,CVS PHARMACY #6803 (KY),3,2,0.3798,55.0,Alternative Supplier,Natural Disaster,Electronics
+1255,PAR PHARMACEUTICAL INC,CVS PHARMACY #6803 (KY),3,3,0.5003,28.0,Alternative Supplier,Natural Disaster,Electronics
 1256,CADISTA PHARMACEUTICALS INC,SUNRISE PHARMACY #7243 (WV),3,1,0.0,23.0,Alternative Supplier,Labor Strike,Aerospace
 1256,CADISTA PHARMACEUTICALS INC,SUNRISE PHARMACY #7243 (WV),3,2,0.0,77.0,Production Reroute,Natural Disaster,Consumer Goods
 1256,CADISTA PHARMACEUTICALS INC,SUNRISE PHARMACY #7243 (WV),3,3,0.0,56.0,Production Reroute,Port Congestion,Electronics
@@ -3860,9 +3860,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1286,HIKMA PHARMACEUTICALS,PUBLIX PHARMACY #1949 (PA),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
 1286,HIKMA PHARMACEUTICALS,PUBLIX PHARMACY #1949 (PA),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
 1286,HIKMA PHARMACEUTICALS,PUBLIX PHARMACY #1949 (PA),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
-1287,ABBOTT LABORATORIES,PUBLIX PHARMACY #2055 (NC),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-1287,ABBOTT LABORATORIES,PUBLIX PHARMACY #2055 (NC),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-1287,ABBOTT LABORATORIES,PUBLIX PHARMACY #2055 (NC),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+1287,ABBOTT LABORATORIES,PUBLIX PHARMACY #2055 (NC),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+1287,ABBOTT LABORATORIES,PUBLIX PHARMACY #2055 (NC),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+1287,ABBOTT LABORATORIES,PUBLIX PHARMACY #2055 (NC),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 1288,JANSSEN PHARMACEUTICALS INC,HARRIS TEETER PHARMACY #2529 (HI),2,1,0.1128,23.0,Alternative Supplier,Cyber Attack,Electronics
 1288,JANSSEN PHARMACEUTICALS INC,HARRIS TEETER PHARMACY #2529 (HI),2,2,0.3113,51.0,Alternative Supplier,Port Congestion,Aerospace
 1288,JANSSEN PHARMACEUTICALS INC,HARRIS TEETER PHARMACY #2529 (HI),2,3,0.4287,33.0,Inventory Buffer,Port Congestion,Consumer Goods
@@ -4100,9 +4100,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1366,RHODES TECHNOLOGIES,HOMETOWN PHARMACY #8152 (WV),2,1,0.0,48.0,Alternative Supplier,Labor Strike,Electronics
 1366,RHODES TECHNOLOGIES,HOMETOWN PHARMACY #8152 (WV),2,2,0.0,36.0,Alternative Supplier,Factory Incident,Automotive
 1366,RHODES TECHNOLOGIES,HOMETOWN PHARMACY #8152 (WV),2,3,0.0,12.0,Inventory Buffer,Cyber Attack,Consumer Goods
-1367,LANNETT COMPANY INC,SUNRISE PHARMACY #4061 (MN),1,1,0.0,42.0,Production Reroute,Port Congestion,Electronics
-1367,LANNETT COMPANY INC,SUNRISE PHARMACY #4061 (MN),1,2,0.0,11.0,Alternative Supplier,Port Congestion,Consumer Goods
-1367,LANNETT COMPANY INC,SUNRISE PHARMACY #4061 (MN),1,3,0.0,21.0,Alternative Supplier,Port Congestion,Electronics
+1367,LANNETT COMPANY INC,SUNRISE PHARMACY #4061 (MN),2,1,0.0,52.0,Alternative Supplier,Natural Disaster,Automotive
+1367,LANNETT COMPANY INC,SUNRISE PHARMACY #4061 (MN),2,2,0.0,24.0,Alternative Supplier,Port Congestion,Electronics
+1367,LANNETT COMPANY INC,SUNRISE PHARMACY #4061 (MN),2,3,0.0,102.0,Inventory Buffer,Geopolitical,Automotive
 1368,ACTAVIS PHARMA INC,PUBLIX PHARMACY #1697 (MI),2,1,0.0,60.0,Alternative Supplier,Factory Incident,Pharmaceuticals
 1368,ACTAVIS PHARMA INC,PUBLIX PHARMACY #1697 (MI),2,2,0.0,87.0,Alternative Supplier,Cyber Attack,Consumer Goods
 1368,ACTAVIS PHARMA INC,PUBLIX PHARMACY #1697 (MI),2,3,0.0,65.0,Alternative Supplier,Factory Incident,Electronics
@@ -4127,9 +4127,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1375,VINTAGE PHARMACEUTICALS LLC,QUALITY CARE PHARMACY #5369 (AK),2,1,1.3192,74.0,Alternative Supplier,Cyber Attack,Automotive
 1375,VINTAGE PHARMACEUTICALS LLC,QUALITY CARE PHARMACY #5369 (AK),2,2,1.3509,55.0,Alternative Supplier,Natural Disaster,Electronics
 1375,VINTAGE PHARMACEUTICALS LLC,QUALITY CARE PHARMACY #5369 (AK),2,3,1.4879,28.0,Alternative Supplier,Natural Disaster,Electronics
-1376,CADISTA PHARMACEUTICALS INC,COMMUNITY PHARMACY #4144 (GA),3,1,0.2292,74.0,Alternative Supplier,Cyber Attack,Automotive
-1376,CADISTA PHARMACEUTICALS INC,COMMUNITY PHARMACY #4144 (GA),3,2,0.2515,55.0,Alternative Supplier,Natural Disaster,Electronics
-1376,CADISTA PHARMACEUTICALS INC,COMMUNITY PHARMACY #4144 (GA),3,3,0.3511,28.0,Alternative Supplier,Natural Disaster,Electronics
+1376,CADISTA PHARMACEUTICALS INC,COMMUNITY PHARMACY #4144 (GA),2,1,1.0806,74.0,Alternative Supplier,Cyber Attack,Automotive
+1376,CADISTA PHARMACEUTICALS INC,COMMUNITY PHARMACY #4144 (GA),2,2,1.1029,55.0,Alternative Supplier,Natural Disaster,Electronics
+1376,CADISTA PHARMACEUTICALS INC,COMMUNITY PHARMACY #4144 (GA),2,3,1.1466,23.0,Alternative Supplier,Cyber Attack,Electronics
 1377,MYLAN PHARMACEUTICALS INC,CVS PHARMACY #5523 (NC),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 1377,MYLAN PHARMACEUTICALS INC,CVS PHARMACY #5523 (NC),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 1377,MYLAN PHARMACEUTICALS INC,CVS PHARMACY #5523 (NC),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -4175,9 +4175,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1391,LANNETT COMPANY INC,QUALITY CARE PHARMACY #3338 (WV),2,1,0.0,39.0,Alternative Supplier,Labor Strike,Electronics
 1391,LANNETT COMPANY INC,QUALITY CARE PHARMACY #3338 (WV),2,2,0.0,55.0,Customer Delay,Port Congestion,Pharmaceuticals
 1391,LANNETT COMPANY INC,QUALITY CARE PHARMACY #3338 (WV),2,3,0.0,17.0,Production Reroute,Labor Strike,Consumer Goods
-1392,LANNETT COMPANY INC,QUALITY CARE PHARMACY #8443 (AZ),1,1,0.0,52.0,Production Reroute,Port Congestion,Consumer Goods
-1392,LANNETT COMPANY INC,QUALITY CARE PHARMACY #8443 (AZ),1,2,0.0,14.0,Alternative Supplier,Port Congestion,Electronics
-1392,LANNETT COMPANY INC,QUALITY CARE PHARMACY #8443 (AZ),1,3,0.0,31.0,Alternative Supplier,Geopolitical,Consumer Goods
+1392,LANNETT COMPANY INC,QUALITY CARE PHARMACY #8443 (AZ),2,1,0.0,55.0,Alternative Supplier,Labor Strike,Pharmaceuticals
+1392,LANNETT COMPANY INC,QUALITY CARE PHARMACY #8443 (AZ),2,2,0.0,36.0,Combined Strategy,Labor Strike,Electronics
+1392,LANNETT COMPANY INC,QUALITY CARE PHARMACY #8443 (AZ),2,3,0.0,34.0,Combined Strategy,Natural Disaster,Aerospace
 1393,PAR PHARMACEUTICAL INC,WALMART PHARMACY #9392 (NM),1,1,0.0021,29.0,Alternative Supplier,Natural Disaster,Electronics
 1393,PAR PHARMACEUTICAL INC,WALMART PHARMACY #9392 (NM),1,2,0.0021,36.0,Alternative Supplier,Port Congestion,Pharmaceuticals
 1393,PAR PHARMACEUTICAL INC,WALMART PHARMACY #9392 (NM),1,3,0.0021,22.0,Production Reroute,Port Congestion,Consumer Goods
@@ -4193,9 +4193,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1397,TEVA PHARMACEUTICALS USA INC,HARRIS TEETER PHARMACY #6063 (NC),2,1,0.0,43.0,Alternative Supplier,Geopolitical,Automotive
 1397,TEVA PHARMACEUTICALS USA INC,HARRIS TEETER PHARMACY #6063 (NC),2,2,0.0,14.0,Alternative Supplier,Port Congestion,Automotive
 1397,TEVA PHARMACEUTICALS USA INC,HARRIS TEETER PHARMACY #6063 (NC),2,3,0.0,65.0,Alternative Supplier,Geopolitical,Aerospace
-1398,RHODES TECHNOLOGIES,HOMETOWN PHARMACY #5569 (NC),1,1,0.0,16.0,Production Reroute,Labor Strike,Aerospace
-1398,RHODES TECHNOLOGIES,HOMETOWN PHARMACY #5569 (NC),1,2,0.0,29.0,Alternative Supplier,Port Congestion,Electronics
-1398,RHODES TECHNOLOGIES,HOMETOWN PHARMACY #5569 (NC),1,3,0.0,9.0,Alternative Supplier,Port Congestion,Automotive
+1398,RHODES TECHNOLOGIES,HOMETOWN PHARMACY #5569 (NC),2,1,0.0,27.0,Alternative Supplier,Cyber Attack,Consumer Goods
+1398,RHODES TECHNOLOGIES,HOMETOWN PHARMACY #5569 (NC),2,2,0.0,55.0,Alternative Supplier,Natural Disaster,Electronics
+1398,RHODES TECHNOLOGIES,HOMETOWN PHARMACY #5569 (NC),2,3,0.0,62.0,Alternative Supplier,Geopolitical,Consumer Goods
 1399,JANSSEN PHARMACEUTICALS INC,QUALITY CARE PHARMACY #8199 (WV),2,1,0.0,33.0,Alternative Supplier,Cyber Attack,Pharmaceuticals
 1399,JANSSEN PHARMACEUTICALS INC,QUALITY CARE PHARMACY #8199 (WV),2,2,0.0,26.0,Alternative Supplier,Factory Incident,Automotive
 1399,JANSSEN PHARMACEUTICALS INC,QUALITY CARE PHARMACY #8199 (WV),2,3,0.0,21.0,Alternative Supplier,Geopolitical,Automotive
@@ -4214,9 +4214,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1404,AMNEAL PHARMACEUTICALS LLC,KROGER PHARMACY #1887 (KY),2,1,0.0,52.0,Customer Delay,Port Congestion,Pharmaceuticals
 1404,AMNEAL PHARMACEUTICALS LLC,KROGER PHARMACY #1887 (KY),2,2,0.0,32.0,Alternative Supplier,Factory Incident,Pharmaceuticals
 1404,AMNEAL PHARMACEUTICALS LLC,KROGER PHARMACY #1887 (KY),2,3,0.0,109.0,Alternative Supplier,Natural Disaster,Consumer Goods
-1405,WATSON LABORATORIES INC,SUNRISE PHARMACY #1845 (LA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
-1405,WATSON LABORATORIES INC,SUNRISE PHARMACY #1845 (LA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
-1405,WATSON LABORATORIES INC,SUNRISE PHARMACY #1845 (LA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
+1405,WATSON LABORATORIES INC,SUNRISE PHARMACY #1845 (LA),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
+1405,WATSON LABORATORIES INC,SUNRISE PHARMACY #1845 (LA),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
+1405,WATSON LABORATORIES INC,SUNRISE PHARMACY #1845 (LA),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
 1406,TEVA PHARMACEUTICALS USA INC,PEOPLES PHARMACY #4637 (MA),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 1406,TEVA PHARMACEUTICALS USA INC,PEOPLES PHARMACY #4637 (MA),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 1406,TEVA PHARMACEUTICALS USA INC,PEOPLES PHARMACY #4637 (MA),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -4307,9 +4307,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1435,HIKMA PHARMACEUTICALS,WALMART PHARMACY #6240 (NC),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 1435,HIKMA PHARMACEUTICALS,WALMART PHARMACY #6240 (NC),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 1435,HIKMA PHARMACEUTICALS,WALMART PHARMACY #6240 (NC),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-1436,WATSON LABORATORIES INC,PUBLIX PHARMACY #2769 (WV),3,1,0.0,33.0,Alternative Supplier,Port Congestion,Electronics
-1436,WATSON LABORATORIES INC,PUBLIX PHARMACY #2769 (WV),3,2,0.0,41.0,Alternative Supplier,Labor Strike,Automotive
-1436,WATSON LABORATORIES INC,PUBLIX PHARMACY #2769 (WV),3,3,0.0,81.0,Customer Delay,Cyber Attack,Automotive
+1436,WATSON LABORATORIES INC,PUBLIX PHARMACY #2769 (WV),4,1,0.0,95.0,Alternative Supplier,Cyber Attack,Electronics
+1436,WATSON LABORATORIES INC,PUBLIX PHARMACY #2769 (WV),4,2,0.0,42.0,Combined Strategy,Natural Disaster,Electronics
+1436,WATSON LABORATORIES INC,PUBLIX PHARMACY #2769 (WV),4,3,0.0,243.0,Alternative Supplier,Natural Disaster,Consumer Goods
 1437,JANSSEN PHARMACEUTICALS INC,MEDICO PHARMACY #6767 (NC),2,1,0.0,113.0,Alternative Supplier,Factory Incident,Aerospace
 1437,JANSSEN PHARMACEUTICALS INC,MEDICO PHARMACY #6767 (NC),2,2,0.0,73.0,Alternative Supplier,Geopolitical,Consumer Goods
 1437,JANSSEN PHARMACEUTICALS INC,MEDICO PHARMACY #6767 (NC),2,3,0.0,94.0,Customer Delay,Labor Strike,Automotive
@@ -4385,9 +4385,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1461,WATSON LABORATORIES INC,HOMETOWN PHARMACY #5099 (MD),1,1,0.0,9.0,Alternative Supplier,Labor Strike,Consumer Goods
 1461,WATSON LABORATORIES INC,HOMETOWN PHARMACY #5099 (MD),1,2,0.0,26.0,Alternative Supplier,Labor Strike,Electronics
 1461,WATSON LABORATORIES INC,HOMETOWN PHARMACY #5099 (MD),1,3,0.0,44.0,Alternative Supplier,Factory Incident,Consumer Goods
-1462,QUALITEST PHARMACEUTICALS,QUALITY CARE PHARMACY #3071 (KY),3,1,0.0981,74.0,Alternative Supplier,Cyber Attack,Automotive
-1462,QUALITEST PHARMACEUTICALS,QUALITY CARE PHARMACY #3071 (KY),3,2,0.1129,55.0,Alternative Supplier,Natural Disaster,Electronics
-1462,QUALITEST PHARMACEUTICALS,QUALITY CARE PHARMACY #3071 (KY),3,3,0.1824,28.0,Alternative Supplier,Natural Disaster,Electronics
+1462,QUALITEST PHARMACEUTICALS,QUALITY CARE PHARMACY #3071 (KY),2,1,0.8195,23.0,Alternative Supplier,Cyber Attack,Electronics
+1462,QUALITEST PHARMACEUTICALS,QUALITY CARE PHARMACY #3071 (KY),2,2,0.9495,74.0,Alternative Supplier,Cyber Attack,Automotive
+1462,QUALITEST PHARMACEUTICALS,QUALITY CARE PHARMACY #3071 (KY),2,3,0.9643,55.0,Alternative Supplier,Natural Disaster,Electronics
 1463,HIKMA PHARMACEUTICALS,WALGREENS #1607 (WY),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 1463,HIKMA PHARMACEUTICALS,WALGREENS #1607 (WY),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 1463,HIKMA PHARMACEUTICALS,WALGREENS #1607 (WY),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -4514,12 +4514,12 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1504,MYLAN PHARMACEUTICALS INC,HOMETOWN PHARMACY #6387 (NC),2,1,0.0,66.0,Customer Delay,Factory Incident,Consumer Goods
 1504,MYLAN PHARMACEUTICALS INC,HOMETOWN PHARMACY #6387 (NC),2,2,0.0,62.0,Alternative Supplier,Port Congestion,Aerospace
 1504,MYLAN PHARMACEUTICALS INC,HOMETOWN PHARMACY #6387 (NC),2,3,0.0,30.0,Inventory Buffer,Port Congestion,Consumer Goods
-1505,MYLAN PHARMACEUTICALS INC,HOMETOWN PHARMACY #8919 (KY),3,1,0.0,131.0,Customer Delay,Geopolitical,Consumer Goods
-1505,MYLAN PHARMACEUTICALS INC,HOMETOWN PHARMACY #8919 (KY),3,2,0.0,71.0,Inventory Buffer,Labor Strike,Consumer Goods
-1505,MYLAN PHARMACEUTICALS INC,HOMETOWN PHARMACY #8919 (KY),3,3,0.0,211.0,Alternative Supplier,Geopolitical,Electronics
-1506,MALLINCKRODT LLC,COMMUNITY PHARMACY #9436 (WV),2,1,0.0,55.0,Alternative Supplier,Labor Strike,Pharmaceuticals
-1506,MALLINCKRODT LLC,COMMUNITY PHARMACY #9436 (WV),2,2,0.0,36.0,Combined Strategy,Labor Strike,Electronics
-1506,MALLINCKRODT LLC,COMMUNITY PHARMACY #9436 (WV),2,3,0.0,34.0,Combined Strategy,Natural Disaster,Aerospace
+1505,MYLAN PHARMACEUTICALS INC,HOMETOWN PHARMACY #8919 (KY),2,1,0.0,82.0,Alternative Supplier,Cyber Attack,Automotive
+1505,MYLAN PHARMACEUTICALS INC,HOMETOWN PHARMACY #8919 (KY),2,2,0.0,80.0,Alternative Supplier,Port Congestion,Pharmaceuticals
+1505,MYLAN PHARMACEUTICALS INC,HOMETOWN PHARMACY #8919 (KY),2,3,0.0,55.0,Alternative Supplier,Geopolitical,Automotive
+1506,MALLINCKRODT LLC,COMMUNITY PHARMACY #9436 (WV),1,1,0.0,52.0,Production Reroute,Port Congestion,Consumer Goods
+1506,MALLINCKRODT LLC,COMMUNITY PHARMACY #9436 (WV),1,2,0.0,14.0,Alternative Supplier,Port Congestion,Electronics
+1506,MALLINCKRODT LLC,COMMUNITY PHARMACY #9436 (WV),1,3,0.0,31.0,Alternative Supplier,Geopolitical,Consumer Goods
 1507,AMNEAL PHARMACEUTICALS LLC,HARRIS TEETER PHARMACY #6758 (NC),3,1,0.0,131.0,Alternative Supplier,Cyber Attack,Consumer Goods
 1507,AMNEAL PHARMACEUTICALS LLC,HARRIS TEETER PHARMACY #6758 (NC),3,2,0.0,121.0,Alternative Supplier,Labor Strike,Pharmaceuticals
 1507,AMNEAL PHARMACEUTICALS LLC,HARRIS TEETER PHARMACY #6758 (NC),3,3,0.0,73.0,Alternative Supplier,Port Congestion,Automotive
@@ -4535,9 +4535,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1511,IMPAX LABORATORIES INC,HARRIS TEETER PHARMACY #6063 (NC),3,1,0.0,31.0,Production Reroute,Factory Incident,Electronics
 1511,IMPAX LABORATORIES INC,HARRIS TEETER PHARMACY #6063 (NC),3,2,0.0,40.0,Alternative Supplier,Cyber Attack,Automotive
 1511,IMPAX LABORATORIES INC,HARRIS TEETER PHARMACY #6063 (NC),3,3,0.0,35.0,Combined Strategy,Geopolitical,Electronics
-1512,RHODES TECHNOLOGIES,HARRIS TEETER PHARMACY #7261 (KY),2,1,0.0014,64.0,Alternative Supplier,Cyber Attack,Automotive
-1512,RHODES TECHNOLOGIES,HARRIS TEETER PHARMACY #7261 (KY),2,2,0.0014,64.0,Alternative Supplier,Labor Strike,Electronics
-1512,RHODES TECHNOLOGIES,HARRIS TEETER PHARMACY #7261 (KY),2,3,0.0014,17.0,Alternative Supplier,Geopolitical,Pharmaceuticals
+1512,RHODES TECHNOLOGIES,HARRIS TEETER PHARMACY #7261 (KY),1,1,0.0014,29.0,Alternative Supplier,Natural Disaster,Electronics
+1512,RHODES TECHNOLOGIES,HARRIS TEETER PHARMACY #7261 (KY),1,2,0.0014,36.0,Alternative Supplier,Port Congestion,Pharmaceuticals
+1512,RHODES TECHNOLOGIES,HARRIS TEETER PHARMACY #7261 (KY),1,3,0.0014,22.0,Production Reroute,Port Congestion,Consumer Goods
 1513,MALLINCKRODT LLC,COMMUNITY PHARMACY #9436 (WV),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 1513,MALLINCKRODT LLC,COMMUNITY PHARMACY #9436 (WV),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 1513,MALLINCKRODT LLC,COMMUNITY PHARMACY #9436 (WV),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
@@ -4574,9 +4574,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1524,TEVA PHARMACEUTICALS USA INC,GOOD NEIGHBOR PHARMACY #6661 (MS),2,1,0.0396,23.0,Alternative Supplier,Cyber Attack,Electronics
 1524,TEVA PHARMACEUTICALS USA INC,GOOD NEIGHBOR PHARMACY #6661 (MS),2,2,0.1773,51.0,Alternative Supplier,Port Congestion,Aerospace
 1524,TEVA PHARMACEUTICALS USA INC,GOOD NEIGHBOR PHARMACY #6661 (MS),2,3,0.2682,33.0,Inventory Buffer,Port Congestion,Consumer Goods
-1525,JANSSEN PHARMACEUTICALS INC,PUBLIX PHARMACY #2055 (NC),1,1,0.0,16.0,Alternative Supplier,Factory Incident,Consumer Goods
-1525,JANSSEN PHARMACEUTICALS INC,PUBLIX PHARMACY #2055 (NC),1,2,0.0,47.0,Customer Delay,Geopolitical,Automotive
-1525,JANSSEN PHARMACEUTICALS INC,PUBLIX PHARMACY #2055 (NC),1,3,0.0,45.0,Alternative Supplier,Labor Strike,Electronics
+1525,JANSSEN PHARMACEUTICALS INC,PUBLIX PHARMACY #2055 (NC),2,1,0.0,40.0,Alternative Supplier,Geopolitical,Automotive
+1525,JANSSEN PHARMACEUTICALS INC,PUBLIX PHARMACY #2055 (NC),2,2,0.0,26.0,Alternative Supplier,Labor Strike,Consumer Goods
+1525,JANSSEN PHARMACEUTICALS INC,PUBLIX PHARMACY #2055 (NC),2,3,0.0,33.0,Alternative Supplier,Geopolitical,Automotive
 1526,PURDUE PHARMA LP,COMMUNITY PHARMACY #9436 (WV),3,1,0.0,31.0,Inventory Buffer,Geopolitical,Aerospace
 1526,PURDUE PHARMA LP,COMMUNITY PHARMACY #9436 (WV),3,2,0.0,183.0,Production Reroute,Geopolitical,Electronics
 1526,PURDUE PHARMA LP,COMMUNITY PHARMACY #9436 (WV),3,3,0.0,159.0,Customer Delay,Port Congestion,Pharmaceuticals
@@ -4586,9 +4586,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1528,MYLAN PHARMACEUTICALS INC,RITE AID #5178 (ND),2,1,0.037,23.0,Alternative Supplier,Cyber Attack,Electronics
 1528,MYLAN PHARMACEUTICALS INC,RITE AID #5178 (ND),2,2,0.1718,51.0,Alternative Supplier,Port Congestion,Aerospace
 1528,MYLAN PHARMACEUTICALS INC,RITE AID #5178 (ND),2,3,0.2614,33.0,Inventory Buffer,Port Congestion,Consumer Goods
-1529,AMNEAL PHARMACEUTICALS LLC,HOMETOWN PHARMACY #8919 (KY),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-1529,AMNEAL PHARMACEUTICALS LLC,HOMETOWN PHARMACY #8919 (KY),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-1529,AMNEAL PHARMACEUTICALS LLC,HOMETOWN PHARMACY #8919 (KY),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+1529,AMNEAL PHARMACEUTICALS LLC,HOMETOWN PHARMACY #8919 (KY),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+1529,AMNEAL PHARMACEUTICALS LLC,HOMETOWN PHARMACY #8919 (KY),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+1529,AMNEAL PHARMACEUTICALS LLC,HOMETOWN PHARMACY #8919 (KY),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 1530,WATSON LABORATORIES INC,QUALITY CARE PHARMACY #4645 (VA),1,1,0.0,14.0,Production Reroute,Factory Incident,Electronics
 1530,WATSON LABORATORIES INC,QUALITY CARE PHARMACY #4645 (VA),1,2,0.0,21.0,Alternative Supplier,Port Congestion,Consumer Goods
 1530,WATSON LABORATORIES INC,QUALITY CARE PHARMACY #4645 (VA),1,3,0.0,97.0,Production Reroute,Port Congestion,Pharmaceuticals
@@ -4685,9 +4685,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1561,PAR PHARMACEUTICAL INC,GOOD NEIGHBOR PHARMACY #6272 (NC),2,1,0.0,45.0,Alternative Supplier,Factory Incident,Automotive
 1561,PAR PHARMACEUTICAL INC,GOOD NEIGHBOR PHARMACY #6272 (NC),2,2,0.0,28.0,Alternative Supplier,Natural Disaster,Electronics
 1561,PAR PHARMACEUTICAL INC,GOOD NEIGHBOR PHARMACY #6272 (NC),2,3,0.0,54.0,Alternative Supplier,Port Congestion,Electronics
-1562,VINTAGE PHARMACEUTICALS LLC,FAMILY CARE PHARMACY #6977 (NC),1,1,0.0,20.0,Alternative Supplier,Cyber Attack,Consumer Goods
-1562,VINTAGE PHARMACEUTICALS LLC,FAMILY CARE PHARMACY #6977 (NC),1,2,0.0,9.0,Alternative Supplier,Factory Incident,Electronics
-1562,VINTAGE PHARMACEUTICALS LLC,FAMILY CARE PHARMACY #6977 (NC),1,3,0.0,8.0,Combined Strategy,Labor Strike,Consumer Goods
+1562,VINTAGE PHARMACEUTICALS LLC,FAMILY CARE PHARMACY #6977 (NC),3,1,0.0,95.0,Alternative Supplier,Natural Disaster,Electronics
+1562,VINTAGE PHARMACEUTICALS LLC,FAMILY CARE PHARMACY #6977 (NC),3,2,0.0,66.0,Alternative Supplier,Geopolitical,Consumer Goods
+1562,VINTAGE PHARMACEUTICALS LLC,FAMILY CARE PHARMACY #6977 (NC),3,3,0.0,133.0,Alternative Supplier,Geopolitical,Consumer Goods
 1563,TEVA PHARMACEUTICALS USA INC,GOOD NEIGHBOR PHARMACY #6129 (NC),3,1,0.0,99.0,Alternative Supplier,Labor Strike,Automotive
 1563,TEVA PHARMACEUTICALS USA INC,GOOD NEIGHBOR PHARMACY #6129 (NC),3,2,0.0,136.0,Customer Delay,Cyber Attack,Automotive
 1563,TEVA PHARMACEUTICALS USA INC,GOOD NEIGHBOR PHARMACY #6129 (NC),3,3,0.0,24.0,Alternative Supplier,Port Congestion,Automotive
@@ -4712,9 +4712,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1570,AMNEAL PHARMACEUTICALS LLC,KROGER PHARMACY #1887 (KY),2,1,0.0,39.0,Alternative Supplier,Port Congestion,Electronics
 1570,AMNEAL PHARMACEUTICALS LLC,KROGER PHARMACY #1887 (KY),2,2,0.0,75.0,Production Reroute,Cyber Attack,Pharmaceuticals
 1570,AMNEAL PHARMACEUTICALS LLC,KROGER PHARMACY #1887 (KY),2,3,0.0,70.0,Customer Delay,Factory Incident,Automotive
-1571,SUN PHARMA GLOBAL INC,HOMETOWN PHARMACY #8469 (NC),1,1,0.0,28.0,Alternative Supplier,Factory Incident,Consumer Goods
-1571,SUN PHARMA GLOBAL INC,HOMETOWN PHARMACY #8469 (NC),1,2,0.0,53.0,Inventory Buffer,Port Congestion,Electronics
-1571,SUN PHARMA GLOBAL INC,HOMETOWN PHARMACY #8469 (NC),1,3,0.0,38.0,Customer Delay,Labor Strike,Consumer Goods
+1571,SUN PHARMA GLOBAL INC,HOMETOWN PHARMACY #8469 (NC),2,1,0.0,79.0,Alternative Supplier,Geopolitical,Automotive
+1571,SUN PHARMA GLOBAL INC,HOMETOWN PHARMACY #8469 (NC),2,2,0.0,33.0,Alternative Supplier,Factory Incident,Consumer Goods
+1571,SUN PHARMA GLOBAL INC,HOMETOWN PHARMACY #8469 (NC),2,3,0.0,48.0,Alternative Supplier,Natural Disaster,Consumer Goods
 1572,JANSSEN PHARMACEUTICALS INC,MEDICO PHARMACY #6767 (NC),2,1,0.0,64.0,Alternative Supplier,Cyber Attack,Automotive
 1572,JANSSEN PHARMACEUTICALS INC,MEDICO PHARMACY #6767 (NC),2,2,0.0,64.0,Alternative Supplier,Labor Strike,Electronics
 1572,JANSSEN PHARMACEUTICALS INC,MEDICO PHARMACY #6767 (NC),2,3,0.0,17.0,Alternative Supplier,Geopolitical,Pharmaceuticals
@@ -4724,9 +4724,9 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1574,TEVA PHARMACEUTICALS USA INC,HARRIS TEETER PHARMACY #6063 (NC),3,1,0.0,160.0,Alternative Supplier,Natural Disaster,Electronics
 1574,TEVA PHARMACEUTICALS USA INC,HARRIS TEETER PHARMACY #6063 (NC),3,2,0.0,89.0,Alternative Supplier,Port Congestion,Consumer Goods
 1574,TEVA PHARMACEUTICALS USA INC,HARRIS TEETER PHARMACY #6063 (NC),3,3,0.0,16.0,Alternative Supplier,Port Congestion,Consumer Goods
-1575,SUN PHARMA GLOBAL INC,HOMETOWN PHARMACY #8469 (NC),1,1,0.0,45.0,Alternative Supplier,Labor Strike,Consumer Goods
-1575,SUN PHARMA GLOBAL INC,HOMETOWN PHARMACY #8469 (NC),1,2,0.0,18.0,Inventory Buffer,Port Congestion,Pharmaceuticals
-1575,SUN PHARMA GLOBAL INC,HOMETOWN PHARMACY #8469 (NC),1,3,0.0,20.0,Alternative Supplier,Port Congestion,Electronics
+1575,SUN PHARMA GLOBAL INC,HOMETOWN PHARMACY #8469 (NC),2,1,0.0,42.0,Production Reroute,Port Congestion,Aerospace
+1575,SUN PHARMA GLOBAL INC,HOMETOWN PHARMACY #8469 (NC),2,2,0.0,32.0,Alternative Supplier,Labor Strike,Electronics
+1575,SUN PHARMA GLOBAL INC,HOMETOWN PHARMACY #8469 (NC),2,3,0.0,32.0,Alternative Supplier,Geopolitical,Electronics
 1576,MYLAN PHARMACEUTICALS INC,SUNRISE PHARMACY #8999 (NC),1,1,0.0,34.0,Customer Delay,Natural Disaster,Electronics
 1576,MYLAN PHARMACEUTICALS INC,SUNRISE PHARMACY #8999 (NC),1,2,0.0,43.0,Customer Delay,Port Congestion,Automotive
 1576,MYLAN PHARMACEUTICALS INC,SUNRISE PHARMACY #8999 (NC),1,3,0.0,13.0,Alternative Supplier,Labor Strike,Automotive
@@ -4877,12 +4877,12 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1625,MYLAN PHARMACEUTICALS INC,HARRIS TEETER PHARMACY #7528 (IN),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 1625,MYLAN PHARMACEUTICALS INC,HARRIS TEETER PHARMACY #7528 (IN),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 1625,MYLAN PHARMACEUTICALS INC,HARRIS TEETER PHARMACY #7528 (IN),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-1626,TEVA PHARMACEUTICALS USA INC,CORNER DRUG STORE #4406 (KY),2,1,0.0,22.0,Alternative Supplier,Geopolitical,Electronics
-1626,TEVA PHARMACEUTICALS USA INC,CORNER DRUG STORE #4406 (KY),2,2,0.0,23.0,Alternative Supplier,Geopolitical,Pharmaceuticals
-1626,TEVA PHARMACEUTICALS USA INC,CORNER DRUG STORE #4406 (KY),2,3,0.0,54.0,Production Reroute,Factory Incident,Consumer Goods
-1627,ACTAVIS PHARMA INC,QUALITY CARE PHARMACY #3338 (WV),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
-1627,ACTAVIS PHARMA INC,QUALITY CARE PHARMACY #3338 (WV),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
-1627,ACTAVIS PHARMA INC,QUALITY CARE PHARMACY #3338 (WV),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
+1626,TEVA PHARMACEUTICALS USA INC,CORNER DRUG STORE #4406 (KY),3,1,0.0,101.0,Customer Delay,Labor Strike,Automotive
+1626,TEVA PHARMACEUTICALS USA INC,CORNER DRUG STORE #4406 (KY),3,2,0.0,113.0,Alternative Supplier,Natural Disaster,Aerospace
+1626,TEVA PHARMACEUTICALS USA INC,CORNER DRUG STORE #4406 (KY),3,3,0.0,71.0,Alternative Supplier,Geopolitical,Electronics
+1627,ACTAVIS PHARMA INC,QUALITY CARE PHARMACY #3338 (WV),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
+1627,ACTAVIS PHARMA INC,QUALITY CARE PHARMACY #3338 (WV),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
+1627,ACTAVIS PHARMA INC,QUALITY CARE PHARMACY #3338 (WV),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
 1628,PURDUE PHARMA LP,PUBLIX PHARMACY #6736 (TN),2,1,0.0,64.0,Alternative Supplier,Natural Disaster,Pharmaceuticals
 1628,PURDUE PHARMA LP,PUBLIX PHARMACY #6736 (TN),2,2,0.0,63.0,Production Reroute,Labor Strike,Consumer Goods
 1628,PURDUE PHARMA LP,PUBLIX PHARMACY #6736 (TN),2,3,0.0,42.0,Production Reroute,Port Congestion,Electronics
@@ -4973,18 +4973,18 @@ anomaly_idx,manufacturer,retailer,anomaly_score,match_rank,match_distance,match_
 1657,AMNEAL PHARMACEUTICALS LLC,RITE AID #9075 (AR),2,1,1.7338,74.0,Alternative Supplier,Cyber Attack,Automotive
 1657,AMNEAL PHARMACEUTICALS LLC,RITE AID #9075 (AR),2,2,1.7771,55.0,Alternative Supplier,Natural Disaster,Electronics
 1657,AMNEAL PHARMACEUTICALS LLC,RITE AID #9075 (AR),2,3,1.9606,28.0,Alternative Supplier,Natural Disaster,Electronics
-1658,QUALITEST PHARMACEUTICALS,PEOPLES PHARMACY #2912 (WV),2,1,0.0,17.0,Alternative Supplier,Factory Incident,Automotive
-1658,QUALITEST PHARMACEUTICALS,PEOPLES PHARMACY #2912 (WV),2,2,0.0,27.0,Alternative Supplier,Port Congestion,Automotive
-1658,QUALITEST PHARMACEUTICALS,PEOPLES PHARMACY #2912 (WV),2,3,0.0,54.0,Alternative Supplier,Cyber Attack,Electronics
+1658,QUALITEST PHARMACEUTICALS,PEOPLES PHARMACY #2912 (WV),3,1,0.0,30.0,Alternative Supplier,Cyber Attack,Pharmaceuticals
+1658,QUALITEST PHARMACEUTICALS,PEOPLES PHARMACY #2912 (WV),3,2,0.0,75.0,Alternative Supplier,Geopolitical,Electronics
+1658,QUALITEST PHARMACEUTICALS,PEOPLES PHARMACY #2912 (WV),3,3,0.0,54.0,Alternative Supplier,Natural Disaster,Electronics
 1659,IMPAX LABORATORIES INC,WALGREENS #8041 (NY),3,1,0.8823,74.0,Alternative Supplier,Cyber Attack,Automotive
 1659,IMPAX LABORATORIES INC,WALGREENS #8041 (NY),3,2,0.9256,55.0,Alternative Supplier,Natural Disaster,Electronics
 1659,IMPAX LABORATORIES INC,WALGREENS #8041 (NY),3,3,1.0486,88.0,Alternative Supplier,Natural Disaster,Automotive
 1660,LANNETT COMPANY INC,SUNRISE PHARMACY #5914 (NJ),1,1,0.0017,29.0,Alternative Supplier,Natural Disaster,Electronics
 1660,LANNETT COMPANY INC,SUNRISE PHARMACY #5914 (NJ),1,2,0.0017,36.0,Alternative Supplier,Port Congestion,Pharmaceuticals
 1660,LANNETT COMPANY INC,SUNRISE PHARMACY #5914 (NJ),1,3,0.0017,22.0,Production Reroute,Port Congestion,Consumer Goods
-1661,SANDOZ INC,WALGREENS #3635 (NC),1,1,0.0,17.0,Alternative Supplier,Labor Strike,Automotive
-1661,SANDOZ INC,WALGREENS #3635 (NC),1,2,0.0,19.0,Alternative Supplier,Port Congestion,Consumer Goods
-1661,SANDOZ INC,WALGREENS #3635 (NC),1,3,0.0,8.0,Production Reroute,Port Congestion,Electronics
+1661,SANDOZ INC,WALGREENS #3635 (NC),2,1,0.0,27.0,Inventory Buffer,Geopolitical,Aerospace
+1661,SANDOZ INC,WALGREENS #3635 (NC),2,2,0.0,43.0,Alternative Supplier,Cyber Attack,Electronics
+1661,SANDOZ INC,WALGREENS #3635 (NC),2,3,0.0,107.0,Alternative Supplier,Labor Strike,Aerospace
 1662,PAR PHARMACEUTICAL INC,FAMILY CARE PHARMACY #6977 (NC),3,1,0.0,74.0,Alternative Supplier,Cyber Attack,Automotive
 1662,PAR PHARMACEUTICAL INC,FAMILY CARE PHARMACY #6977 (NC),3,2,0.0003,55.0,Alternative Supplier,Natural Disaster,Electronics
 1662,PAR PHARMACEUTICAL INC,FAMILY CARE PHARMACY #6977 (NC),3,3,0.0115,28.0,Alternative Supplier,Natural Disaster,Electronics
