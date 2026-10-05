@@ -32,3 +32,27 @@ def test_compare_flags_numeric_drift_and_dataset_change():
     assert any("dataset changed" in d for d in drift)
     assert any("a.f1" in d for d in drift)
     assert any("a.name" in d for d in drift)
+
+
+def test_macro_threshold_fallback_is_explicit():
+    """The synthetic ARCOS dates (2006-2014) predate the freight indicators
+    (2017 onward), and they are deliberately NOT shifted onto that calendar:
+    pairing synthetic transactions with real stress from years later would be
+    artificial. So no row gets a per-week multiplier and every row uses the
+    logged fallback (paper Section 6.3); the per-week mechanism is exercised by
+    the streaming consumer. Guard that the coverage and the fallback lambda are
+    reported, and that uncovered rows all use that fallback."""
+    import re
+    path = rm.OUT / "anomaly_metrics.txt"
+    if not path.exists():
+        return
+    text = path.read_text(encoding="utf-8")
+    cov = re.search(r"Macro coverage share\s*:\s*([0-9.]+)", text)
+    assert cov, "anomaly_metrics.txt no longer reports the macro coverage share"
+    line = re.search(r"Macro stress\s*:(.*)", text)
+    assert line and "fallback λ=" in line.group(1), "the fallback lambda is no longer logged"
+    if float(cov.group(1)) == 0.0:
+        fallback = re.search(r"fallback λ=([0-9.]+)", line.group(1)).group(1)
+        buckets = re.findall(r"λ=([0-9.]+):", line.group(1))
+        assert buckets == [fallback], (
+            f"0% coverage but rows use λ buckets {buckets}, not only the fallback λ={fallback}")

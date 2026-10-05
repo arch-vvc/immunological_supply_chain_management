@@ -1,0 +1,11 @@
+WEIGHT SENSITIVITY (±20% per weight, renormalised, 200 draws, seed 42)
+======================================================================
+Graph risk, default top 20: Kendall tau mean 0.992 (sd 0.0083, range 0.9789 to 1.0); 200/200 draws above 0.8
+Supplier agent, default top 20 of 40: Kendall tau mean 1.0 (sd 0.0, range 1.0 to 1.0)
+Supplier agent, full pool of 40: Kendall tau mean 0.9918 (sd 0.009, range 0.9692 to 1.0)
+Crisis verdicts: all five unchanged in 116/200 draws
+  COVID-19 pandemic onset      default NOT SEEN  flips 0/200
+  Suez Canal blockage          default DETECTED  flips 0/200
+  US port congestion peak      default NOT SEEN  flips 7/200
+  Russia invades Ukraine       default NOT SEEN  flips 0/200
+  Red Sea shipping attacks     default DETECTED  flips 78/200

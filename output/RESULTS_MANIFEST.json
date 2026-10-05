@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-15T19:02:13+00:00",
-  "git_commit": "9b296b6abb13df0bc58a0dd1ec26a4d6d09e4241",
+  "generated_at": "2026-09-24T04:48:43+00:00",
+  "git_commit": "c2796a294d56a4763c3d4ecd376ba788069fcf71",
   "dataset_sha256": {
     "data/raw/arcos_sampled_50k.csv": "afe00318cef46c1c3b287209bd538f13e1e72280f97e0aff366f86e973e888cc",
     "data/raw/SCMS_Delivery_History_Dataset.csv": "918b992dd3e8d4b64d2a727b2c4ea607603d0c58f19484e73f7b78528c6a8673",
@@ -44,7 +44,8 @@
         "threshold": 0.8999999999999999
       },
       "isolation_forest_f1": 0.3403962617491354,
-      "zscore_2plus_f1": 0.1221131974090206
+      "zscore_2plus_f1": 0.1221131974090206,
+      "macro_threshold_coverage": 0.0
     },
     "recovery_predictor": {
       "mae_days": 31.23,
@@ -52,7 +53,7 @@
       "baseline_mae_days": 42.51
     },
     "lstm_stress_forecaster": {
-      "mae": 0.026,
+      "mae": 0.0169,
       "persistence_mae": 0.0169,
       "beats_persistence": false
     },
