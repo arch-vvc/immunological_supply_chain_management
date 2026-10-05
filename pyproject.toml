@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "immunological-supply-chain"
 version = "1.0.0"
 description = "Self-healing supply chains with AI digital antibodies — PES University capstone PW26_RGP_01"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 dynamic = ["dependencies"]
 
 [project.optional-dependencies]
