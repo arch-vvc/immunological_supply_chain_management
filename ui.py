@@ -35,7 +35,11 @@ html, body, [class*="css"], .stApp {{ font-family: {BODY}; color: {INK}; backgro
 .stApp table, .stApp th, .stApp td {{ color: {INK}; border-color: {RULE}; }}
 .stApp [data-baseweb="select"] > div, .stApp input, .stApp textarea {{ background: {RAISED}; color: {INK}; border-color: {RULE}; }}
 [data-testid="stAlert"] {{ background: {RAISED}; border: 0.5px solid {RULE}; }}
-.block-container {{ padding-top: 2rem; max-width: 1180px; }}
+.block-container {{ padding: 1.2rem 2.2rem 2rem; max-width: 100%; }}
+[data-testid="stAppDeployButton"], .stDeployButton, [data-testid="stToolbarActions"] {{ display: none !important; }}
+[data-testid="stHeader"] {{ height: 2.4rem; }}
+[data-testid="stToggle"], [data-testid="stCheckbox"] {{ display: flex; justify-content: flex-end; }}
+[data-testid="stToggle"] label p {{ white-space: nowrap; }}
 h1, h2, h3, h4, h5 {{ font-family: {HEAD} !important; font-weight: 500 !important; color: {INK} !important; letter-spacing: -0.01em; }}
 h1 {{ font-size: 1.9rem !important; }}
 h4 {{ margin-top: 2rem !important; padding-top: .6rem; border-top: 1px solid {INK}; font-size: 1.05rem !important; }}

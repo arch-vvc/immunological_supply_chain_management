@@ -49,6 +49,7 @@ def metric_card(label, value, sub=""):
 
 
 GRAPH_HTML = """
+<style>body{margin:0}</style>
 <div id="g" style="width:100%;height:600px"></div>
 <div id="n" style="font:12px 'IBM Plex Mono',monospace;color:#888;padding:2px 4px"></div>
 <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
@@ -92,7 +93,7 @@ function traces(){
 const layout={paper_bgcolor:T.paper,plot_bgcolor:T.paper,margin:{l:0,r:0,t:6,b:0},dragmode:'pan',uirevision:'k',
   showlegend:true,legend:{orientation:'h',y:-0.02,font:{size:11,color:T.ink}},font:{color:T.ink},
   xaxis:{visible:false,range:view.x,autorange:false},yaxis:{visible:false,range:view.y,autorange:false,scaleanchor:'x'}};
-Plotly.newPlot(gd,traces(),layout,{scrollZoom:true,displaylogo:false,modeBarButtonsToRemove:['select2d','lasso2d']});
+Plotly.newPlot(gd,traces(),layout,{responsive:true,scrollZoom:true,displaylogo:false,modeBarButtonsToRemove:['select2d','lasso2d']});
 let timer=null;
 gd.on('plotly_relayout',()=>{
   clearTimeout(timer);
@@ -219,7 +220,7 @@ def unwrap_regressor(bundle):
     return bundle, RF_FEATURES[:-1], {}   # legacy bare-model pickle, no response_type_enc
 
 # ── Header ─────────────────────────────────────────────────────────────────
-_hl, _hr = st.columns([6, 1])
+_hl, _hr = st.columns([8, 1.6])
 with _hl:
     st.title("Immunological supply chain")
     st.caption("Self healing supply chains with AI digital antibodies. PES University, PW26_RGP_01.")
@@ -614,7 +615,7 @@ with tab_graph:
         import numpy as _np
         _P = _np.array([pos[n] for n in order]); _c = _P[idx[focus]]
         _d = _np.sort(_np.hypot(*(_P - _c).T))
-        _r = float(_d[min(30, len(_d) - 1)]) * 1.05 + 1e-3
+        _r = float(_d[min(14, len(_d) - 1)]) * 1.05 + 1e-3
         _view = {"x": [float(_c[0] - _r), float(_c[0] + _r)], "y": [float(_c[1] - _r), float(_c[1] + _r)]}
 
         data = {
