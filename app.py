@@ -34,9 +34,13 @@ MODELS = os.path.join(BASE, "models")
 EXTRA  = os.path.join(BASE, "data", "supplementary")
 
 # ── Report styling (see ui.py) ─────────────────────────────────────────────
-from ui import (PAPER, INK, RULE, MUTED, RED, SLATE, MIST, inject, specimen,
-                verdict as report_verdict, readout, chart_template, mpl_style)
-inject(); chart_template(); mpl_style()
+import ui
+from ui import specimen, verdict as report_verdict, blurb, readout, chart_template, mpl_style
+ui.set_mode(st.session_state.get("dark_mode", False))
+PAPER, INK, RULE, MUTED, RED, SLATE, MIST = ui.PAPER, ui.INK, ui.RULE, ui.MUTED, ui.RED, ui.SLATE, ui.MIST
+ui.inject(); chart_template(); mpl_style()
+_plotly_chart = st.plotly_chart
+st.plotly_chart = lambda *a, **k: _plotly_chart(*a, **{"theme": None, **k})   # keep the report template
 
 
 def metric_card(label, value, sub=""):
@@ -158,8 +162,12 @@ def unwrap_regressor(bundle):
     return bundle, RF_FEATURES[:-1], {}   # legacy bare-model pickle, no response_type_enc
 
 # ── Header ─────────────────────────────────────────────────────────────────
-st.title("Immunological supply chain")
-st.caption("Self healing supply chains with AI digital antibodies. PES University, PW26_RGP_01.")
+_hl, _hr = st.columns([6, 1])
+with _hl:
+    st.title("Immunological supply chain")
+    st.caption("Self healing supply chains with AI digital antibodies. PES University, PW26_RGP_01.")
+with _hr:
+    st.toggle("Dark mode", key="dark_mode")
 
 # ── Tabs ───────────────────────────────────────────────────────────────────
 (tab_overview, tab_graph, tab_anomaly, tab_risk, tab_recovery,
@@ -186,6 +194,7 @@ with tab_ir:
         report_verdict("One adapter per dataset; each stage runs only where the data supports it")
     except Exception:
         pass
+    blurb("Check which analyses a new dataset supports, then run them.")
 
     st.markdown(
         "Every dataset is mapped by a small **adapter** into one canonical "
@@ -392,6 +401,7 @@ with tab_overview:
         report_verdict(f"Planner's vendor pick beat procurement's real choice on {_cf['wins']} of {_cf['n_comparable']} lanes (sign test p = {_cf['sign_test_p']:.0e})" if (_cf := load_json("scms_counterfactual_stats.json")) else "Case summary")
     except Exception:
         pass
+    blurb("Headline results, what drives recovery time, and next week's macro stress forecast.")
 
     G    = load_graph()
     anom = load_anomalies()
@@ -516,9 +526,10 @@ with tab_overview:
 with tab_graph:
     specimen("Specimen 02 · Network plate", "Anatomy")
     try:
-        report_verdict(f"{load_graph().number_of_nodes():,} entities and {load_graph().number_of_edges():,} routes, three tiers from manufacturer to retailer")
+        report_verdict(f"{load_graph().number_of_nodes():,} entities and {load_graph().number_of_edges():,} routes, shown one neighbourhood at a time")
     except Exception:
         pass
+    blurb("The supply network drawn as a graph: pick an entity and see who it trades with.")
 
     import networkx as nx
     G    = load_graph()
@@ -528,68 +539,77 @@ with tab_graph:
         st.warning("Run the pipeline first to generate the graph.")
     else:
         risk_lookup = dict(zip(risk["entity"], risk["risk_score"])) if not risk.empty else {}
-
         node_types = {n: d.get("type", "unknown") for n, d in G.nodes(data=True)}
-        mfrs  = [n for n, t in node_types.items() if t == "manufacturer"]
-        dists = [n for n, t in node_types.items() if t == "distributor"]
+        ranked = sorted(G.nodes(), key=lambda n: -risk_lookup.get(n, 0))
 
-        # Subgraph: all manufacturers + distributors + their top-3 connected retailers
-        sub_nodes = set(mfrs + dists)
-        for d in dists:
-            retailer_succs = sorted(
-                [n for n in G.successors(d) if node_types.get(n) == "retailer"],
-                key=lambda r: risk_lookup.get(r, 0), reverse=True
-            )[:3]
-            sub_nodes.update(retailer_succs)
+        gc1, gc2 = st.columns([3, 2])
+        with gc1:
+            focus = st.selectbox("Focus entity (top 60 by risk)", ranked[:60], index=0, key="graph_focus")
+        with gc2:
+            n_show = st.slider("Entities shown (raise to zoom out)", 15, 400, 40, step=5, key="graph_n")
 
-        SG  = G.subgraph(sub_nodes)
-        tier_x = {"manufacturer": 0.0, "distributor": 1.0, "retailer": 2.0}
-        pos = {}
-        for t, x in tier_x.items():
-            members = sorted([n for n in SG.nodes() if node_types.get(n) == t],
-                             key=lambda n: -risk_lookup.get(n, 0))
-            for i, n in enumerate(members):
-                pos[n] = (x, (i - (len(members) - 1) / 2) / max(len(members), 1))
+        @st.cache_data(show_spinner=False)
+        def _neighbourhood(_G, focus, n_show):
+            U = _G.to_undirected(as_view=True)
+            dist = {focus: 0}
+            frontier = [focus]
+            keep = [focus]
+            while frontier and len(keep) < n_show:
+                nxt = []
+                cap = max(4, n_show // 8)
+                for u in frontier:
+                    for v in sorted(U.neighbors(u), key=lambda x: -risk_lookup.get(x, 0))[:cap]:
+                        if v not in dist:
+                            dist[v] = dist[u] + 1
+                            nxt.append(v)
+                nxt.sort(key=lambda x: -risk_lookup.get(x, 0))
+                for v in nxt:
+                    if len(keep) < n_show:
+                        keep.append(v)
+                frontier = [v for v in nxt if v in set(keep)]
+            SG = _G.subgraph(keep)
+            pos = nx.spring_layout(SG.to_undirected(), seed=7, k=2.0 / max(len(keep), 1) ** 0.5, iterations=120)
+            return list(SG.edges()), pos, keep
 
+        edges, pos, keep = _neighbourhood(G, focus, n_show)
         colour_map = {"manufacturer": INK, "distributor": SLATE, "retailer": MIST}
-        top5 = set(sorted(SG.nodes(), key=lambda n: -risk_lookup.get(n, 0))[:5])
 
-        edge_x, edge_y = [], []
-        for u, v in SG.edges():
+        ex, ey, fx, fy = [], [], [], []
+        for u, v in edges:
             x0, y0 = pos[u]; x1, y1 = pos[v]
-            edge_x += [x0, x1, None]; edge_y += [y0, y1, None]
-
-        edge_trace = go.Scatter(x=edge_x, y=edge_y, mode="lines",
-                                line=dict(width=0.4, color=RULE), hoverinfo="none")
-
-        nodes = list(SG.nodes())
-        node_trace = go.Scatter(
-            x=[pos[n][0] for n in nodes], y=[pos[n][1] for n in nodes],
-            mode="markers+text",
-            marker=dict(size=[14 if node_types.get(n) == "manufacturer" else 10 if node_types.get(n) == "distributor" else 6 for n in nodes],
-                        color=[RED if n in top5 else colour_map.get(node_types.get(n), MUTED) for n in nodes],
-                        line=dict(width=0.5, color=PAPER)),
-            text=[str(n)[:18] if n in top5 else "" for n in nodes], textposition="middle right",
-            textfont=dict(family="IBM Plex Mono, monospace", size=10, color=RED),
-            hovertext=[f"{n}<br>{node_types.get(n)}<br>risk {risk_lookup.get(n, 0.0):.3f}" for n in nodes],
-            hoverinfo="text",
-        )
-
-        fig = go.Figure(
-            data=[edge_trace, node_trace],
-            layout=go.Layout(
-                title=dict(text=f"Manufacturers, distributors, retailers ({SG.number_of_nodes()} nodes, five riskiest in red)"),
-                showlegend=False, height=560,
-                xaxis=dict(showgrid=False, zeroline=False, showticklabels=False, range=[-0.2, 2.6]),
-                yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-            ),
-        )
-        st.plotly_chart(fig, use_container_width=True)
-
-        l1, l2, l3 = st.columns(3)
-        with l1: st.caption("Manufacturer, left column")
-        with l2: st.caption("Distributor, middle column")
-        with l3: st.caption("Retailer, right column")
+            if focus in (u, v):
+                fx += [x0, x1, None]; fy += [y0, y1, None]
+            else:
+                ex += [x0, x1, None]; ey += [y0, y1, None]
+        traces = [
+            go.Scatter(x=ex, y=ey, mode="lines", line=dict(width=0.6, color=MIST), hoverinfo="none", showlegend=False),
+            go.Scatter(x=fx, y=fy, mode="lines", line=dict(width=1.1, color=MUTED), hoverinfo="none", showlegend=False),
+        ]
+        labelled = {focus} | set(sorted(keep, key=lambda n: -risk_lookup.get(n, 0))[:3])
+        for t in ("manufacturer", "distributor", "retailer"):
+            ns = [n for n in keep if node_types.get(n) == t]
+            if not ns:
+                continue
+            traces.append(go.Scatter(
+                x=[pos[n][0] for n in ns], y=[pos[n][1] for n in ns],
+                mode="markers+text", name=t,
+                marker=dict(size=[26 if n == focus else 9 + 22 * risk_lookup.get(n, 0) for n in ns],
+                            color=[RED if risk_lookup.get(n, 0) > 0.7 else colour_map[t] for n in ns],
+                            line=dict(width=[2 if n == focus else 0.8 for n in ns], color=INK)),
+                text=[str(n)[:20] if n in labelled else "" for n in ns], textposition="top center",
+                textfont=dict(family="IBM Plex Mono, monospace", size=10, color=INK),
+                hovertext=[f"{n}<br>{t}<br>risk {risk_lookup.get(n, 0.0):.3f}" for n in ns], hoverinfo="text",
+            ))
+        fig = go.Figure(data=traces, layout=go.Layout(
+            showlegend=True, height=600, dragmode="pan", uirevision=f"{focus}-{n_show}",
+            legend=dict(orientation="h", y=-0.02, font=dict(size=11)),
+            xaxis=dict(visible=False), yaxis=dict(visible=False, scaleanchor="x"),
+            margin=dict(l=0, r=0, t=10, b=0),
+        ))
+        st.plotly_chart(fig, use_container_width=True,
+                        config={"scrollZoom": True, "displaylogo": False, "modeBarButtonsToRemove": ["select2d", "lasso2d"]})
+        st.caption(f"Showing {len(keep)} of {G.number_of_nodes():,} entities around {focus}. "
+                   "Node size follows risk and red marks risk above 0.70. Scroll to zoom, drag to pan.")
 
 # ══════════════════════════════════════════════════════════════════════════
 # TAB 3, ANOMALY DETECTION
@@ -600,6 +620,7 @@ with tab_anomaly:
         report_verdict(f"Calibrated ensemble reaches F1 {_cal['held_out_f1']:.3f} against 0.122 for z scores alone, recalling {_cal['held_out_recall']:.0%} of injected faults" if (_cal := load_json("anomaly_ensemble_calibration.json")) else "Anomaly panel")
     except Exception:
         pass
+    blurb("Which transactions look abnormal, how many signals agree, and how well the detector scores on injected faults.")
 
     anom = load_anomalies()
 
@@ -652,7 +673,7 @@ with tab_anomaly:
                     coef_df = pd.DataFrame({"signal": _feat, "weight": _coef})
                     fig_c = px.bar(
                         coef_df, x="weight", y="signal", orientation="h",
-                        color="weight", color_continuous_scale="RdBu",
+                        color="weight", color_continuous_scale=[[0, RED], [0.5, MIST], [1, INK]],
                         template="report",
                         labels={"weight": "Logistic weight (per raw unit)", "signal": ""},
                     )
@@ -714,6 +735,7 @@ with tab_risk:
         report_verdict(f"GNN scores detect injected faults at AUC {_g['summary']['gnn_auc']['mean']:.2f}, ahead of the best baseline at {max(_g['summary']['volume_z_auc']['mean'], _g['summary']['degree_z_auc']['mean']):.2f}" if (_g := load_json("gnn_injection_eval.json")) and "summary" in _g else "Risk triage")
     except Exception:
         pass
+    blurb("Entities ranked by network and GNN risk, with an explainer for any single entity.")
 
     risk = load_risk()
     gnn  = load_gnn()
@@ -1048,6 +1070,7 @@ with tab_recovery:
         report_verdict("Choosing the right strategy moves predicted recovery by up to 17 days")
     except Exception:
         pass
+    blurb("Backed response plans, sized buffers and vendor shortlists, plus a calculator that ranks recovery strategies.")
 
     _reg_bundle = load_rf_regressor()
     dis_data    = load_disruption_data()
@@ -2069,6 +2092,7 @@ with tab_multi:
         report_verdict((lambda d: f"Every industry beats its baseline; {d.iloc[0]['Industry']} leads at F1 {d.iloc[0]['F1 Score']:.3f} against {d.iloc[0]['Baseline F1']:.3f}")(pd.read_csv(os.path.join(OUT, "multi_domain_f1.csv")).sort_values("F1 Score", ascending=False)))
     except Exception:
         pass
+    blurb("Risk models for five industries, each compared with a baseline.")
 
     st.caption(
         "Same XGBoost architecture trained across 5 industries, "
@@ -2115,6 +2139,7 @@ with tab_memory:
         report_verdict("Recalled disruptions predict recovery to 36.3 days error, against 42.3 days for the plain average")
     except Exception:
         pass
+    blurb("The index of 100,000 past disruptions and what the system recalls for each new anomaly.")
 
     st.caption(
         "Models memory B-cells: stores 100K historical disruption signatures as "
@@ -2439,6 +2464,7 @@ with tab_live:
         report_verdict("Detect, recall, reroute, restock: every decision shown step by step")
     except Exception:
         pass
+    blurb("Start a live simulation, watch the engine reason through each disruption, and replay documented crises.")
     st.subheader("Live stream")
     st.caption(
         "Simulates real-time IoT/sensor data arriving row by row. The simulator "

@@ -7,16 +7,34 @@ import plotly.graph_objects as go
 import plotly.io as pio
 import matplotlib.pyplot as plt
 
-PAPER, INK, RULE, MUTED, RED = "#F7F6F2", "#16181D", "#D9D6CE", "#6B6A66", "#C42B1C"
-SLATE, MIST = "#5B6B7A", "#A9B2B9"
+LIGHT = dict(PAPER="#F7F6F2", INK="#16181D", RULE="#D9D6CE", MUTED="#6B6A66", RED="#C42B1C", SLATE="#5B6B7A", MIST="#A9B2B9", RAISED="#EFEDE6")
+DARK  = dict(PAPER="#0E1012", INK="#E8E6E1", RULE="#2A2D31", MUTED="#8D8B86", RED="#FF5A4A", SLATE="#8FA3B5", MIST="#4A5560", RAISED="#171A1D")
+PAPER, INK, RULE, MUTED, RED, SLATE, MIST, RAISED = LIGHT.values()
+DARK_MODE = False
 MONO = "'IBM Plex Mono', ui-monospace, monospace"
 HEAD = "'IBM Plex Sans Condensed', 'IBM Plex Sans', sans-serif"
 BODY = "'IBM Plex Sans', system-ui, sans-serif"
 
-CSS = f"""
+
+def set_mode(dark):
+    """Switch palette. Call once per script run, before inject()."""
+    global PAPER, INK, RULE, MUTED, RED, SLATE, MIST, RAISED, DARK_MODE
+    DARK_MODE = bool(dark)
+    PAPER, INK, RULE, MUTED, RED, SLATE, MIST, RAISED = (DARK if dark else LIGHT).values()
+
+
+def css():
+    return f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500&family=IBM+Plex+Sans:wght@400;500&display=swap');
-html, body, [class*="css"], .stApp {{ font-family: {BODY}; color: {INK}; }}
+:root {{ color-scheme: {'dark' if DARK_MODE else 'light'}; }}
+html, body, [class*="css"], .stApp {{ font-family: {BODY}; color: {INK}; background: {PAPER}; }}
+[data-testid="stHeader"] {{ background: transparent; }}
+.stApp [data-testid="stMarkdownContainer"], .stApp [data-testid="stMarkdownContainer"] p, .stApp li,
+.stApp label, .stApp [data-testid="stWidgetLabel"] p, .stApp [data-testid="stAlert"] * {{ color: {INK}; }}
+.stApp table, .stApp th, .stApp td {{ color: {INK}; border-color: {RULE}; }}
+.stApp [data-baseweb="select"] > div, .stApp input, .stApp textarea {{ background: {RAISED}; color: {INK}; border-color: {RULE}; }}
+[data-testid="stAlert"] {{ background: {RAISED}; border: 0.5px solid {RULE}; }}
 .block-container {{ padding-top: 2rem; max-width: 1180px; }}
 h1, h2, h3, h4, h5 {{ font-family: {HEAD} !important; font-weight: 500 !important; color: {INK} !important; letter-spacing: -0.01em; }}
 h1 {{ font-size: 1.9rem !important; }}
@@ -24,32 +42,37 @@ h4 {{ margin-top: 2rem !important; padding-top: .6rem; border-top: 1px solid {IN
 .stCaption, [data-testid="stCaptionContainer"] {{ color: {MUTED} !important; }}
 .specimen {{ font-family: {MONO}; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase;
   color: {MUTED}; border-bottom: 1px solid {INK}; padding-bottom: .4rem; margin-bottom: .9rem; display:flex; justify-content:space-between; }}
-.verdict {{ font-family: {HEAD}; font-weight: 500; font-size: 1.55rem; line-height: 1.25; margin: .2rem 0 1.2rem; max-width: 52rem; }}
+.verdict {{ font-family: {HEAD}; font-weight: 500; font-size: 1.55rem; line-height: 1.25; margin: .2rem 0 .5rem; max-width: 52rem; color: {INK}; }}
+.blurb {{ color: {MUTED}; font-size: .92rem; margin: 0 0 1.3rem; max-width: 52rem; }}
 .readout {{ border-top: 0.5px solid {RULE}; padding: .55rem 0 .7rem; min-height: 4.6rem; }}
 .readout .label {{ font-size: .72rem; color: {MUTED}; letter-spacing: .04em; }}
-.readout .value {{ font-family: {MONO}; font-size: 1.45rem; font-weight: 500; line-height: 1.3; }}
+.readout .value {{ font-family: {MONO}; font-size: 1.45rem; font-weight: 500; line-height: 1.3; color: {INK}; }}
 .readout .value.flag {{ color: {RED}; }}
 .readout .sub {{ font-size: .72rem; color: {MUTED}; margin-top: .1rem; }}
 .stTabs [data-baseweb="tab-list"] {{ gap: 1.4rem; border-bottom: 1px solid {INK}; }}
-.stTabs [data-baseweb="tab"] {{ font-family: {HEAD}; font-size: .95rem; padding: .5rem 0; background: none; }}
+.stTabs [data-baseweb="tab"] {{ font-family: {HEAD}; font-size: .95rem; padding: .5rem 0; background: none; color: {MUTED}; }}
 .stTabs [aria-selected="true"] {{ color: {INK}; }}
 .stTabs [data-baseweb="tab-highlight"] {{ background: {RED}; height: 2px; }}
-.stButton > button {{ border-radius: 4px; border: 1px solid {INK}; font-family: {HEAD}; }}
+.stButton > button {{ border-radius: 4px; border: 1px solid {INK}; font-family: {HEAD}; background: transparent; color: {INK}; }}
 .stButton > button[kind="primary"] {{ background: {INK}; color: {PAPER}; border-color: {INK}; }}
 .stButton > button:hover {{ border-color: {RED}; color: {RED}; }}
 .stButton > button:focus-visible {{ outline: 2px solid {RED}; outline-offset: 2px; }}
 [data-testid="stExpander"] {{ border: none; border-top: 0.5px solid {RULE}; border-radius: 0; }}
-[data-testid="stDataFrame"] {{ border: 0.5px solid {RULE}; }}
+[data-testid="stDataFrame"] {{ border: 0.5px solid {RULE}; {'filter: invert(1) hue-rotate(180deg);' if DARK_MODE else ''} }}
 </style>
 """
 
 
 def inject():
-    st.markdown(CSS, unsafe_allow_html=True)
+    st.markdown(css(), unsafe_allow_html=True)
 
 
 def specimen(left, right=""):
     st.markdown(f'<div class="specimen"><span>{left}</span><span>{right}</span></div>', unsafe_allow_html=True)
+
+
+def blurb(text):
+    st.markdown(f'<div class="blurb">{text}</div>', unsafe_allow_html=True)
 
 
 def verdict(text):
