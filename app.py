@@ -220,12 +220,9 @@ def unwrap_regressor(bundle):
     return bundle, RF_FEATURES[:-1], {}   # legacy bare-model pickle, no response_type_enc
 
 # ── Header ─────────────────────────────────────────────────────────────────
-_hl, _hr = st.columns([8, 1.6])
-with _hl:
-    st.title("Immunological supply chain")
-    st.caption("Self healing supply chains with AI digital antibodies. PES University, PW26_RGP_01.")
-with _hr:
-    st.toggle("Dark mode", key="dark_mode")
+st.toggle("Dark mode", key="dark_mode")   # pinned top right, under the menu (see ui.py)
+st.title("Immunological supply chain")
+st.caption("Self healing supply chains with AI digital antibodies. PES University, PW26_RGP_01.")
 
 # ── Tabs ───────────────────────────────────────────────────────────────────
 (tab_overview, tab_graph, tab_anomaly, tab_risk, tab_recovery,
