@@ -1,5 +1,5 @@
 """
-Immunological Supply Chain — Streamlit Dashboard
+Immunological Supply Chain, Streamlit Dashboard
 =================================================
 PES University Capstone  PW26_RGP_01
 
@@ -18,7 +18,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-# torch, shap, networkx are imported lazily inside tabs — faster cold start
+# torch, shap, networkx are imported lazily inside tabs, faster cold start
 
 # ── Page config ────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -33,37 +33,15 @@ FIGS   = os.path.join(OUT,  "figures")
 MODELS = os.path.join(BASE, "models")
 EXTRA  = os.path.join(BASE, "data", "supplementary")
 
-# ── CSS ─────────────────────────────────────────────────────────────────────
-st.markdown("""
-<style>
-    .block-container { padding-top: 1.5rem; padding-bottom: 1rem; }
-    .metric-card {
-        background: #1a1a2e;
-        border: 1px solid #2a2a4a;
-        border-radius: 8px;
-        padding: 1rem 1.2rem;
-        text-align: center;
-        min-height: 90px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-    .metric-card .label { color: #888; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
-    .metric-card .value { color: #e0e0ff; font-size: 1.5rem; font-weight: 700; margin-top: 0.2rem; line-height: 1.2; }
-    .metric-card .sub   { color: #666; font-size: 0.75rem; margin-top: 0.1rem; }
-    h1 { color: #c8c8ff !important; }
-    .stTabs [data-baseweb="tab"] { font-size: 0.85rem; }
-</style>
-""", unsafe_allow_html=True)
+# ── Report styling (see ui.py) ─────────────────────────────────────────────
+from ui import (PAPER, INK, RULE, MUTED, RED, SLATE, MIST, inject, specimen,
+                verdict as report_verdict, readout, chart_template, mpl_style)
+inject(); chart_template(); mpl_style()
 
 
 def metric_card(label, value, sub=""):
-    st.markdown(f"""
-    <div class="metric-card">
-        <div class="label">{label}</div>
-        <div class="value">{value}</div>
-        <div class="sub">{sub}</div>
-    </div>""", unsafe_allow_html=True)
+    """Report readout: label, mono value, note. No card."""
+    readout(label, value, sub)
 
 
 # ── Data loaders (cached) ──────────────────────────────────────────────────
@@ -163,7 +141,7 @@ def load_embeddings():
 # Must match FEATURE_COLS in src/recovery_predictor.py exactly (order and
 # values). Stage 8 was rewritten to rank response strategies by predicted
 # outcome instead of classifying which one a human historically picked (that
-# label turned out to be near-unlearnable — see recovery_predictor.py's
+# label turned out to be near-unlearnable, see recovery_predictor.py's
 # module docstring). response_type_enc is now an INPUT feature: at decision
 # time we hold everything else fixed and sweep it across every strategy.
 RF_FEATURES = [
@@ -180,37 +158,41 @@ def unwrap_regressor(bundle):
     return bundle, RF_FEATURES[:-1], {}   # legacy bare-model pickle, no response_type_enc
 
 # ── Header ─────────────────────────────────────────────────────────────────
-st.title("Immunological Supply Chain")
-st.caption("Self-Healing Supply Chains with AI Digital Antibodies  |  PES University  |  PW26_RGP_01")
-st.divider()
+st.title("Immunological supply chain")
+st.caption("Self healing supply chains with AI digital antibodies. PES University, PW26_RGP_01.")
 
 # ── Tabs ───────────────────────────────────────────────────────────────────
 (tab_overview, tab_graph, tab_anomaly, tab_risk, tab_recovery,
  tab_multi, tab_memory, tab_live, tab_ir) = st.tabs([
-    "Overview",
-    "Supply Chain Graph",
-    "Anomaly Detection",
-    "Risk Analysis",
-    "Recovery Predictor",
-    "Multi-Domain Risk",
-    "Immune Memory",
-    "Live Response",
-    "Dataset IR",
+    "Case summary",
+    "Anatomy",
+    "Blood panel",
+    "Triage",
+    "Treatment plan",
+    "Comparative pathology",
+    "Antibody library",
+    "Bedside monitor",
+    "Blood typing",
 ])
 
 # ══════════════════════════════════════════════════════════════════════════
-# TAB 11 — DATASET IR (plug-and-play capability manifest)
+# TAB 11, DATASET IR (plug-and-play capability manifest)
 # ══════════════════════════════════════════════════════════════════════════
 with tab_ir:
     import subprocess, sys as _sys
 
-    st.subheader("Dataset-Independent IR — Plug & Play")
+    specimen("Specimen 09 · Compatibility", "Blood typing")
+    try:
+        report_verdict("One adapter per dataset; each stage runs only where the data supports it")
+    except Exception:
+        pass
+
     st.markdown(
         "Every dataset is mapped by a small **adapter** into one canonical "
         "Intermediate Representation (`nodes · edges · flows · events`). Models "
         "read the IR, never raw columns. A **capability manifest** records which "
         "fields each dataset actually populates, and every analytics stage runs "
-        "only when its required capability is present — **a capability is never "
+        "only when its required capability is present, **a capability is never "
         "borrowed from another dataset.** That is what keeps this honest: ARCOS "
         "and SCMS light up *different* capabilities, and a future dataset that "
         "has all of them would run everything."
@@ -222,7 +204,7 @@ with tab_ir:
     CAP_ORDER = ["HAS_TRANSACTIONS", "HAS_TOPOLOGY", "HAS_DISRUPTIONS",
                  "HAS_LEAD_TIMES", "HAS_VALUE"]
 
-    if st.button("🔄 (Re)build IR from adapters"):
+    if st.button("(Re)build IR from adapters"):
         with st.spinner("Running adapters…"):
             for name, script in ADAPTERS.items():
                 r = subprocess.run([_sys.executable, script], cwd=BASE,
@@ -257,11 +239,11 @@ with tab_ir:
         st.dataframe(pd.DataFrame(size_rows), use_container_width=True, hide_index=True)
 
         # Capability matrix: capabilities × datasets
-        st.markdown("**Capability matrix**  (✅ = supported by the dataset's own fields)")
+        st.markdown("**Capability matrix**  (yes = supported by the dataset's own fields)")
         cap_matrix = {"capability": CAP_ORDER}
         for n, m in manifests.items():
             caps = m["capabilities"]
-            cap_matrix[n] = ["✅" if caps.get(c) else "—" for c in CAP_ORDER]
+            cap_matrix[n] = ["yes" if caps.get(c) else "no" for c in CAP_ORDER]
         st.table(pd.DataFrame(cap_matrix))
 
         # Stage-gating matrix: stages × datasets
@@ -282,10 +264,10 @@ with tab_ir:
         # ── Actually RUN the gated analytics off the IR ──────────────────
         st.markdown("**Run gated analytics on the IR**")
         st.caption(
-            "The same code runs on every dataset — flow stages read only "
+            "The same code runs on every dataset, flow stages read only "
             "`output/ir/<ds>/flows.csv`; the two topology stages also read "
             "`nodes.csv` + `edges.csv`. A stage whose capability is missing is "
-            "skipped — never fed a borrowed field from another dataset. "
+            "skipped, never fed a borrowed field from another dataset. "
             "Takes ~2 min (the PPO routing agent trains from scratch per dataset)."
         )
         if st.button("▶ Run gated analytics"):
@@ -301,7 +283,7 @@ with tab_ir:
                         continue
                 with open(os.path.join(IR_ROOT, n, "stage_results.json"), "w") as _fh:
                     json.dump(res, _fh, indent=2)
-                st.success(f"`{n}` done — "
+                st.success(f"`{n}` done, "
                            f"{sum(1 for o in res.values() if o['status'] == 'ran')} ran, "
                            f"{sum(1 for o in res.values() if o['status'] == 'skipped')} skipped")
             st.rerun()
@@ -357,7 +339,7 @@ with tab_ir:
                         if res.get("policy_gradient_routing", {}).get("status") == "ran"
                         and "avg_route_risk" in res["policy_gradient_routing"]]
             if graph_ds:
-                st.markdown("**Topology stages — graph risk & cascade PPO routing**")
+                st.markdown("**Topology stages, graph risk & cascade PPO routing**")
                 cols = st.columns(len(graph_ds))
                 for col, n in zip(cols, graph_ds):
                     gr  = results[n].get("graph_risk_routing", {})
@@ -366,7 +348,7 @@ with tab_ir:
                     avg = ppo["avg_route_risk"]
                     uns = ppo.get("unserved", {})
                     with col:
-                        st.markdown(f"**`{n}`** — {gr.get('n_nodes', '?')} nodes / "
+                        st.markdown(f"**`{n}`**, {gr.get('n_nodes', '?')} nodes / "
                                     f"{gr.get('n_edges', '?')} supply links")
                         st.caption("top risk: " + ", ".join(gr.get("top_risk_nodes", [])[:3])
                                    + f" · cascade: {ppo.get('cascade', '')}")
@@ -398,25 +380,31 @@ with tab_ir:
             "Built by `src/{arcos,scms,dataco}_adapter.py` over `src/ir_schema.py`; "
             "gated stages in `src/ir_stages.py`; headless runner "
             "`src/ir_pipeline.py` (Stage 26 in main.py). "
-            "Pure stdlib — runs without pandas/torch."
+            "Pure stdlib, runs without pandas/torch."
         )
 
 # ══════════════════════════════════════════════════════════════════════════
-# TAB 1 — OVERVIEW
+# TAB 1, OVERVIEW
 # ══════════════════════════════════════════════════════════════════════════
 with tab_overview:
+    specimen("Specimen 01 · All findings", "Case summary")
+    try:
+        report_verdict(f"Planner's vendor pick beat procurement's real choice on {_cf['wins']} of {_cf['n_comparable']} lanes (sign test p = {_cf['sign_test_p']:.0e})" if (_cf := load_json("scms_counterfactual_stats.json")) else "Case summary")
+    except Exception:
+        pass
+
     G    = load_graph()
     anom = load_anomalies()
     risk = load_risk()
     gnn  = load_gnn()
     fc   = load_forecast()
 
-    n_nodes   = G.number_of_nodes()   if G    else "—"
-    n_edges   = G.number_of_edges()   if G    else "—"
-    n_anom    = len(anom) if not anom.empty else "—"   # ensemble-flagged (matches Stage 3 / paper)
-    n_high    = len(risk[risk["risk_score"] > 0.7])   if not risk.empty else "—"
+    n_nodes   = G.number_of_nodes()   if G    else "n/a"
+    n_edges   = G.number_of_edges()   if G    else "n/a"
+    n_anom    = len(anom) if not anom.empty else "n/a"   # ensemble-flagged (matches Stage 3 / paper)
+    n_high    = len(risk[risk["risk_score"] > 0.7])   if not risk.empty else "n/a"
 
-    forecast_level = "—"
+    forecast_level = "n/a"
     if not fc.empty:
         upcoming = fc[fc["type"] == "forecast"]
         if not upcoming.empty:
@@ -440,7 +428,7 @@ with tab_overview:
     _ov_reg_path  = os.path.join(MODELS, "recovery_regressor.pkl")
     _ov_data_path = os.path.join(EXTRA,  "disruption_processed.csv")
     # Must match FEATURE_COLS in src/recovery_predictor.py exactly.
-    # response_type_enc (the chosen strategy) is an input feature here — see
+    # response_type_enc (the chosen strategy) is an input feature here, see
     # the module docstring in recovery_predictor.py for why.
     _OV_FEAT_NAMES = [
         "Disruption Type", "Supplier Size", "Disruption Severity",
@@ -459,7 +447,7 @@ with tab_overview:
             _ov_bundle = _jl.load(_ov_reg_path)
             _ov_model, _bundle_cols, _ = unwrap_regressor(_ov_bundle)
             if len(_bundle_cols) != len(_OV_FEAT_COLS):
-                # legacy 7-feature pickle — drop the strategy column to match
+                # legacy 7-feature pickle, drop the strategy column to match
                 _OV_FEAT_NAMES = _OV_FEAT_NAMES[:-1]
                 _OV_FEAT_COLS  = _OV_FEAT_COLS[:-1]
             _imps = _ov_model.feature_importances_
@@ -471,11 +459,11 @@ with tab_overview:
             _col1, _col2 = st.columns(2)
 
             with _col1:
-                st.markdown("**Feature Importance** — which inputs the model uses most")
+                st.markdown("**Feature Importance**, which inputs the model uses most")
                 _fig_fi, _ax_fi = plt.subplots(figsize=(6, 3.5))
-                _fig_fi.patch.set_facecolor("#0f0f1a")
-                _ax_fi.set_facecolor("#0f0f1a")
-                _fi_colors = ["#e74c3c" if v > _fi_df["Importance"].median() else "#3498db"
+                _fig_fi.patch.set_facecolor(PAPER)
+                _ax_fi.set_facecolor(PAPER)
+                _fi_colors = [RED if v > _fi_df["Importance"].median() else SLATE
                               for v in _fi_df["Importance"]]
                 _ax_fi.barh(_fi_df["Feature"], _fi_df["Importance"], color=_fi_colors, edgecolor="none")
                 _ax_fi.set_xlabel("Importance", color="white")
@@ -484,14 +472,14 @@ with tab_overview:
                 for sp in ["top", "right"]:
                     _ax_fi.spines[sp].set_visible(False)
                 for sp in ["bottom", "left"]:
-                    _ax_fi.spines[sp].set_color("#4a4a6a")
+                    _ax_fi.spines[sp].set_color(INK)
                 plt.tight_layout()
                 st.pyplot(_fig_fi)
                 plt.close()
 
             with _col2:
                 if os.path.exists(_ov_data_path):
-                    st.markdown("**Direction** — does each feature increase or decrease recovery time?")
+                    st.markdown("**Direction**, does each feature increase or decrease recovery time?")
                     try:
                         import shap as _shap_ov
                         _ov_dis = pd.read_csv(_ov_data_path)
@@ -523,9 +511,15 @@ with tab_overview:
         st.info("Run Stage 8 first to see model explainability.")
 
 # ══════════════════════════════════════════════════════════════════════════
-# TAB 2 — SUPPLY CHAIN GRAPH
+# TAB 2, SUPPLY CHAIN GRAPH
 # ══════════════════════════════════════════════════════════════════════════
 with tab_graph:
+    specimen("Specimen 02 · Network plate", "Anatomy")
+    try:
+        report_verdict(f"{load_graph().number_of_nodes():,} entities and {load_graph().number_of_edges():,} routes, three tiers from manufacturer to retailer")
+    except Exception:
+        pass
+
     import networkx as nx
     G    = load_graph()
     risk = load_risk()
@@ -549,63 +543,64 @@ with tab_graph:
             sub_nodes.update(retailer_succs)
 
         SG  = G.subgraph(sub_nodes)
-        pos = nx.spring_layout(SG, seed=42, k=1.5)
+        tier_x = {"manufacturer": 0.0, "distributor": 1.0, "retailer": 2.0}
+        pos = {}
+        for t, x in tier_x.items():
+            members = sorted([n for n in SG.nodes() if node_types.get(n) == t],
+                             key=lambda n: -risk_lookup.get(n, 0))
+            for i, n in enumerate(members):
+                pos[n] = (x, (i - (len(members) - 1) / 2) / max(len(members), 1))
 
-        colour_map = {"manufacturer": "#f4a261", "distributor": "#4fc3f7", "retailer": "#a8d8a8"}
+        colour_map = {"manufacturer": INK, "distributor": SLATE, "retailer": MIST}
+        top5 = set(sorted(SG.nodes(), key=lambda n: -risk_lookup.get(n, 0))[:5])
 
         edge_x, edge_y = [], []
         for u, v in SG.edges():
             x0, y0 = pos[u]; x1, y1 = pos[v]
             edge_x += [x0, x1, None]; edge_y += [y0, y1, None]
 
-        edge_trace = go.Scatter(
-            x=edge_x, y=edge_y, mode="lines",
-            line=dict(width=0.4, color="#334"),
-            hoverinfo="none",
-        )
+        edge_trace = go.Scatter(x=edge_x, y=edge_y, mode="lines",
+                                line=dict(width=0.4, color=RULE), hoverinfo="none")
 
-        node_x, node_y, node_text, node_color, node_size = [], [], [], [], []
-        for n in SG.nodes():
-            x, y = pos[n]
-            node_x.append(x); node_y.append(y)
-            t    = node_types.get(n, "unknown")
-            rs   = risk_lookup.get(n, 0.0)
-            node_text.append(f"{n}<br>Type: {t}<br>Risk: {rs:.3f}")
-            node_color.append(colour_map.get(t, "#888"))
-            node_size.append(14 if t == "manufacturer" else 10 if t == "distributor" else 6)
-
+        nodes = list(SG.nodes())
         node_trace = go.Scatter(
-            x=node_x, y=node_y, mode="markers",
-            marker=dict(size=node_size, color=node_color, line=dict(width=0.5, color="#111")),
-            text=node_text, hoverinfo="text",
+            x=[pos[n][0] for n in nodes], y=[pos[n][1] for n in nodes],
+            mode="markers+text",
+            marker=dict(size=[14 if node_types.get(n) == "manufacturer" else 10 if node_types.get(n) == "distributor" else 6 for n in nodes],
+                        color=[RED if n in top5 else colour_map.get(node_types.get(n), MUTED) for n in nodes],
+                        line=dict(width=0.5, color=PAPER)),
+            text=[str(n)[:18] if n in top5 else "" for n in nodes], textposition="middle right",
+            textfont=dict(family="IBM Plex Mono, monospace", size=10, color=RED),
+            hovertext=[f"{n}<br>{node_types.get(n)}<br>risk {risk_lookup.get(n, 0.0):.3f}" for n in nodes],
+            hoverinfo="text",
         )
 
         fig = go.Figure(
             data=[edge_trace, node_trace],
             layout=go.Layout(
-                paper_bgcolor="#0f0f1a", plot_bgcolor="#0f0f1a",
-                margin=dict(l=10, r=10, t=40, b=10),
-                title=dict(
-                    text=f"Supply Chain Network  ({SG.number_of_nodes()} nodes shown)",
-                    font=dict(color="#ccc", size=13),
-                ),
-                showlegend=False,
-                xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+                title=dict(text=f"Manufacturers, distributors, retailers ({SG.number_of_nodes()} nodes, five riskiest in red)"),
+                showlegend=False, height=560,
+                xaxis=dict(showgrid=False, zeroline=False, showticklabels=False, range=[-0.2, 2.6]),
                 yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-                height=560,
             ),
         )
         st.plotly_chart(fig, use_container_width=True)
 
         l1, l2, l3 = st.columns(3)
-        with l1: st.markdown("<span style='color:#f4a261'>●</span> Manufacturer", unsafe_allow_html=True)
-        with l2: st.markdown("<span style='color:#4fc3f7'>●</span> Distributor",  unsafe_allow_html=True)
-        with l3: st.markdown("<span style='color:#a8d8a8'>●</span> Retailer",     unsafe_allow_html=True)
+        with l1: st.caption("Manufacturer, left column")
+        with l2: st.caption("Distributor, middle column")
+        with l3: st.caption("Retailer, right column")
 
 # ══════════════════════════════════════════════════════════════════════════
-# TAB 3 — ANOMALY DETECTION
+# TAB 3, ANOMALY DETECTION
 # ══════════════════════════════════════════════════════════════════════════
 with tab_anomaly:
+    specimen("Specimen 03 · Innate response", "Blood panel")
+    try:
+        report_verdict(f"Calibrated ensemble reaches F1 {_cal['held_out_f1']:.3f} against 0.122 for z scores alone, recalling {_cal['held_out_recall']:.0%} of injected faults" if (_cal := load_json("anomaly_ensemble_calibration.json")) else "Anomaly panel")
+    except Exception:
+        pass
+
     anom = load_anomalies()
 
     if anom.empty:
@@ -622,14 +617,14 @@ with tab_anomaly:
         st.caption(
             "Decision rule: calibrated logistic ensemble over the five detection "
             "signals (held-out F1 0.386; adjusted precision 0.86). All flagged rows "
-            "are confirmed anomalies — the cards break them down by how many z-score "
+            "are confirmed anomalies, the cards break them down by how many z-score "
             "signals corroborate each, not into confident vs. unconfident."
         )
 
         # ── Calibrated ensemble (Stage 17 held-out benchmark) ──────────────
         cal = load_json("anomaly_ensemble_calibration.json")
         if cal:
-            st.markdown("#### Calibrated Ensemble — held-out benchmark (Stage 17)")
+            st.markdown("#### Calibrated Ensemble: held-out benchmark (Stage 17)")
             st.caption(
                 "A logistic model over the five detection signals, tuned on one "
                 "injection realization (seed 42) and scored on four unseen seeds. "
@@ -648,7 +643,7 @@ with tab_anomaly:
                 metric_card("Recall", f"{cal.get('held_out_recall', float('nan')):.3f}")
             with k4:
                 metric_card("Decision threshold", f"{cal.get('threshold', float('nan')):.2f}",
-                            f"tuned on seed {cal.get('tuned_on_seed', '—')}")
+                            f"tuned on seed {cal.get('tuned_on_seed', 'n/a')}")
             _feat = cal.get("features") or []
             _coef = cal.get("coef") or []
             if _feat and len(_feat) == len(_coef):
@@ -658,10 +653,10 @@ with tab_anomaly:
                     fig_c = px.bar(
                         coef_df, x="weight", y="signal", orientation="h",
                         color="weight", color_continuous_scale="RdBu",
-                        template="plotly_dark",
+                        template="report",
                         labels={"weight": "Logistic weight (per raw unit)", "signal": ""},
                     )
-                    fig_c.update_layout(paper_bgcolor="#0f0f1a", plot_bgcolor="#0f0f1a",
+                    fig_c.update_layout(paper_bgcolor=PAPER, plot_bgcolor=PAPER,
                                         coloraxis_showscale=False, height=240,
                                         margin=dict(l=10, r=10, t=10, b=30))
                     st.plotly_chart(fig_c, use_container_width=True)
@@ -681,10 +676,10 @@ with tab_anomaly:
         fig = px.bar(
             x=score_counts.index, y=score_counts.values,
             labels={"x": "Anomaly Score", "y": "Transactions"},
-            color_discrete_sequence=["#4fc3f7"],
-            template="plotly_dark",
+            color_discrete_sequence=[SLATE],
+            template="report",
         )
-        fig.update_layout(paper_bgcolor="#0f0f1a", plot_bgcolor="#0f0f1a", height=260)
+        fig.update_layout(paper_bgcolor=PAPER, plot_bgcolor=PAPER, height=260)
         st.plotly_chart(fig, use_container_width=True)
 
         st.markdown("#### Top High-Confidence Anomalies")
@@ -705,15 +700,21 @@ with tab_anomaly:
             fig2 = px.line(
                 timeline, x="date", y="count",
                 labels={"count": "Anomalies", "date": "Month"},
-                template="plotly_dark", color_discrete_sequence=["#ff6b6b"],
+                template="report", color_discrete_sequence=[RED],
             )
-            fig2.update_layout(paper_bgcolor="#0f0f1a", plot_bgcolor="#0f0f1a", height=260)
+            fig2.update_layout(paper_bgcolor=PAPER, plot_bgcolor=PAPER, height=260)
             st.plotly_chart(fig2, use_container_width=True)
 
 # ══════════════════════════════════════════════════════════════════════════
-# TAB 4 — RISK ANALYSIS
+# TAB 4, RISK ANALYSIS
 # ══════════════════════════════════════════════════════════════════════════
 with tab_risk:
+    specimen("Specimen 04 · Adaptive response", "Triage")
+    try:
+        report_verdict(f"GNN scores detect injected faults at AUC {_g['summary']['gnn_auc']['mean']:.2f}, ahead of the best baseline at {max(_g['summary']['volume_z_auc']['mean'], _g['summary']['degree_z_auc']['mean']):.2f}" if (_g := load_json("gnn_injection_eval.json")) and "summary" in _g else "Risk triage")
+    except Exception:
+        pass
+
     risk = load_risk()
     gnn  = load_gnn()
 
@@ -732,16 +733,16 @@ with tab_risk:
         col_left, col_right = st.columns(2)
 
         with col_left:
-            st.markdown("#### Top 20 — Centrality Risk Score")
+            st.markdown("#### Top 20: Centrality Risk Score")
             top20 = risk.head(20)
             fig = px.bar(
                 top20, x="risk_score", y="entity", orientation="h",
                 color="risk_score", color_continuous_scale="Reds",
-                template="plotly_dark",
+                template="report",
                 labels={"risk_score": "Risk Score", "entity": ""},
             )
             fig.update_layout(
-                paper_bgcolor="#0f0f1a", plot_bgcolor="#0f0f1a",
+                paper_bgcolor=PAPER, plot_bgcolor=PAPER,
                 yaxis=dict(autorange="reversed"),
                 coloraxis_showscale=False, height=480,
             )
@@ -749,16 +750,16 @@ with tab_risk:
 
         with col_right:
             if not gnn.empty:
-                st.markdown("#### Top 20 — GNN Enhanced Risk")
+                st.markdown("#### Top 20: GNN Enhanced Risk")
                 top_gnn = gnn.sort_values("enhanced_risk", ascending=False).head(20)
                 fig2 = px.bar(
                     top_gnn, x="enhanced_risk", y="entity", orientation="h",
                     color="enhanced_risk", color_continuous_scale="Blues",
-                    template="plotly_dark",
+                    template="report",
                     labels={"enhanced_risk": "Enhanced Risk", "entity": ""},
                 )
                 fig2.update_layout(
-                    paper_bgcolor="#0f0f1a", plot_bgcolor="#0f0f1a",
+                    paper_bgcolor=PAPER, plot_bgcolor=PAPER,
                     yaxis=dict(autorange="reversed"),
                     coloraxis_showscale=False, height=480,
                 )
@@ -776,7 +777,7 @@ with tab_risk:
         _gb = load_json("gnn_injection_eval.json")
         if _gb and _gb.get("summary"):
             _s = _gb["summary"]
-            st.markdown("#### Is the GNN score a detector? — node-level injection benchmark")
+            st.markdown("#### Is the GNN score a detector?: node-level injection benchmark")
             st.caption(
                 f"On held-out seeds {_gb['seeds']}, {_gb['n_injected_per_seed']} structural anomalies "
                 "are planted into a copy of the real graph (starved, flooded, or rewired nodes), the "
@@ -803,8 +804,8 @@ with tab_risk:
                 if os.path.exists(_gt):
                     st.code(open(_gt).read(), language=None)
 
-        # ── GNN explainer — why is this node risky? ────────────────────
-        st.markdown("#### Why is this node risky? — GNN neighbourhood explainer")
+        # ── GNN explainer, why is this node risky? ────────────────────
+        st.markdown("#### Why is this node risky?: GNN neighbourhood explainer")
         st.caption(
             "A similarity-and-tension heuristic over the node's k-hop neighbourhood "
             "(no gradients): each neighbour scores |cosine similarity| × its own GNN "
@@ -859,15 +860,15 @@ with tab_risk:
                     with xg1:
                         fig_x = px.bar(
                             _xd.sort_values("influence"), x="influence", y="neighbour",
-                            orientation="h", color="type", template="plotly_dark",
-                            color_discrete_map={"manufacturer": "#ab47bc",
-                                                "distributor": "#4fc3f7",
-                                                "retailer": "#ffb300"},
+                            orientation="h", color="type", template="report",
+                            color_discrete_map={"manufacturer": INK,
+                                                "distributor": SLATE,
+                                                "retailer": MIST},
                             hover_data={"gnn_risk": ":.4f", "similarity": ":.3f"},
                             labels={"influence": "Influence on target's risk",
                                     "neighbour": "", "type": ""},
                         )
-                        fig_x.update_layout(paper_bgcolor="#0f0f1a", plot_bgcolor="#0f0f1a",
+                        fig_x.update_layout(paper_bgcolor=PAPER, plot_bgcolor=PAPER,
                                             height=max(240, 34 * len(_xd) + 80),
                                             margin=dict(l=10, r=20, t=30, b=40),
                                             legend=dict(orientation="h", y=1.12, x=0))
@@ -891,7 +892,7 @@ with tab_risk:
                         )
 
         # ── PPO vs Dijkstra ───────────────────────────────────────────
-        st.markdown("#### PPO vs Dijkstra — Risk-Aware Routing (Stage 11)")
+        st.markdown("#### PPO vs Dijkstra: Risk-Aware Routing (Stage 11)")
         ppo_fig = os.path.join(FIGS, "fig9_ppo_training.png")
         ppo_txt = os.path.join(OUT, "ppo_routing_results.txt")
         col_ppo1, col_ppo2 = st.columns([1.4, 1])
@@ -912,7 +913,7 @@ with tab_risk:
                 st.info("Run Stage 11 to generate PPO routing results.")
 
         # ── Immunological Memory ──────────────────────────────────────
-        st.markdown("#### Immunological Memory — FAISS Retrieval (Stage 13)")
+        st.markdown("#### Immunological Memory: FAISS Retrieval (Stage 13)")
         mem_csv = os.path.join(OUT, "memory_retrieval.csv")
         mem_txt = os.path.join(OUT, "memory_report.txt")
         if os.path.exists(mem_txt):
@@ -934,7 +935,7 @@ with tab_risk:
 
     # ── Macro-Stress Crisis Validation (Stage 27) ─────────────────────────
     st.divider()
-    st.markdown("### Macro-Stress Crisis Validation — Stage 27")
+    st.markdown("### Macro-Stress Crisis Validation: Stage 27")
     st.caption(
         "Does the Stage-9 stress composite rise at documented global crises it "
         "was never told about? Event study: mean of the 8-week event window "
@@ -942,7 +943,7 @@ with tab_risk:
         "non-event windows. DETECTED ≥ p90, PARTIAL ≥ p75. The composite is "
         "CAUSAL: each indicator is scored as a percentile rank of its own history "
         "up to that week and carried forward, never scaled by the full series. "
-        "Nulls are shown, not hidden — they say what a US-macro lens cannot see."
+        "Nulls are shown, not hidden, they say what a US-macro lens cannot see."
     )
     _mv_path = os.path.join(OUT, "macro_event_validation.csv")
     if not os.path.exists(_mv_path):
@@ -953,7 +954,7 @@ with tab_risk:
         _n_par = int((mv["verdict"] == "PARTIAL").sum())
         _n_not = int(len(mv) - _n_det - _n_par)
         _mv_rpt = os.path.join(OUT, "macro_event_validation_report.txt")
-        _n_placebo = "—"
+        _n_placebo = "n/a"
         if os.path.exists(_mv_rpt):
             import re as _re
             _m = _re.search(r"(\d+)\s+non-event windows", open(_mv_rpt).read())
@@ -970,7 +971,7 @@ with tab_risk:
         with m4:
             metric_card("Placebo Windows", _n_placebo, "non-event 8-week windows")
 
-        _vcol = {"DETECTED": "#4caf50", "PARTIAL": "#ffb300", "NOT SEEN": "#ef5350"}
+        _vcol = {"DETECTED": INK, "PARTIAL": SLATE, "NOT SEEN": RED}
         vc1, vc2 = st.columns([3, 2])
         with vc1:
             stress = load_stress()
@@ -978,7 +979,7 @@ with tab_risk:
                 fig_ms = go.Figure()
                 fig_ms.add_trace(go.Scatter(
                     x=stress["date"], y=stress["stress_score"], mode="lines",
-                    name="Macro stress", line=dict(color="#4fc3f7", width=1.6)))
+                    name="Macro stress", line=dict(color=SLATE, width=1.6)))
                 for _, r in mv.iterrows():
                     _c = _vcol.get(r["verdict"], "#999")
                     fig_ms.add_vrect(x0=r["start"], x1=r["start"] + pd.Timedelta(weeks=8),
@@ -988,7 +989,7 @@ with tab_risk:
                                           text=str(r["event"]).split(" ")[0], font=dict(size=10, color=_c),
                                           yanchor="bottom")
                 fig_ms.update_layout(
-                    template="plotly_dark", paper_bgcolor="#0f0f1a", plot_bgcolor="#0f0f1a",
+                    template="report", paper_bgcolor=PAPER, plot_bgcolor=PAPER,
                     height=300, margin=dict(l=40, r=20, t=30, b=40),
                     xaxis_title="Week", yaxis_title="Composite stress",
                 )
@@ -996,12 +997,12 @@ with tab_risk:
         with vc2:
             fig_dv = px.bar(
                 mv.sort_values("delta"), x="delta", y="event", orientation="h",
-                color="verdict", color_discrete_map=_vcol, template="plotly_dark",
+                color="verdict", color_discrete_map=_vcol, template="report",
                 text=mv.sort_values("delta")["placebo_percentile"].map(lambda v: f"p{v:.0f}"),
                 labels={"delta": "Δ stress (event − prior 12 wk)", "event": "", "verdict": ""},
             )
             fig_dv.update_traces(textposition="outside")
-            fig_dv.update_layout(paper_bgcolor="#0f0f1a", plot_bgcolor="#0f0f1a",
+            fig_dv.update_layout(paper_bgcolor=PAPER, plot_bgcolor=PAPER,
                                  height=300, margin=dict(l=10, r=40, t=30, b=40),
                                  legend=dict(orientation="h", y=1.15, x=0))
             st.plotly_chart(fig_dv, use_container_width=True)
@@ -1015,7 +1016,7 @@ with tab_risk:
             use_container_width=True, height=230, hide_index=True)
         _sens_p = os.path.join(OUT, "macro_burn_in_sensitivity.csv")
         if os.path.exists(_sens_p):
-            st.markdown("**Burn-in sensitivity** — the same event study with the stress table "
+            st.markdown("**Burn-in sensitivity**, the same event study with the stress table "
                         "recomputed for a 26, 39 and 52-week warm-up. 52 is the headline; a verdict "
                         "that changes across rows depends on the setting, not the data.")
             _sd = pd.read_csv(_sens_p)
@@ -1032,28 +1033,34 @@ with tab_risk:
                 st.image(_f11, use_container_width=True)
 
 # ══════════════════════════════════════════════════════════════════════════
-# (Macro Stress & LSTM tab removed 2026-07-16 — LSTM did not beat naive
+# (Macro Stress & LSTM tab removed 2026-07-16, LSTM did not beat naive
 #  persistence on the smoothed macro-stress series; kept the module/outputs,
 #  dropped the dashboard tab. The Overview 'NEXT-WEEK FORECAST' card still
 #  reads output/stress_forecast via load_forecast().)
 # ══════════════════════════════════════════════════════════════════════════
 
 # ══════════════════════════════════════════════════════════════════════════
-# TAB 6 — RECOVERY PREDICTOR
+# TAB 6, RECOVERY PREDICTOR
 # ══════════════════════════════════════════════════════════════════════════
 with tab_recovery:
+    specimen("Specimen 05 · Response ranking", "Treatment plan")
+    try:
+        report_verdict("Choosing the right strategy moves predicted recovery by up to 17 days")
+    except Exception:
+        pass
+
     _reg_bundle = load_rf_regressor()
     dis_data    = load_disruption_data()
     regressor, _reg_cols, response_map = (
         unwrap_regressor(_reg_bundle) if _reg_bundle is not None else (None, RF_FEATURES, {})
     )
     if not response_map and not dis_data.empty:
-        # legacy pickle without a bundled response_map — rebuild from data
+        # legacy pickle without a bundled response_map, rebuild from data
         response_map = dict(zip(dis_data["response_type_enc"].astype(int), dis_data["response_type"]))
     HAS_STRATEGY_FEATURE = "response_type_enc" in _reg_cols
 
-    # ── EVENT-REACTION HARNESS — watch the model respond to a shock ────────
-    st.markdown("### 🎯 Event-Reaction Harness — Watch the Model Respond")
+    # ── EVENT-REACTION HARNESS, watch the model respond to a shock ────────
+    st.markdown("### Event-Reaction Harness: Watch the Model Respond")
     st.caption(
         "Pick a shock and watch the immune response unfold step by step, on "
         "real SCMS data. REPLAY = a documented historical event (the detector "
@@ -1068,7 +1075,7 @@ with tab_recovery:
     else:
         import json as _json
         _scn = _json.load(open(_eh_path))
-        _labels = [("🌍 REPLAY — " if s["type"] == "replay" else "🏭 KNOCKOUT — ")
+        _labels = [("REPLAY, " if s["type"] == "replay" else "KNOCKOUT, ")
                    + s.get("label", s.get("vendor", "")) for s in _scn]
         _pick = st.selectbox("Choose a shock to simulate", range(len(_scn)),
                              format_func=lambda i: _labels[i], key="eh_pick")
@@ -1081,7 +1088,7 @@ with tab_recovery:
             k1, k2, k3, k4 = st.columns(4)
             with k1:
                 metric_card("① Detection",
-                            "🚨 ALERT" if d["fired"] else "no alert",
+                            "ALERT" if d["fired"] else "no alert",
                             f"p = {d['p_value']}")
             with k2:
                 metric_card("Late Rate in Window",
@@ -1095,7 +1102,7 @@ with tab_recovery:
                 metric_card("③ Buffer Exposure",
                             f"${s['summary']['buffer_usd_total']/1e6:.2f}M",
                             "cost if absorbed by stock")
-            st.markdown("**③ Per-lane reaction** (walk-forward — response uses "
+            st.markdown("**③ Per-lane reaction** (walk-forward, response uses "
                         "only pre-event data):")
             _rows = []
             for e in s["lanes"]:
@@ -1142,18 +1149,18 @@ with tab_recovery:
             with st.expander("Full step-by-step traces (all scenarios)"):
                 st.code(open(_eh_rpt).read(), language=None)
 
-    # ── SCMS SPINE — Real Unified Dataset (north-star) ─────────────────────
+    # ── SCMS SPINE, Real Unified Dataset (north-star) ─────────────────────
     st.divider()
-    st.markdown("### SCMS Spine — Real Unified Dataset (north-star)")
+    st.markdown("### SCMS Spine: Real Unified Dataset (north-star)")
     st.caption(
         "The rest of this project (ARCOS) has a real NETWORK but no real "
-        "disruptions — recovery numbers had to be borrowed from a separate "
+        "disruptions, recovery numbers had to be borrowed from a separate "
         "synthetic table, and the two share no entities. This section is the "
         "fix, and it leads the tab because it is the strongest: the SCMS "
         "health-commodity dataset carries the NETWORK "
         "(Vendor → Molecule → Country) AND real DISRUPTIONS "
         "(late shipments, real delay durations) in the SAME rows. No synthetic "
-        "table, no cross-dataset subtraction — every number below is one "
+        "table, no cross-dataset subtraction, every number below is one "
         "coherent real dataset."
     )
 
@@ -1175,9 +1182,9 @@ with tab_recovery:
             "**A disruption here is REAL:** a shipment that arrived after its "
             "scheduled date, with the delay as its actual duration. A "
             "*proven in-country alternate* is a different vendor already "
-            "shipping the same molecule to the same country — a genuine "
+            "shipping the same molecule to the same country, a genuine "
             "drop-in backup. *Exposed* lanes have no in-country alternate "
-            "(only a global onboarding candidate, or none at all) — the honest "
+            "(only a global onboarding candidate, or none at all), the honest "
             "answer there is a buffer or a vendor-qualification plan, not a "
             "pretend reroute."
         )
@@ -1203,13 +1210,13 @@ with tab_recovery:
                         f"{exp_pct:.0f}% · need buffer")
 
         st.markdown(
-            "**Sample resolved disruptions** — real late shipment, real "
+            "**Sample resolved disruptions**, real late shipment, real "
             "in-country alternate vendor found, with the volume it can absorb:"
         )
         _show = s_res.copy()
         _show["volume_coverage"] = pd.to_numeric(
             _show["volume_coverage"], errors="coerce"
-        ).map(lambda v: f"{v*100:.0f}%" if pd.notna(v) else "—")
+        ).map(lambda v: f"{v*100:.0f}%" if pd.notna(v) else "n/a")
         s_cols = ["vendor_disrupted", "molecule", "country", "delay_days",
                   "severity", "alternate_vendor", "volume_coverage", "route"]
         s_cols = [c for c in s_cols if c in _show.columns]
@@ -1231,12 +1238,12 @@ with tab_recovery:
             with st.expander("Full SCMS spine report"):
                 st.code(open(_scms_rpt).read(), language=None)
 
-    # ── SCMS Exposure Answer — Sized & Priced Safety Stock ─────────────────
-    st.markdown("#### 💰 The Exposure Answer — Sized & Priced Safety-Stock Buffers")
+    # ── SCMS Exposure Answer, Sized & Priced Safety Stock ─────────────────
+    st.markdown("#### The Exposure Answer: Sized & Priced Safety-Stock Buffers")
     st.caption(
         "For the exposed lanes above (no in-country alternate vendor), the "
         "correct response is a buffer, not a reroute. Sized with King's "
-        "formula — SS = z·√(L·σ_d² + D²·σ_L²) — from each lane's REAL demand "
+        "formula, SS = z·√(L·σ_d² + D²·σ_L²), from each lane's REAL demand "
         "history and REAL vendor lead times (PO → Delivered), priced at the "
         "lane's own median pack price. Assumptions: 95% service (z=1.65), "
         "25%/yr holding cost. Sizes are planning magnitudes (demand is "
@@ -1272,7 +1279,7 @@ with tab_recovery:
                         f"${ssdf['holding_cost_usd_per_yr'].sum()/1e6:.1f}M",
                         "the measurable price of no backup")
         st.markdown(
-            "**Largest buffers** — the carrying cost of lumpy demand on long "
+            "**Largest buffers**, the carrying cost of lumpy demand on long "
             "(mean 115d) single-sourced pipelines. This dollar figure is the "
             "quantified business case for qualifying a second vendor:"
         )
@@ -1292,14 +1299,14 @@ with tab_recovery:
             with st.expander("Full sizing report (incl. lanes not sizeable + caveats)"):
                 st.code(open(_ss_rpt).read(), language=None)
 
-    # ── SCMS Counter-Offer — Vendor Scorecard & Qualification Shortlist ────
-    st.markdown("#### 🏭 The Counter-Offer — Vendor Scorecard & Qualification Shortlist")
+    # ── SCMS Counter-Offer, Vendor Scorecard & Qualification Shortlist ────
+    st.markdown("#### The Counter-Offer: Vendor Scorecard & Qualification Shortlist")
     st.caption(
         "Instead of paying the holding cost forever, qualify a second vendor. "
         "For every exposed lane, candidates that already ship this molecule "
         "elsewhere are ranked by 0.35·reliability (on-time rate, shrunk k=5 so "
         "tiny samples can't fake perfection) + 0.35·capacity + 0.30·experience. "
-        "Weights are stated, not fitted — and validated walk-forward: under "
+        "Weights are stated, not fitted, and validated walk-forward: under "
         "the same backtest protocol this ranking matches real procurement's "
         "eventual vendor slightly BETTER than the planner rule (hit@3 90.0% "
         "vs 88.3% conditional; see src/test_vendor_scorecard.py, 18/18 "
@@ -1327,7 +1334,7 @@ with tab_recovery:
             metric_card("Candidate Pipeline Slower",
                         f"{int((_delta <= 0).sum())} lanes",
                         "negative deltas shown, not hidden")
-        st.markdown("**Top qualification targets** — ranked by buffer released "
+        st.markdown("**Top qualification targets**, ranked by buffer released "
                     "if the lane's lead-time profile matched the candidate's:")
         _vt = vs[_delta > 0].assign(_d=_delta[_delta > 0]) \
                 .sort_values("_d", ascending=False).head(10)
@@ -1346,15 +1353,15 @@ with tab_recovery:
             with st.expander("Full scorecard report + honest caveats"):
                 st.code(open(_vs_rpt).read(), language=None)
 
-    # ── SCMS Validation 1 — Revealed-Preference Backtest ───────────────────
-    st.markdown("#### ✅ Validation 1 — Revealed-Preference Backtest (walk-forward)")
+    # ── SCMS Validation 1, Revealed-Preference Backtest ───────────────────
+    st.markdown("#### Validation 1: Revealed-Preference Backtest (walk-forward)")
     st.caption(
         "At each lane's FIRST late delivery, the planner builds a vendor "
         "shortlist using only data available at that moment. Ground truth = "
         "the brand-new vendor real procurement actually brought onto that "
         "lane afterwards. A hit means an independent, real-world process "
         "arrived at the same vendor the planner named in advance. Claim: "
-        "consistency & feasibility — NOT causation."
+        "consistency & feasibility, NOT causation."
     )
     _bt_path = os.path.join(OUT, "scms_backtest.csv")
     if not os.path.exists(_bt_path):
@@ -1387,8 +1394,8 @@ with tab_recovery:
                         "top3_ours": "Planner Top-3", "hit3_ours": "Hit@3"}),
                 use_container_width=True, height=260)
 
-    # ── SCMS Validation 2 — Real-Event Replay (Haiti 2010) ─────────────────
-    st.markdown("#### ✅ Validation 2 — Real-Event Replay: Haiti Earthquake, Jan 2010")
+    # ── SCMS Validation 2, Real-Event Replay (Haiti 2010) ─────────────────
+    st.markdown("#### Validation 2: Real-Event Replay: Haiti Earthquake, Jan 2010")
     st.caption(
         "A blind walk-forward detector (3-month windows, binomial surprise vs "
         "each country's OWN past late-rate; fixed settings, no per-event "
@@ -1417,7 +1424,7 @@ with tab_recovery:
                             f"{int(_pk['late_window'])}/{int(_pk['n_window'])} late vs "
                             f"{float(_pk['baseline_rate'])*100:.0f}% baseline")
             else:
-                metric_card("Peak Significance", "—")
+                metric_card("Peak Significance", "n/a")
         with e4:
             metric_card("Alert Windows Total", f"{len(_al)}",
                         f"≈{max(1, round(len(er)*0.001))} expected by chance")
@@ -1426,15 +1433,15 @@ with tab_recovery:
             if os.path.exists(_er_rpt):
                 st.code(open(_er_rpt).read(), language=None)
 
-    # ── SCMS Validation 3 — Documented Real-World Events ───────────────────
-    st.markdown("#### 📜 Validation 3 — Documented Real-World Events (case table)")
+    # ── SCMS Validation 3, Documented Real-World Events ───────────────────
+    st.markdown("#### Validation 3: Documented Real-World Events (case table)")
     st.caption(
         "Eleven documented disruptions (Tōhoku/Renesas, KFC-DHL, Suez, COVID "
         "PPE, Texas freeze, Colonial Pipeline, …) hand-encoded and scored on "
         "two questions: would this system's exposure machinery have flagged "
         "the vulnerability EX ANTE, and does its recommended move MATCH what "
         "firms actually did? Three events were additionally found blind in "
-        "our own delivery data by the Stage-21 detector — those claims are "
+        "our own delivery data by the Stage-21 detector, those claims are "
         "machine-cross-checked at build time. Scores are deliberately not "
         "all YES: three vocabulary gaps are surfaced as limitations. The "
         "claim is consistency with reality, never 'we would have done better'."
@@ -1452,7 +1459,7 @@ with tab_recovery:
             metric_card("Ex-Ante Flag",
                         f"{int((ct['ex_ante']=='YES').sum())} YES / "
                         f"{int((ct['ex_ante']=='PARTIAL').sum())} PARTIAL",
-                        f"{int((ct['ex_ante']=='NO').sum())} NO — shown, not hidden")
+                        f"{int((ct['ex_ante']=='NO').sum())} NO, shown, not hidden")
         with c3:
             metric_card("Response Match",
                         f"{int((ct['match']=='YES').sum())} YES / "
@@ -1475,8 +1482,8 @@ with tab_recovery:
                 st.code(open(_ct_rpt).read(), language=None)
             st.dataframe(ct, use_container_width=True, height=300)
 
-    # ── SCMS Validation 4 — Outcome Counterfactual (Stage 28) ──────────────
-    st.markdown("#### ⚖️ Validation 4 — Outcome Counterfactual: planner's pick vs procurement's real choice")
+    # ── SCMS Validation 4, Outcome Counterfactual (Stage 28) ──────────────
+    st.markdown("#### Validation 4: Outcome Counterfactual: planner's pick vs procurement's real choice")
     st.caption(
         "At each lane's first late shipment, realized delivery performance over "
         "the following year for the vendor procurement actually used (A) vs the "
@@ -1532,26 +1539,26 @@ with tab_recovery:
             })
             fig_cf = go.Figure()
             fig_cf.add_trace(go.Bar(x=_bar["vendor"], y=_bar["late_rate"], name="Late rate (%)",
-                                    marker_color=["#ef5350", "#4caf50", "#78909c"],
+                                    marker_color=[RED, INK, MIST],
                                     text=_bar["late_rate"].map(lambda v: f"{v:.1f}%"),
                                     textposition="outside"))
-            fig_cf.update_layout(template="plotly_dark", paper_bgcolor="#0f0f1a",
-                                 plot_bgcolor="#0f0f1a", height=280, showlegend=False,
+            fig_cf.update_layout(template="report", paper_bgcolor=PAPER,
+                                 plot_bgcolor=PAPER, height=280, showlegend=False,
                                  yaxis_title="Late rate, year after t0 (%)",
                                  margin=dict(l=40, r=20, t=30, b=40))
             st.plotly_chart(fig_cf, use_container_width=True)
         with g2:
             fig_sv = px.histogram(
-                cf, x="lateness_saved_days", nbins=25, template="plotly_dark",
-                color_discrete_sequence=["#4fc3f7"],
+                cf, x="lateness_saved_days", nbins=25, template="report",
+                color_discrete_sequence=[SLATE],
                 labels={"lateness_saved_days": "Lateness-days saved per shipment (B vs A)"},
             )
-            fig_sv.add_vline(x=0, line=dict(color="#ef5350", dash="dash"))
-            fig_sv.update_layout(paper_bgcolor="#0f0f1a", plot_bgcolor="#0f0f1a", height=280,
+            fig_sv.add_vline(x=0, line=dict(color=RED, dash="dash"))
+            fig_sv.update_layout(paper_bgcolor=PAPER, plot_bgcolor=PAPER, height=280,
                                  yaxis_title="Lanes", margin=dict(l=40, r=20, t=30, b=40))
             st.plotly_chart(fig_sv, use_container_width=True)
         if _cfs.get("strata"):
-            st.markdown("**Sensitivity — does the gap survive within strata?**")
+            st.markdown("**Sensitivity, does the gap survive within strata?**")
             st.caption(
                 "Selection concern: the incumbent is scored while its book is in trouble. "
                 "Tertiles on incumbent post-alert volume and on lane maturity at t0 hold "
@@ -1589,14 +1596,14 @@ with tab_recovery:
 
     # ── Network-Grounded Response Plan (Stage 18) ──────────────────────────
     st.divider()
-    st.markdown("### Network-Grounded Response Plan — REVISED (capacity-grounded)")
+    st.markdown("### Network-Grounded Response Plan: REVISED (capacity-grounded)")
     st.caption(
         "REVISED METHODOLOGY (for A/B against app.py). Unlike the abstract "
         "what-if calculator (demoted to the bottom of this tab), which has no "
         "knowledge of your graph, this section searches the real ARCOS graph "
-        "for a proven alternative — a "
+        "for a proven alternative, a "
         "distributor already connected to both the manufacturer and the "
-        "retailer — but it reports only claims the REAL data can support: "
+        "retailer, but it reports only claims the REAL data can support: "
         "whether that alternate can actually absorb the lost volume, and how "
         "many nodes are genuinely single-sourced. The fabricated "
         "'days saved' figure (a subtraction across two unrelated tables) is "
@@ -1658,7 +1665,7 @@ with tab_recovery:
             "things from real transaction data: (1) whether a proven alternate "
             "exists, and (2) whether that alternate has the **capacity** to "
             "absorb the disrupted shipment's volume. It **cannot** prove a "
-            "recovery-time saving — that would require joining our ARCOS graph "
+            "recovery-time saving, that would require joining our ARCOS graph "
             "to an unrelated synthetic disruption table, which we no longer do. "
             "Recovery-days below is a historical population prior, shown for "
             "context only and never subtracted."
@@ -1684,14 +1691,14 @@ with tab_recovery:
 
         if len(resolved_df):
             st.markdown(
-                "**Resolved cases** — no listed backup, network found a proven "
+                "**Resolved cases**, no listed backup, network found a proven "
                 "supplier. *Volume coverage* = share of the disrupted shipment "
                 "the alternate can absorb from its own spare throughput "
                 "(1.00 = fully covered). *Recovery prior* is context only."
             )
             _disp = resolved_df.copy()
             _disp["volume_coverage"] = _disp["volume_coverage"].map(
-                lambda v: f"{v*100:.0f}%" if pd.notna(v) else "—"
+                lambda v: f"{v*100:.0f}%" if pd.notna(v) else "n/a"
             )
             show_cols = ["manufacturer", "entity", "retailer", "route",
                          "volume_coverage", "activation_days", "est_recovery_days"]
@@ -1701,18 +1708,18 @@ with tab_recovery:
                     "entity": "Backup Supplier Found",
                     "volume_coverage": "Volume Coverage",
                     "activation_days": "Activation (days)",
-                    "est_recovery_days": "Recovery Prior — context only (days)",
+                    "est_recovery_days": "Recovery Prior, context only (days)",
                 }).reset_index(drop=True),
                 use_container_width=True, height=280
             )
 
         if len(exposed_df):
             st.markdown(
-                f"**Structural exposure** — {len(exposed_df):,} no-backup cases "
+                f"**Structural exposure**, {len(exposed_df):,} no-backup cases "
                 "have *no proven alternate* in the network (only a new-link or "
                 "customer-delay option). These are the genuinely single-sourced "
                 "nodes: the correct answer is a sized inventory buffer, not a "
-                "reroute. Sizing belongs in the backend planner — flagged here "
+                "reroute. Sizing belongs in the backend planner, flagged here "
                 "so the count isn't hidden inside a rosy 'resolved' headline."
             )
 
@@ -1725,30 +1732,30 @@ with tab_recovery:
         st.warning("Run Stage 8 first to train the recovery model.")
     else:
         st.divider()
-        st.markdown("#### ⬇️ Baseline (demoted): Abstract What-If Strategy Calculator")
+        st.markdown("#### Baseline (demoted): Abstract What-If Strategy Calculator")
         st.warning(
-            "⚠️ **This is the OLD approach, kept only for contrast.** It is an "
+            "**This is the OLD approach, kept only for contrast.** It is an "
             "ABSTRACT what-if calculator driven by the *synthetic* disruption "
-            "table — it takes the sliders below, not your real supply graph, so "
+            "table, it takes the sliders below, not your real supply graph, so "
             "it can never name a real backup supplier, and its recovery numbers "
-            "cross an illegitimate dataset seam. The two sections **above** — "
+            "cross an illegitimate dataset seam. The two sections **above**, "
             "**SCMS Spine** (real unified dataset) and **Network-Grounded "
-            "Response Plan** (real graph, capacity-checked) — are the actual "
+            "Response Plan** (real graph, capacity-checked), are the actual "
             "methodology. This calculator is shown so you can see what we moved "
             "away from, not as something to rely on."
         )
         st.caption(
-            "Stage 8 does not classify which strategy a human historically picked — "
+            "Stage 8 does not classify which strategy a human historically picked, "
             "that label turned out to be near-unlearnable (mutual information ≈ 0 for "
             "every feature except backup-supplier status; see recovery_predictor.py). "
             "Instead it predicts recovery time **under each candidate strategy** and "
             "recommends whichever is fastest. This is decision support based on "
-            "historical association, not a causal guarantee — the per-case number "
+            "historical association, not a causal guarantee, the per-case number "
             "carries real error, but the ranking is a stable effect over thousands "
             "of past disruptions."
         )
         st.caption(
-            "Industry and Supplier Region are not shown here — mutual-information "
+            "Industry and Supplier Region are not shown here, mutual-information "
             "analysis found they carry near-zero signal for this prediction "
             "(MI ≈ 0.0002–0.0011) and the current model doesn't use them."
         )
@@ -1791,7 +1798,7 @@ with tab_recovery:
                       sev_x_backup, impact_x_backup]
 
         # Without a backup supplier, "Alternative Supplier" is not an
-        # available option — mirrors the exclusion in response_planner.py.
+        # available option, mirrors the exclusion in response_planner.py.
         name_to_enc = {v: k for k, v in response_map.items()} if response_map else {}
         alt_enc = name_to_enc.get("Alternative Supplier")
 
@@ -1811,7 +1818,7 @@ with tab_recovery:
                 strategy_label = best["Strategy"]
                 feat_vec    = best["_feat_vec"]
             else:
-                # legacy 7-feature pickle — no strategy sweep possible
+                # legacy 7-feature pickle, no strategy sweep possible
                 feat_vec = np.array([base_feats], dtype=float)
                 days     = float(regressor.predict(feat_vec)[0])
                 strategy_label = "Alternative Supplier"
@@ -1824,7 +1831,7 @@ with tab_recovery:
             if rank_df is not None:
                 st.markdown("##### All strategies ranked by predicted recovery")
                 if not sel_backup:
-                    st.caption("'Alternative Supplier' is excluded — not available without a backup supplier.")
+                    st.caption("'Alternative Supplier' is excluded, not available without a backup supplier.")
                 _show_df = rank_df[["Strategy", "Predicted Recovery (days)"]].copy()
                 st.dataframe(_show_df, use_container_width=True, hide_index=True)
 
@@ -1840,44 +1847,44 @@ with tab_recovery:
 
             STEP_PLANS = {
                 "Alternative Supplier": [
-                    "🔴 **Immediately** flag the disrupted supplier in the system and halt new orders",
-                    "🔍 **Within 24h** — identify backup suppliers using the Supplier Agent rankings below",
-                    "📞 **Within 48h** — contact top-ranked backup suppliers and confirm available capacity",
-                    "🔄 **Within 72h** — reroute all pending orders through the selected backup supplier",
-                    "📊 **Ongoing** — monitor delivery performance and anomaly scores on the new route",
-                    f"⏱️ **Full recovery expected in ~{days:.0f} days** once rerouting is confirmed",
+                    "**Immediately** flag the disrupted supplier in the system and halt new orders",
+                    "**Within 24h**, identify backup suppliers using the Supplier Agent rankings below",
+                    "**Within 48h**, contact top-ranked backup suppliers and confirm available capacity",
+                    "**Within 72h**, reroute all pending orders through the selected backup supplier",
+                    "**Ongoing**, monitor delivery performance and anomaly scores on the new route",
+                    f"**Full recovery expected in ~{days:.0f} days** once rerouting is confirmed",
                 ],
                 "Emergency Stockpile": [
-                    "🔴 **Immediately** activate emergency inventory reserves at regional distribution centres",
-                    "📦 **Within 24h** — audit current stock levels and calculate days of supply remaining",
-                    "🚚 **Within 48h** — expedite internal transfers from low-risk nodes to affected retailers",
-                    "📋 **Within 72h** — issue demand rationing guidelines to downstream retailers if stock is tight",
-                    "🔍 **Parallel** — begin sourcing from alternative suppliers as a medium-term fix",
-                    f"⏱️ **Full recovery expected in ~{days:.0f} days**",
+                    "**Immediately** activate emergency inventory reserves at regional distribution centres",
+                    "**Within 24h**, audit current stock levels and calculate days of supply remaining",
+                    "**Within 48h**, expedite internal transfers from low-risk nodes to affected retailers",
+                    "**Within 72h**, issue demand rationing guidelines to downstream retailers if stock is tight",
+                    "**Parallel**, begin sourcing from alternative suppliers as a medium-term fix",
+                    f"**Full recovery expected in ~{days:.0f} days**",
                 ],
                 "Combined Strategy": [
-                    "🔴 **Immediately** split response across two tracks: stockpile activation AND supplier rerouting",
-                    "📦 **Track 1** — release emergency inventory to cover the next 14 days of demand",
-                    "🔍 **Track 2** — engage backup suppliers in parallel; do not wait for stockpile to deplete",
-                    "📞 **Within 48h** — confirm capacity with at least 2 backup suppliers (redundancy)",
-                    "📊 **Weekly** — review which track is performing better and scale accordingly",
-                    f"⏱️ **Full recovery expected in ~{days:.0f} days**",
+                    "**Immediately** split response across two tracks: stockpile activation AND supplier rerouting",
+                    "**Track 1**, release emergency inventory to cover the next 14 days of demand",
+                    "**Track 2**, engage backup suppliers in parallel; do not wait for stockpile to deplete",
+                    "**Within 48h**, confirm capacity with at least 2 backup suppliers (redundancy)",
+                    "**Weekly**, review which track is performing better and scale accordingly",
+                    f"**Full recovery expected in ~{days:.0f} days**",
                 ],
                 "Customer Delay": [
-                    "🔴 **Immediately** identify which downstream retailers will be affected and by how much",
-                    "📞 **Within 24h** — proactively notify affected customers of expected delay window",
-                    "📋 **Within 48h** — issue revised delivery estimates with a buffer built in",
-                    "🔍 **Parallel** — investigate root cause and whether any partial fulfilment is possible",
-                    "🔄 **Once supply resumes** — prioritise backlog clearance by order date",
-                    f"⏱️ **Full recovery expected in ~{days:.0f} days**",
+                    "**Immediately** identify which downstream retailers will be affected and by how much",
+                    "**Within 24h**, proactively notify affected customers of expected delay window",
+                    "**Within 48h**, issue revised delivery estimates with a buffer built in",
+                    "**Parallel**, investigate root cause and whether any partial fulfilment is possible",
+                    "**Once supply resumes**, prioritise backlog clearance by order date",
+                    f"**Full recovery expected in ~{days:.0f} days**",
                 ],
             }
 
             steps = STEP_PLANS.get(strategy_label, [
-                "🔴 Isolate and assess the disrupted node immediately",
-                "📞 Contact affected downstream partners within 24 hours",
-                "🔄 Activate contingency routing or inventory plans",
-                f"⏱️ Full recovery expected in ~{days:.0f} days",
+                "Isolate and assess the disrupted node immediately",
+                "Contact affected downstream partners within 24 hours",
+                "Activate contingency routing or inventory plans",
+                f"Full recovery expected in ~{days:.0f} days",
             ])
 
             for step in steps:
@@ -1943,15 +1950,15 @@ with tab_recovery:
                 }).sort_values("SHAP (days)")
 
                 fig_w, ax_w = plt.subplots(figsize=(8, 4))
-                fig_w.patch.set_facecolor("#0f0f1a")
-                ax_w.set_facecolor("#0f0f1a")
-                colors_w = ["#e74c3c" if v > 0 else "#3498db" for v in _shap_df["SHAP (days)"]]
+                fig_w.patch.set_facecolor(PAPER)
+                ax_w.set_facecolor(PAPER)
+                colors_w = [RED if v > 0 else SLATE for v in _shap_df["SHAP (days)"]]
                 bars = ax_w.barh(_shap_df["Feature"], _shap_df["SHAP (days)"],
                                  color=colors_w, edgecolor="none")
                 ax_w.axvline(0, color="white", linewidth=0.8, alpha=0.5)
                 ax_w.set_xlabel("Impact on predicted recovery days", color="white")
                 ax_w.set_title(
-                    f"Prediction breakdown  —  baseline avg: {_base:.0f} days  →  predicted: {days:.0f} days",
+                    f"Prediction breakdown ,  baseline avg: {_base:.0f} days  →  predicted: {days:.0f} days",
                     color="white", fontsize=10,
                 )
                 ax_w.tick_params(colors="white")
@@ -1959,7 +1966,7 @@ with tab_recovery:
                 for spine in ["top", "right"]:
                     ax_w.spines[spine].set_visible(False)
                 for spine in ["bottom", "left"]:
-                    ax_w.spines[spine].set_color("#4a4a6a")
+                    ax_w.spines[spine].set_color(INK)
                 for bar, val in zip(bars, _shap_df["SHAP (days)"]):
                     label = f"+{val:.1f}d" if val > 0 else f"{val:.1f}d"
                     x_pos = val + (0.3 if val > 0 else -0.3)
@@ -1977,10 +1984,10 @@ with tab_recovery:
                 summary_lines = [f"**Baseline average recovery: {_base:.0f} days**"]
                 if not top_pos.empty:
                     for _, row in top_pos.iterrows():
-                        summary_lines.append(f"🔴 **{row['Feature']}** added **+{row['SHAP (days)']:.1f} days**")
+                        summary_lines.append(f"**{row['Feature']}** added **+{row['SHAP (days)']:.1f} days**")
                 if not top_neg.empty:
                     for _, row in top_neg.iterrows():
-                        summary_lines.append(f"🔵 **{row['Feature']}** saved **{row['SHAP (days)']:.1f} days**")
+                        summary_lines.append(f"**{row['Feature']}** saved **{row['SHAP (days)']:.1f} days**")
                 summary_lines.append(f"**→ Final prediction: {days:.0f} days**")
                 for line in summary_lines:
                     st.markdown(line)
@@ -1996,7 +2003,7 @@ with tab_recovery:
                 with open(metrics_path) as f:
                     st.code(f.read(), language=None)
             except Exception:
-                st.info("Model performance metrics available — restart the app to load.")
+                st.info("Model performance metrics available, restart the app to load.")
 
         fig_path = os.path.join(FIGS, "fig6_recovery.png")
         if os.path.exists(fig_path):
@@ -2004,7 +2011,7 @@ with tab_recovery:
 
         # ── Inventory Agent ───────────────────────────────────────────
         st.divider()
-        st.markdown("#### Inventory Agent — Stock Transfer Recommendations (Stage 15)")
+        st.markdown("#### Inventory Agent: Stock Transfer Recommendations (Stage 15)")
         st.caption(
             "Identifies retailers with single-source dependency or abnormal order volume, "
             "then recommends ranked stock transfer sources ranked by capacity, safety, and fuel cost."
@@ -2054,12 +2061,17 @@ with tab_recovery:
             st.info("Run Stage 15 (Inventory Agent) to see transfer recommendations.")
 
 # ══════════════════════════════════════════════════════════════════════════
-# TAB 7 — MULTI-DOMAIN RISK
+# TAB 7, MULTI-DOMAIN RISK
 # ══════════════════════════════════════════════════════════════════════════
 with tab_multi:
-    st.subheader("Multi-Domain Risk Modelling — Objective 4")
+    specimen("Specimen 06 · Five industries", "Comparative pathology")
+    try:
+        report_verdict((lambda d: f"Every industry beats its baseline; {d.iloc[0]['Industry']} leads at F1 {d.iloc[0]['F1 Score']:.3f} against {d.iloc[0]['Baseline F1']:.3f}")(pd.read_csv(os.path.join(OUT, "multi_domain_f1.csv")).sort_values("F1 Score", ascending=False)))
+    except Exception:
+        pass
+
     st.caption(
-        "Same XGBoost architecture trained across 5 industries — "
+        "Same XGBoost architecture trained across 5 industries, "
         "proving the framework generalises beyond a single domain."
     )
 
@@ -2095,10 +2107,15 @@ with tab_multi:
                 st.image(fig_path, use_column_width=True)
 
 # ══════════════════════════════════════════════════════════════════════════
-# TAB 8 — IMMUNOLOGICAL MEMORY (FAISS)
+# TAB 8, IMMUNOLOGICAL MEMORY (FAISS)
 # ══════════════════════════════════════════════════════════════════════════
 with tab_memory:
-    st.subheader("Immunological Memory — FAISS Disruption Index")
+    specimen("Specimen 07 · 100,000 past disruptions", "Antibody library")
+    try:
+        report_verdict("Recalled disruptions predict recovery to 36.3 days error, against 42.3 days for the plain average")
+    except Exception:
+        pass
+
     st.caption(
         "Models memory B-cells: stores 100K historical disruption signatures as "
         "8-dimensional vectors in a FAISS index. When a new anomaly is detected, "
@@ -2135,17 +2152,17 @@ with tab_memory:
             resp_counts = df_mem["match_response_type"].value_counts().reset_index()
             resp_counts.columns = ["Response Strategy", "Count"]
             fig_resp, ax_resp = plt.subplots(figsize=(8, 3.5))
-            fig_resp.patch.set_facecolor("#0f0f1a")
-            ax_resp.set_facecolor("#0f0f1a")
+            fig_resp.patch.set_facecolor(PAPER)
+            ax_resp.set_facecolor(PAPER)
             bars = ax_resp.barh(resp_counts["Response Strategy"],
                                 resp_counts["Count"],
-                                color="#00A896", edgecolor="none")
+                                color=INK, edgecolor="none")
             ax_resp.tick_params(colors="white")
             ax_resp.set_xlabel("Retrieval Count", color="white")
             for sp in ["top", "right"]:
                 ax_resp.spines[sp].set_visible(False)
             for sp in ["bottom", "left"]:
-                ax_resp.spines[sp].set_color("#333355")
+                ax_resp.spines[sp].set_color(INK)
             for bar in bars:
                 ax_resp.text(bar.get_width() + 1, bar.get_y() + bar.get_height()/2,
                              f"{int(bar.get_width())}", va="center", color="white", fontsize=9)
@@ -2175,7 +2192,7 @@ with tab_memory:
         st.divider()
 
         # ── Match distance distribution ──────────────────────────────────
-        st.markdown("#### Match Quality — How Close Are Retrieved Memories?")
+        st.markdown("#### Match Quality: How Close Are Retrieved Memories?")
         st.caption(
             "Lower L2 distance = more similar historical disruption. "
             "Most matches cluster below 1.0, meaning the memory index is finding "
@@ -2183,21 +2200,21 @@ with tab_memory:
         )
         if "match_distance" in df_mem.columns:
             fig_dist, ax_dist = plt.subplots(figsize=(8, 3))
-            fig_dist.patch.set_facecolor("#0f0f1a")
-            ax_dist.set_facecolor("#0f0f1a")
+            fig_dist.patch.set_facecolor(PAPER)
+            ax_dist.set_facecolor(PAPER)
             ax_dist.hist(df_mem["match_distance"].dropna(), bins=40,
-                         color="#F4845F", edgecolor="none", alpha=0.85)
+                         color=RED, edgecolor="none", alpha=0.85)
             ax_dist.set_xlabel("L2 Match Distance (lower = more similar)", color="white")
             ax_dist.set_ylabel("Frequency", color="white")
             ax_dist.tick_params(colors="white")
             for sp in ["top", "right"]:
                 ax_dist.spines[sp].set_visible(False)
             for sp in ["bottom", "left"]:
-                ax_dist.spines[sp].set_color("#333355")
+                ax_dist.spines[sp].set_color(INK)
             avg_dist = df_mem["match_distance"].mean()
-            ax_dist.axvline(avg_dist, color="#00A896", linestyle="--", linewidth=1.5,
+            ax_dist.axvline(avg_dist, color=INK, linestyle="--", linewidth=1.5,
                             label=f"Avg = {avg_dist:.3f}")
-            ax_dist.legend(facecolor="#1a1a2e", labelcolor="white", fontsize=9)
+            ax_dist.legend(facecolor=PAPER, labelcolor=INK, fontsize=9)
             plt.tight_layout()
             st.pyplot(fig_dist)
             plt.close()
@@ -2215,12 +2232,12 @@ with tab_memory:
         st.dataframe(df_mem[cols_to_show].head(30), use_container_width=True, hide_index=True)
 
 # ══════════════════════════════════════════════════════════════════════════
-# TAB 9 — LIVE STREAM
+# TAB 9, LIVE STREAM
 # ══════════════════════════════════════════════════════════════════════════
-# @st.fragment(run_every=...) reruns ONLY this function on its own timer —
+# @st.fragment(run_every=...) reruns ONLY this function on its own timer -
 # not the whole script. Before this fix, a bare `time.sleep(3); st.rerun()`
 # at module level re-executed the ENTIRE app every 3 seconds (Streamlit has
-# no notion of "inactive tab" — all tabs' code runs on every rerun), which
+# no notion of "inactive tab", all tabs' code runs on every rerun), which
 # meant every button click anywhere in the app (e.g. Recovery Predictor's
 # "Rank Strategies") got wiped by the next auto-refresh before its result
 # could ever be seen. Must be defined before tab_live calls it.
@@ -2228,7 +2245,7 @@ with tab_memory:
 # The simulator and consumer are long-running scripts. They are launched here
 # as detached subprocesses so a demo needs no extra terminals. PIDs are kept in
 # a small file (not session_state) so a page reload or a second browser tab
-# still sees — and can stop — processes started earlier.
+# still sees, and can stop, processes started earlier.
 import subprocess as _sp
 import signal as _signal
 
@@ -2241,7 +2258,7 @@ def _pid_alive(pid):
     """True only for a process that is still running.
 
     Children we spawned become zombies after they exit until someone waits on
-    them, and a signal-0 probe still succeeds on a zombie — so reap first.
+    them, and a signal-0 probe still succeeds on a zombie, so reap first.
     waitpid raises ChildProcessError for processes that are not our children
     (e.g. after a server restart); fall back to the signal probe for those.
     """
@@ -2252,7 +2269,7 @@ def _pid_alive(pid):
     try:
         done_pid, _ = os.waitpid(pid, os.WNOHANG)
         if done_pid == pid:
-            return False          # exited — reaped just now
+            return False          # exited, reaped just now
         return True               # still running (our child)
     except ChildProcessError:
         pass                      # not our child: probe instead
@@ -2340,7 +2357,7 @@ def _live_stream_fragment(live_results_path, disruption_flag_path):
     _running = _stream_pids()
     if not os.path.exists(live_results_path):
         if _running:
-            st.info("Stream is starting — the consumer is loading the immune engine and "
+            st.info("Stream is starting, the consumer is loading the immune engine and "
                     "waiting for its first rows. This usually takes a few seconds.")
         else:
             st.info("No stream results yet. Click **Start simulation** above.")
@@ -2349,7 +2366,7 @@ def _live_stream_fragment(live_results_path, disruption_flag_path):
     try:
         df_live = pd.read_csv(live_results_path)
     except Exception:
-        st.info("Results file is being written — retrying on the next refresh.")
+        st.info("Results file is being written, retrying on the next refresh.")
         return
 
     total_rows      = len(df_live)
@@ -2365,19 +2382,19 @@ def _live_stream_fragment(live_results_path, disruption_flag_path):
     c2.metric("Anomalies Detected",  anomaly_rows,    delta=f"{anomaly_rows} flagged")
     c3.metric("Disruptions Injected", disruption_rows,
               help="Rows the simulator flagged. The flag is NOT used by the detector; it only scores recall.")
-    c4.metric("Injected Caught",     f"{caught_rows}/{disruption_rows}" if disruption_rows else "—",
+    c4.metric("Injected Caught",     f"{caught_rows}/{disruption_rows}" if disruption_rows else "n/a",
               help="Detector recall on injected rows: real rolling z-score or the zero-quantity rule.")
     c5.metric("Routes Rerouted",     rerouted_rows)
 
     if os.path.exists(disruption_flag_path):
         flag_text = open(disruption_flag_path).read()
-        st.error(f"⚡ ACTIVE DISRUPTION DETECTED\n\n{flag_text}")
+        st.error(f"ACTIVE DISRUPTION DETECTED\n\n{flag_text}")
 
     st.markdown("#### Recent Anomalies")
     if "is_anomaly" in df_live.columns:
         df_anomalies = df_live[df_live["is_anomaly"] == 1].tail(10)
         if df_anomalies.empty:
-            st.success("No anomalies detected yet — supply chain is healthy.")
+            st.success("No anomalies detected yet, supply chain is healthy.")
         else:
             cols_to_show = [c for c in [
                 "timestamp", "manufacturer", "distributor", "retailer",
@@ -2402,26 +2419,31 @@ def _live_stream_fragment(live_results_path, disruption_flag_path):
         fig_stream.add_trace(go.Scatter(
             x=df_live["row_index"], y=df_live["z_score"],
             mode="lines", name="Z-Score",
-            line=dict(color="#00A896", width=1.5)
+            line=dict(color=INK, width=1.5)
         ))
-        fig_stream.add_hline(y=2.5, line_dash="dash", line_color="#F4845F",
+        fig_stream.add_hline(y=2.5, line_dash="dash", line_color=RED,
                              annotation_text="Anomaly Threshold (Z=2.5)")
         fig_stream.update_layout(
             xaxis_title="Row Index", yaxis_title="Z-Score",
-            template="plotly_dark", height=300,
+            template="report", height=300,
             margin=dict(l=40, r=20, t=20, b=40)
         )
         st.plotly_chart(fig_stream, use_container_width=True)
-    # Fragment reruns itself every 3s (run_every=3 above) — no manual
+    # Fragment reruns itself every 3s (run_every=3 above), no manual
     # sleep/rerun needed, and this no longer touches the rest of the app.
 
 
 with tab_live:
-    st.subheader("Live Stream Monitor — Real-Time Sensor Feed")
+    specimen("Specimen 08 · Live feed", "Bedside monitor")
+    try:
+        report_verdict("Detect, recall, reroute, restock: every decision shown step by step")
+    except Exception:
+        pass
+    st.subheader("Live stream")
     st.caption(
         "Simulates real-time IoT/sensor data arriving row by row. The simulator "
         "and the immune-response consumer run as background processes started "
-        "from this page — no extra terminals needed."
+        "from this page, no extra terminals needed."
     )
 
     LIVE_RESULTS_PATH    = os.path.join(STREAM_DIR, "live_results.csv")
@@ -2452,7 +2474,7 @@ with tab_live:
         with cc5:
             st.markdown("<div style='height:1.7rem'></div>", unsafe_allow_html=True)
             if _running:
-                if st.button("⏹ Stop simulation", type="primary", use_container_width=True):
+                if st.button("Stop simulation", type="primary", use_container_width=True):
                     _stop_stream()
                     st.rerun()
             else:
@@ -2461,7 +2483,7 @@ with tab_live:
                     st.rerun()
         if _running:
             st.success(
-                "Running — " + " · ".join(f"{k} pid {v}" for k, v in sorted(_running.items()))
+                "Running, " + " · ".join(f"{k} pid {v}" for k, v in sorted(_running.items()))
                 + ". Results below refresh every 3 s."
             )
         else:
@@ -2483,11 +2505,11 @@ with tab_live:
 
 
 # ══════════════════════════════════════════════════════════════════════════
-# TAB 10 — IMMUNE RESPONSE (Chain-of-Thought Real-Time Decisions)
+# TAB 10, IMMUNE RESPONSE (Chain-of-Thought Real-Time Decisions)
 # ══════════════════════════════════════════════════════════════════════════
 with tab_live:
     st.divider()
-    st.subheader("🦠 Immune Response Engine — Real-Time Chain-of-Thought Decisions")
+    st.subheader("Immune response engine")
     st.caption(
         "When a disruption is detected in the live stream, the Immune Response Engine fires "
         "four parallel response systems: memory recall, alternate routing, backup supplier "
@@ -2498,7 +2520,7 @@ with tab_live:
 
     if not os.path.exists(IMMUNE_DECISIONS_PATH):
         st.info(
-            "No immune response decisions yet. Click **Start simulation** above — "
+            "No immune response decisions yet. Click **Start simulation** above, "
             "decisions appear here once the first disruption is injected."
         )
         st.markdown("**Or run a one-shot test of the engine directly:**")
@@ -2525,7 +2547,7 @@ with tab_live:
             # ── Cytokine storm banners ─────────────────────────────────────
             if storm_decisions:
                 st.error(
-                    f"⚡ **{len(storm_decisions)} CYTOKINE STORM event(s) recorded** — "
+                    f"**{len(storm_decisions)} CYTOKINE STORM event(s) recorded**, "
                     "simultaneous multi-node cascade(s) detected. See details below."
                 )
                 for sd in storm_decisions:
@@ -2535,7 +2557,7 @@ with tab_live:
                     affected = detail.get("affected_distributors", [])
                     repeats  = detail.get("repeat_hit_nodes", [])
                     count    = detail.get("storm_event_count", "?")
-                    with st.expander(f"🔴 Cytokine Storm — {ts_str} | {count} simultaneous disruptions", expanded=False):
+                    with st.expander(f"Cytokine Storm, {ts_str} | {count} simultaneous disruptions", expanded=False):
                         st.markdown(f"**Reasoning:** {step0.get('reasoning','')}")
                         sc1, sc2, sc3 = st.columns(3)
                         sc1.metric("Disruptions in window", count)
@@ -2589,7 +2611,7 @@ with tab_live:
             verdict = d.get("verdict", {})
 
             # Event header
-            sev_colour = {"CRITICAL": "🔴", "HIGH": "🟠", "MODERATE": "🟡", "CYTOKINE_STORM": "⚡"}.get(verdict.get("severity"), "⚪")
+            sev_colour = {"CRITICAL": "", "HIGH": "", "MODERATE": "", "CYTOKINE_STORM": ""}.get(verdict.get("severity"), "")
             st.markdown(f"## {sev_colour} {verdict.get('severity','?')} severity disruption")
             hc1, hc2, hc3 = st.columns(3)
             hc1.markdown(f"**Manufacturer**\n\n{d.get('manufacturer','?')}")
@@ -2603,17 +2625,17 @@ with tab_live:
             st.markdown("---")
 
             # Chain-of-thought steps
-            st.markdown("### 🧠 Chain-of-Thought Reasoning")
+            st.markdown("### Chain-of-Thought Reasoning")
             thinking = d.get("thinking", [])
 
             PHASE_ICONS = {
-                "DETECTION":           "🔍",
-                "MEMORY RECALL":       "🧬",
-                "ALTERNATE ROUTE":     "🗺️",
-                "BACKUP SUPPLIER":     "🏭",
-                "INVENTORY TRANSFER":  "📦",
-                "FINAL VERDICT":       "✅",
-                "CYTOKINE STORM":      "⚡",
+                "DETECTION":           "",
+                "MEMORY RECALL":       "",
+                "ALTERNATE ROUTE":     "",
+                "BACKUP SUPPLIER":     "",
+                "INVENTORY TRANSFER":  "",
+                "FINAL VERDICT":       "",
+                "CYTOKINE STORM":      "",
             }
 
             for step in thinking:
@@ -2623,7 +2645,7 @@ with tab_live:
                 data   = step.get("data", {})
                 icon   = PHASE_ICONS.get(phase, "▪️")
 
-                with st.expander(f"{icon} Step {step.get('step','')} — {phase}: {title}", expanded=True):
+                with st.expander(f"{icon} Step {step.get('step','')}, {phase}: {title}", expanded=True):
                     st.markdown(f"**Reasoning:**")
                     st.info(reason)
 
@@ -2642,7 +2664,7 @@ with tab_live:
                                 })
                             st.dataframe(pd.DataFrame(mem_rows), use_container_width=True)
                             if data.get("avg_recovery_days"):
-                                st.success(f"📅 Estimated recovery: **{data['avg_recovery_days']} days** | "
+                                st.success(f"Estimated recovery: **{data['avg_recovery_days']} days** | "
                                            f"Recommended: **{data.get('recommended_response','?')}**")
 
                         elif phase == "ALTERNATE ROUTE":
@@ -2654,9 +2676,9 @@ with tab_live:
                                 st.success(f"**Alternate route:** `{alt}`")
                                 decay = data.get("decay_factor", 1.0)
                                 decay_label = (
-                                    "🟢 Fresh (no recent overuse)"       if decay >= 0.9 else
-                                    "🟡 Moderate load (used recently)"   if decay >= 0.7 else
-                                    "🔴 High load — confidence reduced"
+                                    "Fresh (no recent overuse)"       if decay >= 0.9 else
+                                    "Moderate load (used recently)"   if decay >= 0.7 else
+                                    "High load, confidence reduced"
                                 )
                                 st.markdown(
                                     f"Method: `{data.get('method','?')}` | "
@@ -2707,15 +2729,15 @@ with tab_live:
 
             # Ranked action plan
             st.markdown("---")
-            st.markdown("### 📋 Ranked Action Plan")
+            st.markdown("### Ranked Action Plan")
             actions = d.get("actions", [])
             if not actions:
                 st.warning("No actions generated.")
             else:
                 for a in actions:
                     conf = float(a.get("confidence", 0))
-                    colour = "#00A896" if conf >= 0.7 else "#F4845F" if conf >= 0.4 else "#888"
-                    priority_icon = {1: "🥇", 2: "🥈", 3: "🥉"}.get(a.get("priority"), "▪️")
+                    colour = INK if conf >= 0.7 else RED if conf >= 0.4 else MUTED
+                    priority_icon = {1: "1", 2: "2", 3: "3"}.get(a.get("priority"), "-")
                     with st.container():
                         ac1, ac2 = st.columns([3, 1])
                         with ac1:
@@ -2732,7 +2754,7 @@ with tab_live:
 
             # All events summary table
             st.markdown("---")
-            st.markdown("### 📊 All Response Events")
+            st.markdown("### All Response Events")
             summary_rows = []
             for i, dec in enumerate(decisions):
                 v = dec.get("verdict", {})
@@ -2741,7 +2763,7 @@ with tab_live:
                     "Event":       i + 1,
                     "Timestamp":   dec.get("timestamp","")[:19],
                     "Severity":    v.get("severity","?"),
-                    "Z-Score":     ("—" if dec.get("z_score") is None else dec.get("z_score")),
+                    "Z-Score":     ("n/a" if dec.get("z_score") is None else dec.get("z_score")),
                     "Signals":     f"{v.get('signals_activated',0)}/4",
                     "Top Action":  acts[0].get("action","?") if acts else "?",
                     "Recovery (d)":v.get("recovery_estimate_days","?"),
@@ -2751,12 +2773,12 @@ with tab_live:
             st.dataframe(pd.DataFrame(summary_rows), use_container_width=True)
 
         st.markdown("---")
-        if st.button("🔄 Refresh decisions"):
+        if st.button("Refresh decisions"):
             st.rerun()
 
 
 # ══════════════════════════════════════════════════════════════════════════
-# TAB 9 (cont.) — REAL-EVENT REPLAY PLAYBACK
+# TAB 9 (cont.), REAL-EVENT REPLAY PLAYBACK
 # Stage 21's blind walk-forward detections on real SCMS deliveries, played
 # window by window, with Stage 25's per-lane response when the alert fires.
 # This is a PLAYBACK of committed results, deliberately separate from the
@@ -2764,7 +2786,7 @@ with tab_live:
 # ══════════════════════════════════════════════════════════════════════════
 with tab_live:
     st.divider()
-    st.subheader("🎞 Real-Event Replay — documented crises, window by window")
+    st.subheader("Real event replay")
     st.caption(
         "A playback of the Stage-21 detector on **real** SCMS delivery data: for "
         "each country it sees only that country's own past late-rate and the "
@@ -2816,7 +2838,7 @@ with tab_live:
         b1, b2, b3, b4, b5 = st.columns([1, 1, 1, 1.4, 2])
         with b1:
             if st.session_state["rp_playing"]:
-                if st.button("⏸ Pause", use_container_width=True, key="rp_pause"):
+                if st.button("Pause", use_container_width=True, key="rp_pause"):
                     st.session_state["rp_playing"] = False
             else:
                 if st.button("▶ Play", type="primary", use_container_width=True, key="rp_play"):
@@ -2824,7 +2846,7 @@ with tab_live:
                         st.session_state["rp_idx"] = _start_idx
                     st.session_state["rp_playing"] = True
         with b2:
-            if st.button("⏭ Step", use_container_width=True, key="rp_step"):
+            if st.button("Step", use_container_width=True, key="rp_step"):
                 st.session_state["rp_playing"] = False
                 st.session_state["rp_idx"] = min(st.session_state["rp_idx"] + 1, _n - 1)
         with b3:
@@ -2832,7 +2854,7 @@ with tab_live:
                 st.session_state["rp_playing"] = False
                 st.session_state["rp_idx"] = _start_idx
         with b4:
-            if st.button("🚨 Jump to alert", use_container_width=True, key="rp_jump",
+            if st.button("Jump to alert", use_container_width=True, key="rp_jump",
                          disabled=_first_alert is None):
                 st.session_state["rp_playing"] = False
                 st.session_state["rp_idx"] = int(_first_alert)
@@ -2856,7 +2878,7 @@ with tab_live:
             seen = _rows.iloc[: idx + 1]
             in_doc = bool(_doc_mask.iloc[idx])
             fired_so_far = _first_alert is not None and idx >= _first_alert
-            status = ("🚨 ALERT" if int(cur["alert"]) == 1 else
+            status = ("ALERT" if int(cur["alert"]) == 1 else
                       ("watching" if in_doc else "quiet"))
 
             k1, k2, k3, k4, k5 = st.columns(5)
@@ -2874,33 +2896,33 @@ with tab_live:
 
             # ── late-rate chart with the playhead ──────────────────────────
             fig_r = go.Figure()
-            fig_r.add_vrect(x0=_w0d, x1=_w1d, fillcolor="#ffb300", opacity=0.10, line_width=0,
+            fig_r.add_vrect(x0=_w0d, x1=_w1d, fillcolor=SLATE, opacity=0.10, line_width=0,
                             annotation_text="documented crisis", annotation_position="top left",
-                            annotation_font=dict(color="#ffb300", size=10))
+                            annotation_font=dict(color=SLATE, size=10))
             fig_r.add_trace(go.Scatter(x=_rows["date"], y=_rows["baseline_rate"] * 100, mode="lines",
-                                       name="country's own baseline", line=dict(color="#78909c", dash="dot", width=1.2)))
+                                       name="country's own baseline", line=dict(color=MIST, dash="dot", width=1.2)))
             fig_r.add_trace(go.Scatter(x=seen["date"], y=seen["late_rate"] * 100, mode="lines+markers",
-                                       name="late rate (3-mo window)", line=dict(color="#4fc3f7", width=2),
+                                       name="late rate (3-mo window)", line=dict(color=SLATE, width=2),
                                        marker=dict(size=5)))
             _al = seen[seen["alert"] == 1]
             if not _al.empty:
                 fig_r.add_trace(go.Scatter(x=_al["date"], y=_al["late_rate"] * 100, mode="markers",
-                                           name="alert fired", marker=dict(color="#ef5350", size=11, symbol="x")))
-            fig_r.add_vline(x=cur["date"], line=dict(color="#e0e0ff", width=1.5))
-            fig_r.update_layout(template="plotly_dark", paper_bgcolor="#0f0f1a", plot_bgcolor="#0f0f1a",
+                                           name="alert fired", marker=dict(color=RED, size=11, symbol="x")))
+            fig_r.add_vline(x=cur["date"], line=dict(color=INK, width=1.5))
+            fig_r.update_layout(template="report", paper_bgcolor=PAPER, plot_bgcolor=PAPER,
                                 height=300, margin=dict(l=40, r=20, t=30, b=40),
                                 yaxis_title="Late shipments (%)", xaxis_title="Window end",
                                 legend=dict(orientation="h", y=1.14, x=0),
                                 xaxis=dict(range=[_rows["date"].min(), _rows["date"].max()]))
             fig_s = go.Figure()
-            fig_s.add_vrect(x0=_w0d, x1=_w1d, fillcolor="#ffb300", opacity=0.10, line_width=0)
+            fig_s.add_vrect(x0=_w0d, x1=_w1d, fillcolor=SLATE, opacity=0.10, line_width=0)
             fig_s.add_trace(go.Bar(x=seen["date"], y=seen["surprise"], name="−log10 p",
-                                   marker_color=["#ef5350" if a == 1 else "#4fc3f7" for a in seen["alert"]]))
-            fig_s.add_hline(y=3, line=dict(color="#ffb300", dash="dash"),
+                                   marker_color=[RED if a == 1 else SLATE for a in seen["alert"]]))
+            fig_s.add_hline(y=3, line=dict(color=SLATE, dash="dash"),
                             annotation_text="alert threshold (p = 0.001)", annotation_position="top left",
-                            annotation_font=dict(color="#ffb300", size=10))
-            fig_s.add_vline(x=cur["date"], line=dict(color="#e0e0ff", width=1.5))
-            fig_s.update_layout(template="plotly_dark", paper_bgcolor="#0f0f1a", plot_bgcolor="#0f0f1a",
+                            annotation_font=dict(color=SLATE, size=10))
+            fig_s.add_vline(x=cur["date"], line=dict(color=INK, width=1.5))
+            fig_s.update_layout(template="report", paper_bgcolor=PAPER, plot_bgcolor=PAPER,
                                 height=220, margin=dict(l=40, r=20, t=20, b=40), showlegend=False,
                                 yaxis_title="Surprise (−log10 p)",
                                 xaxis=dict(range=[_rows["date"].min(), _rows["date"].max()]))
@@ -2913,7 +2935,7 @@ with tab_live:
                 _lag = int(_first_alert) - _onset_idx
                 _d = _ev["detection"]; _sm = _ev["summary"]
                 st.error(
-                    f"🚨 Detector fired at window **{_rows.iloc[_first_alert]['window_end']}**, "
+                    f"Detector fired at window **{_rows.iloc[_first_alert]['window_end']}**, "
                     f"{_lag} window(s) after the documented onset ({_w0}), on the country's own "
                     f"history alone. Over the documented window: {_d['late_window']}/{_d['n_window']} "
                     f"late ({_d['late_rate']*100:.0f}% vs {_d['baseline_rate']*100:.1f}% baseline, "
@@ -2931,10 +2953,10 @@ with tab_live:
                 st.dataframe(pd.DataFrame(_lr), use_container_width=True, hide_index=True,
                              height=min(320, 36 * len(_lr) + 40))
             elif in_doc:
-                st.warning("Inside the documented window — the detector has not crossed its "
+                st.warning("Inside the documented window, the detector has not crossed its "
                            "threshold yet. Keep playing.")
             else:
                 st.info("Quiet run-up: the country's late rate sits on its own baseline. "
-                        "Press ▶ Play or ⏭ Step to advance.")
+                        "Press ▶ Play or Step to advance.")
 
         _replay_view()
