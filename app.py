@@ -48,6 +48,63 @@ def metric_card(label, value, sub=""):
     readout(label, value, sub)
 
 
+GRAPH_HTML = """
+<div id="g" style="width:100%;height:600px"></div>
+<div id="n" style="font:12px 'IBM Plex Mono',monospace;color:#888;padding:2px 4px"></div>
+<script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+<script>
+const D=__DATA__, T=__THEME__, N=D.x.length, CAP=1500, ECAP=5000;
+const gd=document.getElementById('g'), note=document.getElementById('n');
+const col=[T.ink,T.slate,T.mist], tn=['manufacturer','distributor','retailer'];
+let view={x:D.view.x.slice(), y:D.view.y.slice()};
+function traces(){
+  const vis=[];
+  for(let i=0;i<N&&vis.length<CAP;i++){
+    if(D.x[i]>=view.x[0]&&D.x[i]<=view.x[1]&&D.y[i]>=view.y[0]&&D.y[i]<=view.y[1]) vis.push(i);
+  }
+  const inSet=new Set(vis);
+  if(!inSet.has(D.focus)&&D.x[D.focus]>=view.x[0]&&D.x[D.focus]<=view.x[1]&&D.y[D.focus]>=view.y[0]&&D.y[D.focus]<=view.y[1]) {vis.push(D.focus);inSet.add(D.focus);}
+  const ex=[],ey=[],fx=[],fy=[]; let ec=0;
+  for(let k=0;k<D.e.length&&ec<ECAP;k+=2){
+    const a=D.e[k],b=D.e[k+1];
+    if(inSet.has(a)&&inSet.has(b)){
+      if(a===D.focus||b===D.focus){fx.push(D.x[a],D.x[b],null);fy.push(D.y[a],D.y[b],null);}
+      else{ex.push(D.x[a],D.x[b],null);ey.push(D.y[a],D.y[b],null);ec++;}
+    }
+  }
+  const out=[
+    {x:ex,y:ey,mode:'lines',line:{width:0.6,color:T.mist},hoverinfo:'skip',showlegend:false},
+    {x:fx,y:fy,mode:'lines',line:{width:1.2,color:T.muted},hoverinfo:'skip',showlegend:false}
+  ];
+  const labelled=new Set(vis.slice(0,6)); labelled.add(D.focus);
+  for(let t=0;t<3;t++){
+    const ids=vis.filter(i=>D.type[i]===t); if(!ids.length) continue;
+    out.push({x:ids.map(i=>D.x[i]),y:ids.map(i=>D.y[i]),mode:'markers+text',name:tn[t],
+      marker:{size:ids.map(i=>i===D.focus?26:9+22*D.risk[i]),color:ids.map(i=>D.risk[i]>0.7?T.red:col[t]),
+              line:{width:ids.map(i=>i===D.focus?2:0.8),color:T.ink}},
+      text:ids.map(i=>labelled.has(i)?D.name[i].slice(0,20):''),textposition:'top center',
+      textfont:{family:'IBM Plex Mono, monospace',size:10,color:T.ink},
+      hovertext:ids.map(i=>D.name[i]+'<br>'+tn[t]+'<br>risk '+D.risk[i].toFixed(3)),hoverinfo:'text'});
+  }
+  note.textContent='drawing '+vis.length+' of '+N.toLocaleString()+' entities'+(vis.length>=CAP?' (most important first)':'');
+  return out;
+}
+const layout={paper_bgcolor:T.paper,plot_bgcolor:T.paper,margin:{l:0,r:0,t:6,b:0},dragmode:'pan',uirevision:'k',
+  showlegend:true,legend:{orientation:'h',y:-0.02,font:{size:11,color:T.ink}},font:{color:T.ink},
+  xaxis:{visible:false,range:view.x,autorange:false},yaxis:{visible:false,range:view.y,autorange:false,scaleanchor:'x'}};
+Plotly.newPlot(gd,traces(),layout,{scrollZoom:true,displaylogo:false,modeBarButtonsToRemove:['select2d','lasso2d']});
+let timer=null;
+gd.on('plotly_relayout',()=>{
+  clearTimeout(timer);
+  timer=setTimeout(()=>{
+    view={x:gd._fullLayout.xaxis.range.slice(),y:gd._fullLayout.yaxis.range.slice()};
+    Plotly.react(gd,traces(),layout);
+  },60);
+});
+</script>
+"""
+
+
 # ── Data loaders (cached) ──────────────────────────────────────────────────
 @st.cache_data
 def load_anomalies():
@@ -526,10 +583,10 @@ with tab_overview:
 with tab_graph:
     specimen("Specimen 02 · Network plate", "Anatomy")
     try:
-        report_verdict(f"{load_graph().number_of_nodes():,} entities and {load_graph().number_of_edges():,} routes, shown one neighbourhood at a time")
+        report_verdict(f"{load_graph().number_of_nodes():,} entities and {load_graph().number_of_edges():,} routes, revealed as you zoom out")
     except Exception:
         pass
-    blurb("The supply network drawn as a graph: pick an entity and see who it trades with.")
+    blurb("The supply network drawn as a graph: start at one entity, then zoom out to bring in the rest.")
 
     import networkx as nx
     G    = load_graph()
@@ -542,74 +599,39 @@ with tab_graph:
         node_types = {n: d.get("type", "unknown") for n, d in G.nodes(data=True)}
         ranked = sorted(G.nodes(), key=lambda n: -risk_lookup.get(n, 0))
 
-        gc1, gc2 = st.columns([3, 2])
-        with gc1:
-            focus = st.selectbox("Focus entity (top 60 by risk)", ranked[:60], index=0, key="graph_focus")
-        with gc2:
-            n_show = st.slider("Entities shown (raise to zoom out)", 15, 400, 40, step=5, key="graph_n")
+        focus = st.selectbox("Start the view at (top 60 by risk)", ranked[:60], index=0, key="graph_focus")
 
-        @st.cache_data(show_spinner=False)
-        def _neighbourhood(_G, focus, n_show):
-            U = _G.to_undirected(as_view=True)
-            dist = {focus: 0}
-            frontier = [focus]
-            keep = [focus]
-            while frontier and len(keep) < n_show:
-                nxt = []
-                cap = max(4, n_show // 8)
-                for u in frontier:
-                    for v in sorted(U.neighbors(u), key=lambda x: -risk_lookup.get(x, 0))[:cap]:
-                        if v not in dist:
-                            dist[v] = dist[u] + 1
-                            nxt.append(v)
-                nxt.sort(key=lambda x: -risk_lookup.get(x, 0))
-                for v in nxt:
-                    if len(keep) < n_show:
-                        keep.append(v)
-                frontier = [v for v in nxt if v in set(keep)]
-            SG = _G.subgraph(keep)
-            pos = nx.spring_layout(SG.to_undirected(), seed=7, k=2.0 / max(len(keep), 1) ** 0.5, iterations=120)
-            return list(SG.edges()), pos, keep
+        @st.cache_data(show_spinner="Laying out the whole network once...", persist="disk")
+        def _full_layout(_G, _sig):
+            return nx.spring_layout(_G.to_undirected(as_view=True), seed=7, iterations=60)
 
-        edges, pos, keep = _neighbourhood(G, focus, n_show)
-        colour_map = {"manufacturer": INK, "distributor": SLATE, "retailer": MIST}
+        pos = _full_layout(G, (G.number_of_nodes(), G.number_of_edges()))
+        U = G.to_undirected(as_view=True)
+        order = sorted(G.nodes(), key=lambda n: (-risk_lookup.get(n, 0), -U.degree(n)))
+        idx = {n: i for i, n in enumerate(order)}
 
-        ex, ey, fx, fy = [], [], [], []
-        for u, v in edges:
-            x0, y0 = pos[u]; x1, y1 = pos[v]
-            if focus in (u, v):
-                fx += [x0, x1, None]; fy += [y0, y1, None]
-            else:
-                ex += [x0, x1, None]; ey += [y0, y1, None]
-        traces = [
-            go.Scatter(x=ex, y=ey, mode="lines", line=dict(width=0.6, color=MIST), hoverinfo="none", showlegend=False),
-            go.Scatter(x=fx, y=fy, mode="lines", line=dict(width=1.1, color=MUTED), hoverinfo="none", showlegend=False),
-        ]
-        labelled = {focus} | set(sorted(keep, key=lambda n: -risk_lookup.get(n, 0))[:3])
-        for t in ("manufacturer", "distributor", "retailer"):
-            ns = [n for n in keep if node_types.get(n) == t]
-            if not ns:
-                continue
-            traces.append(go.Scatter(
-                x=[pos[n][0] for n in ns], y=[pos[n][1] for n in ns],
-                mode="markers+text", name=t,
-                marker=dict(size=[26 if n == focus else 9 + 22 * risk_lookup.get(n, 0) for n in ns],
-                            color=[RED if risk_lookup.get(n, 0) > 0.7 else colour_map[t] for n in ns],
-                            line=dict(width=[2 if n == focus else 0.8 for n in ns], color=INK)),
-                text=[str(n)[:20] if n in labelled else "" for n in ns], textposition="top center",
-                textfont=dict(family="IBM Plex Mono, monospace", size=10, color=INK),
-                hovertext=[f"{n}<br>{t}<br>risk {risk_lookup.get(n, 0.0):.3f}" for n in ns], hoverinfo="text",
-            ))
-        fig = go.Figure(data=traces, layout=go.Layout(
-            showlegend=True, height=600, dragmode="pan", uirevision=f"{focus}-{n_show}",
-            legend=dict(orientation="h", y=-0.02, font=dict(size=11)),
-            xaxis=dict(visible=False), yaxis=dict(visible=False, scaleanchor="x"),
-            margin=dict(l=0, r=0, t=10, b=0),
-        ))
-        st.plotly_chart(fig, use_container_width=True,
-                        config={"scrollZoom": True, "displaylogo": False, "modeBarButtonsToRemove": ["select2d", "lasso2d"]})
-        st.caption(f"Showing {len(keep)} of {G.number_of_nodes():,} entities around {focus}. "
-                   "Node size follows risk and red marks risk above 0.70. Scroll to zoom, drag to pan.")
+        # opening view: a small window around the focus entity holding roughly 30 entities
+        import numpy as _np
+        _P = _np.array([pos[n] for n in order]); _c = _P[idx[focus]]
+        _d = _np.sort(_np.hypot(*(_P - _c).T))
+        _r = float(_d[min(30, len(_d) - 1)]) * 1.05 + 1e-3
+        _view = {"x": [float(_c[0] - _r), float(_c[0] + _r)], "y": [float(_c[1] - _r), float(_c[1] + _r)]}
+
+        data = {
+            "x": [round(float(pos[n][0]), 4) for n in order],
+            "y": [round(float(pos[n][1]), 4) for n in order],
+            "risk": [round(float(risk_lookup.get(n, 0.0)), 3) for n in order],
+            "type": [{"manufacturer": 0, "distributor": 1}.get(node_types.get(n), 2) for n in order],
+            "name": [str(n) for n in order],
+            "e": [i for u, v in G.edges() if u != v for i in (idx[u], idx[v])],
+            "focus": idx[focus],
+            "view": _view,
+        }
+        theme = {"paper": PAPER, "ink": INK, "rule": RULE, "muted": MUTED, "red": RED, "slate": SLATE, "mist": MIST}
+        import streamlit.components.v1 as components
+        components.html(GRAPH_HTML.replace("__DATA__", json.dumps(data)).replace("__THEME__", json.dumps(theme)), height=640)
+        st.caption(f"The whole network of {G.number_of_nodes():,} entities is loaded; only the part in view is drawn. "
+                   "Scroll out to bring in more, in order of importance. Drag to pan. Node size follows risk and red marks risk above 0.70.")
 
 # ══════════════════════════════════════════════════════════════════════════
 # TAB 3, ANOMALY DETECTION
