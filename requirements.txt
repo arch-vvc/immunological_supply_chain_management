@@ -16,6 +16,7 @@ shap==0.52.0
 # deep learning — GNN, LSTM and PPO are hand-rolled in plain torch (no
 # stable-baselines3 / gymnasium / torch-geometric; those were listed but never
 # imported). torch stays unpinned so CI can install the CPU wheel.
+--extra-index-url https://download.pytorch.org/whl/cpu
 torch>=2.0.0
 
 # stage 12 / 13
