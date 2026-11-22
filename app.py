@@ -28,6 +28,10 @@ st.set_page_config(
 )
 
 BASE   = os.path.dirname(os.path.abspath(__file__))
+# Hosted runs (Streamlit Cloud) do not `pip install -e .`, so make src/ importable here.
+_SRC = os.path.join(BASE, "src")
+if _SRC not in sys.path:
+    sys.path.insert(0, _SRC)
 OUT    = os.path.join(BASE, "output")
 FIGS   = os.path.join(OUT,  "figures")
 MODELS = os.path.join(BASE, "models")
