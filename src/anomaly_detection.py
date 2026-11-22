@@ -310,6 +310,10 @@ _am = "\n".join([
     f"Macro stress         : per-week λ ({_lam_desc}); "
     f"{_in_cov:.0%} of rows in indicator coverage, fallback λ={_fallback:g}",
     f"Base Z thresholds    : vol={VOL_Z}·λ  freq={FREQ_Z}·λ  surge={SURGE_Z}·λ",
+    f"Macro coverage share : {_in_cov:.4f}",
+    "Note: λ scales the per-signal flag thresholds (signals 1-3) and so the",
+    "signal count; the final is_anomaly decision is the calibrated logistic",
+    "ensemble over continuous signal strengths, which has no threshold to scale.",
     "",
     "Signal counts:",
     f"  [1] Volume Anomaly       : {df['flag_volume'].sum()}",

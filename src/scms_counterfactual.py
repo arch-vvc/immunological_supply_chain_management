@@ -405,15 +405,15 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-BG, BLUE, RED, GREEN, GREY = "#0f0f1a", "#4fc3f7", "#ff6b6b", "#44dd88", "#aaaaaa"
+BG, BLUE, RED, GREEN, GREY = "white", "#4fc3f7", "#ff6b6b", "#44dd88", "#666666"
 fig, axes = plt.subplots(1, 2, figsize=(13, 5.5))
 fig.patch.set_facecolor(BG)
-fig.suptitle("SCMS Outcome Counterfactual — Stage 28", color="white",
+fig.suptitle("SCMS Outcome Counterfactual — Stage 28", color="black",
              fontsize=13, y=0.99)
 for ax in axes:
     ax.set_facecolor(BG)
     for sp in ax.spines.values():
-        sp.set_edgecolor("#333355")
+        sp.set_edgecolor("#999999")
     ax.tick_params(colors=GREY)
 
 labels = ["Actual choice", "Planner pick"] + (["Random pool"] if r_lr is not None else [])
@@ -427,23 +427,23 @@ bars = ax1.bar(x, [v * 100 for v in lrs], color=colors, alpha=0.9, width=0.55)
 for b, v, d in zip(bars, lrs, lds):
     ax1.text(b.get_x() + b.get_width() / 2, b.get_height() + 0.5,
              f"{v:.1%}\n{d:.1f} d/ship", ha="center", va="bottom",
-             color="white", fontsize=8.5)
+             color="black", fontsize=8.5)
 ax1.set_xticks(x)
 ax1.set_xticklabels(labels, color=GREY, fontsize=9)
 ax1.set_ylim(0, max(v * 100 for v in lrs) * 1.35)
 ax1.set_ylabel("Realized late rate, year after t0 (%)", color=GREY)
 ax1.set_title(f"Outcomes at symmetric molecule scope ({n} lanes)",
-              color="white", fontsize=10.5, pad=8)
+              color="black", fontsize=10.5, pad=8)
 
 ax2 = axes[1]
 sizes = [wins, ties, loses]
 seg_labels = [f"planner pick better\n{wins} ({100*wins/n:.0f}%)",
               f"tied\n{ties}", f"actual better\n{loses} ({100*loses/n:.0f}%)"]
 ax2.pie(sizes, labels=seg_labels, colors=[GREEN, GREY, RED],
-        textprops={"color": "white", "fontsize": 9},
+        textprops={"color": "black", "fontsize": 9},
         wedgeprops={"edgecolor": BG, "linewidth": 1.5},
         startangle=90)
-ax2.set_title("Who ran fewer late shipments?", color="white",
+ax2.set_title("Who ran fewer late shipments?", color="black",
               fontsize=10.5, pad=8)
 
 plt.tight_layout(pad=2.0)

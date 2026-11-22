@@ -259,16 +259,16 @@ def main():
     print(f"  CSV saved    -> {OUT_CSV}")
 
     # ── figure ─────────────────────────────────────────────────────────────
-    BG, BLUE, RED, ORANGE, GREY = "#0f0f1a", "#4fc3f7", "#ff6b6b", "#ffaa44", "#aaaaaa"
+    BG, BLUE, RED, ORANGE, GREY = "white", "#4fc3f7", "#ff6b6b", "#ffaa44", "#666666"
     fig, axes = plt.subplots(2, 1, figsize=(15, 10),
                              gridspec_kw={"height_ratios": [3, 2]})
     fig.patch.set_facecolor(BG)
     fig.suptitle("Macro Stress vs Documented Crises — Stage 27",
-                 color="white", fontsize=14, y=0.98)
+                 color="black", fontsize=14, y=0.98)
     for ax in axes:
         ax.set_facecolor(BG)
         for sp in ax.spines.values():
-            sp.set_edgecolor("#333355")
+            sp.set_edgecolor("#999999")
         ax.tick_params(colors=GREY)
 
     ax1 = axes[0]
@@ -288,9 +288,9 @@ def main():
                      arrowprops=dict(arrowstyle="-", color=col, lw=0.8))
     ax1.set_ylabel("Stress score (0-1)", color=GREY)
     ax1.set_ylim(0, 0.75)
-    ax1.set_title("Stress timeline with 8-week event windows", color="white",
+    ax1.set_title("Stress timeline with 8-week event windows", color="black",
                   fontsize=11, pad=8)
-    ax1.legend(facecolor="#1a1a2e", labelcolor="white", fontsize=8.5)
+    ax1.legend(facecolor="white", labelcolor="black", fontsize=8.5)
 
     ax2 = axes[1]
     ev_names = [r["event"] for r in rows if r["verdict"] != "OUT OF RANGE"]
@@ -308,9 +308,9 @@ def main():
     ax2.set_xticklabels([n.replace(" ", "\n", 1) for n in ev_names],
                         color=GREY, fontsize=8)
     ax2.set_ylabel("Δ stress vs prior 12 weeks", color=GREY)
-    ax2.set_title("Event-window rise vs placebo distribution", color="white",
+    ax2.set_title("Event-window rise vs placebo distribution", color="black",
                   fontsize=11, pad=8)
-    ax2.legend(facecolor="#1a1a2e", labelcolor="white", fontsize=8.5)
+    ax2.legend(facecolor="white", labelcolor="black", fontsize=8.5)
 
     plt.tight_layout(pad=2.5)
     os.makedirs(os.path.dirname(OUT_FIG), exist_ok=True)

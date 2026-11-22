@@ -53,8 +53,8 @@ if os.path.exists(MODEL) and os.path.exists(RISK):
                         if v in top_nodes)
 
     fig, ax = plt.subplots(figsize=(14, 9))
-    fig.patch.set_facecolor("#0f0f1a")
-    ax.set_facecolor("#0f0f1a")
+    fig.patch.set_facecolor("white")
+    ax.set_facecolor("white")
 
     # Node colors by type
     color_map = {"manufacturer": "#e74c3c", "distributor": "#f39c12", "retailer": "#2ecc71", "unknown": "#95a5a6"}
@@ -66,18 +66,18 @@ if os.path.exists(MODEL) and os.path.exists(RISK):
 
     pos = nx.spring_layout(subG, seed=42, k=2.5)
 
-    nx.draw_networkx_edges(subG, pos, ax=ax, alpha=0.3, edge_color="#4a4a6a",
+    nx.draw_networkx_edges(subG, pos, ax=ax, alpha=0.3, edge_color="#999999",
                            arrows=True, arrowsize=10, width=0.8)
     nx.draw_networkx_nodes(subG, pos, ax=ax, node_color=node_colors,
                            node_size=node_sizes, alpha=0.9)
-    nx.draw_networkx_labels(subG, pos, ax=ax, font_size=6, font_color="white")
+    nx.draw_networkx_labels(subG, pos, ax=ax, font_size=6, font_color="black")
 
     # Legend
     patches = [mpatches.Patch(color=v, label=k.capitalize()) for k, v in color_map.items() if k != "unknown"]
-    ax.legend(handles=patches, loc="upper left", facecolor="#1a1a2e", labelcolor="white", fontsize=9)
+    ax.legend(handles=patches, loc="upper left", facecolor="white", labelcolor="black", fontsize=9)
 
     ax.set_title("Supply Chain Network — Top 40 Risk Nodes\n(Node size = composite risk score, Color = entity type)",
-                 color="white", fontsize=12, pad=15)
+                 color="black", fontsize=12, pad=15)
     ax.axis("off")
 
     out = os.path.join(FIGDIR, "fig1_supply_chain_graph.png")
@@ -96,8 +96,8 @@ if os.path.exists(RISK):
     risk_df = pd.read_csv(RISK).head(15)
 
     fig, ax = plt.subplots(figsize=(12, 6))
-    fig.patch.set_facecolor("#0f0f1a")
-    ax.set_facecolor("#0f0f1a")
+    fig.patch.set_facecolor("white")
+    ax.set_facecolor("white")
 
     type_colors = {"manufacturer": "#e74c3c", "distributor": "#f39c12", "retailer": "#2ecc71", "unknown": "#95a5a6"}
     bar_colors  = [type_colors.get(t, "#95a5a6") for t in risk_df["node_type"]]
@@ -105,17 +105,17 @@ if os.path.exists(RISK):
     bars = ax.barh(range(len(risk_df)), risk_df["risk_score"], color=bar_colors, edgecolor="white", linewidth=0.3)
 
     ax.set_yticks(range(len(risk_df)))
-    ax.set_yticklabels([e[:40] for e in risk_df["entity"]], color="white", fontsize=8)
-    ax.set_xlabel("Composite Risk Score", color="white")
+    ax.set_yticklabels([e[:40] for e in risk_df["entity"]], color="black", fontsize=8)
+    ax.set_xlabel("Composite Risk Score", color="black")
     ax.set_title("Top 15 High-Risk Supply Chain Entities\n(Betweenness 50% + In-degree 30% + PageRank 20%)",
-                 color="white", fontsize=11, pad=10)
-    ax.tick_params(colors="white")
+                 color="black", fontsize=11, pad=10)
+    ax.tick_params(colors="black")
     ax.spines[["top", "right"]].set_visible(False)
     for spine in ["bottom", "left"]:
-        ax.spines[spine].set_color("#4a4a6a")
+        ax.spines[spine].set_color("#999999")
 
     patches = [mpatches.Patch(color=v, label=k.capitalize()) for k, v in type_colors.items() if k != "unknown"]
-    ax.legend(handles=patches, loc="lower right", facecolor="#1a1a2e", labelcolor="white", fontsize=8)
+    ax.legend(handles=patches, loc="lower right", facecolor="white", labelcolor="black", fontsize=8)
 
     ax.invert_yaxis()
 
@@ -141,8 +141,8 @@ if os.path.exists(DATA) and os.path.exists(ANOMALY):
     monthly["date"] = monthly["date"].dt.to_timestamp()
 
     fig, ax = plt.subplots(figsize=(13, 5))
-    fig.patch.set_facecolor("#0f0f1a")
-    ax.set_facecolor("#0f0f1a")
+    fig.patch.set_facecolor("white")
+    ax.set_facecolor("white")
 
     ax.fill_between(monthly["date"], monthly["quantity"], alpha=0.3, color="#3498db")
     ax.plot(monthly["date"], monthly["quantity"], color="#3498db", linewidth=1.5, label="Monthly Volume")
@@ -151,17 +151,17 @@ if os.path.exists(DATA) and os.path.exists(ANOMALY):
     for _, row in adf.iterrows():
         ax.axvline(x=pd.to_datetime(row["date"]), color="#e74c3c", alpha=0.6, linewidth=1.2, linestyle="--")
 
-    ax.set_xlabel("Date", color="white")
-    ax.set_ylabel("Total Transaction Quantity", color="white")
+    ax.set_xlabel("Date", color="black")
+    ax.set_ylabel("Total Transaction Quantity", color="black")
     ax.set_title("Transaction Volume Over Time — Anomaly Events Marked (red dashed)",
-                 color="white", fontsize=11, pad=10)
-    ax.tick_params(colors="white")
+                 color="black", fontsize=11, pad=10)
+    ax.tick_params(colors="black")
     for spine in ax.spines.values():
-        spine.set_color("#4a4a6a")
+        spine.set_color("#999999")
 
     anomaly_line = mpatches.Patch(color="#e74c3c", alpha=0.6, label=f"Anomaly Events ({len(adf)})")
     vol_line     = mpatches.Patch(color="#3498db", alpha=0.5, label="Monthly Volume")
-    ax.legend(handles=[vol_line, anomaly_line], facecolor="#1a1a2e", labelcolor="white", fontsize=9)
+    ax.legend(handles=[vol_line, anomaly_line], facecolor="white", labelcolor="black", fontsize=9)
 
     out = os.path.join(FIGDIR, "fig3_anomaly_timeline.png")
     plt.savefig(out, dpi=150, bbox_inches="tight", facecolor=fig.get_facecolor())
@@ -191,23 +191,23 @@ if os.path.exists(ANOMALY):
     colors = ["#e74c3c", "#f39c12", "#9b59b6", "#1abc9c"]
 
     fig, ax = plt.subplots(figsize=(8, 5))
-    fig.patch.set_facecolor("#0f0f1a")
-    ax.set_facecolor("#0f0f1a")
+    fig.patch.set_facecolor("white")
+    ax.set_facecolor("white")
 
     bars = ax.bar(labels, counts, color=colors, edgecolor="white", linewidth=0.5, width=0.55)
 
     for bar, count in zip(bars, counts):
         ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.1,
-                str(int(count)), ha="center", va="bottom", color="white", fontsize=11, fontweight="bold")
+                str(int(count)), ha="center", va="bottom", color="black", fontsize=11, fontweight="bold")
 
-    ax.set_ylabel("Number of Flagged Transactions", color="white")
+    ax.set_ylabel("Number of Flagged Transactions", color="black")
     ax.set_title("Anomaly Dimension Breakdown\n(Multi-Dimensional Detection — flags per category)",
-                 color="white", fontsize=11, pad=10)
-    ax.tick_params(colors="white")
+                 color="black", fontsize=11, pad=10)
+    ax.tick_params(colors="black")
     for spine in ["top", "right"]:
         ax.spines[spine].set_visible(False)
     for spine in ["bottom", "left"]:
-        ax.spines[spine].set_color("#4a4a6a")
+        ax.spines[spine].set_color("#999999")
     ax.set_ylim(0, max(counts) * 1.25 if counts else 5)
 
     out = os.path.join(FIGDIR, "fig4_anomaly_dimensions.png")

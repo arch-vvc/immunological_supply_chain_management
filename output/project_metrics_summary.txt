@@ -22,8 +22,8 @@ Recovery predictor:
   strategy spread          17.100 days
 
 LSTM stress forecaster:
-  MAE                      0.026
-  RMSE                     0.031
+  MAE                      0.017
+  RMSE                     0.024
   persistence MAE          0.017
 
 Immunological memory:

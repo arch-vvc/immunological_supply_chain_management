@@ -224,9 +224,9 @@ def main():
     print("\n  Generating Fig 7: Macro Stress Timeline...")
 
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(14, 8), gridspec_kw={"height_ratios": [3, 1]})
-    fig.patch.set_facecolor("#0f0f1a")
+    fig.patch.set_facecolor("white")
     for ax in [ax1, ax2]:
-        ax.set_facecolor("#0f0f1a")
+        ax.set_facecolor("white")
 
     dates  = stress_df["date"]
     scores = stress_df["stress_score"]
@@ -239,7 +239,7 @@ def main():
     ax1.fill_between(dates, scores, where=scores < 0.40,
                      color="#2ecc71", alpha=0.4, label="LOW stress")
 
-    ax1.plot(dates, scores, color="white", linewidth=1.2, alpha=0.9)
+    ax1.plot(dates, scores, color="black", linewidth=1.2, alpha=0.9)
     ax1.axhline(0.65, color="#e74c3c", linewidth=0.8, linestyle="--", alpha=0.6)
     ax1.axhline(0.40, color="#f39c12", linewidth=0.8, linestyle="--", alpha=0.6)
 
@@ -260,14 +260,14 @@ def main():
         except Exception:
             pass
 
-    ax1.set_ylabel("Macro Stress Score (0–1)", color="white")
+    ax1.set_ylabel("Macro Stress Score (0–1)", color="black")
     ax1.set_title("Supply Chain Macro Stress Score — Weekly (2019–2026)\n"
                   "Derived from US DoT Freight Indicators",
-                  color="white", fontsize=11, pad=10)
-    ax1.tick_params(colors="white")
-    ax1.legend(facecolor="#1a1a2e", labelcolor="white", fontsize=8, loc="upper left")
+                  color="black", fontsize=11, pad=10)
+    ax1.tick_params(colors="black")
+    ax1.legend(facecolor="white", labelcolor="black", fontsize=8, loc="upper left")
     for spine in ax1.spines.values():
-        spine.set_color("#4a4a6a")
+        spine.set_color("#999999")
     ax1.set_ylim(0, 1)
 
     # Bottom panel: stress level bar
@@ -275,14 +275,14 @@ def main():
     bar_colors   = [level_colors[l] for l in stress_df["stress_level"]]
     ax2.bar(dates, [1] * len(dates), color=bar_colors, width=7, alpha=0.85)
     ax2.set_yticks([])
-    ax2.set_xlabel("Date", color="white")
-    ax2.set_title("Stress Level", color="white", fontsize=8)
-    ax2.tick_params(colors="white")
+    ax2.set_xlabel("Date", color="black")
+    ax2.set_title("Stress Level", color="black", fontsize=8)
+    ax2.tick_params(colors="black")
     for spine in ax2.spines.values():
-        spine.set_color("#4a4a6a")
+        spine.set_color("#999999")
 
     patches = [mpatches.Patch(color=v, label=k) for k, v in level_colors.items()]
-    ax2.legend(handles=patches, facecolor="#1a1a2e", labelcolor="white",
+    ax2.legend(handles=patches, facecolor="white", labelcolor="black",
                fontsize=7, loc="upper right")
 
     plt.tight_layout()

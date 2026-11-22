@@ -78,7 +78,11 @@ df     = df.sort_values("date").reset_index(drop=True)
 # composite. The composite is a 4-week-smoothed weighted average, so on its
 # own it is nearly a random walk — the un-smoothed components carry the
 # leading-indicator signal the composite throws away.
-feature_cols = [c for c in df.columns if c not in ("date", "stress_score", "stress_level")]
+# Only 0-1 SCORE channels: the composite + one column per indicator. Stage 9
+# also exports n_indicators (an integer count, 3-5), which previously slipped
+# in here as an unscaled seventh channel.
+NON_FEATURE_COLS = ("date", "stress_score", "stress_level", "n_indicators")
+feature_cols = [c for c in df.columns if c not in NON_FEATURE_COLS]
 value_cols   = ["stress_score"] + feature_cols
 for c in value_cols:
     nan_before = int(df[c].isna().sum())
@@ -89,7 +93,11 @@ for c in value_cols:
         print(f"  ⚠  Filled {nan_before} NaNs in {c} (carry-forward; pre-start weeks = 0.5)")
 
 scores = df["stress_score"].values.astype(np.float32)
-feats  = df[value_cols].values.astype(np.float32)     # (weeks, features), all ~0-1
+feats  = df[value_cols].values.astype(np.float32)     # (weeks, features), all 0-1
+_bad = [c for c in value_cols if df[c].min() < 0.0 or df[c].max() > 1.0]
+if _bad:
+    raise ValueError(f"LSTM input channels must be 0-1 scores; out of range: {_bad} "
+                     f"(add non-score columns to NON_FEATURE_COLS)")
 N_FEAT = feats.shape[1]
 
 print(f"  Loaded {len(scores)} weekly stress scores")
@@ -175,6 +183,7 @@ print(f"\n  Training LSTM (max {EPOCHS} epochs, hidden={HIDDEN}, "
       f"early stopping patience=200) ...")
 train_losses = []
 best_val, best_state, best_epoch, patience = float("inf"), None, 0, 200
+stop_epoch = EPOCHS
 for epoch in range(1, EPOCHS + 1):
     model.train()
     optimizer.zero_grad()
@@ -193,6 +202,7 @@ for epoch in range(1, EPOCHS + 1):
     if epoch % 500 == 0:
         print(f"    Epoch {epoch:4d}/{EPOCHS}  train={loss.item():.6f}  val={val_loss:.6f}")
     if epoch - best_epoch >= patience:
+        stop_epoch = epoch
         print(f"    Early stop at epoch {epoch} (best val at {best_epoch})")
         break
 
@@ -238,17 +248,26 @@ print(f"\n  Per-horizon MAE (weeks ahead):")
 print(f"  {'Horizon':<12}" + "".join(f"t+{h+1:>6}" for h in range(PRED_STEPS)))
 print(f"  {'LSTM':<12}" + "".join(f"{v:>8.4f}" for v in lstm_h))
 print(f"  {'Persistence':<12}" + "".join(f"{v:>8.4f}" for v in persist_h))
-wins = [h + 1 for h in range(PRED_STEPS) if lstm_h[h] < persist_h[h]]
-if mae > persist_mae and not wins:
-    print(f"\n  [FINDING] LSTM does NOT beat persistence at any horizon "
-          f"({mae:.4f} vs {persist_mae:.4f} MAE overall) — report this honestly")
-    print(f"            rather than presenting the LSTM as an improvement.")
-elif wins and mae > persist_mae:
-    print(f"\n  [FINDING] LSTM beats persistence at horizon(s) {wins} but not overall")
-    print(f"            ({mae:.4f} vs {persist_mae:.4f} MAE) — its value is the longer view.")
+# A "win" must clear a practical margin: differences under 2% of the
+# persistence error are ties (a 0.0001 MAE gap is rounding, not skill).
+TIE_REL = 0.02
+wins = [h + 1 for h in range(PRED_STEPS) if lstm_h[h] < persist_h[h] * (1 - TIE_REL)]
+losses = [h + 1 for h in range(PRED_STEPS) if lstm_h[h] > persist_h[h] * (1 + TIE_REL)]
+# Collapse diagnostic: how big are the predicted changes vs the real ones?
+pred_move = float(np.mean(np.abs(pred_deltas)))
+true_move = float(np.mean(np.abs(y_te)))
+collapsed = pred_move < 0.1 * true_move
+if abs(mae - persist_mae) <= TIE_REL * persist_mae:
+    verdict = (f"LSTM ties persistence (MAE {mae:.4f} vs {persist_mae:.4f}, within {TIE_REL:.0%})"
+               + ("; it has collapsed to predicting almost no change" if collapsed else "") + ".")
+elif mae > persist_mae:
+    verdict = (f"LSTM does not beat persistence (MAE {mae:.4f} vs {persist_mae:.4f})"
+               + (f"; better beyond the {TIE_REL:.0%} margin only at horizon(s) {wins}" if wins else "") + ".")
 else:
-    print(f"\n  LSTM beats persistence overall by {persist_mae - mae:.4f} MAE "
-          f"(wins at horizons {wins}).")
+    verdict = f"LSTM beats persistence beyond the {TIE_REL:.0%} margin (MAE {mae:.4f} vs {persist_mae:.4f}; horizons {wins})."
+print(f"\n  [FINDING] {verdict}")
+print(f"  Mean |predicted change| {pred_move:.4f} vs mean |actual change| {true_move:.4f}; "
+      f"best validation at step {best_epoch} of {stop_epoch}.")
 
 # ── Persist metrics so the report/dashboard can cite the comparison ────────
 LSTM_METRICS = os.path.join(BASE, "output", "lstm_metrics.txt")
@@ -268,11 +287,11 @@ with open(LSTM_METRICS, "w") as _f:
         "  horizon    " + "".join(f"t+{h+1:>6}" for h in range(PRED_STEPS)),
         "  LSTM       " + "".join(f"{v:>8.4f}" for v in lstm_h),
         "  Persistence" + "".join(f"{v:>8.4f}" for v in persist_h), "",
-        ("LSTM does not beat persistence at any horizon."
-         if mae > persist_mae and not wins else
-         (f"LSTM beats persistence at horizon(s) {wins} but not overall."
-          if wins and mae > persist_mae else
-          f"LSTM beats persistence overall (wins at horizons {wins}).")),
+        f"Training: best validation loss at step {best_epoch}, stopped at step {stop_epoch} (patience 200).",
+        f"Mean |predicted weekly change| : {pred_move:.4f}",
+        f"Mean |actual weekly change|    : {true_move:.4f}",
+        "",
+        verdict,
     ]))
 print(f"  Metrics saved → {LSTM_METRICS}")
 
@@ -316,84 +335,56 @@ for _, row in forecast_df.iterrows():
     badge = {"HIGH": "🔴", "MEDIUM": "🟡", "LOW": "🟢"}.get(lbl, "")
     print(f"    {row['date'].date()}  score={row['stress_score']:.3f}  {badge} {lbl}")
 
-# ── Figure ─────────────────────────────────────────────────────────────────
-BG      = "#0f0f1a"
-BLUE    = "#4fc3f7"
-RED     = "#ff6b6b"
-ORANGE  = "#ffaa44"
-GREEN   = "#44dd88"
-GREY    = "#aaaaaa"
+# ── Figure: held-out comparison against persistence ─────────────────────────
+# Panel (a): the held-out test period, actual series vs the 4-week-ahead
+# forecasts of the LSTM and of persistence. Panel (b): MAE by horizon.
+ACTUAL = "#0b0b0b"
+LSTM_C = "#2a78d6"
+PERS_C = "#eb6834"
+INK_2  = "#52514e"
+AXIS   = "#b5b4ae"
 
-fig, axes = plt.subplots(2, 1, figsize=(15, 10))
-fig.patch.set_facecolor(BG)
-fig.suptitle("LSTM Macro Freight Stress Forecaster — Stage 10",
-             color="white", fontsize=14, y=0.98)
+plt.rcParams.update({"font.family": "serif", "font.size": 9})
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 3.4),
+                               gridspec_kw={"width_ratios": [2.2, 1]})
 
-for ax in axes:
-    ax.set_facecolor(BG)
-    for sp in ax.spines.values():
-        sp.set_edgecolor("#333355")
-    ax.tick_params(colors=GREY)
-    ax.yaxis.label.set_color(GREY)
+H = PRED_STEPS - 1                                   # plot the t+4 forecasts
+te_idx = split + np.arange(len(X_te)) + SEQ_LEN + H  # row index of each t+4 target
+te_dates = df["date"].values[te_idx]
+ctx = slice(max(0, te_idx[0] - 26), te_idx[-1] + 1)  # half a year of context
+ax1.plot(df["date"].values[ctx], scores[ctx], color=ACTUAL, lw=1.4, label="Actual")
+ax1.plot(te_dates, val_pred[:, H], color=LSTM_C, lw=2, label=f"LSTM, t+{H+1}")
+ax1.plot(te_dates, persist_pred[:, H], color=PERS_C, lw=2, ls=(0, (4, 2)),
+         label=f"Persistence, t+{H+1}")
+ax1.axvline(te_dates[0], color=AXIS, lw=0.8, ls=":")
+ax1.text(te_dates[0], 1.0, " held-out test period", transform=ax1.get_xaxis_transform(),
+         va="top", ha="left", color=INK_2, fontsize=7.5, style="italic")
+ax1.set_ylabel("Stress index $S$", color=INK_2)
+ax1.set_title(f"(a) {PRED_STEPS}-week-ahead forecasts on held-out weeks", fontsize=9.5)
+ax1.legend(frameon=False, fontsize=8, loc="lower left")
 
-# ── Panel 1: Full history ──────────────────────────────────────────────────
-ax1 = axes[0]
-ax1.plot(hist_out["date"], hist_out["stress_score"],
-         color=BLUE, lw=1.1, alpha=0.85, label="Historical stress")
-ax1.axhspan(0.65, 1.0,  alpha=0.07, color="red")
-ax1.axhspan(0.40, 0.65, alpha=0.07, color="orange")
-ax1.axhspan(0.0,  0.40, alpha=0.07, color="green")
-ax1.axhline(0.65, color="red",    ls="--", lw=0.7, alpha=0.5, label="HIGH threshold")
-ax1.axhline(0.40, color="orange", ls="--", lw=0.7, alpha=0.5, label="MEDIUM threshold")
+hs = np.arange(1, PRED_STEPS + 1)
+w = 0.38
+b1 = ax2.bar(hs - w / 2, lstm_h, w, color=LSTM_C, edgecolor="white", lw=1.5, label="LSTM")
+b2 = ax2.bar(hs + w / 2, persist_h, w, color=PERS_C, edgecolor="white", lw=1.5, label="Persistence")
+ax2.set_xticks(hs)
+ax2.set_xticklabels([f"t+{h}" for h in hs])
+ax2.set_ylabel("MAE", color=INK_2)
+ax2.set_ylim(0, max(lstm_h.max(), persist_h.max()) * 1.2)
+ax2.set_title("(b) Test MAE by horizon", fontsize=9.5)
+ax2.legend(frameon=False, fontsize=8, loc="upper left")
 
-# Forecast points
-ax1.axvspan(hist_out["date"].max(), forecast_df["date"].max(),
-            alpha=0.10, color=RED, label="Forecast window")
-ax1.plot(forecast_df["date"], forecast_df["stress_score"],
-         "o--", color=RED, lw=2, ms=9, zorder=6, label="4-week LSTM forecast")
+for ax in (ax1, ax2):
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+    for side in ("left", "bottom"):
+        ax.spines[side].set_color(AXIS)
+    ax.tick_params(colors=INK_2, labelsize=8)
 
-ax1.set_title("Full Stress History + Forward Forecast", color="white", fontsize=11, pad=8)
-ax1.set_ylabel("Stress Score (0-1)", color=GREY)
-ax1.set_ylim(0, 1)
-ax1.legend(facecolor="#1a1a2e", labelcolor="white", fontsize=8.5,
-           loc="upper left", framealpha=0.8)
-
-# ── Panel 2: Zoom last 52 weeks + annotated forecast ──────────────────────
-ax2  = axes[1]
-cutoff = hist_out["date"].max() - pd.Timedelta(weeks=52)
-recent = hist_out[hist_out["date"] >= cutoff]
-
-ax2.plot(recent["date"], recent["stress_score"],
-         color=BLUE, lw=1.6, label="Last 52 weeks")
-ax2.axhline(0.65, color="red",    ls="--", lw=0.8, alpha=0.5)
-ax2.axhline(0.40, color="orange", ls="--", lw=0.8, alpha=0.5)
-
-ax2.plot(forecast_df["date"], forecast_df["stress_score"],
-         "o--", color=RED, lw=2.2, ms=10, zorder=6, label="LSTM Forecast")
-
-colour_map = {"HIGH": "#ff4444", "MEDIUM": "#ffaa00", "LOW": "#44ff88"}
-for _, row in forecast_df.iterrows():
-    c = colour_map[row["stress_level"]]
-    ax2.annotate(
-        f"{row['stress_level']}\n{row['stress_score']:.3f}",
-        xy       = (row["date"], row["stress_score"]),
-        xytext   = (0, 18),
-        textcoords = "offset points",
-        ha       = "center",
-        fontsize = 8,
-        color    = c,
-        arrowprops = dict(arrowstyle="-", color=c, lw=0.9),
-    )
-
-ax2.set_title("Zoom: Last 52 Weeks + Annotated 4-Week Forecast", color="white",
-              fontsize=11, pad=8)
-ax2.set_ylabel("Stress Score (0-1)", color=GREY)
-ax2.set_ylim(0, 1)
-ax2.legend(facecolor="#1a1a2e", labelcolor="white", fontsize=8.5, framealpha=0.8)
-
-plt.tight_layout(pad=2.5)
+fig.tight_layout()
 os.makedirs(os.path.dirname(OUT_FIG), exist_ok=True)
-plt.savefig(OUT_FIG, dpi=130, bbox_inches="tight", facecolor=BG)
+plt.savefig(OUT_FIG, dpi=200, bbox_inches="tight", facecolor="white")
+plt.savefig(OUT_FIG.replace(".png", ".pdf"), bbox_inches="tight", facecolor="white")
 plt.close()
 print(f"\n  Figure saved → {OUT_FIG}")
 

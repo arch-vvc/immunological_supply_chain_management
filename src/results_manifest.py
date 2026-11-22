@@ -196,6 +196,11 @@ def build() -> dict:
             "proven_supplier_pct": m["response_plan"].get("resolved_pct"),
         },
     }
+    _am = OUT / "anomaly_metrics.txt"
+    if _am.exists():
+        import re as _re
+        _m = _re.search(r"Macro coverage share\s*:\s*([0-9.]+)", _am.read_text(encoding="utf-8"))
+        headline["anomaly_detection"]["macro_threshold_coverage"] = float(_m.group(1)) if _m else None
     p = OUT / "anomalies.csv"
     if p.exists():
         with p.open(newline="", encoding="utf-8") as f:

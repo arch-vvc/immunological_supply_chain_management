@@ -298,9 +298,9 @@ if os.path.exists(ANOMALY_IN):
 print("\n  Generating Fig 6: Feature Importance + Recovery by Strategy...")
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
-fig.patch.set_facecolor("#0f0f1a")
+fig.patch.set_facecolor("white")
 for ax in [ax1, ax2]:
-    ax.set_facecolor("#0f0f1a")
+    ax.set_facecolor("white")
 
 # Left: feature importances
 importances = regressor.feature_importances_
@@ -309,15 +309,15 @@ colors      = plt.cm.YlOrRd(np.linspace(0.3, 0.9, len(FEATURE_LABELS)))
 ax1.barh(range(len(FEATURE_LABELS)), importances[sorted_idx],
          color=colors, edgecolor="white", linewidth=0.3)
 ax1.set_yticks(range(len(FEATURE_LABELS)))
-ax1.set_yticklabels([FEATURE_LABELS[i] for i in sorted_idx], color="white", fontsize=9)
-ax1.set_xlabel("Feature Importance", color="white")
+ax1.set_yticklabels([FEATURE_LABELS[i] for i in sorted_idx], color="black", fontsize=9)
+ax1.set_xlabel("Feature Importance", color="black")
 ax1.set_title("What Drives Recovery Time?\n(XGBoost gradient-boosted trees)",
-              color="white", fontsize=10, pad=10)
-ax1.tick_params(colors="white")
+              color="black", fontsize=10, pad=10)
+ax1.tick_params(colors="black")
 for spine in ["top", "right"]:
     ax1.spines[spine].set_visible(False)
 for spine in ["bottom", "left"]:
-    ax1.spines[spine].set_color("#4a4a6a")
+    ax1.spines[spine].set_color("#999999")
 
 # Right: predicted vs empirical recovery by strategy (the Option-A story)
 order   = sorted(strategies, key=lambda s: strat_pred_mean[s])
@@ -328,17 +328,17 @@ ax2.barh(ypos - 0.2, [strat_pred_mean[s] for s in order], height=0.4,
 ax2.barh(ypos + 0.2, [strat_emp_mean[s] for s in order], height=0.4,
          color="#f39c12", label="Empirical mean", edgecolor="white", linewidth=0.3)
 ax2.set_yticks(ypos)
-ax2.set_yticklabels(labels, color="white", fontsize=9)
-ax2.set_xlabel("Mean Recovery (days)", color="white")
+ax2.set_yticklabels(labels, color="black", fontsize=9)
+ax2.set_xlabel("Mean Recovery (days)", color="black")
 ax2.set_title("Recovery by Strategy — historical association\n"
               "(fastest = recommended; not a causal claim)",
-              color="white", fontsize=10, pad=10)
-ax2.tick_params(colors="white")
-ax2.legend(facecolor="#1a1a2e", labelcolor="white", fontsize=8, loc="lower right")
+              color="black", fontsize=10, pad=10)
+ax2.tick_params(colors="black")
+ax2.legend(facecolor="white", labelcolor="black", fontsize=8, loc="lower right")
 for spine in ["top", "right"]:
     ax2.spines[spine].set_visible(False)
 for spine in ["bottom", "left"]:
-    ax2.spines[spine].set_color("#4a4a6a")
+    ax2.spines[spine].set_color("#999999")
 
 plt.tight_layout()
 plt.savefig(FIG_OUT, dpi=150, bbox_inches="tight", facecolor=fig.get_facecolor())

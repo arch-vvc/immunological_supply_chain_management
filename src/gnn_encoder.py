@@ -415,7 +415,7 @@ def main():
     node_colors = [color_map.get(type_map[n], "#95a5a6") for n in nodes]
     sizes = 40 + 300 * gnn_scores_norm
     fig, ax = plt.subplots(figsize=(11, 7))
-    fig.patch.set_facecolor("#0f0f1a"); ax.set_facecolor("#0f0f1a")
+    fig.patch.set_facecolor("white"); ax.set_facecolor("white")
     ax.scatter(proj[:, 0], proj[:, 1], c=node_colors, s=sizes, alpha=0.75,
                edgecolors="white", linewidths=0.3)
     if merged is not None:
@@ -424,19 +424,19 @@ def main():
         top_nodes = {nodes[i] for i in np.argsort(gnn_scores_norm)[-10:]}
     for i, n in enumerate(nodes):
         if n in top_nodes:
-            ax.annotate(str(n)[:25], (proj[i, 0], proj[i, 1]), fontsize=6, color="white",
+            ax.annotate(str(n)[:25], (proj[i, 0], proj[i, 1]), fontsize=6, color="black",
                         alpha=0.85, xytext=(5, 5), textcoords="offset points")
     patches = [mpatches.Patch(color=v, label=k.capitalize())
                for k, v in color_map.items() if k != "unknown"]
-    ax.legend(handles=patches, loc="upper left", facecolor="#1a1a2e", labelcolor="white", fontsize=9)
+    ax.legend(handles=patches, loc="upper left", facecolor="white", labelcolor="black", fontsize=9)
     ax.set_title("GNN Embedding Space — PCA Projection\n"
                  "(Node size = reconstruction error / anomaly score, Color = entity type)",
-                 color="white", fontsize=11, pad=12)
-    ax.set_xlabel("Principal Component 1", color="white")
-    ax.set_ylabel("Principal Component 2", color="white")
-    ax.tick_params(colors="white")
+                 color="black", fontsize=11, pad=12)
+    ax.set_xlabel("Principal Component 1", color="black")
+    ax.set_ylabel("Principal Component 2", color="black")
+    ax.tick_params(colors="black")
     for spine in ax.spines.values():
-        spine.set_color("#4a4a6a")
+        spine.set_color("#999999")
     plt.tight_layout()
     os.makedirs(os.path.dirname(FIG_OUT), exist_ok=True)
     plt.savefig(FIG_OUT, dpi=150, bbox_inches="tight", facecolor=fig.get_facecolor())

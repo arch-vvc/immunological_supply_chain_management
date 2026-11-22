@@ -62,6 +62,7 @@ def load_config():
             },
             "settings": {
                 "retailer_combine": None,
+                "calendar_offset_years": 12,   # see CALENDAR OFFSET below
             },
         }
 
@@ -120,6 +121,31 @@ df["date"]     = pd.to_datetime(df["date"], errors="coerce")
 df["quantity"] = pd.to_numeric(df["quantity"], errors="coerce")
 df = df.dropna()
 df = df[df["quantity"] > 0]
+
+# ── CALENDAR OFFSET (synthetic datasets only) ─────────────────
+# The ARCOS sample is GENERATED (src/generate_arcos.py) on a hard-coded
+# 2006-2014 calendar, while the real freight indicators behind the macro
+# stress score (Stage 9) are only scored from 2020. With no overlap, every
+# transaction fell back to lambda = 1 and the per-week threshold adaptation
+# never applied. A synthetic dataset's calendar carries no real-world
+# meaning, so we move it onto the indicators' calendar instead:
+#   * whole years only — every transaction keeps its month and day, so the
+#     monthly surge signal and all month groupings are unchanged;
+#   * 12 years exactly — a multiple of 4 inside 1901-2099, so leap days map
+#     to leap days (2008-02-29 -> 2020-02-29);
+#   * 12 is the whole-year shift that puts the most rows inside the stress
+#     series (92%; 11y -> 89%, 13y -> 82%). The choice looks only at date
+#     coverage, never at detection results.
+# The synthetic anomalies are independent of real freight stress, so this
+# exercises the mechanism; it cannot show that stress-aware thresholds catch
+# more real disruptions. A REAL dataset must leave this setting null.
+_offset = settings.get("calendar_offset_years")
+if _offset:
+    _offset = int(_offset)
+    _before = (df["date"].min().date(), df["date"].max().date())
+    df["date"] = df["date"] + pd.DateOffset(years=_offset)
+    print(f"  Calendar offset: +{_offset} years (synthetic data) — "
+          f"{_before[0]}..{_before[1]}  ->  {df['date'].min().date()}..{df['date'].max().date()}")
 
 for col in ["manufacturer", "distributor", "retailer", "retailer_state"]:
     df[col] = df[col].astype(str).str.strip()

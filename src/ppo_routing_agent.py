@@ -743,20 +743,20 @@ with open(OUT_STATS, "w") as _f:
 print(f"  Stats saved   → {OUT_STATS}")
 
 # ── Figure ─────────────────────────────────────────────────────────────────
-BG   = "#0f0f1a"
+BG   = "white"
 BLUE = "#4fc3f7"
 RED  = "#ff6b6b"
-GREY = "#aaaaaa"
+GREY = "#666666"
 
 fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 fig.patch.set_facecolor(BG)
 fig.suptitle("PPO Routing Agent — Stage 11",
-             color="white", fontsize=14, y=1.02)
+             color="black", fontsize=14, y=1.02)
 
 for ax in axes:
     ax.set_facecolor(BG)
     for sp in ax.spines.values():
-        sp.set_edgecolor("#333355")
+        sp.set_edgecolor("#999999")
     ax.tick_params(colors=GREY)
 
 # Panel 1: Training reward curve
@@ -769,10 +769,10 @@ if len(reward_history) > 50:
                          np.ones(50) / 50, mode="valid")
     ax1.plot(range(49, len(reward_history)), smooth,
              color="#ff6b6b", lw=1.8, label="Smoothed (50-ep)")
-ax1.set_title("PPO Training Reward", color="white", fontsize=11, pad=8)
+ax1.set_title("PPO Training Reward", color="black", fontsize=11, pad=8)
 ax1.set_xlabel("Episode", color=GREY)
 ax1.set_ylabel("Avg Reward (200-ep window)", color=GREY)
-ax1.legend(facecolor="#1a1a2e", labelcolor="white", fontsize=9)
+ax1.legend(facecolor="white", labelcolor="black", fontsize=9)
 
 # Panel 2: avg route risk per method (hops annotated above each bar)
 ax2     = axes[1]
@@ -785,14 +785,14 @@ for bar, m in zip(bars, METHODS):
     h = bar.get_height()
     ax2.text(bar.get_x() + bar.get_width() / 2, h + 0.01,
              f"risk {avg_risk[m]:.3f}\nreward {avg_total[m]:.1f}",
-             ha="center", va="bottom", color="white", fontsize=8.5)
+             ha="center", va="bottom", color="black", fontsize=8.5)
 
 ax2.set_xticks(x)
 ax2.set_xticklabels(METHODS, color=GREY, fontsize=9)
 ax2.set_ylim(0, max(avg_risk.values()) * 1.25)
 ax2.set_ylabel("Avg Effective Risk of Served Demands (0–1)", color=GREY)
 ax2.set_title(f"Cascade Quality vs Baselines ({eval_done} identical episodes)",
-              color="white", fontsize=11, pad=8)
+              color="black", fontsize=11, pad=8)
 
 plt.tight_layout(pad=2.5)
 os.makedirs(os.path.dirname(OUT_FIG), exist_ok=True)
