@@ -535,9 +535,9 @@ with tab_overview:
                 _fi_colors = [RED if v > _fi_df["Importance"].median() else SLATE
                               for v in _fi_df["Importance"]]
                 _ax_fi.barh(_fi_df["Feature"], _fi_df["Importance"], color=_fi_colors, edgecolor="none")
-                _ax_fi.set_xlabel("Importance", color="white")
-                _ax_fi.tick_params(colors="white")
-                _ax_fi.xaxis.label.set_color("white")
+                _ax_fi.set_xlabel("Importance", color=INK)
+                _ax_fi.tick_params(colors=INK)
+                _ax_fi.xaxis.label.set_color(INK)
                 for sp in ["top", "right"]:
                     _ax_fi.spines[sp].set_visible(False)
                 for sp in ["bottom", "left"]:
@@ -2002,14 +2002,14 @@ with tab_recovery:
                 colors_w = [RED if v > 0 else SLATE for v in _shap_df["SHAP (days)"]]
                 bars = ax_w.barh(_shap_df["Feature"], _shap_df["SHAP (days)"],
                                  color=colors_w, edgecolor="none")
-                ax_w.axvline(0, color="white", linewidth=0.8, alpha=0.5)
-                ax_w.set_xlabel("Impact on predicted recovery days", color="white")
+                ax_w.axvline(0, color=INK, linewidth=0.8, alpha=0.5)
+                ax_w.set_xlabel("Impact on predicted recovery days", color=INK)
                 ax_w.set_title(
                     f"Prediction breakdown ,  baseline avg: {_base:.0f} days  →  predicted: {days:.0f} days",
-                    color="white", fontsize=10,
+                    color=INK, fontsize=10,
                 )
-                ax_w.tick_params(colors="white")
-                ax_w.xaxis.label.set_color("white")
+                ax_w.tick_params(colors=INK)
+                ax_w.xaxis.label.set_color(INK)
                 for spine in ["top", "right"]:
                     ax_w.spines[spine].set_visible(False)
                 for spine in ["bottom", "left"]:
@@ -2020,7 +2020,7 @@ with tab_recovery:
                     ax_w.text(x_pos, bar.get_y() + bar.get_height() / 2,
                               label, va="center",
                               ha="left" if val > 0 else "right",
-                              color="white", fontsize=8)
+                              color=INK, fontsize=8)
                 plt.tight_layout()
                 st.pyplot(fig_w)
                 plt.close()
@@ -2206,15 +2206,15 @@ with tab_memory:
             bars = ax_resp.barh(resp_counts["Response Strategy"],
                                 resp_counts["Count"],
                                 color=INK, edgecolor="none")
-            ax_resp.tick_params(colors="white")
-            ax_resp.set_xlabel("Retrieval Count", color="white")
+            ax_resp.tick_params(colors=INK)
+            ax_resp.set_xlabel("Retrieval Count", color=INK)
             for sp in ["top", "right"]:
                 ax_resp.spines[sp].set_visible(False)
             for sp in ["bottom", "left"]:
                 ax_resp.spines[sp].set_color(INK)
             for bar in bars:
                 ax_resp.text(bar.get_width() + 1, bar.get_y() + bar.get_height()/2,
-                             f"{int(bar.get_width())}", va="center", color="white", fontsize=9)
+                             f"{int(bar.get_width())}", va="center", color=INK, fontsize=9)
             plt.tight_layout()
             st.pyplot(fig_resp)
             plt.close()
@@ -2253,9 +2253,9 @@ with tab_memory:
             ax_dist.set_facecolor(PAPER)
             ax_dist.hist(df_mem["match_distance"].dropna(), bins=40,
                          color=RED, edgecolor="none", alpha=0.85)
-            ax_dist.set_xlabel("L2 Match Distance (lower = more similar)", color="white")
-            ax_dist.set_ylabel("Frequency", color="white")
-            ax_dist.tick_params(colors="white")
+            ax_dist.set_xlabel("L2 Match Distance (lower = more similar)", color=INK)
+            ax_dist.set_ylabel("Frequency", color=INK)
+            ax_dist.tick_params(colors=INK)
             for sp in ["top", "right"]:
                 ax_dist.spines[sp].set_visible(False)
             for sp in ["bottom", "left"]:
