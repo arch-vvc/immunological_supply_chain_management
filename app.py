@@ -43,6 +43,25 @@ from ui import specimen, verdict as report_verdict, blurb, readout, chart_templa
 ui.set_mode(st.session_state.get("dark_mode", False))
 PAPER, INK, RULE, MUTED, RED, SLATE, MIST = ui.PAPER, ui.INK, ui.RULE, ui.MUTED, ui.RED, ui.SLATE, ui.MIST
 ui.inject(); chart_template(); mpl_style()
+@st.cache_data(show_spinner=False)
+def _light_version(path, mtime):
+    """Dark-background figure -> light: invert and rotate hue back so colours keep their meaning."""
+    from PIL import Image, ImageOps
+    im = Image.open(path).convert("RGB")
+    if sum(im.getpixel((2, 2))) > 300:      # already a light figure
+        return im
+    h, s, v = ImageOps.invert(im).convert("HSV").split()
+    h = h.point(lambda x: (x + 128) % 256)
+    return Image.merge("HSV", (h, s, v)).convert("RGB")
+
+
+def show_fig(path, **kw):
+    """st.image that turns the pre-rendered dark figures light when the app is in light mode."""
+    if not ui.DARK_MODE:
+        path = _light_version(path, os.path.getmtime(path))
+    st.image(path, **kw)
+
+
 _plotly_chart = st.plotly_chart
 st.plotly_chart = lambda *a, **k: _plotly_chart(*a, **{"theme": None, **k})   # keep the report template
 
@@ -817,7 +836,7 @@ with tab_risk:
             st.markdown("#### GNN Embedding Space")
             fig_path = os.path.join(FIGS, "fig5_gnn_embeddings.png")
             if os.path.exists(fig_path):
-                st.image(fig_path, use_column_width=True)
+                show_fig(fig_path, use_column_width=True)
 
         # ── GNN score: does it detect anything? (node-level injection benchmark) ──
         _gb = load_json("gnn_injection_eval.json")
@@ -944,7 +963,7 @@ with tab_risk:
         col_ppo1, col_ppo2 = st.columns([1.4, 1])
         with col_ppo1:
             if os.path.exists(ppo_fig):
-                st.image(ppo_fig, use_column_width=True,
+                show_fig(ppo_fig, use_column_width=True,
                          caption="PPO agent cumulative reward over training episodes")
             else:
                 st.info("Run Stage 11 (PPO Routing Agent) to generate the training figure.")
@@ -1076,7 +1095,7 @@ with tab_risk:
                 st.code(open(_mv_rpt).read(), language=None)
             _f11 = os.path.join(FIGS, "fig11_macro_event_validation.png")
             if os.path.exists(_f11):
-                st.image(_f11, use_container_width=True)
+                show_fig(_f11, use_container_width=True)
 
 # ══════════════════════════════════════════════════════════════════════════
 # (Macro Stress & LSTM tab removed 2026-07-16, LSTM did not beat naive
@@ -1639,7 +1658,7 @@ with tab_recovery:
                 use_container_width=True, height=300, hide_index=True)
             _f12 = os.path.join(FIGS, "fig12_scms_counterfactual.png")
             if os.path.exists(_f12):
-                st.image(_f12, use_container_width=True)
+                show_fig(_f12, use_container_width=True)
 
     # ── Network-Grounded Response Plan (Stage 18) ──────────────────────────
     st.divider()
@@ -2054,7 +2073,7 @@ with tab_recovery:
 
         fig_path = os.path.join(FIGS, "fig6_recovery.png")
         if os.path.exists(fig_path):
-            st.image(fig_path, use_column_width=True)
+            show_fig(fig_path, use_column_width=True)
 
         # ── Inventory Agent ───────────────────────────────────────────
         st.divider()
@@ -2136,7 +2155,7 @@ with tab_multi:
             st.warning("multi_domain_f1.csv is missing required columns: Industry, F1_Score")
             st.dataframe(df_f1, use_container_width=True)
             if os.path.exists(fig_path):
-                st.image(fig_path, use_column_width=True)
+                show_fig(fig_path, use_column_width=True)
         else:
             best_pool   = df_f1[df_f1["Industry"].astype(str).str.lower() != "all domains"]
             best_row    = best_pool.sort_values("F1_Score", ascending=False).iloc[0] if not best_pool.empty else None
@@ -2152,7 +2171,7 @@ with tab_multi:
             st.dataframe(df_f1, use_container_width=True)
 
             if os.path.exists(fig_path):
-                st.image(fig_path, use_column_width=True)
+                show_fig(fig_path, use_column_width=True)
 
 # ══════════════════════════════════════════════════════════════════════════
 # TAB 8, IMMUNOLOGICAL MEMORY (FAISS)
