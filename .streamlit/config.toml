@@ -1,7 +1,8 @@
 [theme]
-base = "light"
-primaryColor = "#C42B1C"
-backgroundColor = "#F7F6F2"
-secondaryBackgroundColor = "#EFEDE6"
-textColor = "#16181D"
-borderColor = "#D9D6CE"
+# Dark is the default. Values match ui.DARK so the page does not flash light before ui.inject() runs.
+base = "dark"
+primaryColor = "#FF5A4A"
+backgroundColor = "#0E1012"
+secondaryBackgroundColor = "#171A1D"
+textColor = "#E8E6E1"
+borderColor = "#2A2D31"
