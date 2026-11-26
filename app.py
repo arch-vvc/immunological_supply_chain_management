@@ -36,7 +36,8 @@ EXTRA  = os.path.join(BASE, "data", "supplementary")
 # ── Report styling (see ui.py) ─────────────────────────────────────────────
 import ui
 from ui import specimen, verdict as report_verdict, blurb, readout, chart_template, mpl_style
-ui.set_mode(st.session_state.get("dark_mode", False))
+st.session_state.setdefault("dark_mode", True)   # dark is the default; the toggle below switches to light
+ui.set_mode(st.session_state["dark_mode"])
 PAPER, INK, RULE, MUTED, RED, SLATE, MIST = ui.PAPER, ui.INK, ui.RULE, ui.MUTED, ui.RED, ui.SLATE, ui.MIST
 ui.inject(); chart_template(); mpl_style()
 @st.cache_data(show_spinner=False)
